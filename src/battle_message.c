@@ -435,11 +435,11 @@ static const u8 sText_ExclamationMark3[] = _("!");
 static const u8 sText_ExclamationMark4[] = _("!");
 static const u8 sText_ExclamationMark5[] = _("!");
 static const u8 sText_HP[] = _("HP");
-static const u8 sText_Attack[] = _("attack");
-static const u8 sText_Defense[] = _("defense");
-static const u8 sText_Speed[] = _("speed");
-static const u8 sText_SpAttack[] = _("sp. attack");
-static const u8 sText_SpDefense[] = _("sp. defense");
+static const u8 sText_Attack[] = _("Attack");
+static const u8 sText_Defense[] = _("Defense");
+static const u8 sText_Speed[] = _("Speed");
+static const u8 sText_SpAttack[] = _("Sp. Atk");
+static const u8 sText_SpDefense[] = _("Sp. Def");
 static const u8 sText_Accuracy[] = _("accuracy");
 static const u8 sText_Evasiveness[] = _("evasiveness");
 
@@ -467,7 +467,7 @@ const u8 *const gPokeblockWasTooXStringTable[FLAVOR_COUNT] =
 
 static const u8 sText_PlayerUsedItem[] = _("{B_PLAYER_NAME} used\n{B_LAST_ITEM}!");
 static const u8 sText_WallyUsedItem[] = _("WALLY used\n{B_LAST_ITEM}!");
-static const u8 sText_Trainer1UsedItem[] = _("{B_TRAINER1_CLASS} {B_TRAINER1_NAME}\nused {B_LAST_ITEM}!");
+static const u8 sText_Trainer1UsedItem[] = _("{B_ATK_TRAINER_CLASS} {B_ATK_TRAINER_NAME}\nused {B_LAST_ITEM}!");
 static const u8 sText_TrainerBlockedBall[] = _("The TRAINER blocked the BALL!");
 static const u8 sText_DontBeAThief[] = _("Don't be a thief!");
 static const u8 sText_ItDodgedBall[] = _("It dodged the thrown BALL!\nThis POKéMON can't be caught!");
@@ -555,7 +555,7 @@ static const u8 sText_VanishedInstantly[] =_("{B_ATK_NAME_WITH_PREFIX} vanished\
 static const u8 sText_ProtectedTeam[] =_("{B_CURRENT_MOVE} protected\n{B_ATK_TEAM2} team!");
 static const u8 sText_SharedItsGuard[] =_("{B_ATK_NAME_WITH_PREFIX} shared its\nguard with the target!");
 static const u8 sText_SharedItsPower[] =_("{B_ATK_NAME_WITH_PREFIX} shared its\npower with the target!");
-static const u8 sText_SwapsDefAndSpDefOfAllPkmn[] =_("It created a bizarre area in which the\nDefense and Sp.Def stats are swapped!");
+static const u8 sText_SwapsDefAndSpDefOfAllPkmn[] =_("It created a bizarre area in which the\nDefense and Sp. Def stats are swapped!");
 static const u8 sText_BecameNimble[] =_("{B_ATK_NAME_WITH_PREFIX} became nimble!");
 static const u8 sText_HurledIntoTheAir[] =_("{B_DEF_NAME_WITH_PREFIX} was hurled\ninto the air!");
 static const u8 sText_HeldItemsLoseEffects[] =_("It created a bizarre area in which\nPokémon's held items lose their effects!");
@@ -782,9 +782,17 @@ static const u8 sText_PrepareShellTrap[] = _("{B_ATK_NAME_WITH_PREFIX} set a she
 static const u8 sText_ShellTrapDidntWork[] = _("{B_ATK_NAME_WITH_PREFIX}'s shell trap didn't work!");
 static const u8 sText_CouldntFullyProtect[] = _("{B_DEF_NAME_WITH_PREFIX} couldn't fully protect\nitself and got hurt!");
 static const u8 sText_StockpiledEffectWoreOff[] = _("{B_ATK_NAME_WITH_PREFIX}'s stockpiled\neffect wore off!");
+static const u8 sText_PkmnRevivedReadyToFight[] = _("{B_BUFF1} was revived and\nis ready to fight again!");
+static const u8 sText_ItemRestoredSpeciesHealth[] = _("{B_LAST_ITEM} restored\n{B_BUFF1}'s health!");
+static const u8 sText_ItemCuredSpeciesStatus[] = _("{B_LAST_ITEM} cured\n{B_BUFF1}'s status!");
+static const u8 sText_ItemRestoredSpeciesPP[] = _("{B_LAST_ITEM} restored\n{B_BUFF1}'s PP!");
 
 const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
 {
+    [STRINGID_ITEMRESTOREDSPECIESHEALTH - BATTLESTRINGS_TABLE_START] = sText_ItemRestoredSpeciesHealth,
+    [STRINGID_ITEMCUREDSPECIESSTATUS - BATTLESTRINGS_TABLE_START] = sText_ItemCuredSpeciesStatus,
+    [STRINGID_ITEMRESTOREDSPECIESPP - BATTLESTRINGS_TABLE_START] = sText_ItemRestoredSpeciesPP,
+    [STRINGID_PKMNREVIVEDREADYTOFIGHT - BATTLESTRINGS_TABLE_START] = sText_PkmnRevivedReadyToFight,
     [STRINGID_STOCKPILEDEFFECTWOREOFF - BATTLESTRINGS_TABLE_START] = sText_StockpiledEffectWoreOff,
     [STRINGID_COULDNTFULLYPROTECT - BATTLESTRINGS_TABLE_START] = sText_CouldntFullyProtect,
     [STRINGID_ATTACKERGAINEDSTRENGTHFROMTHEFALLEN - BATTLESTRINGS_TABLE_START] = sText_AttackerGainedStrengthFromTheFallen,
@@ -1422,6 +1430,11 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_PKMNSABILITYPREVENTSABILITY - BATTLESTRINGS_TABLE_START] = sText_PkmnsAbilityPreventsAbility,
 };
 
+const u16 gTrainerUsedItemStringIds[] =
+{
+    STRINGID_PLAYERUSEDITEM, STRINGID_TRAINER1USEDITEM
+};
+
 const u16 gZEffectStringIds[] =
 {
     [B_MSG_Z_RESET_STATS] = STRINGID_ZMOVERESETSSTATS,
@@ -1816,16 +1829,6 @@ const u16 gSafariPokeblockResultStringIds[] =
     [B_MSG_MON_CURIOUS]    = STRINGID_PKMNCURIOUSABOUTX,
     [B_MSG_MON_ENTHRALLED] = STRINGID_PKMNENTHRALLEDBYX,
     [B_MSG_MON_IGNORED]    = STRINGID_PKMNIGNOREDX
-};
-
-const u16 gTrainerItemCuredStatusStringIds[] =
-{
-    [AI_HEAL_CONFUSION] = STRINGID_PKMNSITEMSNAPPEDOUT,
-    [AI_HEAL_PARALYSIS] = STRINGID_PKMNSITEMCUREDPARALYSIS,
-    [AI_HEAL_FREEZE]    = STRINGID_PKMNSITEMDEFROSTEDIT,
-    [AI_HEAL_BURN]      = STRINGID_PKMNSITEMHEALEDBURN,
-    [AI_HEAL_POISON]    = STRINGID_PKMNSITEMCUREDPOISON,
-    [AI_HEAL_SLEEP]     = STRINGID_PKMNSITEMWOKEIT
 };
 
 const u16 gBerryEffectStringIds[] =
