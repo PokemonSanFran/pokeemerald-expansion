@@ -68,12 +68,9 @@ Debug_FlagsNotSetBattleConfigMessage_Text:
 	.string "'include/config/battle.h'!$"
 
 Debug_Script_1::
-    givemon SPECIES_VOLCANION,59,ITEM_OCCA_BERRY
 	end
 
 Debug_Script_2::
-    setwildbattle SPECIES_COALOSSAL, 40, ITEM_NONE, SPECIES_SYLVEON, 20, ITEM_NONE
-    dowildbattle
 	end
 
 Debug_Script_3::

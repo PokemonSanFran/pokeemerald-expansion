@@ -746,7 +746,7 @@ dealdeal  `B_PHYSICAL_SPECIAL_SPLIT` - Type: Generation Toggle
         - `FALSE`: disabled
       
 `B_LAST_USED_BALL_BUTTON` - Type: Set Value
-    - When `B_LAST_USED_BALL` is `TRUE`, this button (or combination of buttons) will trigger throwing the last used ball. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/)
+    - When `B_LAST_USED_BALL` is `TRUE`, the button (or combination of buttons) set here will trigger throwing the last used ball. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/)
     - Some examples include:
         - `R_BUTTON`
         - `R_BUTTON + A_BUTTON`
@@ -754,38 +754,38 @@ dealdeal  `B_PHYSICAL_SPECIAL_SPLIT` - Type: Generation Toggle
 
 ### Other settings
 `B_DOUBLE_WILD_CHANCE` - Type: Set Value
-    - % chance of encountering two Pokémon in a Wild Encounter. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
-        - Options:
+    - This value is the % chance that a wild battle will be a Double Battle.
 
 `B_MULTI_BATTLE_WHITEOUT` - Type: Generation Toggle
-    - In Gen4+, multi battles end when the Player and also their Partner don't have any more Pokémon to fight. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
-        - >= `GEN_`:
-        - <= `GEN_`:
+    - During a Multi Battle, when the player has no Pokemon available to fight, but their partner has Pokemon available to fight, the battle [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
+        - >= `GEN_4`: continues until one side has no Pokemon
+        - = `GEN_3`: is lost by the player
 
 `B_EVOLUTION_AFTER_WHITEOUT` - Type: Generation Toggle
-    - In Gen6+, Pokemon that qualify for evolution after battle will evolve even if the player loses. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
-        - >= `GEN_`:
-        - <= `GEN_`:
+    - When a Pokemon has reached the criteria for evolution during battle, but then the player then loses the battle, the Pokemon will [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
+        - >= `GEN_6`: immediately evolve
+        - <= `GEN_5`: not evolve
 
 `B_WILD_NATURAL_ENEMIES` - Type: True / False
-    - If set to TRUE, certain wild mon species will attack other species when partnered in double wild battles ( [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
-        - `TRUE`:
-        - `FALSE`:
+    - When wild Pokemon that are naturally antagonistic to each other (according to the Pokedex) are partnered in a Double Battle, they will attack each other. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
+        - `TRUE`: True
+        - `FALSE`: False
       
 `B_AFFECTION_MECHANICS` - Type: True / False
-    - In Gen6+, there's a stat called affection that can trigger different effects in battle. From LGPE onwards,  [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
-        - `TRUE`:
-        - `FALSE`:
+    - In Battle Friendship Bonuses are active. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
+        - `TRUE`: True
+        - `FALSE`: False
      
 `B_TRAINER_CLASS_POKE_BALLS` - Type: Generation Toggle
-    - In Gen7+, trainers will use certain types of Poké Balls depending on their trainer class. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
-        - >= `GEN_`:
-        - <= `GEN_`:
+    - Each Trainer Class will send out their Pokemon [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
+        - >= `GEN_8`: Poke Balls depending on the class. For example, Breeders use Heal Balls, while Fisherman use Dive Balls.
+        - = `GEN_7`: Poke Balls depending on the class. For example, Breeders use Friend Balls, while Fisherman use Lure Balls.
+        - <= `GEN_6`: regular Poke Balls
 
 `B_OBEDIENCE_MECHANICS` - Type: Generation Toggle
-    - In PLA+ (here Gen8+), obedience restrictions also apply to non-outsider Pokémon, albeit based on their level  [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
-        - >= `GEN_`:
-        - <= `GEN_`:
+    - Obedience restrictions are placed on Pokemon whose OT belongs to the player, based on the level the Pokemon was met. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
+        - >= `GEN_8`: True
+        - <= `GEN_7`: False
 
 
 ### Animation Settings
