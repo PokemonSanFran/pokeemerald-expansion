@@ -68,6 +68,11 @@ Debug_FlagsNotSetBattleConfigMessage_Text:
 	.string "'include/config/battle.h'!$"
 
 Debug_Script_1::
+    setwildbattle SPECIES_GRAPPLOCT,100,0, SPECIES_GOLISOPOD,100,0
+    givemon SPECIES_MAGIKARP,100,0
+    givemon SPECIES_MAGIKARP,100,0
+    givemon SPECIES_MAGIKARP,100,0
+    dowildbattle
 	end
 
 Debug_Script_2::
