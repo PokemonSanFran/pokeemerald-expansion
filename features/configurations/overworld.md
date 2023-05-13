@@ -23,6 +23,4 @@
     - When this flag is set, trainers will not battle the player unless explicitly spoken to.
 
 `OW_FLAG_NO_COLLISION` - Type: Var / Flag
-    - When this flag is set, the player will be able to walk over tiles with collision.
-
-
+    - When this flag is set, objecs in the overworld will ignore metatile collision values.
