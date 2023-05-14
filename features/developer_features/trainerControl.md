@@ -1,10 +1,13 @@
 ## Trainer Control
+<img src="" alt="" height=160px width=240px>
 Trainer Control allows developers to explicitly define the parties for opposing Trainers, by creating a new struct type called `TrainerMonCustomized`.
 
 ### Usage 
 Opposing Trainer parties are defined in `src/data/trainer_parties.h`. To use Trainer Control, developers can either edit an existing party or add a new one. Each member of the struct corresponds to a different aspect of a Pokemon.
 
-|Struct member|Constants|Behavior When Absent|
+Developers do not need to define every aspect of every Pokemon. If aspects are left blank, they will be automatically filled with defaults, detailed below.
+
+|Struct member|Constants|Behavior When Invalid|
 |---|---|---|
 |.species|[Species Constant](../include/constants/species.h)|Pokemon is not included.|
 |.nickname|`COMPOUND_STRING("Nickname")`|Pokemon has no nickname.|
@@ -12,15 +15,17 @@ Opposing Trainer parties are defined in `src/data/trainer_parties.h`. To use Tra
 |.heldItem|[Item Constant](../include/constants/items.h)|Defaults to `ITEM_NONE`.|
 |.ability|[Ability Constant](../include/constants/abilities.h)|Defaults to the Pokemon's first Ability slot.|
 |.lvl|0 ≤ Integer ≤ 100|Defaults to Level 0.|
-|.isShiny|[ Constant](../include/constants/.h)|Defaults to not Shiny.|
-|.friendship|[ Constant](../include/constants/.h)||
-|.ball|[ Constant](../include/constants/.h)|Defaults to `ITEM_POKE_BALL`.|
+|.isShiny|`TRUE` or `FALSE`|Defaults to not Shiny.|
+|.friendship|0 ≤ Integer ≤ 255|Defaults to 0.|
+|.ball|[Item Constant](../include/constants/items.h)|Defaults to `ITEM_POKE_BALL`.|
 |.ev|0 ≤ Integer ≤ 255||Defaults to 0 for all values.|
 |.iv|0 ≤ Integer ≤ 31||Defaults to 0 for all values.|
-|.moves|[ Constant](../include/constants/.h)|Defaults to the last four Level Up moves depending on species' level.|
+|.moves|[Moves Constant](../include/constants/moves.h)|Defaults to the last four Level Up moves depending on species' level.|
 
 ### Example
-The following shows how to build two Pokemon from sugarhigh's ["Life Orb Crawdaunt and Seismitoad + Zapdos Rain" team](https://pokepast.es/5193200d72df25df).
+<img src="" alt="" height=160px width=240px>
+
+The following shows how to create two Pokemon from sugarhigh's ["Life Orb Crawdaunt and Seismitoad + Zapdos Rain" team](https://pokepast.es/5193200d72df25df).
 
 #### `include/constants/trainer_parties.h`
 
@@ -28,7 +33,7 @@ The following shows how to build two Pokemon from sugarhigh's ["Life Orb Crawdau
 static const structTrainerMonCustomized sParty_Sawyer1[] = {
     {
         .species = SPECIES_PELIPPER,
-        .nickname = COMPOUND_STRING("Let's in t"),
+        .nickname = COMPOUND_STRING("Let's in t"), // The maximum number of characters is  `POKEMON_NAME_LENGTH`
         .gender = MALE,
         .heldItem = ITEM_DAMP_ROCK,
         .ability = ABILITY_DRIZZLE,
@@ -81,5 +86,3 @@ static const structTrainerMonCustomized sParty_Sawyer1[] = {
     },
 ```
 
-```
-```
