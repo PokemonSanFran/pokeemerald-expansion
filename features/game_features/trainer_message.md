@@ -5,7 +5,7 @@ Introduced in Generation 4, Mid Battle Trainer Messages are lines of dialogue sp
     - the opponent's last Pokemon has low HP.
     - the opponent's first Pokemon is sent out.
 
-**Usage**:
+### Usage
 
 Dialogue lines can be created and declared anywhere in the game, but it is reccomended to place them in `src/battle_messages.c` 
 
@@ -32,3 +32,21 @@ static const struct TrainerSlide sTrainerSlides[] =
     +}
 };
 ```
+<img src="" alt="Trainer Jared showing off two of the Trainer Slide scenarios" height=160px width=240px>
+
+### Supported Messages
+By default, `pokeemerald-expansion` supports the following:
+
+|constant Name|Description|
+|---|---|
+|msgLastSwitchIn|Trainer sends out a Pokemon and has no remaining healthy Pokemon.|
+|msgLastLowHp|Trainer's last Pokemon reaches red HP.|
+|msgFirstDown|Trainer suffers first Pokmemon knockout.|
+|msgLastHalfHp|Trainer's last Pokemon has less than 51% HP.|
+|msgFirstCriticalHit|Trainer scores their first critical hit.|
+|msgFirstSuperEffectiveHit|Player lands their first critical hit on the Trainer.|
+|msgFirstSTABMove|Player lands a move with STAB on the Trainer.|
+|msgPlayerMonUnaffected|Trainer uses a move on Player that had no effect.|
+|msgMegaEvolution|Trainer activates Mega Evolution.|
+|msgZMove|Trainer activates a Z-Move.|
+|msgBeforeFirstTurn|Trainer speaks before their first Move.|
