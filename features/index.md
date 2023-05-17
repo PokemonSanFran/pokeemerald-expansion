@@ -1,25 +1,26 @@
 <!--
+TODO
 https://github.com/rh-hideout/pokeemerald-expansion#readme
 https://www.pokecommunity.com/showthread.php?t=417820
 -->
 # INTRODUCTION
-[`pokeemerald-expansion`](https://github.com/rh-hideout/pokeemerald-expansion/) is a modification of pret's decomp project, [`pokeemerald`](https://github.com/pret/pokeemerald). This modification has several goals:
+[`pokeemerald-expansion`](https://github.com/rh-hideout/pokeemerald-expansion/) is a fork of pret's decompilation project, [`pokeemerald`](https://github.com/pret/pokeemerald). This fork has several goals:
 
 - Allow fangame developers that are using `pokeemerald` as a base to quickly and easily use key features from [main series](https://bulbapedia.bulbagarden.net/wiki/Core_series) Pokémon games.
-- Reduce the barrier of entry for fangame developers to get into decomplilation hacking.
+- Reduce the barrier of entry for fangame developers to get into decomplilation development.
 - Provide fangame developers a collection of optional quality of life (QoL) improvements to improve developer and player experience.
 
-`pokeemerald-expansion` is a collection of different features, fixes and modifications from hundreds of different developers, artists and players to help make a comprensive experience.
+`pokeemerald-expansion` is a collection of different features, fixes and modifications from [hundreds of different developers](http://google.com), artists and players to help make a comprensive experience.
 
-This document's goal is to detail all of the features available to developers that have chosen to use `pokeemerald-expansion`. 
+This manual's goal is to detail all of the features available to developers that have chosen to use `pokeemerald-expansion`, and provide guidance on how to use them in their projects.
 
 ## VERSION
 This document is accurate as of Version 1.4.2 (Mar 29 2023), and will be updated as new features as added.
 
-## READING THIS DOCUMENT
-All of the features in this document are roughly organized by category, and then is shown as follows:
+## READING THIS MANUAL
+All of the features in this document are roughly organized by category, and then are shown as follows:
 
-<img src="https://i.imgur.com/QBy5iNW.png" alt="Anatomy of the document" height=160px width=240px>
+![](https://i.imgur.com/QBy5iNW.png)
 
 A. **Category**: The group of feature that this feature belongs with.
 
@@ -32,56 +33,33 @@ D. **Feature Description**: A short description of how the feature works.
 E. **How to use**: How the developer can enable, configure, or use this feature.
 
 ## NAVIGATION
-### Configurations
+### [Configurations](/features/configurations/index.md)
 
-[battle](/features/configurations/battle.md)
+- [Overview](/features/configurations/index.md)
+- [General](/features/configurations/general.md)
+- [Debug](features/configurations/debug.md)
+- [Battle](/features/configurations/battle.md)
+- [Item](/features/configurations/item.md)
+- [Overworld](/features/configurations/overworld.md)
+- [Pokemon](/features/configurations/pokemon.md)
 
-[debug](features/configurations/debug.md)
+### [Developer Features](/features/developer_features)
 
-[general](/features/configurations/general.md)
+- [Bug Fixes](/features/developer_features/bugFixes.md)
+- [Debugging](/features/developer_features/debugging.md)
+- [Battle Debug Menu](/features/developer_features/battleDebugMenu.md)
+- [Debug Menu](/features/developer_features/debugMenu.md)
+- [Custom Battle Scripts](/features/developer_features/customBattleScripts.md)
+- [Trainer Control](/features/developer_features/trainerControl.md)
 
-[index](/features/configurations/index.md)
+### Game Features(/features/game_features)
 
-[item](/features/configurations/item.md)
-
-[overworld](/features/configurations/overworld.md)
-
-[pokemon](/features/configurations/pokemon.md)
-
-### Developer Features
-
-[battleDebugMenu](/features/developer_features/battleDebugMenu.md)
-
-[bugFixes](/features/developer_features/bugFixes.md)
-
-[customBattleScripts](/features/developer_features/customBattleScripts.md)
-
-[debugMenu](/features/developer_features/debugMenu.md)
-
-[debugging](/features/developer_features/debugging.md)
-
-[trainerControl](/features/developer_features/trainerControl.md)
-
-### Game Features
-
-[abiltiesandtypes](/features/game_features/abiltiesandtypes.md)
-
-[battle_slide](/features/game_features/battle_slide.md)
-
-[daynightsystem](/features/game_features/daynightsystem.md)
-
-[expanded_doubles](/features/game_features/expanded_doubles.md)
-
-[generation_gimmicks](/features/game_features/generation_gimmicks.md)
-
-[improved_ai](/features/game_features/improved_ai.md)
-
-[items](/features/game_features/items.md)
-
-[moves](/features/game_features/moves.md)
-
-[pokemon](/features/game_features/pokemon.md)
-
-[raids](/features/game_features/raids.md)
-
-[trainer_message](/features/game_features/trainer_message.md)
+- [Pokemon](/features/game_features/pokemon.md)
+- [Abilities and Types](/features/game_features/abiltiesandtypes.md)
+- [Moves](/features/game_features/moves.md)
+- [Items](/features/game_features/items.md)
+- [Battle Slide](/features/game_features/battle_slide.md)
+- [Trainer Messages](/features/game_features/trainer_message.md)
+- [Generation Gimmicks](/features/game_features/generation_gimmicks.md)
+- [Improved AI](/features/game_features/improved_ai.md)
+- [Expanded Doubles](/features/game_features/expanded_doubles.md)

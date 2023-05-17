@@ -123,17 +123,18 @@ Lists the flags that are currently enabled for the AI the player is battling aga
 
 Setting a flag to `1` turns the flag on, and `0` turns it off.
 
-**AI_FLAG_CHECK_BAD_MOVE**:
-**AI_FLAG_TRY_TO_FAINT**:
-**AI_FLAG_CHECK_VIABILITY**:
-**AI_FLAG_SETUP_FIRST_TURN**:
-**AI_FLAG_RISKY**:
-**AI_FLAG_PREFER_STRONGEST_MOVE**:
-**AI_FLAG_PREFER_BATON_PASS**:
-**AI_FLAG_DOUBLE_BATTLE **:
-**AI_FLAG_HP_AWARE**:
+Only the following flags are accessible: 
+* `AI_FLAG_CHECK_BAD_MOVE`
+* `AI_FLAG_TRY_TO_FAINT`
+* `AI_FLAG_CHECK_VIABILITY`
+* `AI_FLAG_SETUP_FIRST_TURN`
+* `AI_FLAG_RISKY`
+* `AI_FLAG_PREFER_STRONGEST_MOVE`
+* `AI_FLAG_PREFER_BATON_PASS`
+* `AI_FLAG_DOUBLE_BATTLE `
+* `AI_FLAG_HP_AWARE`
 
-//TODO what do any of these flags actually do
+More information on these flags can be found in `features/game_features/improved_ai.md`
 
 #### AI Pts/Dmg
 <img src="" alt="" height=160px width=240px>
