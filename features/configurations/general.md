@@ -1,7 +1,4 @@
 ## General Configuration (include/config.h)
-<img src="" alt="" height=160px width=240px>
+![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `EXPANSION_INTRO` - Type: True / False
-    - Tthere is a custom RHH intro created for the pokeemerald-expansion. 
-        - `TRUE`: The custom intro plays after `pokeemerald`'s copyright screen.
-        - `FALSE`: The custom intro never plays.
-
+    - When `TRUE`, a custom RHH intro created for the pokeemerald-expansion plays after `pokeemerald`'s copyright screen, instead of never playing at all.

@@ -1,43 +1,31 @@
-## Debug Configirations (include/config/debug.h)
+## Debug Configuration (include/config/debug.h)
 ### Overworld Debug
 
-`DEBUG_OVERWORLD_MENU` - Type: True / False
-    - Allows the use of the Overworld Debug Menu. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
-		- `TRUE`: True
-		- `FALSE`: False
+![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+- `DEBUG_OVERWORLD_MENU` - Type: True / False
+    - When `TRUE`, the Overworld Debug Menu can be used. [\[More Info\]](../features/developer_features/debugMenu.md)
+    - The Overworld Debug Menu is opened when all of the following conditions are met at the same time.
+        1. `DEBUG_OVERWORLD_MENU` is `TRUE`
+        2. The player holds down the buttons defined in `DEBUG_OVERWORLD_HELD_KEYS `
+        3. The player performs the trigger defined in `DEBUG_OVERWORLD_TRIGGER_EVENT `
 
-`DEBUG_OVERWORLD_HELD_KEYS` - Type: True / False
-    - When `DEBUG_OVERWORLD_MENU` is `TRUE`, and the player is in the overworld, holding the button(s) defined here, and performing the trigger defined in `DEBUG_OVERWORLD_TRIGGER_EVENT`, will open the Overworld Debug Menu. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/)
-    - Some examples include:
-        - `R_BUTTON`
-        - `R_BUTTON + A_BUTTON`
-        - `DPAD_ANY`
+||Values List|Examples|
+|---|---|---|
+|`DEBUG_OVERWORLD_HELD_KEYS `|[../include/field_control_avatar.h](../include/field_control_avatar.h)|`pressedAButton`,`pressedStartButton`,`pressedSelectButton`,`heldDirection`,`tookStep`,`pressedBButton`|
+|`DEBUG_OVERWORLD_TRIGGER_EVENT `|[../include/gba/io_reg.h](../include/gba/io_reg.h)|`R_BUTTON`, `R_BUTTON + A_BUTTON`, `DPAD_ANY`|
 
-`DEBUG_OVERWORLD_TRIGGER_EVENT` - Type: True / False
-    - When `DEBUG_OVERWORLD_MENU` is `TRUE`, and the player is in the overworld, holding the button(s) defined in `DEBUG_OVERWORLD_HELD_KEYS`, and performing the trigger defined in here, will open the Overworld Debug Menu. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/)
-    - Some examples include:
-        - `pressedAButton`
-        - `pressedStartButton`
-        - `pressedSelectButton`
-        - `heldDirection`
-        - `tookStep`
-        - `pressedBButton`
-
-`DEBUG_OVERWORLD_IN_MENU` - Type: True / False
-    - Ignores `DEBUG_OVERWORLD_HELD_KEYS`, and `DEBUG_OVERWORLD_TRIGGER_EVENT` and adds an item to the Start Menu which opens the Overworld Debug Menu. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/)
-		- `TRUE`: True
-		- `FALSE`: False
+![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+- `DEBUG_OVERWORLD_IN_MENU` - Type: True / False
+    - When `TRUE`, `DEBUG_OVERWORLD_HELD_KEYS` and `DEBUG_OVERWORLD_TRIGGER_EVENT` are ignored, and an option to open the Overworld Debug Menu is added to the Start Menu.
 
 ### Battle Debug Menu
 
-`DEBUG_BATTLE_MENU` - Type: True / False
-    - When the player is in battle, pressing SELECT opens the Battle Debug Menu. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
-		- `TRUE`: True
-		- `FALSE`: False
+![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+- `DEBUG_BATTLE_MENU` - Type: True / False
+    - When `TRUE`, and the player is in battle, pressing SELECT opens the Battle Debug Menu. [\[More Info\]](../features/developer_features/battleDebugMenu.md)
 
 ### Pokémon Debug
 
-`DEBUG_POKEMON_MENU` - Type: True / False
-    - When the player is on the Pokemon summary screen, pressing SELECT opens the Sprite Debug Menu. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
-		- `TRUE`: True
-		- `FALSE`: False
+![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+- `DEBUG_POKEMON_MENU` - Type: True / False
+    - When `TRUE` and the player is on the Pokemon summary screen, pressing SELECT opens the Sprite Debug Menu. [\[More Info\]](../features/developer_features/SpriteDebugMenu.md)

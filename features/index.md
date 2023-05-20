@@ -46,7 +46,6 @@ E. **How to use**: How the developer can enable, configure, or use this feature.
 ### [Developer Features](/features/developer_features)
 
 - [Bug Fixes](/features/developer_features/bugFixes.md)
-- [Debugging](/features/developer_features/debugging.md)
 - [Battle Debug Menu](/features/developer_features/battleDebugMenu.md)
 - [Debug Menu](/features/developer_features/debugMenu.md)
 - [Custom Battle Scripts](/features/developer_features/customBattleScripts.md)
