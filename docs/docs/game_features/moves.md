@@ -4,6 +4,8 @@
 
 Move related configurations are in [`battle.h`](../../include/config/battle.h). [[Documentation]](../configurations/battle.md)
 
+Pokemon related configurations are in [`pokemon.h`](https://github.com/rh-hideout/pokeemerald-expansion/blob/upcoming/include/config/pokemon.h). [[Documentation]](../configurations/pokemon.md)
+
 ## Physical and Special Split
 
 By default, moves are assigned their [damage category](https://bulbapedia.bulbagarden.net/wiki/Damage_category) from the most recent generation. This can be changed or disabled in [battle.h](../include/config/battle.h). [[Documentation]](/features/configurations/battle.md)

@@ -15,34 +15,34 @@ This manual's goal is to detail all of the features available to developers that
 
 ### Configurations
 
-- [Overview](/features/configurations/index.md)
-- [General](/features/configurations/general.md)
-- [Debug](features/configurations/debug.md)
-- [Battle](/features/configurations/battle.md)
-- [Item](/features/configurations/item.md)
-- [Overworld](/features/configurations/overworld.md)
-- [Pokemon](/features/configurations/pokemon.md)
+- [Battle](configurations/battle.md)
+- [Debug](configurations/debug.md)
+- [General](configurations/general.md)
+- [Item](configurations/item.md)
+- [Overview](configurations/index.md)
+- [Overworld](configurations/overworld.md)
+- [Pokemon](configurations/pokemon.md)
 
 ### Developer Features
 
-- [Bug Fixes](/features/developer_features/bugFixes.md)
-- [Battle Debug Menu](/features/developer_features/battleDebugMenu.md)
-- [Debug Menu](/features/developer_features/debugMenu.md)
-- [Custom Battle Scripts](/features/developer_features/customBattleScripts.md)
-- [Trainer Control](/features/developer_features/trainerControl.md)
+- [Battle Debug Menu](developer_features/battleDebugMenu.md)
+- [Custom Battle Scripts](developer_features/customBattleScripts.md)
+- [Debug Menu](developer_features/debugMenu.md)
+- [Trainer Control](developer_features/trainerControl.md)
 
 ### Game Features
 
-- [Pokemon](/features/game_features/pokemon.md)
-- [Abilities and Types](/features/game_features/abiltiesandtypes.md)
-- [Moves](/features/game_features/moves.md)
-- [Items](/features/game_features/items.md)
-- [Battle Slide](/features/game_features/battle_slide.md)
-- [Trainer Messages](/features/game_features/trainer_message.md)
-- [Generation Gimmicks](/features/game_features/generation_gimmicks.md)
-- [Improved AI](/features/game_features/improved_ai.md)
-- [Expanded Doubles](/features/game_features/expanded_doubles.md)
-- [Totem Boosts](/features/game_features/totemBoosts.md)
+- [Abilities and Types](game_features/abiltiesandtypes.md)
+- [Battle Slide](game_features/battle_slide.md)
+- [Expanded Doubles](game_features/expanded_doubles.md)
+- [Generation Gimmicks](game_features/generation_gimmicks.md)
+- [Improved AI](game_features/improved_ai.md)
+- [Items](game_features/items.md)
+- [Moves](game_features/moves.md)
+- [Pokemon](game_features/pokemon.md)
+- [Totem Boosts](game_features/totemBoosts.md)
+- [Trainer Messages](game_features/trainer_message.md)
+
 ---
 
 ## Reading This Manual

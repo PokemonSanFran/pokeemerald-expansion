@@ -106,8 +106,9 @@ Clean up the formatting of the document.
 
 Add links and fix links for the document.
 
-- [ ] index.md
+- [x] index.md
 - [ ] credits.md
+    - Blocked by Step One.
 ## features/configurations:
 
 - [ ] battle.md

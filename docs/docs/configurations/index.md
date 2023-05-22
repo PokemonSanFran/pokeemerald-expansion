@@ -1,18 +1,18 @@
-# Configuration Files
+# Configuration Overview
 The majority of the features provided by `pokeemerald-expansion` are optional. If developers do not want to use a feature, they can easily disable or remove it from their project.
 
-The files which control these configurations can be found in `include/config/` and `include/config/config.h`. Developers open these files, change the options values, save the file, and compile their game, and the changes will immediately take effect.
+The files which control these configurations can be found in [`include/config/`](https://github.com/rh-hideout/pokeemerald-expansion/tree/upcoming/include/config) and [`include/config.h`](https://github.com/rh-hideout/pokeemerald-expansion/blob/upcoming/include/config.h). Developers open these files, change the options values, save the file, and compile their game, and the changes will immediately take effect.
 
 The pages in this section details the types of options value, and how they are used. Below describes the different types of configs and how to interact with them.
 
 ## Config Types
 ### Generation Toggles
-Each generation of Pokémon have slightly different changes and mechanics from the latest. `pokeemerald-expansion` allows developers to pick and choose which generation's rules are applied for specific mechanics. `pokeemerald-expansion` supports unique mechanics from every Generation 3 and beyond.
+Each [generation](https://bulbapedia.bulbagarden.net/wiki/Generation) of Pokémon have slightly different changes and mechanics from the latest. `pokeemerald-expansion` allows developers to pick and choose which generation's rules are applied for specific mechanics. `pokeemerald-expansion` supports unique mechanics from Generation 3 and beyond.
 
-Generations are listed in `include/config.h`. 
+Generations are listed in [`include/config.h`](https://github.com/rh-hideout/pokeemerald-expansion/blob/upcoming/include/config.h). 
 
 #### Example
-A developer wants Pokémon to hatch from Eggs at Level 5, as they did in Generations 1 -3, instead of Level 1, as they do starting in Generation 4. To do so, the developer changes the following line in `include/config/pokemon.h`:
+A developer wants Pokémon to hatch from Eggs at Level 5, as they did in Generations 1 -3, instead of Level 1, as they do starting in Generation 4. To do so, the developer changes the following line in [`include/config/pokemon.h`](https://github.com/rh-hideout/pokeemerald-expansion/blob/upcoming/include/config/pokemon.h.h):
 
 ```c
 #define P_EGG_HATCH_LEVEL           GEN_3
@@ -55,7 +55,7 @@ After Pokémon Emerald's copyright screen in the intro plays, there is a custom 
 Some options are only available when assigned to one of the game's flags or variables, allowing them to be changed during gameplay.  When those flags are set, or the variables are changed, their effects in the game immediately take place. Once the flags are cleared or the variables are set back to their original value, the functionality is turned off.
 
 #### Example
-[Avery's](https://bulbapedia.bulbagarden.net/wiki/Avery#Third_battle) final Dojo Battle in Pokémon Shield starts with Psychic Terrain being immediately set. To emulate this, the developer would first assign `VAR_TERRAIN` to an in-game variable in `include/config/battle.h`.
+[Avery's](https://bulbapedia.bulbagarden.net/wiki/Avery#Third_battle) final Dojo Battle in Pokémon Shield starts with [Psychic Terrain](https://bulbapedia.bulbagarden.net/wiki/Terrain#Effects) being immediately set. To emulate this, the developer would first assign `VAR_TERRAIN` to an in-game variable in [`include/config/battle.h`](https://github.com/rh-hideout/pokeemerald-expansion/blob/upcoming/include/config/battle.h).
 
 ```c
 #define VAR_TERRAIN                 VAR_UNUSED_0x4083 

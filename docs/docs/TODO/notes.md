@@ -1,4 +1,4 @@
-Hi Lucas!
+Hi!
 
 1. Please clone this repo: https://github.com/PokemonSanFran/pokeemerald-expansion/tree/features.md
 1. Navigate to `docs/` and run `/script/serve.sh` and then open [http://127.0.0.1:8000/](http://127.0.0.1:8000/) (thanks.)
@@ -44,7 +44,3 @@ I believe that tutorials like "how to add a new type" should be **referenced** i
 | [How to add a new trainer class](https://github.com/rh-hideout/pokeemerald-expansion/wiki/How-to-add-a-new-trainer-class) | 📚    | 📚    |
 | [New Battle Script Commands Macros](https://github.com/rh-hideout/pokeemerald-expansion/wiki/New-Battle-Script-Commands-Macros) | 📚    | 📚    |
 | [Totem Boosts](https://github.com/rh-hideout/pokeemerald-expansion/wiki/Totem-Boosts) | 📚    | 📖    |
-
----
-
-Most pages have a "improvements" section at the top, which details all the things that should be added before the documentation can be considered complete.
