@@ -8,7 +8,7 @@
 <!--gen 8 - steam engine and coalassal-->
 
 ## Enabling / Disabling / Configuration
-Pokemon related configurations are in [`pokemon.h`](../features/config/pokemon.h). [[Documentation]](../configurations/pokemon.md)
+Pokemon related configurations are in [`pokemon.h`](https://github.com/rh-hideout/pokeemerald-expansion/blob/upcoming/include/config/pokemon.h). [[Documentation]](../configurations/pokemon.md)
 
 ## Usage and Examples
 ### Wild Pokemon

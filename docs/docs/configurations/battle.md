@@ -1,14 +1,15 @@
 # Battle Configuration
 
-This page documents the configurations found in [include/config/battle.h](include/config/battle.h).
+This page documents the configurations found in [`include/config/battle.h`](https://github.com/rh-hideout/pokeemerald-expansion/blob/upcoming/include/config/battle.h).
 
 ## Calculations 
 
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+
 - `B_CRIT_CHANCE` - Type: Generation Toggle
-  
+
     - The chances of landing a critical hit when the user increases their critical hit stage changes between generations. [[More Info]](https://bulbapedia.bulbagarden.net/wiki/Critical_hit#Probability_2)
-    
+
         | Stage | <=`GEN_5` | `GEN_6` | >=`GEN_7` |
         | ----- | --------- | ------- | --------- |
         | +0    | 1/16      | 1/16    | 1/24      |

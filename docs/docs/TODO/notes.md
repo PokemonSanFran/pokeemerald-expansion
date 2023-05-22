@@ -1,3 +1,11 @@
+Hi Lucas!
+
+1. Please clone this repo: https://github.com/PokemonSanFran/pokeemerald-expansion/tree/features.md
+1. Navigate to `docs/` and run `/script/serve.sh` and then open [http://127.0.0.1:8000/](http://127.0.0.1:8000/) (thanks.)
+1. I'm working through [fileChecklist.md](fileChecklist.md) right now.
+
+---
+
 The following features are in [Egg's original post](https://www.pokecommunity.com/showthread.php?t=417820), but I don't think need top level pages in documentation.
 
 * Triple Pokemon Types in-battle

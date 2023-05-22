@@ -1,6 +1,6 @@
 # Pokémon Configuration
 
-This page documents the configurations found in [include/config/pokemon.h](include/config/pokemon.h).
+This page documents the configurations found in [`pokemon.h`](https://github.com/rh-hideout/pokeemerald-expansion/blob/upcoming/include/config/pokemon.h).
 
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `P_UPDATED_TYPES` - Type: Generation Toggle  
