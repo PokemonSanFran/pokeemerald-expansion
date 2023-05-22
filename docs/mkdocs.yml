@@ -1,4 +1,2 @@
-site_name: pokeemerald-expansion Manual
+site_name: My Docs
 site_url: https://example.com/
-theme:
-    name: readthedocs
