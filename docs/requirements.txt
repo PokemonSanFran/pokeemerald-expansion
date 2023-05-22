@@ -1,0 +1,7 @@
+mkdocs == 1.2.0
+
+# For this version of mkdocs, a problem with jinja2 requires we pin this version.
+# Please see:
+#    https://twitter.com/readthedocs/status/1507388916013314048
+#    https://github.com/readthedocs/readthedocs.org/issues/9064
+jinja2 < 3.1.0

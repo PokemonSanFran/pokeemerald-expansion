@@ -38,4 +38,8 @@ prefabs.json
 *.sna
 *.diff
 *.sym
+
+*.sw*
+*.vimsess
+*.gitignore
 *.js
