@@ -1,12 +1,21 @@
-## Battle Configuration (include/config/battle.h)
-### Calculations 
+# Battle Configuration
+
+This page documents the configurations found in [include/config/battle.h](include/config/battle.h).
+
+## Calculations 
 
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_CRIT_CHANCE` - Type: Generation Toggle
-    - Each time the user increases their critical hit stage, the probability of landing of a critical chance increases to 1 over N. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/Critical_hit#Probability_2)
-        - >= `GEN_7`: 24, 8, 2, 1, 1
-        - `GEN_6`: 16,8,2,1,1
-        - <= `GEN_5`: 16,8,4,3,2
+  
+    - The chances of landing a critical hit when the user increases their critical hit stage changes between generations. [[More Info]](https://bulbapedia.bulbagarden.net/wiki/Critical_hit#Probability_2)
+    
+        | Stage | <=`GEN_5` | `GEN_6` | >=`GEN_7` |
+        | ----- | --------- | ------- | --------- |
+        | +0    | 1/16      | 1/16    | 1/24      |
+        | +1    | 1/8       | 1/8     | 1/8       |
+        | +2    | 1/4       | 1/2     | 1/2       |
+        | +3    | 1/3       | 1/1     | 1/1       |
+        | >= +4 | 1/2       | 1/1     | 1/1       |
 
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_CRIT_MULTIPLIER` - Type: Generation Toggle
@@ -38,7 +47,7 @@
         - \>= `GEN_4`: a formula
         - <= `GEN_3`: 50%
 
-### Experience and Stat
+## Experience and Stat
 
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_EXP_CATCH` - Type: Generation Toggle
@@ -84,7 +93,7 @@
         - \>= `GEN_5`: at the end of each battle
         - <= `GEN_4`: when the Pokemon is placed in a PC box.
 
-### Damage 
+## Damage 
 
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_BURN_DAMAGE` - Type: Generation Toggle
@@ -159,7 +168,7 @@
         - \>= `GEN_4`: 75%
         - <= `GEN_3`: 50%
 
-### Type settings
+## Type settings
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_GHOSTS_ESCAPE` - Type: Generation Toggle
     - Abilities like Shadow Tag or moves like Mean Look fail on Ghost-type Pokémon. They can also escape any Wild Battle. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
@@ -202,7 +211,7 @@
         - \>= `GEN_7`: Normal
         - <= `GEN_6`: Type-less
 
-### Turn settings
+## Turn settings
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_BINDING_TURNS` - Type: Generation Toggle
     - Binding moves last for a duration of [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
@@ -265,7 +274,7 @@
         - \>= `GEN_4`: at the end of the current turn.
         - <= `GEN_3`: at the end of the current action.
 
-### Move data settings
+## Move data settings
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_UPDATED_MOVE_DATA` - Type: Generation Toggle
     - All moves use the data (Power, Accuracy, PP, stat change, targets, chance of secondary effects) from the generation that is set here. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
@@ -304,7 +313,7 @@
         - \>= `GEN_4`: 4
         - = `GEN_3`: 2 to 5
 
-### Move accuracy settings
+## Move accuracy settings
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_TOXIC_NEVER_MISS` - Type: Generation Toggle
     - If Toxic is used by a Poison-type Pokemon, it will never miss. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
@@ -330,7 +339,7 @@
         - <= `GEN_6`: 30%
 
 
-### Move stat change settings
+## Move stat change settings
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_FELL_STINGER_STAT_RAISE` - Type: Generation Toggle
     - When damage from Fell Stinger causes the target to faint, the user's Attack is raised by [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
@@ -368,7 +377,7 @@
         - <= `GEN_4`: Growth raises Special Attack by one stage. In sunlight, these are not amplified.
 
 
-### Other move settings
+## Other move settings
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_SOUND_SUBSTITUTE` - Type: Generation Toggle
     - Sound moves bypass Substitute. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
@@ -437,6 +446,7 @@
         - \>= `GEN_5`: Heal Block prevents healing from Black Sludge, Leftovers, and Shell Bell. Heal Block prevents the consumption of HP-restoring Berries or Berry Juice.
         - <= `GEN_4`: Heal Block allows the usage of HP-draining moves. Heal Block allows the consumption of HP-restoring Berries or Berry Juice.
                                               
+
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_ROOTED_GROUNDING` - Type: Generation Toggle
     - Ingrain causes the affected Pokémon to become grounded. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
@@ -478,6 +488,7 @@
         - <= `GEN_5`: The Pokemon recieving the Healing Wish is sent out at the end of the turn.
         - <= `GEN_4`: The Pokemon recieving the Healing Wish will be immedatiately sent out, and the effect will instantly activate. 
                                               
+
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_DEFOG_CLEARS_TERRAIN` - Type: Generation Toggle
     - Defog clears active Terrain. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
@@ -491,13 +502,14 @@
         - = `GEN_3`: False
 
 
-### Ability settings
+## Ability settings
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_EXPANDED_ABILITY_NAMES` - Type: True / False
     - Ability names are N characters long.
         - `TRUE`: 16
         - `FALSE`: 12
-      
+    
+
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_ABILITY_WEATHER` - Type: Generation Toggle
     - Sand Stream, Snow Warning, Drought, and Drizzle summon their respective weather for N turns. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
@@ -593,7 +605,7 @@
         - <= `GEN_4`: specific for each increase and decrease
 
 
-### Item settings
+## Item settings
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_HP_BERRIES` - Type: Generation Toggle
     - Berries which restore HP activate [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
@@ -629,6 +641,7 @@
 - `B_TRAINERS_KNOCK_OFF_ITEMS` - Type: True / False
     - When `TRUE`, opposing trainers can steal the player's items. Items that are [berries](https://bulbapedia.bulbagarden.net/wiki/Berry) are restored after battle.  [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
       
+
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_SOUL_DEW_BOOST` - Type: Generation Toggle
     - Soul Dew boosts Latios and Latias' [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
@@ -710,28 +723,29 @@
         - <= `GEN_4`: False
 
 
-### Flag settings
+## Flag settings
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_FLAG_INVERSE_BATTLE` - Type: Var / Flag
     -  When this flag is set in game, the type effectiveness interactions are reversed. For example, Fire becomes super effective against water. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/Inverse_Battle)
-   
+
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_FLAG_FORCE_DOUBLE_WILD` - Type: Var / Flag
     - When this flag is set in game, all land and surfing wild battles will be double battles.  [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/Inverse_Battle)
     
+
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_SMART_WILD_AI_FLAG` - Type: Var / Flag
     - When this flag is set in game, wild Pokemon will use the AI behavior defined by `B_VAR_WILD_AI_FLAGS`. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/Inverse_Battle)
-   
+
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_FLAG_NO_BAG_USE` - Type: Var / Flag
     - When this flag is set in game, the ability to use the bag in battle is disabled.  [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/Inverse_Battle)
-   
+
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_FLAG_NO_CATCHING` - Type: Var / Flag
     - When this flag is set in game, the ability to throw Pokeballs is disabled. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/Inverse_Battle)    
 
-### Var Settings
+## Var Settings
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `VAR_TERRAIN` - Type: Var / Flag
     - When this var is set in game, the Terrain is automatically set for the duration at the beginning of the next battle. This behavior persists until the variable is set to 0. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/Terrain)
@@ -758,15 +772,17 @@
         - = `11`: `AI_FLAG_HELP_PARTNER`
         - \>= `15`: This will behave as if the var is set to 0.
 
-### Terrain settings
+## Terrain settings
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_TERRAIN_BG_CHANGE` - Type: True / False
     - When `TRUE`, when terrain changes, the battle background changes to match until the change fades. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
       
+
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_THUNDERSTORM_TERRAIN` - Type: True / False
     - When `TRUE` _and_ the overworld's weather is set to `WEATHER_RAIN_THUNDERSTORM`, Electric Terrain will be permanently set when a battle begins. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
       
+
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_TERRAIN_TYPE_BOOST` - Type: Generation Toggle
     - Terrain boosts the damage of their corresponding moves by [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
@@ -806,37 +822,37 @@
         - = `GEN_3`: Generation 3
 
 
-### Interface settings
+## Interface settings
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_ABILITY_POP_UP` - Type: True / False
     - Abilities are announced via [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
         - `TRUE`: a Battle Slide message 
         - `FALSE`: the standard message box
- 
+
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_FAST_INTRO` - Type: True / False
     - Battle intro text prints [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
         - `TRUE`: as Pokemon animations are playing
         - `FALSE`: after Pokemon animations have finished
- 
+
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_FAST_HP_DRAIN` - Type: True / False
     - The speed at which HP drains from the HP Bar is [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
         - `TRUE`: variable, based on the max HP of the Pokemon 
         - `FALSE`: constant 
- 
+
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_SHOW_TARGETS` - Type: True / False
     - When `TRUE` _and_ a move has multiple targets, the targets will all be shown when the cursor is hovering over said move in the move menu. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
- 
+
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_SHOW_SPLIT_ICON` - Type: True / False
     - When `TRUE`, an icon on the Move's summary to indicate the move's classification is shown. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
- 
+
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_HIDE_HEALTHBOX_IN_ANIMS` - Type: True / False
     - When `TRUE`, health boxes are shown during move animations. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
- 
+
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_EXPANDED_MOVE_NAMES` - Type: True / False
     - Move names are N characters long.
@@ -847,7 +863,7 @@
 - `B_WAIT_TIME_MULTIPLIER` - Type: Set Value
     - This value is the base number of frames for pauses within battles - lower values will result in faster battles. Long, Medium, and Short pauses multiply this value by 4, 3 and 2 respectively. The default value in `pokeemerald` is 16. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
 
-### Catching settings
+## Catching settings
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_SEMI_INVULNERABLE_CATCH` - Type: Generation Toggle
     - Pokemon that are in a semi-invulnerale state cannot be targeted for Pokeball capture. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
@@ -862,6 +878,7 @@
 - `B_CRITICAL_CAPTURE` - Type: True / False
     - When `TRUE`, Critical Capture is enabled. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
       
+
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_LAST_USED_BALL` - Type: True / False
     - When `TRUE`, "Last Used Ball" is enabled. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
@@ -874,7 +891,7 @@
         - `R_BUTTON + A_BUTTON`
         - `DPAD_ANY`
 
-### Other settings
+## Other settings
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `B_DOUBLE_WILD_CHANCE` - Type: Set Value
     - When a wild battle is initiated, this value is the N% chance that the battle will be a Double Battle. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
@@ -913,7 +930,7 @@
         - <= `GEN_7`: False
 
 
-### Animation Settings
+## Animation Settings
 When these are set to `TRUE`, the new particles or palettes are used for the defined constant.
 
 |Config|Constant|Old|New|

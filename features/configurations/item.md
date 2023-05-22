@@ -1,9 +1,12 @@
-## Item Configuration (include/config/item.h)
+# Item Configuration
+
+This page documents the configurations found in [include/config/item.h](include/config/item.h).
 
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `I_SHINY_CHARM_REROLLS` - Type: Set Value
     - When the player has the Shiny Charm, this value is the max number of times the game will attempt to generate a Shiny Pokemon. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/)
 	
+
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `I_KEY_FOSSILS` - Type: Generation Toggle
     - Helix Fossil, Dome Fossil, Old Amber, Root Fossil, and Claw Fossil are stored in the [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/)
@@ -43,7 +46,7 @@
         - <= `GEN_7`: 100
 
 
-### TM Configurations
+## TM Configurations
 
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `I_REUSABLE_TMS` - Type: True / False

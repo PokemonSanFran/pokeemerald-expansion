@@ -1,4 +1,6 @@
-## Pokemon Configuration (include/config/pokemon.h)
+# Pokémon Configuration
+
+This page documents the configurations found in [include/config/pokemon.h](include/config/pokemon.h).
 
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `P_UPDATED_TYPES` - Type: Generation Toggle  
@@ -75,7 +77,7 @@
 - `P_FLAG_FORCE_NO_SHINY` - Type: Var / Flag     
     - When this flag is set, Pokemon that are found in the wild or given to the player will be guaranteed to be NOT Shiny. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/) 
 
-### Enable Pokemon Generations
+## Enabling Pokemon Generations
 
 When a generation is set to `TRUE`, the developer can reference these Pokemon in battles and scripts. Cross regional formes use the original Pokemon's generation, but cross regional evolutions rely on the evolved Pokemon's generation.
 
@@ -88,7 +90,7 @@ When a generation is set to `TRUE`, the developer can reference these Pokemon in
 |`P_GEN_8_POKEMON`|Sword, Shield, Brilliant Diamond, Shining Pearl, Legends Arceus|
 |`P_GEN_9_POKEMON`|Scarlet, Violet |
 
-#### Example
+### Example
 ```
 #define P_GEN_7_POKEMON             TRUE        // Generation 7 Pokémon (SM, USUM, LGPE)
 #define P_GEN_8_POKEMON             TRUE        // Generation 8 Pokémon (SwSh, BDSP, LA)
@@ -98,7 +100,7 @@ Galarian Meowth and Alolan Meowth will be available, but Galarian Meowth will no
 
 If a developer disables a generation previous to other enabled generations, then the disabled Pokemon will need to be manually commmented out in [`include/constants/pokedex.h`](../include/constants/pokedex.h).
 
-#### Example
+### Example
 ```
 #define P_GEN_4_POKEMON             FALSE        // Generation 4 Pokémon (DPPt, HGSS)
 #define P_GEN_5_POKEMON             TRUE        // Generation 5 Pokémon (BW, B2W2)
@@ -128,5 +130,4 @@ In this case, the Pokemon from Generation 4 need to be commented out.
 +    //NATIONAL_DEX_EMPOLEON,
 +    //NATIONAL_DEX_STARLY,
 ```
-
 

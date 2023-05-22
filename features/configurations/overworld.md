@@ -1,5 +1,8 @@
-## Overworld Configuration (include/config/overworld.h)
-### Movement
+# Overworld Configuration
+
+This page documents the configurations found in [include/config/overworld.h](include/config/overworld.h).
+
+## Movement
 
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `OW_RUNNING_INDOORS` - Type: Generation Toggle
@@ -7,7 +10,7 @@
         - \>= `GEN_4`: True
         - = `GEN_3`: False
 
-### Other Settings
+## Other Settings
 
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `OW_POISON_DAMAGE` - Type: Generation Toggle
@@ -16,7 +19,7 @@
         - = `GEN_4`: lose 1 HP every 4 steps, and are cured of Poison when that Pokemon only has one HP remaining
         - = `GEN_3`: lose 1 HP every 4 steps until they faint
 
-### Overworld Flags 
+## Overworld Flags 
 
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `OW_FLAG_NO_ENCOUNTER` - Type: Var / Flag

@@ -1,5 +1,8 @@
-## Debug Configuration (include/config/debug.h)
-### Overworld Debug
+# Debug Configuration
+
+This page documents the configurations found in [include/config/debug.h](include/config/debug.h).
+
+## Overworld Debug
 
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `DEBUG_OVERWORLD_MENU` - Type: True / False
@@ -11,20 +14,20 @@
 
 ||Values List|Examples|
 |---|---|---|
-|`DEBUG_OVERWORLD_HELD_KEYS `|[../include/field_control_avatar.h](../include/field_control_avatar.h)|`pressedAButton`,`pressedStartButton`,`pressedSelectButton`,`heldDirection`,`tookStep`,`pressedBButton`|
-|`DEBUG_OVERWORLD_TRIGGER_EVENT `|[../include/gba/io_reg.h](../include/gba/io_reg.h)|`R_BUTTON`, `R_BUTTON + A_BUTTON`, `DPAD_ANY`|
+|`DEBUG_OVERWORLD_HELD_KEYS `|[include/field_control_avatar.h](../include/field_control_avatar.h)|`pressedAButton`,`pressedStartButton`,`pressedSelectButton`,`heldDirection`,`tookStep`,`pressedBButton`|
+|`DEBUG_OVERWORLD_TRIGGER_EVENT `|[include/gba/io_reg.h](../include/gba/io_reg.h)|`R_BUTTON`, `R_BUTTON + A_BUTTON`, `DPAD_ANY`|
 
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `DEBUG_OVERWORLD_IN_MENU` - Type: True / False
     - When `TRUE`, `DEBUG_OVERWORLD_HELD_KEYS` and `DEBUG_OVERWORLD_TRIGGER_EVENT` are ignored, and an option to open the Overworld Debug Menu is added to the Start Menu.
 
-### Battle Debug Menu
+## Battle Debug Menu
 
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `DEBUG_BATTLE_MENU` - Type: True / False
     - When `TRUE`, and the player is in battle, pressing SELECT opens the Battle Debug Menu. [\[More Info\]](../features/developer_features/battleDebugMenu.md)
 
-### Pokémon Debug
+## Pokémon Debug
 
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 - `DEBUG_POKEMON_MENU` - Type: True / False

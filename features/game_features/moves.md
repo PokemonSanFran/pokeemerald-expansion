@@ -1,18 +1,16 @@
-## New Pokémon / Items / Moves / Abilities / Types
-<!--
-primarina using scald, actvating steam engine
+# Moves
 
-gen 4 - occa berry
-gen 5 - scald
-gen 6 - fairy type
-gen 7 - primarina
-gen 8 - steam engine and coalassal
--->
-Using `pokeemerald-expansion` gives the developer the ability to use Pokemon, Items, Moves, Abilities and Types from main-series games after `pokeemerald`.
+## Enabling / Disabling / Configuration
 
-**Usage**: After installation, `pokeemerald-expansion` makes no changes to the core gameplay of `pokeemerald`. Develoeprs wanting to use these new features can do so with ease.
+Move related configurations are in [`battle.h`](../../include/config/battle.h). [[Documentation]](../configurations/battle.md)
 
-### Moves
-#### Learnsets
-<img src="" alt="Gif of the player's Pokemon learning and then using a post Gen 3 move" height=160px width=240px>
-Pokemon that debuted after Generation 3 have their most recent learnsets, including new Moves. Pokemon that debuted in Generations 3 or older return their learnsets from `pokeemerald`. This can be easily changed with programs like [Porymap](), which allow developers to control which game's information is used to inform learnsets.
+## Physical and Special Split
+
+By default, moves are assigned their [damage category](https://bulbapedia.bulbagarden.net/wiki/Damage_category) from the most recent generation. This can be changed or disabled in [battle.h](../include/config/battle.h). [[Documentation]](/features/configurations/battle.md)
+
+## Learnsets
+![Gif of the player's Pokemon learning and then using a post Gen 3 move](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+
+Pokemon that were introduced in Generation 7 or earlier have their learnsets from [Ultra Sun and Ultra Moon](https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_Ultra_Sun_and_Ultra_Moon). Pokemon introduced after Generation 7 have their learnsets from the game they first debuted in. In both cases, these learnsets include their new moves.
+
+This can be easily changed with programs like [PoryMoves](https://github.com/AsparagusEduardo/PoryMoves), which allow developers to control which game's information is used to inform learnsets.

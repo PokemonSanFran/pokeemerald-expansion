@@ -3,7 +3,7 @@
 
 Trainer Control allows developers to explicitly define the parties for opposing Trainers, by creating a new struct type called `TrainerMonCustomized`.
 
-### Usage 
+## Usage 
 Opposing Trainer parties are defined in [`src/data/trainer_parties.h`](src/data/trainer_parties.h). To use Trainer Control, developers can either edit an existing party or add a new one. Each member of the struct corresponds to a different aspect of a Pokemon.
 
 Developers do not need to define every aspect of every Pokemon. If aspects are left blank, they will be automatically filled with defaults, detailed below.
@@ -23,7 +23,7 @@ Developers do not need to define every aspect of every Pokemon. If aspects are l
 |.iv|0 ≤ Integer ≤ 31||Defaults to 0 for all values.|
 |.moves|[Moves Constant](../include/constants/moves.h)|Defaults to the last four Level Up moves depending on species' level.|
 
-### Example
+## Example
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
 The following shows how to create two Pokemon from sugarhigh's ["Life Orb Crawdaunt and Seismitoad + Zapdos Rain" team](https://pokepast.es/5193200d72df25df).
