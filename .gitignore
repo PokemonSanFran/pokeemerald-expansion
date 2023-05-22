@@ -39,7 +39,3 @@ prefabs.json
 *.diff
 *.sym
 *.js
-
-*.sw*
-*.vimsess
-*.gitignore
