@@ -28,6 +28,8 @@ This manual's goal is to detail all of the features available to developers that
 - [Battle Debug Menu](developer_features/battleDebugMenu.md)
 - [Custom Battle Scripts](developer_features/customBattleScripts.md)
 - [Debug Menu](developer_features/debugMenu.md)
+- [Sprite Debug Menu](developer_features/spriteDebugMenu.md)
+- [Tests](developer_features/tests.md)
 - [Trainer Control](developer_features/trainerControl.md)
 
 ### Game Features

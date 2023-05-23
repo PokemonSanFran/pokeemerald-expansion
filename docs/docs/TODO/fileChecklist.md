@@ -111,7 +111,7 @@ Add links and fix links for the document.
     - Blocked by Step One.
 ## features/configurations:
 
-- [ ] battle.md
+- [x] battle.md
 - [ ] debug.md
 - [ ] general.md
 - [ ] index.md

@@ -1,13 +1,8 @@
----
-typora-root-url: ./..\..
-
----
-
 # Battle Configuration
 
 This page documents the configurations found in [`include/config/battle.h`](https://github.com/rh-hideout/pokeemerald-expansion/blob/upcoming/include/config/battle.h).
 
-## Calculations 
+## Calculations
 
 ---
 
@@ -667,7 +662,7 @@ This page documents the configurations found in [`include/config/battle.h`](http
         - \>= `GEN_6`: Heal Block prevents the usage of HP-draining moves.
         - \>= `GEN_5`: Heal Block prevents healing from Black Sludge, Leftovers, and Shell Bell. Heal Block prevents the consumption of HP-restoring Berries or Berry Juice.
         - <= `GEN_4`: Heal Block allows the usage of HP-draining moves. Heal Block allows the consumption of HP-restoring Berries or Berry Juice.
-                                                    
+                                                      
 
 ---
 
@@ -730,7 +725,7 @@ This page documents the configurations found in [`include/config/battle.h`](http
         - \>= `GEN_8`: Healing Wish's effect will be stored until an ally that is damaged or affected by status is sent out.
         - <= `GEN_5`: The Pokémon receiving the Healing Wish is sent out at the end of the turn.
         - <= `GEN_4`: The Pokémon recieving the Healing Wish will be immedatiately sent out, and the effect will instantly activate. 
-                                                    
+                                                      
 
 ---
 
