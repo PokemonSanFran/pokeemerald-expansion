@@ -21,7 +21,7 @@ This manual's goal is to detail all of the features available to developers that
 - [Item](configurations/item.md)
 - [Overview](configurations/index.md)
 - [Overworld](configurations/overworld.md)
-- [Pokemon](configurations/pokemon.md)
+- [Pokémon](configurations/pokemon.md)
 
 ### Developer Features
 
@@ -39,7 +39,7 @@ This manual's goal is to detail all of the features available to developers that
 - [Improved AI](game_features/improved_ai.md)
 - [Items](game_features/items.md)
 - [Moves](game_features/moves.md)
-- [Pokemon](game_features/pokemon.md)
+- [Pokémon](game_features/pokemon.md)
 - [Totem Boosts](game_features/totemBoosts.md)
 - [Trainer Messages](game_features/trainer_message.md)
 
@@ -48,7 +48,7 @@ This manual's goal is to detail all of the features available to developers that
 ## Reading This Manual
 All of the features in this document are roughly organized by category, and then are shown as follows:
 
-![](media/reading_this_manual.png)
+![](img/reading_this_manual.png)
 
 A. **Category**: The group of feature that this feature belongs with.
 
@@ -84,4 +84,4 @@ A Discord-based ROM hacking community that has many members who hack using the d
 
 ## Version
 
-This document is accurate as of Version 1.4.2 (Mar 29 2023), and will be updated as new features as added.
+This document is accurate as of Version 1.4.2 ([Mar 29 2023](https://www.wolframalpha.com/input?i=Mar+29+2023)), and should be updated as new features as added.

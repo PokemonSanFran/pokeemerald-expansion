@@ -27,6 +27,7 @@
 - **MandL27**: code review and testing, contributing features
 
 ## Resources Used
+
 - [Sugimori Palettes and Sprites](https://www.pokecommunity.com/showthread.php?t=336945)
 - [DS Style Gen VI Sprites](https://www.pokecommunity.com/showthread.php?t=314422)
 - [Gen VII and Beyond Sprites](https://www.pokecommunity.com/showthread.php?t=368703)
