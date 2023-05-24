@@ -8,13 +8,14 @@
 <!--gen 8 - steam engine and coalassal-->
 
 ## Enabling / Disabling / Configuration
-Pokemon related configurations are in [`pokemon.h`](https://github.com/rh-hideout/pokeemerald-expansion/blob/upcoming/include/config/pokemon.h). [[Documentation]](../configurations/pokemon.md)
+Pokémon related configurations are in [`pokemon.h`](https://github.com/rh-hideout/pokeemerald-expansion/blob/upcoming/include/config/pokemon.h). [[Documentation]](../configurations/pokemon.md)
 
 ## Usage and Examples
-### Wild Pokemon
+
+### Wild Pokémon
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-Developers can edit [`src/data/wild_encounters.json`](https://github.com/rh-hideout/pokeemerald-expansion/blob/upcoming/src/data/wild_encounters.json) or use [Porymap](https://github.com/huderlem/porymap) to edit the wild Pokemon that appear on each route. New Pokemon can be set the same way old Pokemon are.
+Developers can edit [`src/data/wild_encounters.json`](https://github.com/rh-hideout/pokeemerald-expansion/blob/upcoming/src/data/wild_encounters.json) or use [Porymap](https://github.com/huderlem/porymap) to edit the wild Pokémon that appear on each route. New Pokémon can be set the same way old Pokémon are.
 
 **Usage**:
 ```diff
@@ -32,10 +33,10 @@ Developers can edit [`src/data/wild_encounters.json`](https://github.com/rh-hide
               },
 ```
 
-### Starter Pokemon
+### Starter Pokémon
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-The Pokemon declared as starters can be changed by the developer by editing [`src/starter_choose.c`](https://github.com/rh-hideout/pokeemerald-expansion/blob/upcoming/src/starter_choose.c).
+The Pokémon declared as starters can be changed by the developer by editing [`src/starter_choose.c`](https://github.com/rh-hideout/pokeemerald-expansion/blob/upcoming/src/starter_choose.c).
 
 **Usage**:
 ```diff

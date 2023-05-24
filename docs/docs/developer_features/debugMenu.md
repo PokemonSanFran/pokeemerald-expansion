@@ -4,12 +4,12 @@
 The Overworld Debug Menu is a series of menus that allow develoeprs to quickly debug and test functionality within their game.
 
 ## Enabling the Overworld Debug Menu
-By default, the Overworld Debug Menu is opened by pressing `R_BUTTON` and holding `START`. The menu itself and the buttons to open it can be changed in [`include/config/debug.h`](include/config/debug.h).
+By default, the Overworld Debug Menu is opened by pressing `R_BUTTON` and holding `START`. The menu itself and the buttons to open it can be changed in [`include/config/debug.h`](https://github.com/rh-hideout/pokeemerald-expansion/tree/upcoming/include/config/debug.h).
 
 ## Constant Navigation
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-Within `pokeemerald-expansion`, all of the moves, Pokemon, items, and maps are all represented by numbers. For example, `ITEM_POTION` is a constant that represents `28`, and `SPECIES_SERVINE` is 496. Most constants are defined in [`include/constants`](../include/constants).
+Within `pokeemerald-expansion`, all of the moves, Pokémon, items, and maps are all represented by numbers. For example, `ITEM_POTION` is a constant that represents `28`, and `SPECIES_SERVINE` is 496. Most constants are defined in [`include/constants`](https://github.com/rh-hideout/pokeemerald-expansion/tree/upcoming//include/constants).
 
 The Overworld debug menus allow the developer to scroll through the menus to choose the number corresponding to what is desired.
 
@@ -60,37 +60,38 @@ This is an assortment of commonly used scripts.
 #### Heal Party
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-Heals the player's party as if they had visited a Pokemon Center.
+Heals the player's party as if they had visited a [Pokémon Center](https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_Center).
 
 #### Fly to map
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-Opens `CB2_OpenFlyMap` and sets all of the `FLAG_VISITED_*` flags, allowing the player to Fly anywhere.
+Opens `CB2_OpenFlyMap` and sets all of the `FLAG_VISITED_*` flags, allowing the player to [Fly](https://bulbapedia.bulbagarden.net/wiki/Fly_(move)#Outside_of_battle) anywhere.
 
 #### Warp to map warp
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-Prompts the player to select a [map group id](../../include/constants/map_groups.h), [a mapsec id](../../include/constants/region_map_sections.h), and a warp id, and then warps the player to the chosen location. This uses Constant Navigation.
+Prompts the player to select a [map group id](https://github.com/rh-hideout/pokeemerald-expansion/tree/upcoming/include/constants/map_groups.h), [a mapsec id](https://github.com/rh-hideout/pokeemerald-expansion/tree/upcoming/include/constants/region_map_sections.h), and a warp id, and then warps the player to the chosen location. This uses Constant Navigation.
 
 #### Toggle Running Shoes
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-Toggles `FLAG_SYS_B_DASH`. When set, the player can hold B to use the Running Shoes.
+Toggles `FLAG_SYS_B_DASH`. When set, the player can hold B to use the [Running Shoes](https://bulbapedia.bulbagarden.net/wiki/Running_Shoes).
 
 #### Poison all mons
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-Inflicts all Pokemon in the party with the Poison status condition.
+Inflicts all Pokémon in the party with the [Poison status condition](https://bulbapedia.bulbagarden.net/wiki/Status_condition).
 
 #### SaveBlock Space
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-Shows a `message` with the available space in [`SaveBlock1`](../include/global.h), [`SaveBlock2`](../include/global.h), and [`PokemonStorage`](../include/pokemon_storage_system.h).
+Shows a `message` with the available space in [`SaveBlock1`](https://github.com/rh-hideout/pokeemerald-expansion/tree/upcoming/include/global.h), [`SaveBlock2`](https://github.com/rh-hideout/pokeemerald-expansion/tree/upcoming/include/global.h), and [`PokémonStorage`](https://github.com/rh-hideout/pokeemerald-expansion/tree/upcoming/include/pokemon_storage_system.h).
 
 #### Set weather
+
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-Prompts the player to choose a [weather condition](../../include/constants/weather.h) that will be immediately applied to the overworld. This uses Constant Navigation.
+Prompts the player to choose a [weather condition](https://github.com/rh-hideout/pokeemerald-expansion/tree/upcoming/include/constants/weather.h) that will be immediately applied to the overworld. This uses Constant Navigation.
 
 #### Check Wall Clock
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
@@ -105,35 +106,35 @@ Runs `PlayersHouse_2F_EventScript_SetWallClock`, allowing the player to change t
 #### Watch Credits
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-Runs `CB2_StartCreditsSequence`, which runs the credits as if the player has just entered the Hall of Fame.
+Runs `CB2_StartCreditsSequence`, which runs the credits as if the player has just entered the [Hall of Fame](https://bulbapedia.bulbagarden.net/wiki/Hall_of_Fame).
 
 #### Trainer name
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-Gives the player a randomly generated name based on their chosen gender, and then allows the player to manually set a name for the naming screen.
+Gives the player a randomly generated name based on their [gender](https://bulbapedia.bulbagarden.net/wiki/Gender#In_the_games), and then allows the player to manually set a name for the naming screen.
 
 #### Toggle T. Gender
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-Toggles the player's gender.
+Toggles the player's [gender](https://bulbapedia.bulbagarden.net/wiki/Gender#In_the_games).
 
 #### New Trainer Id
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-Randomly generates a new Trainer ID for the player.
+Randomly generates a new [Trainer ID](https://bulbapedia.bulbagarden.net/wiki/Trainer_ID_number) for the player.
 
 #### Clear Storage Boxes
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-Deletes all the Pokemon in the player's storage boxes.
+Deletes all the Pokémon in the [Pokémon Storage System](https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_Storage_System).
 
 ### Scripts
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-Debug_Script_1 through 8 are all blank scripts that can be written by the developer. They use `pokeemerald`'s scripting language, and are defined and stored in [`data/scripts/debug.inc`](../data/scripts/debug.inc).
+Debug_Script_1 through 8 are all blank scripts that can be written by the developer. They use `pokeemerald`'s scripting language, and are defined and stored in [`data/scripts/debug.inc`](https://github.com/rh-hideout/pokeemerald-expansion/tree/upcoming/data/scripts/debug.inc).
 
 ### Flags
-An assortment of common toggled flags. Constants are listed in [`../include/constants/flags.h`](../include/constants/flags.h).
+An assortment of common toggled flags. Constants are listed in [`include/constants/flags.h`](https://github.com/rh-hideout/pokeemerald-expansion/tree/upcoming/include/constants/flags.h).
 
 #### Set Flag XXXX
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
@@ -141,29 +142,30 @@ An assortment of common toggled flags. Constants are listed in [`../include/cons
 Shows the status of the currently displayed flag. Selecting a flag will toggle that flag. Uses Constant Navigation. 
 
 #### All Pokédex Flags
+
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-Changes the player's Pokedex status for all Pokemon to Seen and Caught.
+Changes the player's [Pokédex](https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9dex) status for all Pokémon to Seen and Caught.
 
 #### ON/OFF scripts
 On/Off scripts toggle a specific flag, which when `TRUE`, unlocks different functionality.
 
-|Script Name|Flag Toggled|Behavior when `TRUE`|Example
+|Script Name|Flag Toggled|Behavior when `TRUE`|Example|
 |---|---|---|---|
-|Pokédex ON/OFF|`FLAG_SYS_POKEDEX_GET`|Pokedex is available from the Start Menu.|![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)|
-|NatDex ON/OFF|`FLAG_SYS_NATIONAL_DEX`|National Dex is available.|![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)|
-|PokéNav ON/OFF|`FLAG_SYS_POKEDEX_GET`|Pokenav is available from the Start Menu.|![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)|
-|Fly Flags ON/OFF|`FLAG_VISITED_`|Allow the player to Fly to any location.|![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)|
-|All badges ON/OFF|`FLAG_BADGE0*_GET`|Give the player that specific badge.|![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)|
-|Frontier Pass ON/OFF|`FLAG_SYS_FRONTIER_PASS`|Frontier Pass is available from the Start Menu.|![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)|
-|Collision ON/OFF|`OW_FLAG_NO_COLLISION`|Objects in the overorld will ignore metatile collision values.|![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)|
-|Encounter ON/OFF|`OW_FLAG_NO_ENCOUNTER`|Wild Pokemon encounters are disabled.|![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)|
+|Pokédex ON/OFF|`FLAG_SYS_POKEDEX_GET`|[Pokédex](https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9dex) is available from the Start Menu.|![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)|
+|NatDex ON/OFF|`FLAG_SYS_NATIONAL_DEX`|[National Dex](https://bulbapedia.bulbagarden.net/wiki/National_Pok%C3%A9dex) is available.|![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)|
+|PokéNav ON/OFF|`FLAG_SYS_POKEDEX_GET`|[Pokénav](https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9Nav) is available from the [Start Menu](https://bulbapedia.bulbagarden.net/wiki/Menu).|![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)|
+|Fly Flags ON/OFF|`FLAG_VISITED_`|Allow the player to [Fly](https://bulbapedia.bulbagarden.net/wiki/Fly_(move)#Outside_of_battle) to any location.|![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)|
+|All badges ON/OFF|`FLAG_BADGE0*_GET`|Give the player that specific [badge](https://bulbapedia.bulbagarden.net/wiki/Badge).|![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)|
+|Frontier Pass ON/OFF|`FLAG_SYS_FRONTIER_PASS`|[Frontier Pass](https://bulbapedia.bulbagarden.net/wiki/Trainer_Card_(game)#Frontier_Pass) is available from the [Start Menu](https://bulbapedia.bulbagarden.net/wiki/Menu).|![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)|
+|Collision ON/OFF|`OW_FLAG_NO_COLLISION`|Objects in the overworld will ignore metatile collision values.|![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)|
+|Encounter ON/OFF|`OW_FLAG_NO_ENCOUNTER`|Wild Pokémon encounters are disabled.|![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)|
 |TrainerSee ON/OFF|`OW_FLAG_NO_TRAINER_SEE`|Trainers will not battle the player unless explicitly spoken to.|![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)|
 |BagUse ON/OFF|`B_FLAG_NO_BAG_USE`|Ability to use the bag in battle is disabled.|![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)|
-|Catching ON/OFF|`B_FLAG_NO_CATCHING`|Ability to throw Pokeballs is disabled.|![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)|
+|Catching ON/OFF|`B_FLAG_NO_CATCHING`|Ability to throw Poké Balls is disabled.|![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)|
 
 ### Variables
-Constants are listed in [`../include/constants/vars.h`](../include/constants/vars.h).
+Constants are listed in [`include/constants/vars.h`](https://github.com/rh-hideout/pokeemerald-expansion/tree/upcoming/include/constants/vars.h).
 
 #### Set Vars XXXX
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
@@ -183,43 +185,43 @@ Gives the player any item with any quantity. Uses Constant Navigation.
 
 Gives the player one of every item with  the following conditions:
 - has a value between (including) `ITEM_TM01` and `ITEM_HM08`.
-- the item is associated with a BattleMoveId.
+- the item is associated with a `BattleMoveId`.
 - the player's bag does not already have this item
 
 #### Pkm(lvl)
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-Choose a Pokemon and its level. The Pokemon is added to the player's party(or the first free box slot). Uses Constant Navigation.
+Choose a Pokémon and its level. The Pokémon is added to the player's party (or the first free box slot). Uses Constant Navigation.
 
 #### Pkm(l,s,n,a,IV,mov)
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-Choose a Pokemon and its level, shininess, nature, ability, IVs, and Moves. Uses Constant Navigation.
+Choose a Pokémon and its level, shininess, nature, ability, IVs, and Moves. Uses Constant Navigation.
 
 #### Max Money
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-Sets the player's money to `MAX_MONEY`.
+Sets the player's [money](https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_Dollar) to `MAX_MONEY`.
 
 #### Max Coins
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-Sets the player's number of coins to `MAX_COINS`.
+Sets the player's number of [coins](https://bulbapedia.bulbagarden.net/wiki/Coin) to `MAX_COINS`.
 
 #### Max Battle Points
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-Sets the player's number of Battle Points to `MAX_BATTLE_FRONTIER_POINTS`.
+Sets the player's number of [Battle Points](https://bulbapedia.bulbagarden.net/wiki/Battle_Point) to `MAX_BATTLE_FRONTIER_POINTS`.
 
 #### Daycare Egg
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-If the player has two Pokemon in the Day Care that can make an egg, they will immediately produce one.
+If the player has two Pokémon in the [Day Care](https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_Day_Care) that can make an [egg](https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_Egg), they will immediately produce one.
 
 #### Fill Pc
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-Create one of each Pokemon species / form at Level 100. Place them in the PC boxes until all of the open slots are filled.
+Create one of each Pokémon species / form at Level 100. Place them in the PC boxes until all of the open slots are filled.
 
 #### CHEAT Start
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
@@ -230,14 +232,14 @@ Runs the script `Debug_CheatStart`, which sets a number of different flags, vars
 #### Effects
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-Plays the sound effect being shown, using the list in [`include/constants/songs.h`](../include/constants/songs.h) up to `END_SE`. Uses Constant Navigation.
+Plays the sound effect being shown, using the list in [`include/constants/songs.h`](https://github.com/rh-hideout/pokeemerald-expansion/tree/upcoming/include/constants/songs.h) up to `END_SE`. Uses Constant Navigation.
 
 #### Music
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-Plays the music being shown, using the list in [`include/constants/songs.h`](../include/constants/songs.h) beginning at `START_MUS`. Uses Constant Navigation.
+Plays the music being shown, using the list in [`include/constants/songs.h`](https://github.com/rh-hideout/pokeemerald-expansion/tree/upcoming/include/constants/songs.h) beginning at `START_MUS`. Uses Constant Navigation.
 
 ### Access PC
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-Boots up the PC, allowing the player to access the Pokemon Storage System, `{PLAYER}`’s PC, or Hall of Fame records.
+Boots up the PC, allowing the player to access the [Pokémon Storage System](https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_Storage_System), [`{PLAYER}`’s PC](https://bulbapedia.bulbagarden.net/wiki/PC#Item_Storage_System), or [Hall of Fame](https://bulbapedia.bulbagarden.net/wiki/Hall_of_Fame) records.

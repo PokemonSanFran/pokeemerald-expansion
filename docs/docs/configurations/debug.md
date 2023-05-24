@@ -34,7 +34,7 @@ This page documents the configurations found in [`include/config/debug.h`](https
 
 * `DEBUG_BATTLE_MENU` - Type: True / False
 
-    - When `TRUE`, and the player is in battle, pressing SELECT opens the Battle Debug Menu. [[More Info]](../developer_features/batttleDebugMenu.md)
+    - When `TRUE`, and the player is in battle, pressing SELECT opens the Battle Debug Menu. [[More Info]](../developer_features/battleDebugMenu.md)
 
     ---
 

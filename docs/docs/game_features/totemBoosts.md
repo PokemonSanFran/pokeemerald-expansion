@@ -2,11 +2,11 @@
 
 ![](https://i.imgur.com/VKmx5s9.gif)
 
-Introduced in Gen 7, totem boosts allow you to set up a boss battle with a wild Pokemon that starts the battle with boosted (or lowered!) stats.
+Introduced in Gen 7, Totem Boosts allow you to set up a boss battle with a wild Pokemon that starts the battle with boosted (or lowered!) stats. [[More Info]](https://bulbapedia.bulbagarden.net/wiki/Totem_Pok%C3%A9mon#In_the_games)
 
 ## Usage
 
-This is very simple to set up: it uses a scripting command, `settotemboost` to set up the stat changes for any battler.
+Totem Boosts uses a scripting command, `settotemboost` to set up the stat changes for any battler.
 
 ```
 settotemboost battler, atkBoost, defBoost, speedBoost, spatkBoost, spdefBoost, accBoost, evasBoost

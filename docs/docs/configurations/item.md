@@ -1,64 +1,106 @@
 # Item Configuration
 
-This page documents the configurations found in [include/config/item.h](include/config/item.h).
+This page documents the configurations found in [`include/config/item.h`](https://github.com/rh-hideout/pokeemerald-expansion/blob/upcoming/include/config/item.h).
+
+---
 
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+
 - `I_SHINY_CHARM_REROLLS` - Type: Set Value
-    - When the player has the Shiny Charm, this value is the max number of times the game will attempt to generate a Shiny Pokemon. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/)
-	
+    - When the player has the Shiny Charm, this value is the max number of times the game will attempt to generate a Shiny Pokémon. [[More Info]](https://bulbapedia.bulbagarden.net/wiki/Shiny_Charm#In_the_core_series_games)
+
+---
 
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+
 - `I_KEY_FOSSILS` - Type: Generation Toggle
-    - Helix Fossil, Dome Fossil, Old Amber, Root Fossil, and Claw Fossil are stored in the [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/)
-		- >= `GEN_4`: Items Bag pocket
+
+    - Helix Fossil, Dome Fossil, Old Amber, Root Fossil, and Claw Fossil are stored in the: [[More Info]](https://bulbapedia.bulbagarden.net/wiki/Fossil#In_the_games)
+
+        - \>= `GEN_4`: Items Bag pocket
+
         - = `GEN_3`: Key Items Bag pocket
 
+---
+
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+
 - `I_KEY_ESCAPE_ROPE` - Type: Generation Toggle
-    - Escape Rope is stored in the  [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/)
-		- >= `GEN_8`: Key Items Bag pocket
+
+    - Escape Rope is stored in the: [[More Info]](https://bulbapedia.bulbagarden.net/wiki/Escape_Rope#Generation_VIII)
+
+        - \>= `GEN_8`: Key Items Bag pocket
+
         - <= `GEN_7`: Items Bag pocket
 
+---
+
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+
 - `I_HEALTH_RECOVERY` - Type: Generation Toggle
-    - These items heal N HP.
+    - These items heal N HP. [[More Info]](https://bulbapedia.bulbagarden.net/wiki/Energy_Powder#Generation_VII_onward)
 
-|Item| \>= `GEN_7` N Value|<= `GEN_6` N Value|
-|---|---|---|
-|Super Potion|60|50|
-|Hyper Potion|120|200|
-|Fresh Water|30|50|
-|Soda Pop|50|60|
-|Lemonade|70|80|
-|Energy Powder|60|50|
-|Energy Root|120|200|
+| Item          | >= `GEN_7` N Value | <= `GEN_6` N Value |
+| ------------- | ------------------ | ------------------ |
+| Super Potion  | 60                 | 50                 |
+| Hyper Potion  | 120                | 200                |
+| Fresh Water   | 30                 | 50                 |
+| Soda Pop      | 50                 | 60                 |
+| Lemonade      | 70                 | 80                 |
+| Energy Powder | 60                 | 50                 |
+| Energy Root   | 120                | 200                |
+
+---
 
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+
 - `I_SITRUS_BERRY_HEAL` - Type: Generation Toggle
-	- Sitrus Berry heals N HP. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/)
-		- >= `GEN_4`: 1/4 of the user's max HP
+
+    - Sitrus Berry heals N HP. [[More Info]](https://bulbapedia.bulbagarden.net/wiki/Sitrus_Berry#Generation_IV_onward)
+
+        - \>= `GEN_4`: 1/4 of the user's max HP
+
         - = `GEN_3`: 30 HP
 
+---
+
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+
 - `I_VITAMIN_EV_CAP` - Type: Generation Toggle
-    - Vitamins can no longer be used on a Pokemon that has N EVs in a specific stat. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/)
-		- >= `GEN_8`: 252
+
+    - Vitamins can no longer be used on a Pokémon that has N EVs in a specific stat. [[More Info]](https://bulbapedia.bulbagarden.net/wiki/Vitamin#Effect)
+
+        - \>= `GEN_8`: 252
+
         - <= `GEN_7`: 100
+```
 
 
+```
 ## TM Configurations
 
+---
+
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+
 - `I_REUSABLE_TMS` - Type: True / False
-    - When `TRUE`, Technical Machines can be used an unlimited number of times, instead of only once. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/)
+    - When `TRUE`, Technical Machines can be used an unlimited number of times, instead of only once. [[More Info]](https://bulbapedia.bulbagarden.net/wiki/TM#Generation_V)
+```
 
 
+```
 ## Repel/Lure config
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
-- `VAR_LAST_REPEL_LURE_USED` - Type: Var / Flag
-    - When this var is set, the last Repel or Lure used by the player is remembered. When the effects of a Repel or Lure expire, the game will ask the player if they want to use another one. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/)
+---
 
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+
+- `VAR_LAST_REPEL_LURE_USED` - Type: Var / Flag
+    - When this var is set, the last Repel or Lure used by the player is remembered. When the effects of a Repel or Lure expire, the game will ask the player if they want to use another one. [[More Info]](https://bulbapedia.bulbagarden.net/wiki/Repel#Effect)
+
+---
+
+![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+
 - `I_REPEL_LURE_MENU` - Type: True / False    
-    - When `TRUE` and the effects of a Repel or Lure expires, the game will show a menu of Repels or Lures to the player, which can be selected for immediate use. The functionality of `VAR_LAST_REPEL_LURE_USED` is disabled. [\[More Info\]](https://bulbapedia.bulbagarden.net/wiki/)
+    - When `TRUE` and the effects of a Repel or Lure expires, the game will show a menu of Repels or Lures to the player, which can be selected for immediate use. The functionality of `VAR_LAST_REPEL_LURE_USED` is disabled.

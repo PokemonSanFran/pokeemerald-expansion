@@ -1,10 +1,18 @@
-Hi!
+# Instructions
 
 1. Please clone this repo: https://github.com/PokemonSanFran/pokeemerald-expansion/tree/features.md
-1. Navigate to `docs/` and run `/script/serve.sh` and then open [http://127.0.0.1:8000/](http://127.0.0.1:8000/) (thanks.)
+1. Navigate to `docs/` and run 
+    1. `script/setup.sh`
+    1. `/script/serve.sh` 
+    1. open [http://127.0.0.1:8000/](http://127.0.0.1:8000/) in a browser
+
 1. I'm working through [fileChecklist.md](fileChecklist.md) right now.
+    1. As of May 24, that means making a list of videos we'll need for each page.
+
 
 ---
+
+# Top Level Pages
 
 The following features are in [Egg's original post](https://www.pokecommunity.com/showthread.php?t=417820), but I don't think need top level pages in documentation.
 
@@ -20,6 +28,8 @@ The following features are in the [Github README](https://github.com/rh-hideout/
 * Updates National Dex incorporating all the new species.
 
 ---
+
+# Wiki vs Manual
 
 I believe the goal of this documentation is 
 
@@ -44,3 +54,14 @@ I believe that tutorials like "how to add a new type" should be **referenced** i
 | [How to add a new trainer class](https://github.com/rh-hideout/pokeemerald-expansion/wiki/How-to-add-a-new-trainer-class) | 📚    | 📚    |
 | [New Battle Script Commands Macros](https://github.com/rh-hideout/pokeemerald-expansion/wiki/New-Battle-Script-Commands-Macros) | 📚    | 📚    |
 | [Totem Boosts](https://github.com/rh-hideout/pokeemerald-expansion/wiki/Totem-Boosts) | 📚    | 📖    |
+
+---
+
+# Videos vs Gif
+
+I have opted for use of videos instead of gifs. Videos allow the user to pause and rewind specific parts of each video. I'm not sure how we will handle _hosting_ of this video at this stage, but I think that's a problem we can come to later, and worst case scenario, we can convert everything to a gif.
+
+<video width="480" height="320" controls>
+  <source src="https://user-images.githubusercontent.com/77138753/240500859-036fff47-d644-4ce7-9356-a384bd3857a5.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video>

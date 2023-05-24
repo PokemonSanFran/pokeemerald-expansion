@@ -1,32 +1,33 @@
 # Sprite Debug Menu
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-The Sprite Debug Menu is a series of menus that allow developers to quickly debug and test how Pokemon look in battle.
+The Sprite Debug Menu is a series of menus that allow developers to quickly debug and test how Pokémon look in battle.
 
 ## Enabling the Sprite Debug Menu
-The Battle Debug Menu is enabled by default, but can be toggled in [`include/config/debug.h`](../include/config/debug.h). Once enabled, pressing SELECT on the Pokemon Summary Screen will open the Sprite Debug Menu.
+The Battle Debug Menu is enabled by default, but can be toggled in [`include/config/debug.h`](https://github.com/rh-hideout/pokeemerald-expansion/tree/upcoming/include/config/debug.h). Once enabled, pressing SELECT on the Pokémon Summary Screen will open the Sprite Debug Menu.
 
 ## Functionality
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
 ### Main Menu
-The Main Menu is used to change the displayed Pokemon.
+
+The Main Menu is used to change the displayed Pokémon.
 
 #### Anatomy
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-This selected Pokemon’s:
+This selected Pokémon’s:
 1. **Species ID**
 2. **Species Name**
 3. **Back Sprite**
 4. **Front Sprite**
 5. **Species Footprint**
 6. **Species Icon**
-7. **Back Animation**: The animation that plays when the player sends out the Pokemon.
-8. **Front Animation**: The animation that plays when the opponent sends out the Pokemon.
+7. **Back Animation**: The animation that plays when the player sends out the Pokémon.
+8. **Front Animation**: The animation that plays when the opponent sends out the Pokémon.
 9. **Battle Background**
 10. **Currently Displayed Background**: The currently active background’s name.
-11. **Form Indicator**: Displays when the Pokemon has multiple forms.
+11. **Form Indicator**: Displays when the Pokémon has multiple forms.
 
 #### Button Interactions
 |Button|Interaction|
@@ -41,9 +42,9 @@ This selected Pokemon’s:
 
 ### Submenu 1
 Submenu 1 allows the developer to change the:
-1. back and front animations for the displayed Pokemon
+1. back and front animations for the displayed Pokémon
 2. battle background
-3. form of the Pokemon
+3. form of the Pokémon
 
 #### Anatomy
 Same as Main Menu.

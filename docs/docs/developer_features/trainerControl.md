@@ -1,34 +1,37 @@
 ## Trainer Control
+
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
 Trainer Control allows developers to explicitly define the parties for opposing Trainers, by creating a new struct type called `TrainerMonCustomized`.
 
 ## Usage 
-Opposing Trainer parties are defined in [`src/data/trainer_parties.h`](src/data/trainer_parties.h). To use Trainer Control, developers can either edit an existing party or add a new one. Each member of the struct corresponds to a different aspect of a Pokemon.
 
-Developers do not need to define every aspect of every Pokemon. If aspects are left blank, they will be automatically filled with defaults, detailed below.
+Opposing Trainer parties are defined in [`src/data/trainer_parties.h`](https://github.com/rh-hideout/pokeemerald-expansion/tree/upcoming/src/data/trainer_parties.h). To use Trainer Control, developers can either edit an existing party or add a new one. Each member of the struct corresponds to a different aspect of a Pokémon.
 
-|Struct member|Constants|Behavior When Invalid/Blank|
-|---|---|---|
-|.species|[Species Constant](../include/constants/species.h)|Pokemon is not included.|
-|.nickname|`COMPOUND_STRING("Nickname")`|Pokemon has no nickname.|
-|.gender|[Gender Constant](../include/constants/trainers.h)|Defaults to Male or the default gender for that species.|
-|.heldItem|[Item Constant](../include/constants/items.h)|Defaults to `ITEM_NONE`.|
-|.ability|[Ability Constant](../include/constants/abilities.h)|Defaults to the Pokemon's first Ability slot.|
-|.lvl|0 ≤ Integer ≤ 100|Defaults to Level 0.|
-|.isShiny|`TRUE` or `FALSE`|Defaults to not Shiny.|
-|.friendship|0 ≤ Integer ≤ 255|Defaults to 0.|
-|.ball|[Item Constant](../include/constants/items.h)|Defaults to `ITEM_POKE_BALL`.|
-|.ev|0 ≤ Integer ≤ 255||Defaults to 0 for all values.|
-|.iv|0 ≤ Integer ≤ 31||Defaults to 0 for all values.|
-|.moves|[Moves Constant](../include/constants/moves.h)|Defaults to the last four Level Up moves depending on species' level.|
+Developers do not need to define every aspect of every Pokémon. If aspects are left blank, they will be automatically filled with defaults, detailed below.
+
+| Struct member | Constants                                                    | Behavior When Invalid/Blank                                  |
+| ------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| .species      | [Species Constant](https://github.com/rh-hideout/pokeemerald-expansion/tree/upcoming/include/constants/species.h) | Pokémon is not included.                                     |
+| .nickname     | `COMPOUND_STRING("Nickname")`                                | Pokémon has no nickname.                                     |
+| .gender       | [Gender Constant](https://github.com/rh-hideout/pokeemerald-expansion/tree/upcoming/include/constants/trainers.h) | Defaults to Male or the default gender for that species.     |
+| .heldItem     | [Item Constant](https://github.com/rh-hideout/pokeemerald-expansion/tree/upcoming/include/constants/items.h) | Defaults to `ITEM_NONE`.                                     |
+| .ability      | [Ability Constant](https://github.com/rh-hideout/pokeemerald-expansion/tree/upcoming/include/constants/abilities.h) | Defaults to the Pokémon's first Ability slot.                |
+| .lvl          | 0 ≤ Integer ≤ 100                                            | Defaults to Level 0.                                         |
+| .isShiny      | `TRUE` or `FALSE`                                            | Defaults to not Shiny.                                       |
+| .friendship   | 0 ≤ Integer ≤ 255                                            | Defaults to 0.                                               |
+| .ball         | [Item Constant](https://github.com/rh-hideout/pokeemerald-expansion/tree/upcoming/include/constants/items.h) | Defaults to `ITEM_POKE_BALL`.                                |
+| .ev           | 0 ≤ Integer ≤ 255                                            |                                                              |
+| .iv           | 0 ≤ Integer ≤ 31                                             |                                                              |
+| .moves        | [Moves Constant](https://github.com/rh-hideout/pokeemerald-expansion/tree/upcoming/include/constants/moves.h) | Defaults to the last four Level Up moves depending on species' level. |
 
 ## Example
+
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-The following shows how to create two Pokemon from sugarhigh's ["Life Orb Crawdaunt and Seismitoad + Zapdos Rain" team](https://pokepast.es/5193200d72df25df).
+The following shows how to create two Pokémon from sugarhigh's ["Life Orb Crawdaunt and Seismitoad + Zapdos Rain" team](https://pokepast.es/5193200d72df25df).
 
-#### [`include/constants/trainer_parties.h`](../include/constants/trainer_parties.h)
+#### [`include/constants/trainer_parties.h`](https://github.com/rh-hideout/pokeemerald-expansion/tree/upcoming/include/constants/trainer_parties.h)
 
 ```c
 static const structTrainerMonCustomized sParty_Sawyer1[] = {
@@ -70,7 +73,7 @@ static const structTrainerMonCustomized sParty_Sawyer1[] = {
 };
 ```
 
-#### [src/data/trainers.h](../src/data/trainers.h)
+#### [src/data/trainers.h](https://github.com/rh-hideout/pokeemerald-expansion/tree/upcoming/src/data/trainers.h)
 
 ```diff
     [TRAINER_SAWYER_1] =
@@ -86,4 +89,3 @@ static const structTrainerMonCustomized sParty_Sawyer1[] = {
 +       .party = EVERYTHING_CUSTOMIZED(sParty_Sawyer1),
     },
 ```
-

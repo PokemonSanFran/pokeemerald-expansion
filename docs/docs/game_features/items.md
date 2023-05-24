@@ -1,7 +1,7 @@
 # Items
 ## Enabling / Disabling / Configuration
 
-Move related configurations are in [`item.h`](../../include/config/item.h). [[Documentation]](../configurations/item.md)
+Move related configurations are in [`include/config/item.h`](https://github.com/rh-hideout/pokeemerald-expansion/tree/upcoming/include/config/item.h). [[Documentation]](../configurations/item.md)
 
 ## Usage and Examples
 
@@ -9,7 +9,7 @@ Move related configurations are in [`item.h`](../../include/config/item.h). [[Do
 
 ![Gif of the player's Pokemon learning and then using a post Gen 3 move](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-The script files where each individual shop is defined can be edited to add any items, including those from newer generations. For the shop in Rustboro City, the corressponding file is `data/maps/RustboroCity_Mart/scripts.inc`.
+The script files where each individual shop is defined can be edited to add any items, including those from newer generations. For the shop in Rustboro City, the corresponding file is `data/maps/RustboroCity_Mart/scripts.inc`.
 
 **Usage**:
 
@@ -25,7 +25,7 @@ The script files where each individual shop is defined can be edited to add any 
 
 ### Item Ball
 ![Gif of the player's Pokemon learning and then using a post Gen 3 move](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
-Items in the overworld can also be edited bt changing the constant associated with specific object. Overworld items are listed in `data/scripts/item_ball_scripts.inc`.
+Items in the overworld can also be edited by changing the constant associated with specific object. Overworld items are listed in `data/scripts/item_ball_scripts.inc`.
 
 **Usage**:
 

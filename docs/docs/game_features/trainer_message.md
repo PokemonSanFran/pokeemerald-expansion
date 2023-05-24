@@ -1,7 +1,7 @@
 # Mid Battle Trainer Messages
 ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
 
-Introduced in Generation 4, Mid Battle Trainer Messages are lines of dialogue spoken by the opponent when the opponent:
+Introduced in Generation 4, Mid Battle Trainer Messages are lines of dialogue spoken by the opponent when the opponent. [[More Info]](https://bulbapedia.bulbagarden.net/wiki/Blue_(game)/Quotes#Pok.C3.A9mon_HeartGold_and_SoulSilver)
 
     - the opponent sends in their final Pokemon.
         - the opponent's last Pokemon has low HP.
@@ -9,7 +9,7 @@ Introduced in Generation 4, Mid Battle Trainer Messages are lines of dialogue sp
 
 ## Usage
 
-Dialogue lines can be created and declared anywhere in the game, but it is reccomended to place them in `src/battle_messages.c` 
+Dialogue lines can be created and declared anywhere in the game, but it is reccomended to place them in [`src/battle_messages.c`](https://github.com/rh-hideout/pokeemerald-expansion/tree/upcoming/src/battle_messages.c) 
 
 ```diff
 static const u8 sText_PkmnHungOnWithX[] = _("{B_DEF_NAME_WITH_PREFIX} hung on\nusing its {B_LAST_ITEM}!");
@@ -21,7 +21,7 @@ static const u8 sText_YouThrowABallNowRight[] = _("You throw a BALL now, right?\
 + static const u8 sText_PerhapsImThe[] = _("Perhaps I'm the one who was\nunprepared?");
 ```
 
-Next, a Trainer slide struct is created in `src/battle_message.c`. If the developer does not want to use a specific dialogue scenario, `NULL` can be entered instead of a string.
+Next, a Trainer slide struct is created in [`src/battle_messages.c`](https://github.com/rh-hideout/pokeemerald-expansion/tree/upcoming/src/battle_messages.c). If the developer does not want to use a specific dialogue scenario, `NULL` can be entered instead of a string.
 
 ```diff
 static const struct TrainerSlide sTrainerSlides[] =

@@ -112,31 +112,31 @@ Add links and fix links for the document.
 ## features/configurations:
 
 - [x] battle.md
-- [ ] debug.md
-- [ ] general.md
-- [ ] index.md
-- [ ] item.md
-- [ ] overworld.md
-- [ ] pokemon.md
+- [x] debug.md
+- [x] general.md
+- [x] index.md
+- [x] item.md
+- [x] overworld.md
+- [x] pokemon.md
 ## features/developer_features:
 
-- [ ] battleDebugMenu.md
-- [ ] customBattleScripts.md
-- [ ] debugMenu.md
-- [ ] spriteDebugMenu.md
-- [ ] trainerControl.md
-- [ ] tests.md
+- [x] battleDebugMenu.md
+- [x] customBattleScripts.md
+- [x] debugMenu.md
+- [x] spriteDebugMenu.md
+- [x] trainerControl.md
+- [x] tests.md
 
 ## features/game_features:
-- [ ] abiltiesandtypes.md
-- [ ] battle_slide.md
-- [ ] expanded_doubles.md
-- [ ] generation_gimmicks.md
-- [ ] improved_ai.md
-- [ ] items.md
-- [ ] moves.md
-- [ ] pokemon.md
-- [ ] trainer_message.md
+- [x] abiltiesandtypes.md
+- [x] battle_slide.md
+- [x] expanded_doubles.md
+- [x] generation_gimmicks.md
+- [x] improved_ai.md
+- [x] items.md
+- [x] moves.md
+- [x] pokemon.md
+- [x] trainer_message.md
 ---
 
 # MAKE IMAGES
