@@ -4,35 +4,35 @@ This page documents the configurations found in [`pokemon.h`](https://github.com
 
 ---
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 - `P_UPDATED_TYPES` - Type: Generation Toggle  
     - Pokémon use the Types assigned to them in the defined generation. This most notably impacts Pokémon that gained a Fairy-type during Generation 6. [[More Info]](https://bulbapedia.bulbagarden.net/wiki/Category:Pok%C3%A9mon_that_have_had_their_type_changed)
 
 ---
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 - `P_UPDATED_STATS` - Type: Generation Toggle  
     - Pokémon use the stats assigned to them in the defined generation. [[More Info]](https://bulbapedia.bulbagarden.net/wiki/Base_stats#Between_generations)
 
 ---
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 - `P_UPDATED_ABILITIES` - Type: Generation Toggle  
     - Pokémon use the abilities assigned to them in the defined generation. [[More Info]](https://bulbapedia.bulbagarden.net/wiki/List_of_Pok%C3%A9mon_by_Ability)
 
 ---
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 - `P_UPDATED_EGG_GROUPS` - Type: Generation Toggle  
     - Pokémon use the egg groups assigned to them in the defined generation. [[More Info]](https://bulbapedia.bulbagarden.net/wiki/List_of_Pok%C3%A9mon_by_Egg_Group)
 
 ---
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 - `P_NIDORAN_M_DITTO_BREED` - Type: - Generation Toggle  
 
@@ -42,7 +42,7 @@ This page documents the configurations found in [`pokemon.h`](https://github.com
 
     ---
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 - `P_INCENSE_BREEDING` - Type: Generation Toggle  
     - Cross-generation Baby Pokémon require Incense being held by the parents to be obtained via breeding. [[More Info]](https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_breeding#Incense_breeding)
@@ -51,7 +51,7 @@ This page documents the configurations found in [`pokemon.h`](https://github.com
     
     ---
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 - `P_EGG_HATCH_LEVEL` - Type: Generation Toggle  
     - Pokémon hatch at Level: [[More Info]](https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_breeding#What_will_hatch)
@@ -60,7 +60,7 @@ This page documents the configurations found in [`pokemon.h`](https://github.com
     
     ---
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 - `P_BALL_INHERITING` - Type: Generation Toggle  
     - The mechanics of Poké Ball breeding inheritance have changed over the generations. [[More Info]](https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_breeding#Inheriting_Pok.C3.A9_Balls)
@@ -70,7 +70,7 @@ This page documents the configurations found in [`pokemon.h`](https://github.com
     
     ---
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 - `P_SHEDINJA_BALL` - Type: Generation Toggle  
     - When Nincada evolves, the resulting Shedinja: [[More Info]](https://bulbapedia.bulbagarden.net/wiki/Shedinja_(Pok%C3%A9mon)#Trivia)
@@ -79,7 +79,7 @@ This page documents the configurations found in [`pokemon.h`](https://github.com
     
     ---
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 - `P_KADABRA_EVERSTONE` - Type: Generation Toggle  
     - Kadabra can evolve even when holding an Everstone. [[More Info]](https://bulbapedia.bulbagarden.net/wiki/Everstone#Generation_IV_onwards)
@@ -88,21 +88,21 @@ This page documents the configurations found in [`pokemon.h`](https://github.com
     
     ---
     
-    ![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+    <p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 - `P_HIPPO_GENDER_DIFF_ICONS` - Type: True / False        
     - When `TRUE`, Hippopotas and Hippowdon female variants will use a custom icon instead of the same icons as their male variants. [[More Info]](https://bulbapedia.bulbagarden.net/wiki/Hippopotas_(Pok%C3%A9mon)#Biology)
 
 ---
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 - `P_SHUCKLE_BERRY_JUICE` - Type: True / False        
     - When `TRUE` and Shuckle is holding an Oran Berry, after every battle, there is a 1/16 chance that the item will turn into Berry Juice. [[More Info]](https://bulbapedia.bulbagarden.net/wiki/Berry_Juice#Acquisition)
 
 ---
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 - `P_LEGENDARY_PERFECT_IVS` - Type: Generation Toggle  
     - Ultra Beasts, Legendary, and Mythical Pokémon that are found in the wild or given to the player will be guaranteed to have N perfect IVs. [[More Info]](https://bulbapedia.bulbagarden.net/wiki/Individual_values#Influence)
@@ -111,14 +111,14 @@ This page documents the configurations found in [`pokemon.h`](https://github.com
 
     ---
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 - `P_FLAG_FORCE_SHINY` - Type: Var / Flag     
     - When this flag is set, Pokémon that are found in the wild or given to the player will be guaranteed to be Shiny. [[More Info]](https://bulbapedia.bulbagarden.net/wiki/Shiny_Pok%C3%A9mon)
 
 ---
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 - `P_FLAG_FORCE_NO_SHINY` - Type: Var / Flag     
     - When this flag is set, Pokémon that are found in the wild or given to the player will be guaranteed to be NOT Shiny. [[More Info]](https://bulbapedia.bulbagarden.net/wiki/Shiny_Pok%C3%A9mon)

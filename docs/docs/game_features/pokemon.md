@@ -13,7 +13,7 @@ Pokémon related configurations are in [`pokemon.h`](https://github.com/rh-hideo
 ## Usage and Examples
 
 ### Wild Pokémon
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 Developers can edit [`src/data/wild_encounters.json`](https://github.com/rh-hideout/pokeemerald-expansion/blob/upcoming/src/data/wild_encounters.json) or use [Porymap](https://github.com/huderlem/porymap) to edit the wild Pokémon that appear on each route. New Pokémon can be set the same way old Pokémon are.
 
@@ -34,7 +34,7 @@ Developers can edit [`src/data/wild_encounters.json`](https://github.com/rh-hide
 ```
 
 ### Starter Pokémon
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 The Pokémon declared as starters can be changed by the developer by editing [`src/starter_choose.c`](https://github.com/rh-hideout/pokeemerald-expansion/blob/upcoming/src/starter_choose.c).
 

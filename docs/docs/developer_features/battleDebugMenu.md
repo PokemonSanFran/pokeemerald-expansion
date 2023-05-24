@@ -1,6 +1,6 @@
 # Battle Debug Menu
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 The Battle Debug Menu is a series of menus that allow developers to quickly debug and test various battle mechanics. Once a battle has started, developers can view and modify properties of a battle to help verify that their functionality is working correctly.
 
@@ -9,7 +9,7 @@ The Battle Debug Menu is enabled by default, but can be toggled in [`include/con
 
 ## Functionality
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 ### Anatomy
 1. **Party Index**: The selected Pokémon's position on the battlefield.
@@ -28,7 +28,7 @@ The Battle Debug Menu is enabled by default, but can be toggled in [`include/con
 
 ### Move / Ability / Item
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 Selecting a move with A allows the developer to change the ID of the move that specific move slot. A list of moves and their IDs are found in [`include/constants/moves.h`](https://github.com/rh-hideout/pokeemerald-expansion/tree/upcoming/include/constants/moves.h). Once the ID is changed, pressing A or B returns the cursor to the list of moves.
 
@@ -137,7 +137,7 @@ Only the following flags are accessible:
 More information on these flags can be found in [improvedAi.md](../game_features/improved_ai.md)
 
 ### AI Pts/Dmg
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 #### Anatomy
 1. **Selected Pokémon**: The selected Pokémon's position on the battlefield.
@@ -147,7 +147,7 @@ More information on these flags can be found in [improvedAi.md](../game_features
 5. **Damage**: The approximate amount of damage this option will choose.
 
 ### AI Info
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 Displays what the AI currently knows about the player’s Pokémon.
 
@@ -158,7 +158,7 @@ Displays what the AI currently knows about the player’s Pokémon.
 4. **Hold Item**: When the AI knows the held item of this Pokémon, it is shown here.
 
 ### AI Party
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 Displays what the AI currently knows about the player’s party.
 

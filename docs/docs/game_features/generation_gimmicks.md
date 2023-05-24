@@ -9,7 +9,7 @@ Over the course of a battle, the player can only execute _one_ of each Generatio
 Leon has commanded his Charizard to Dynamax during his battle against Blue. Leon cannot Dynamax any more Pokémon during this battle. Charizard cannot use a Z-Move, Mega Evolve, or any other such Gimmick during this battle.
 
 ## Mega Evolution
-![Gif of the player's Pokemon learning and then using a post Gen 3 move](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 Introduced in Generation 6, Pokemon can transform into Mega Evolution forms. [[More Info](https://bulbapedia.bulbagarden.net/wiki/Mega_Evolution)]
 
@@ -33,7 +33,7 @@ Introduced in Generation 7, Pokémon can use Z-Moves based on the Z-Crystal they
 Enemy Trainers can also use Z-Moves when the Pokémon is holding the appropriate crystal.
 
 ## Dynamax
-![Gif of the player's Pokemon learning and then using a post Gen 3 move](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 Introduced in Generation 8, Pokemon can transform into Dynamax or Gigantamax Forms, granting them access to unique moves and a temporary increase in stats. [[More Info](https://bulbapedia.bulbagarden.net/wiki/Dynamax)]
 
@@ -45,7 +45,7 @@ Introduced in Generation 8, Pokemon can transform into Dynamax or Gigantamax For
 
 ## Terastal phenomenon
 
-![Gif of the player's Pokemon learning and then using a post Gen 3 move](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 Introduced in Generation 9, Pokemon can transform into their Tera-type, giving them unique type-related bonuses. [[More Info](https://bulbapedia.bulbagarden.net/wiki/Terastal_phenomenon)]
 

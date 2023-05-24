@@ -7,12 +7,12 @@ All battle types are executed via script, and take different parameters, such as
 
 
 ### `choose_mons`
-![Gif of the player's Pokémon learning and then using a post Gen 3 move](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 Each of the battle macros is intended to be used alongside `choose_mons`, which has the player select three Pokémon to be used in the upcoming battle. Developers may also opt for the `fixed` variants (`multi_fixed_2_vs_2`,`multi_fixed_2_vs_1`,`multi_fixed_wild`), which will automatically choose the first three Pokémon in the player's party.
 
 ### `multi_2_vs_2`
-![Gif of the player's Pokémon learning and then using a post Gen 3 move](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 Player and a partner versus two opposing Trainers.
 
@@ -22,7 +22,7 @@ multi_2_vs_2 TRAINER_SHELLY_SEAFLOOR_CAVERN,gText_StatSharply,TRAINER_TABITHA_MO
 ```
 
 ### `multi_2_vs_1`
-![Gif of the player's Pokémon learning and then using a post Gen 3 move](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 Player and a partner versus one opposing Trainer.
 
@@ -32,7 +32,7 @@ multi_2_vs_2 TRAINER_SHELLY_SEAFLOOR_CAVERN,gText_StatSharply,TRAINER_TABITHA_MO
 ```
 
 ### `multi_wild`
-![Gif of the player's Pokémon learning and then using a post Gen 3 move](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 Player and a partner versus wild Pokémon.
 

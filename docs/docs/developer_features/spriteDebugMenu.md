@@ -1,5 +1,5 @@
 # Sprite Debug Menu
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 The Sprite Debug Menu is a series of menus that allow developers to quickly debug and test how Pokémon look in battle.
 
@@ -7,14 +7,14 @@ The Sprite Debug Menu is a series of menus that allow developers to quickly debu
 The Battle Debug Menu is enabled by default, but can be toggled in [`include/config/debug.h`](https://github.com/rh-hideout/pokeemerald-expansion/tree/upcoming/include/config/debug.h). Once enabled, pressing SELECT on the Pokémon Summary Screen will open the Sprite Debug Menu.
 
 ## Functionality
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 ### Main Menu
 
 The Main Menu is used to change the displayed Pokémon.
 
 #### Anatomy
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 This selected Pokémon’s:
 1. **Species ID**
@@ -67,7 +67,7 @@ Submenu 2 allows the developer to change the:
 3. Elevation value of the front sprite
 
 #### Anatomy
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 1. **Original Back Coordinate**
 2. **Current Back Coordinate**
 3. **Original Front Coordinate**

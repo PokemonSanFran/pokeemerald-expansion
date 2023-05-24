@@ -4,14 +4,14 @@ This page documents the configurations found in [`include/config/item.h`](https:
 
 ---
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 - `I_SHINY_CHARM_REROLLS` - Type: Set Value
     - When the player has the Shiny Charm, this value is the max number of times the game will attempt to generate a Shiny Pokémon. [[More Info]](https://bulbapedia.bulbagarden.net/wiki/Shiny_Charm#In_the_core_series_games)
 
 ---
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 - `I_KEY_FOSSILS` - Type: Generation Toggle
 
@@ -23,7 +23,7 @@ This page documents the configurations found in [`include/config/item.h`](https:
 
 ---
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 - `I_KEY_ESCAPE_ROPE` - Type: Generation Toggle
 
@@ -35,7 +35,7 @@ This page documents the configurations found in [`include/config/item.h`](https:
 
 ---
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 - `I_HEALTH_RECOVERY` - Type: Generation Toggle
     - These items heal N HP. [[More Info]](https://bulbapedia.bulbagarden.net/wiki/Energy_Powder#Generation_VII_onward)
@@ -52,7 +52,7 @@ This page documents the configurations found in [`include/config/item.h`](https:
 
 ---
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 - `I_SITRUS_BERRY_HEAL` - Type: Generation Toggle
 
@@ -64,7 +64,7 @@ This page documents the configurations found in [`include/config/item.h`](https:
 
 ---
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 - `I_VITAMIN_EV_CAP` - Type: Generation Toggle
 
@@ -81,7 +81,7 @@ This page documents the configurations found in [`include/config/item.h`](https:
 
 ---
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 - `I_REUSABLE_TMS` - Type: True / False
     - When `TRUE`, Technical Machines can be used an unlimited number of times, instead of only once. [[More Info]](https://bulbapedia.bulbagarden.net/wiki/TM#Generation_V)
@@ -93,14 +93,14 @@ This page documents the configurations found in [`include/config/item.h`](https:
 
 ---
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 - `VAR_LAST_REPEL_LURE_USED` - Type: Var / Flag
     - When this var is set, the last Repel or Lure used by the player is remembered. When the effects of a Repel or Lure expire, the game will ask the player if they want to use another one. [[More Info]](https://bulbapedia.bulbagarden.net/wiki/Repel#Effect)
 
 ---
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 - `I_REPEL_LURE_MENU` - Type: True / False    
     - When `TRUE` and the effects of a Repel or Lure expires, the game will show a menu of Repels or Lures to the player, which can be selected for immediate use. The functionality of `VAR_LAST_REPEL_LURE_USED` is disabled.

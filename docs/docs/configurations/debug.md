@@ -4,7 +4,7 @@ This page documents the configurations found in [`include/config/debug.h`](https
 
 ## Overworld Debug
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 - `DEBUG_OVERWORLD_MENU` - Type: True / False
     - When `TRUE`, the Overworld Debug Menu can be used. [[More Info]](../developer_features/debugMenu.md)
@@ -20,7 +20,7 @@ This page documents the configurations found in [`include/config/debug.h`](https
 
 ---
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 - `DEBUG_OVERWORLD_IN_MENU` - Type: True / False
 
@@ -30,7 +30,7 @@ This page documents the configurations found in [`include/config/debug.h`](https
 
 ## Battle Debug Menu
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 * `DEBUG_BATTLE_MENU` - Type: True / False
 
@@ -40,7 +40,7 @@ This page documents the configurations found in [`include/config/debug.h`](https
 
 ## Pokémon Debug
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 * `DEBUG_POKEMON_MENU` - Type: True / False
     * When `TRUE` and the player is on the Pokémon summary screen, pressing SELECT opens the Sprite Debug Menu. [[More Info]](../developer_features/spriteDebugMenu.md)

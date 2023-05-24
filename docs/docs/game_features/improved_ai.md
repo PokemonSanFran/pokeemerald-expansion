@@ -37,7 +37,7 @@ Trainers and their AI Flags are defined in [`src/data/trainers.h`](https://githu
 
 | Original Wallace Behavior                                    | Modified Wallace Behavior                                    |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| ![Gif of the player's Pokémon learning and then using a post Gen 3 move](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png) | ![Gif of the player's Pokémon learning and then using a post Gen 3 move](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png) |
+| <p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p> | <p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p> |
 
 ```diff
 [TRAINER_WALLACE] =

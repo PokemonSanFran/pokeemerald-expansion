@@ -4,7 +4,7 @@ This page documents the configurations found in [`include/config/overworld.h`](h
 
 ## Movement
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 - `OW_RUNNING_INDOORS` - Type: Generation Toggle
     - When inside buildings, players can run. [[More Info]](https://bulbapedia.bulbagarden.net/wiki/Running_Shoes#Effect)
@@ -13,7 +13,7 @@ This page documents the configurations found in [`include/config/overworld.h`](h
 
 ## Other Settings
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 - `OW_POISON_DAMAGE` - Type: Generation Toggle
     - When in the overworld, the player's poisoned Pokémon [[More Info]](https://bulbapedia.bulbagarden.net/wiki/Poison_(status_condition)#Generation_IV)
@@ -23,21 +23,21 @@ This page documents the configurations found in [`include/config/overworld.h`](h
 
 ## Overworld Flags 
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 - `OW_FLAG_NO_ENCOUNTER` - Type: Var / Flag
     - When this flag is set in game, wild Pokémon encounters are disabled.
 
 ---
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 - `OW_FLAG_NO_TRAINER_SEE` - Type: Var / Flag
     - When this flag is set in game, trainers will not battle the player unless explicitly spoken to.
 
 ---
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 - `OW_FLAG_NO_COLLISION` - Type: Var / Flag
     - When this flag is set in game, object in the overworld will ignore metatile collision values.

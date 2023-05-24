@@ -1,6 +1,6 @@
 ## Trainer Control
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 Trainer Control allows developers to explicitly define the parties for opposing Trainers, by creating a new struct type called `TrainerMonCustomized`.
 
@@ -27,7 +27,7 @@ Developers do not need to define every aspect of every Pokémon. If aspects are 
 
 ## Example
 
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 The following shows how to create two Pokémon from sugarhigh's ["Life Orb Crawdaunt and Seismitoad + Zapdos Rain" team](https://pokepast.es/5193200d72df25df).
 

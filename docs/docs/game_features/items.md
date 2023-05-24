@@ -7,7 +7,7 @@ Move related configurations are in [`include/config/item.h`](https://github.com/
 
 ### Shop
 
-![Gif of the player's Pokemon learning and then using a post Gen 3 move](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 The script files where each individual shop is defined can be edited to add any items, including those from newer generations. For the shop in Rustboro City, the corresponding file is `data/maps/RustboroCity_Mart/scripts.inc`.
 
@@ -24,7 +24,7 @@ The script files where each individual shop is defined can be edited to add any 
 ```
 
 ### Item Ball
-![Gif of the player's Pokemon learning and then using a post Gen 3 move](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 Items in the overworld can also be edited by changing the constant associated with specific object. Overworld items are listed in `data/scripts/item_ball_scripts.inc`.
 
 **Usage**:

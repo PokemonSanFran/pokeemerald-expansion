@@ -1,5 +1,5 @@
 # Mid Battle Trainer Messages
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 Introduced in Generation 4, Mid Battle Trainer Messages are lines of dialogue spoken by the opponent when the opponent. [[More Info]](https://bulbapedia.bulbagarden.net/wiki/Blue_(game)/Quotes#Pok.C3.A9mon_HeartGold_and_SoulSilver)
 
@@ -34,7 +34,7 @@ static const struct TrainerSlide sTrainerSlides[] =
 + }
 };
 ```
-![](https://archives.bulbagarden.net/media/upload/f/f9/Fire_Blast_III.png)
+<p align="center"><video width="240" height="160" controls muter><source src="../../img/placeholder.mp4" type="video/mp4">Your browser does not support the video tag.</video></p>
 
 ## Supported Messages
 By default, `pokeemerald-expansion` comes with and supports the following:
