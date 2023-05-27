@@ -391,3 +391,180 @@
 	.byte 1  @ 105
 	.byte 1  @ 106
 	.byte 1  @ 107
+
+Keysplit_0_1_2_3_42_49_56_63:
+	.incbin "sound/notecharts/Keysplit_0_1_2_3_42_49_56_63.bin"
+
+Keysplit_0_1_45_55:
+	.incbin "sound/notecharts/Keysplit_0_1_45_55.bin"
+
+Keysplit_0_12_44_56_68:
+	.incbin "sound/notecharts/Keysplit_0_12_44_56_68.bin"
+
+Keysplit_3_7_11_39_47_57_83_99_107_117:
+	.incbin "sound/notecharts/Keysplit_3_7_11_39_47_57_83_99_107_117.bin"
+
+Keysplit_11_23_44_56_68:
+	.incbin "sound/notecharts/Keysplit_11_23_44_56_68.bin"
+
+Keysplit_11_63_69_75:
+	.incbin "sound/notecharts/Keysplit_11_63_69_75.bin"
+
+Keysplit_29_41_53_65_80_92:
+	.incbin "sound/notecharts/Keysplit_29_41_53_65_80_92.bin"
+
+Keysplit_30_46:
+	.incbin "sound/notecharts/Keysplit_30_46.bin"
+
+Keysplit_33_45:
+	.incbin "sound/notecharts/Keysplit_33_45.bin"
+
+Keysplit_36_52_67_80:
+	.incbin "sound/notecharts/Keysplit_36_52_67_80.bin"
+
+Keysplit_37_52_62_76:
+	.incbin "sound/notecharts/Keysplit_37_52_62_76.bin"
+
+Keysplit_41:
+	.incbin "sound/notecharts/Keysplit_41.bin"
+
+Keysplit_43_55_67:
+	.incbin "sound/notecharts/Keysplit_43_55_67.bin"
+
+Keysplit_43_55_67_79:
+	.incbin "sound/notecharts/Keysplit_43_55_67_79.bin"
+
+Keysplit_44_56:
+	.incbin "sound/notecharts/Keysplit_44_56.bin"
+
+Keysplit_44_56_68:
+	.incbin "sound/notecharts/Keysplit_44_56_68.bin"
+
+Keysplit_44_56_68_80:
+	.incbin "sound/notecharts/Keysplit_44_56_68_80.bin"
+
+Keysplit_45_53_63:
+	.incbin "sound/notecharts/Keysplit_45_53_63.bin"
+
+Keysplit_47:
+	.incbin "sound/notecharts/Keysplit_47.bin"
+
+Keysplit_47_59:
+	.incbin "sound/notecharts/Keysplit_47_59.bin"
+
+Keysplit_48_57:
+	.incbin "sound/notecharts/Keysplit_48_57.bin"
+
+Keysplit_50_58_66_75:
+	.incbin "sound/notecharts/Keysplit_50_58_66_75.bin"
+
+Keysplit_51_59_69:
+	.incbin "sound/notecharts/Keysplit_51_59_69.bin"
+
+Keysplit_52_64:
+	.incbin "sound/notecharts/Keysplit_52_64.bin"
+
+Keysplit_54_66:
+	.incbin "sound/notecharts/Keysplit_54_66.bin"
+
+Keysplit_54_66_78:
+	.incbin "sound/notecharts/Keysplit_54_66_78.bin"
+
+Keysplit_55_64:
+	.incbin "sound/notecharts/Keysplit_55_64.bin"
+
+Keysplit_55_67_79:
+	.incbin "sound/notecharts/Keysplit_55_67_79.bin"
+
+Keysplit_56_65_71:
+	.incbin "sound/notecharts/Keysplit_56_65_71.bin"
+
+Keysplit_56_68:
+	.incbin "sound/notecharts/Keysplit_56_68.bin"
+
+Keysplit_56_68_80:
+	.incbin "sound/notecharts/Keysplit_56_68_80.bin"
+
+Keysplit_57_65:
+	.incbin "sound/notecharts/Keysplit_57_65.bin"
+
+Keysplit_57_69_81:
+	.incbin "sound/notecharts/Keysplit_57_69_81.bin"
+
+Keysplit_57_77:
+	.incbin "sound/notecharts/Keysplit_57_77.bin"
+
+Keysplit_58_65_72:
+	.incbin "sound/notecharts/Keysplit_58_65_72.bin"
+
+Keysplit_58_67:
+	.incbin "sound/notecharts/Keysplit_58_67.bin"
+
+Keysplit_59:
+	.incbin "sound/notecharts/Keysplit_59.bin"
+
+Keysplit_59_71_79_86:
+	.incbin "sound/notecharts/Keysplit_59_71_79_86.bin"
+
+Keysplit_60_67_73:
+	.incbin "sound/notecharts/Keysplit_60_67_73.bin"
+
+Keysplit_60_72:
+	.incbin "sound/notecharts/Keysplit_60_72.bin"
+
+Keysplit_62:
+	.incbin "sound/notecharts/Keysplit_62.bin"
+
+Keysplit_63_70:
+	.incbin "sound/notecharts/Keysplit_63_70.bin"
+
+Keysplit_63_71:
+	.incbin "sound/notecharts/Keysplit_63_71.bin"
+
+Keysplit_64:
+	.incbin "sound/notecharts/Keysplit_64.bin"
+
+Keysplit_65_70_77:
+	.incbin "sound/notecharts/Keysplit_65_70_77.bin"
+
+Keysplit_66_75:
+	.incbin "sound/notecharts/Keysplit_66_75.bin"
+
+Keysplit_66_77:
+	.incbin "sound/notecharts/Keysplit_66_77.bin"
+
+Keysplit_67_73:
+	.incbin "sound/notecharts/Keysplit_67_73.bin"
+
+Keysplit_67_74_80:
+	.incbin "sound/notecharts/Keysplit_67_74_80.bin"
+
+Keysplit_67_74_82:
+	.incbin "sound/notecharts/Keysplit_67_74_82.bin"
+
+Keysplit_67_76:
+	.incbin "sound/notecharts/Keysplit_67_76.bin"
+
+Keysplit_68:
+	.incbin "sound/notecharts/Keysplit_68.bin"
+
+Keysplit_68_77:
+	.incbin "sound/notecharts/Keysplit_68_77.bin"
+
+Keysplit_68_80:
+	.incbin "sound/notecharts/Keysplit_68_80.bin"
+
+Keysplit_70_80:
+	.incbin "sound/notecharts/Keysplit_70_80.bin"
+
+Keysplit_71:
+	.incbin "sound/notecharts/Keysplit_71.bin"
+
+Keysplit_80:
+	.incbin "sound/notecharts/Keysplit_80.bin"
+
+Keysplit_80_92:
+	.incbin "sound/notecharts/Keysplit_80_92.bin"
+
+Keysplit_84_94:
+	.incbin "sound/notecharts/Keysplit_84_94.bin"

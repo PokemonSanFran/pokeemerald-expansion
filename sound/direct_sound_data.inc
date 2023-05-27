@@ -4602,1770 +4602,1742 @@ DirectSoundWaveData_sd90_classical_whistle::
 DirectSoundWaveData_sd90_enhanced_delay_shaku::
 	.incbin "sound/direct_sound_samples/sd90_enhanced_delay_shaku.bin"
 
-	.align 2
-DirectSoundWaveData_crown_2clara4::
-    .incbin "sound/direct_sound_samples/crown_2clara4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_2clarc4::
-    .incbin "sound/direct_sound_samples/crown_2clarc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_2clarg5::
-    .incbin "sound/direct_sound_samples/crown_2clarg5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_80brsc3::
-    .incbin "sound/direct_sound_samples/crown_80brsc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_80brsc4::
-    .incbin "sound/direct_sound_samples/crown_80brsc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_80brsc5::
-    .incbin "sound/direct_sound_samples/crown_80brsc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_80brsds6::
-    .incbin "sound/direct_sound_samples/crown_80brsds6.bin"
-
-	.align 2
-DirectSoundWaveData_crown_80brsgs5::
-    .incbin "sound/direct_sound_samples/crown_80brsgs5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_adchh::
-    .incbin "sound/direct_sound_samples/crown_adchh.bin"
-
-	.align 2
-DirectSoundWaveData_crown_adcowbl::
-    .incbin "sound/direct_sound_samples/crown_adcowbl.bin"
-
-	.align 2
-DirectSoundWaveData_crown_adcrash1::
-    .incbin "sound/direct_sound_samples/crown_adcrash1.bin"
-
-	.align 2
-DirectSoundWaveData_crown_adcrash2::
-    .incbin "sound/direct_sound_samples/crown_adcrash2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_adjazchh::
-    .incbin "sound/direct_sound_samples/crown_adjazchh.bin"
-
-	.align 2
-DirectSoundWaveData_crown_adjazcrash::
-    .incbin "sound/direct_sound_samples/crown_adjazcrash.bin"
-
-	.align 2
-DirectSoundWaveData_crown_adjazkick::
-    .incbin "sound/direct_sound_samples/crown_adjazkick.bin"
-
-	.align 2
-DirectSoundWaveData_crown_adjazohh::
-    .incbin "sound/direct_sound_samples/crown_adjazohh.bin"
-
-	.align 2
-DirectSoundWaveData_crown_adjazphh::
-    .incbin "sound/direct_sound_samples/crown_adjazphh.bin"
-
-	.align 2
-DirectSoundWaveData_crown_adjazrbel::
-    .incbin "sound/direct_sound_samples/crown_adjazrbel.bin"
-
-	.align 2
-DirectSoundWaveData_crown_adjazride::
-    .incbin "sound/direct_sound_samples/crown_adjazride.bin"
-
-	.align 2
-DirectSoundWaveData_crown_adjazsnare::
-    .incbin "sound/direct_sound_samples/crown_adjazsnare.bin"
-
-	.align 2
-DirectSoundWaveData_crown_adkick::
-    .incbin "sound/direct_sound_samples/crown_adkick.bin"
-
-	.align 2
-DirectSoundWaveData_crown_adohh::
-    .incbin "sound/direct_sound_samples/crown_adohh.bin"
-
-	.align 2
-DirectSoundWaveData_crown_adphh::
-    .incbin "sound/direct_sound_samples/crown_adphh.bin"
-
-	.align 2
-DirectSoundWaveData_crown_adrbel::
-    .incbin "sound/direct_sound_samples/crown_adrbel.bin"
-
-	.align 2
-DirectSoundWaveData_crown_adride::
-    .incbin "sound/direct_sound_samples/crown_adride.bin"
-
-	.align 2
-DirectSoundWaveData_crown_adsidestk::
-    .incbin "sound/direct_sound_samples/crown_adsidestk.bin"
-
-	.align 2
-DirectSoundWaveData_crown_adsnare::
-    .incbin "sound/direct_sound_samples/crown_adsnare.bin"
-
-	.align 2
-DirectSoundWaveData_crown_adtom1::
-    .incbin "sound/direct_sound_samples/crown_adtom1.bin"
-
-	.align 2
-DirectSoundWaveData_crown_adtom2::
-    .incbin "sound/direct_sound_samples/crown_adtom2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_adtom4::
-    .incbin "sound/direct_sound_samples/crown_adtom4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_adtom5::
-    .incbin "sound/direct_sound_samples/crown_adtom5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_adtom6::
-    .incbin "sound/direct_sound_samples/crown_adtom6.bin"
-
-	.align 2
-DirectSoundWaveData_crown_aflta4::
-    .incbin "sound/direct_sound_samples/crown_aflta4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_afltc4::
-    .incbin "sound/direct_sound_samples/crown_afltc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_afltc6::
-    .incbin "sound/direct_sound_samples/crown_afltc6.bin"
-
-	.align 2
-DirectSoundWaveData_crown_afltf5::
-    .incbin "sound/direct_sound_samples/crown_afltf5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_applause::
-    .incbin "sound/direct_sound_samples/crown_applause.bin"
-
-	.align 2
-DirectSoundWaveData_crown_asaxc5::
-    .incbin "sound/direct_sound_samples/crown_asaxc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_asaxe4::
-    .incbin "sound/direct_sound_samples/crown_asaxe4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_asaxg3::
-    .incbin "sound/direct_sound_samples/crown_asaxg3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_atkanac2::
-    .incbin "sound/direct_sound_samples/crown_atkanac2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_bagpipeas2::
-    .incbin "sound/direct_sound_samples/crown_bagpipeas2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_bagpipeas4::
-    .incbin "sound/direct_sound_samples/crown_bagpipeas4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_bagpipeg5::
-    .incbin "sound/direct_sound_samples/crown_bagpipeg5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_bangstc1::
-    .incbin "sound/direct_sound_samples/crown_bangstc1.bin"
-
-	.align 2
-DirectSoundWaveData_crown_bangstc2::
-    .incbin "sound/direct_sound_samples/crown_bangstc2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_bangstc3::
-    .incbin "sound/direct_sound_samples/crown_bangstc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_banjoe3::
-    .incbin "sound/direct_sound_samples/crown_banjoe3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_banjoe4::
-    .incbin "sound/direct_sound_samples/crown_banjoe4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_bassna3::
-    .incbin "sound/direct_sound_samples/crown_bassna3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_bassnc3::
-    .incbin "sound/direct_sound_samples/crown_bassnc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_bassne2::
-    .incbin "sound/direct_sound_samples/crown_bassne2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_bassnf4::
-    .incbin "sound/direct_sound_samples/crown_bassnf4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_bdownc2::
-    .incbin "sound/direct_sound_samples/crown_bdownc2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_bdownc3::
-    .incbin "sound/direct_sound_samples/crown_bdownc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_bdownc4::
-    .incbin "sound/direct_sound_samples/crown_bdownc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_brushhit::
-    .incbin "sound/direct_sound_samples/crown_brushhit.bin"
-
-	.align 2
-DirectSoundWaveData_crown_brushrapid::
-    .incbin "sound/direct_sound_samples/crown_brushrapid.bin"
-
-	.align 2
-DirectSoundWaveData_crown_brushswirl::
-    .incbin "sound/direct_sound_samples/crown_brushswirl.bin"
-
-	.align 2
-DirectSoundWaveData_crown_bsaxb3::
-    .incbin "sound/direct_sound_samples/crown_bsaxb3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_bsaxd3::
-    .incbin "sound/direct_sound_samples/crown_bsaxd3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_bsaxf2::
-    .incbin "sound/direct_sound_samples/crown_bsaxf2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_celestac4::
-    .incbin "sound/direct_sound_samples/crown_celestac4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_celestac5::
-    .incbin "sound/direct_sound_samples/crown_celestac5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_celestac6::
-    .incbin "sound/direct_sound_samples/crown_celestac6.bin"
-
-	.align 2
-DirectSoundWaveData_crown_celloc2::
-    .incbin "sound/direct_sound_samples/crown_celloc2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_celloc3::
-    .incbin "sound/direct_sound_samples/crown_celloc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_celloc4::
-    .incbin "sound/direct_sound_samples/crown_celloc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_celloc5::
-    .incbin "sound/direct_sound_samples/crown_celloc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_chmchh::
-    .incbin "sound/direct_sound_samples/crown_chmchh.bin"
-
-	.align 2
-DirectSoundWaveData_crown_chmcrash::
-    .incbin "sound/direct_sound_samples/crown_chmcrash.bin"
-
-	.align 2
-DirectSoundWaveData_crown_chmkick::
-    .incbin "sound/direct_sound_samples/crown_chmkick.bin"
-
-	.align 2
-DirectSoundWaveData_crown_chmohh::
-    .incbin "sound/direct_sound_samples/crown_chmohh.bin"
-
-	.align 2
-DirectSoundWaveData_crown_chmride::
-    .incbin "sound/direct_sound_samples/crown_chmride.bin"
-
-	.align 2
-DirectSoundWaveData_crown_chmsnare::
-    .incbin "sound/direct_sound_samples/crown_chmsnare.bin"
-
-	.align 2
-DirectSoundWaveData_crown_chmtom1::
-    .incbin "sound/direct_sound_samples/crown_chmtom1.bin"
-
-	.align 2
-DirectSoundWaveData_crown_chmtom3::
-    .incbin "sound/direct_sound_samples/crown_chmtom3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_choirc3::
-    .incbin "sound/direct_sound_samples/crown_choirc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_choirc4::
-    .incbin "sound/direct_sound_samples/crown_choirc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_choirc5::
-    .incbin "sound/direct_sound_samples/crown_choirc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_choirc6::
-    .incbin "sound/direct_sound_samples/crown_choirc6.bin"
-
-	.align 2
-DirectSoundWaveData_crown_clavc2::
-    .incbin "sound/direct_sound_samples/crown_clavc2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_clavc3::
-    .incbin "sound/direct_sound_samples/crown_clavc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_clavc4::
-    .incbin "sound/direct_sound_samples/crown_clavc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_clavc5::
-    .incbin "sound/direct_sound_samples/crown_clavc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_clnstrc5::
-    .incbin "sound/direct_sound_samples/crown_clnstrc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_clnstre4::
-    .incbin "sound/direct_sound_samples/crown_clnstre4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_clnstrg2::
-    .incbin "sound/direct_sound_samples/crown_clnstrg2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_clnstrg3::
-    .incbin "sound/direct_sound_samples/crown_clnstrg3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_cosmc2::
-    .incbin "sound/direct_sound_samples/crown_cosmc2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_cosmc3::
-    .incbin "sound/direct_sound_samples/crown_cosmc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_cosmc4::
-    .incbin "sound/direct_sound_samples/crown_cosmc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_cosmc5::
-    .incbin "sound/direct_sound_samples/crown_cosmc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_cosmc6::
-    .incbin "sound/direct_sound_samples/crown_cosmc6.bin"
-
-	.align 2
-DirectSoundWaveData_crown_crysepc3::
-    .incbin "sound/direct_sound_samples/crown_crysepc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_crysepc4::
-    .incbin "sound/direct_sound_samples/crown_crysepc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_cuatroa4::
-    .incbin "sound/direct_sound_samples/crown_cuatroa4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_cuatrod4::
-    .incbin "sound/direct_sound_samples/crown_cuatrod4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_cuatroe5::
-    .incbin "sound/direct_sound_samples/crown_cuatroe5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_cuatrog3::
-    .incbin "sound/direct_sound_samples/crown_cuatrog3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_dighrpc3::
-    .incbin "sound/direct_sound_samples/crown_dighrpc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_dighrpc5::
-    .incbin "sound/direct_sound_samples/crown_dighrpc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_disgtslide::
-    .incbin "sound/direct_sound_samples/crown_disgtslide.bin"
-
-	.align 2
-DirectSoundWaveData_crown_disharmoc5::
-    .incbin "sound/direct_sound_samples/crown_disharmoc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_dulcimc3::
-    .incbin "sound/direct_sound_samples/crown_dulcimc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_dulcimc4::
-    .incbin "sound/direct_sound_samples/crown_dulcimc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_dulcimc5::
-    .incbin "sound/direct_sound_samples/crown_dulcimc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_dulcimc6::
-    .incbin "sound/direct_sound_samples/crown_dulcimc6.bin"
-
-	.align 2
-DirectSoundWaveData_crown_erhua4::
-    .incbin "sound/direct_sound_samples/crown_erhua4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_erhua5::
-    .incbin "sound/direct_sound_samples/crown_erhua5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_erhud4::
-    .incbin "sound/direct_sound_samples/crown_erhud4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_erhue5::
-    .incbin "sound/direct_sound_samples/crown_erhue5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_etherec5::
-    .incbin "sound/direct_sound_samples/crown_etherec5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_fanbela5::
-    .incbin "sound/direct_sound_samples/crown_fanbela5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_fanbelg4::
-    .incbin "sound/direct_sound_samples/crown_fanbelg4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_fantasc5::
-    .incbin "sound/direct_sound_samples/crown_fantasc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_fantasg3::
-    .incbin "sound/direct_sound_samples/crown_fantasg3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_fatbrassc3::
-    .incbin "sound/direct_sound_samples/crown_fatbrassc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_fatbrassc4::
-    .incbin "sound/direct_sound_samples/crown_fatbrassc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_fatbrassc5::
-    .incbin "sound/direct_sound_samples/crown_fatbrassc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_fatmonoc3::
-    .incbin "sound/direct_sound_samples/crown_fatmonoc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_fatmonoc4::
-    .incbin "sound/direct_sound_samples/crown_fatmonoc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_fatmonoc5::
-    .incbin "sound/direct_sound_samples/crown_fatmonoc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_fenbassc1::
-    .incbin "sound/direct_sound_samples/crown_fenbassc1.bin"
-
-	.align 2
-DirectSoundWaveData_crown_fenbassc2::
-    .incbin "sound/direct_sound_samples/crown_fenbassc2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_fenbassc3::
-    .incbin "sound/direct_sound_samples/crown_fenbassc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_fhnsc3::
-    .incbin "sound/direct_sound_samples/crown_fhnsc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_fhnsc4::
-    .incbin "sound/direct_sound_samples/crown_fhnsc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_fhnsc5::
-    .incbin "sound/direct_sound_samples/crown_fhnsc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_fretlsc1::
-    .incbin "sound/direct_sound_samples/crown_fretlsc1.bin"
-
-	.align 2
-DirectSoundWaveData_crown_fretlsc2::
-    .incbin "sound/direct_sound_samples/crown_fretlsc2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_fretlsc3::
-    .incbin "sound/direct_sound_samples/crown_fretlsc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_fslapc2::
-    .incbin "sound/direct_sound_samples/crown_fslapc2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_fslapc3::
-    .incbin "sound/direct_sound_samples/crown_fslapc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_fslapc4::
-    .incbin "sound/direct_sound_samples/crown_fslapc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_fslaps1::
-    .incbin "sound/direct_sound_samples/crown_fslaps1.bin"
-
-	.align 2
-DirectSoundWaveData_crown_fslaps2::
-    .incbin "sound/direct_sound_samples/crown_fslaps2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_fslaps3::
-    .incbin "sound/direct_sound_samples/crown_fslaps3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_funkinc5::
-    .incbin "sound/direct_sound_samples/crown_funkinc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_funkine4::
-    .incbin "sound/direct_sound_samples/crown_funkine4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_funking2::
-    .incbin "sound/direct_sound_samples/crown_funking2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_funking3::
-    .incbin "sound/direct_sound_samples/crown_funking3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_glockc5::
-    .incbin "sound/direct_sound_samples/crown_glockc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_glockc6::
-    .incbin "sound/direct_sound_samples/crown_glockc6.bin"
-
-	.align 2
-DirectSoundWaveData_crown_glockc7::
-    .incbin "sound/direct_sound_samples/crown_glockc7.bin"
-
-	.align 2
-DirectSoundWaveData_crown_haljazchina::
-    .incbin "sound/direct_sound_samples/crown_haljazchina.bin"
-
-	.align 2
-DirectSoundWaveData_crown_haljazkick::
-    .incbin "sound/direct_sound_samples/crown_haljazkick.bin"
-
-	.align 2
-DirectSoundWaveData_crown_haljazride::
-    .incbin "sound/direct_sound_samples/crown_haljazride.bin"
-
-	.align 2
-DirectSoundWaveData_crown_haljazsidestk::
-    .incbin "sound/direct_sound_samples/crown_haljazsidestk.bin"
-
-	.align 2
-DirectSoundWaveData_crown_haljazsnare::
-    .incbin "sound/direct_sound_samples/crown_haljazsnare.bin"
-
-	.align 2
-DirectSoundWaveData_crown_haljazsplash::
-    .incbin "sound/direct_sound_samples/crown_haljazsplash.bin"
-
-	.align 2
-DirectSoundWaveData_crown_haljaztom1::
-    .incbin "sound/direct_sound_samples/crown_haljaztom1.bin"
-
-	.align 2
-DirectSoundWaveData_crown_haljaztom3::
-    .incbin "sound/direct_sound_samples/crown_haljaztom3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_haljaztom4::
-    .incbin "sound/direct_sound_samples/crown_haljaztom4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_haljaztom6::
-    .incbin "sound/direct_sound_samples/crown_haljaztom6.bin"
-
-	.align 2
-DirectSoundWaveData_crown_harmona4::
-    .incbin "sound/direct_sound_samples/crown_harmona4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_harmone4::
-    .incbin "sound/direct_sound_samples/crown_harmone4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_harmone5::
-    .incbin "sound/direct_sound_samples/crown_harmone5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_harpc3::
-    .incbin "sound/direct_sound_samples/crown_harpc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_harpc4::
-    .incbin "sound/direct_sound_samples/crown_harpc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_harpc5::
-    .incbin "sound/direct_sound_samples/crown_harpc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_harpsic2::
-    .incbin "sound/direct_sound_samples/crown_harpsic2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_harpsic3::
-    .incbin "sound/direct_sound_samples/crown_harpsic3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_harpsic4::
-    .incbin "sound/direct_sound_samples/crown_harpsic4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_harpsic5::
-    .incbin "sound/direct_sound_samples/crown_harpsic5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_harpsic6::
-    .incbin "sound/direct_sound_samples/crown_harpsic6.bin"
-
-	.align 2
-DirectSoundWaveData_crown_hsawc4::
-    .incbin "sound/direct_sound_samples/crown_hsawc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_hsawd5::
-    .incbin "sound/direct_sound_samples/crown_hsawd5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_hsawe3::
-    .incbin "sound/direct_sound_samples/crown_hsawe3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_hsawg4::
-    .incbin "sound/direct_sound_samples/crown_hsawg4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_hslapc1::
-    .incbin "sound/direct_sound_samples/crown_hslapc1.bin"
-
-	.align 2
-DirectSoundWaveData_crown_hslapc2::
-    .incbin "sound/direct_sound_samples/crown_hslapc2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_hslapc3::
-    .incbin "sound/direct_sound_samples/crown_hslapc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_hslapc4::
-    .incbin "sound/direct_sound_samples/crown_hslapc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_jazgtc2::
-    .incbin "sound/direct_sound_samples/crown_jazgtc2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_jazgtc3::
-    .incbin "sound/direct_sound_samples/crown_jazgtc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_jazgtc4::
-    .incbin "sound/direct_sound_samples/crown_jazgtc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_jazgtc5::
-    .incbin "sound/direct_sound_samples/crown_jazgtc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_kalimbae4::
-    .incbin "sound/direct_sound_samples/crown_kalimbae4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_kalimbae5::
-    .incbin "sound/direct_sound_samples/crown_kalimbae5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_kotoc4::
-    .incbin "sound/direct_sound_samples/crown_kotoc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_kotoc5::
-    .incbin "sound/direct_sound_samples/crown_kotoc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_kotog5::
-    .incbin "sound/direct_sound_samples/crown_kotog5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_lizepb1::
-    .incbin "sound/direct_sound_samples/crown_lizepb1.bin"
-
-	.align 2
-DirectSoundWaveData_crown_lizepc4::
-    .incbin "sound/direct_sound_samples/crown_lizepc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_lizepc6::
-    .incbin "sound/direct_sound_samples/crown_lizepc6.bin"
-
-	.align 2
-DirectSoundWaveData_crown_lizepd3::
-    .incbin "sound/direct_sound_samples/crown_lizepd3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_lizepd5::
-    .incbin "sound/direct_sound_samples/crown_lizepd5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_m1crash::
-    .incbin "sound/direct_sound_samples/crown_m1crash.bin"
-
-	.align 2
-DirectSoundWaveData_crown_m1kick::
-    .incbin "sound/direct_sound_samples/crown_m1kick.bin"
-
-	.align 2
-DirectSoundWaveData_crown_m1snare::
-    .incbin "sound/direct_sound_samples/crown_m1snare.bin"
-
-	.align 2
-DirectSoundWaveData_crown_marimc3::
-    .incbin "sound/direct_sound_samples/crown_marimc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_marimc4::
-    .incbin "sound/direct_sound_samples/crown_marimc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_marimc5::
-    .incbin "sound/direct_sound_samples/crown_marimc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_marimg4::
-    .incbin "sound/direct_sound_samples/crown_marimg4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_mrbrassc2::
-    .incbin "sound/direct_sound_samples/crown_mrbrassc2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_mrbrassg3::
-    .incbin "sound/direct_sound_samples/crown_mrbrassg3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_mtpta5::
-    .incbin "sound/direct_sound_samples/crown_mtpta5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_mtptb4::
-    .incbin "sound/direct_sound_samples/crown_mtptb4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_mtptd4::
-    .incbin "sound/direct_sound_samples/crown_mtptd4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_musboxc3::
-    .incbin "sound/direct_sound_samples/crown_musboxc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_musboxc4::
-    .incbin "sound/direct_sound_samples/crown_musboxc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_musboxc5::
-    .incbin "sound/direct_sound_samples/crown_musboxc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_musboxc6::
-    .incbin "sound/direct_sound_samples/crown_musboxc6.bin"
-
-	.align 2
-DirectSoundWaveData_crown_nylonc5::
-    .incbin "sound/direct_sound_samples/crown_nylonc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_nylone4::
-    .incbin "sound/direct_sound_samples/crown_nylone4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_nylong2::
-    .incbin "sound/direct_sound_samples/crown_nylong2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_nylong3::
-    .incbin "sound/direct_sound_samples/crown_nylong3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_nyslapa1::
-    .incbin "sound/direct_sound_samples/crown_nyslapa1.bin"
-
-	.align 2
-DirectSoundWaveData_crown_nyslapa2::
-    .incbin "sound/direct_sound_samples/crown_nyslapa2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_nyslapc1::
-    .incbin "sound/direct_sound_samples/crown_nyslapc1.bin"
-
-	.align 2
-DirectSoundWaveData_crown_nyslapd2::
-    .incbin "sound/direct_sound_samples/crown_nyslapd2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_nyslapd3::
-    .incbin "sound/direct_sound_samples/crown_nyslapd3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_nyslaps1::
-    .incbin "sound/direct_sound_samples/crown_nyslaps1.bin"
-
-	.align 2
-DirectSoundWaveData_crown_nyslaps2::
-    .incbin "sound/direct_sound_samples/crown_nyslaps2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_nyslaps3::
-    .incbin "sound/direct_sound_samples/crown_nyslaps3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_nyslaps4::
-    .incbin "sound/direct_sound_samples/crown_nyslaps4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_oboea5::
-    .incbin "sound/direct_sound_samples/crown_oboea5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_oboec5::
-    .incbin "sound/direct_sound_samples/crown_oboec5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_oboee4::
-    .incbin "sound/direct_sound_samples/crown_oboee4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_okagogo::
-    .incbin "sound/direct_sound_samples/crown_okagogo.bin"
-
-	.align 2
-DirectSoundWaveData_crown_okbongo::
-    .incbin "sound/direct_sound_samples/crown_okbongo.bin"
-
-	.align 2
-DirectSoundWaveData_crown_okcasta::
-    .incbin "sound/direct_sound_samples/crown_okcasta.bin"
-
-	.align 2
-DirectSoundWaveData_crown_okclap::
-    .incbin "sound/direct_sound_samples/crown_okclap.bin"
-
-	.align 2
-DirectSoundWaveData_crown_okclave::
-    .incbin "sound/direct_sound_samples/crown_okclave.bin"
-
-	.align 2
-DirectSoundWaveData_crown_okconga::
-    .incbin "sound/direct_sound_samples/crown_okconga.bin"
-
-	.align 2
-DirectSoundWaveData_crown_okcongam::
-    .incbin "sound/direct_sound_samples/crown_okcongam.bin"
-
-	.align 2
-DirectSoundWaveData_crown_okgong::
-    .incbin "sound/direct_sound_samples/crown_okgong.bin"
-
-	.align 2
-DirectSoundWaveData_crown_okguiro::
-    .incbin "sound/direct_sound_samples/crown_okguiro.bin"
-
-	.align 2
-DirectSoundWaveData_crown_okride::
-    .incbin "sound/direct_sound_samples/crown_okride.bin"
-
-	.align 2
-DirectSoundWaveData_crown_okshakr1::
-    .incbin "sound/direct_sound_samples/crown_okshakr1.bin"
-
-	.align 2
-DirectSoundWaveData_crown_okshakr2::
-    .incbin "sound/direct_sound_samples/crown_okshakr2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_oksnare::
-    .incbin "sound/direct_sound_samples/crown_oksnare.bin"
-
-	.align 2
-DirectSoundWaveData_crown_oktabla1::
-    .incbin "sound/direct_sound_samples/crown_oktabla1.bin"
-
-	.align 2
-DirectSoundWaveData_crown_oktabla2::
-    .incbin "sound/direct_sound_samples/crown_oktabla2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_oktambo::
-    .incbin "sound/direct_sound_samples/crown_oktambo.bin"
-
-	.align 2
-DirectSoundWaveData_crown_oktrim::
-    .incbin "sound/direct_sound_samples/crown_oktrim.bin"
-
-	.align 2
-DirectSoundWaveData_crown_oktrio::
-    .incbin "sound/direct_sound_samples/crown_oktrio.bin"
-
-	.align 2
-DirectSoundWaveData_crown_okwblock::
-    .incbin "sound/direct_sound_samples/crown_okwblock.bin"
-
-	.align 2
-DirectSoundWaveData_crown_oliverchh::
-    .incbin "sound/direct_sound_samples/crown_oliverchh.bin"
-
-	.align 2
-DirectSoundWaveData_crown_oliverkick::
-    .incbin "sound/direct_sound_samples/crown_oliverkick.bin"
-
-	.align 2
-DirectSoundWaveData_crown_oliverohh::
-    .incbin "sound/direct_sound_samples/crown_oliverohh.bin"
-
-	.align 2
-DirectSoundWaveData_crown_oliverphh::
-    .incbin "sound/direct_sound_samples/crown_oliverphh.bin"
-
-	.align 2
-DirectSoundWaveData_crown_oliversnare::
-    .incbin "sound/direct_sound_samples/crown_oliversnare.bin"
-
-	.align 2
-DirectSoundWaveData_crown_olivertom::
-    .incbin "sound/direct_sound_samples/crown_olivertom.bin"
-
-	.align 2
-DirectSoundWaveData_crown_orchbd1::
-    .incbin "sound/direct_sound_samples/crown_orchbd1.bin"
-
-	.align 2
-DirectSoundWaveData_crown_orchbd2::
-    .incbin "sound/direct_sound_samples/crown_orchbd2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_orchcrash1::
-    .incbin "sound/direct_sound_samples/crown_orchcrash1.bin"
-
-	.align 2
-DirectSoundWaveData_crown_orchcymcl1::
-    .incbin "sound/direct_sound_samples/crown_orchcymcl1.bin"
-
-	.align 2
-DirectSoundWaveData_crown_orchcymcl2::
-    .incbin "sound/direct_sound_samples/crown_orchcymcl2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_orchitg4::
-    .incbin "sound/direct_sound_samples/crown_orchitg4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_orchsnr2::
-    .incbin "sound/direct_sound_samples/crown_orchsnr2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_orchsnrside::
-    .incbin "sound/direct_sound_samples/crown_orchsnrside.bin"
-
-	.align 2
-DirectSoundWaveData_crown_ostrc2::
-    .incbin "sound/direct_sound_samples/crown_ostrc2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_ostrc3::
-    .incbin "sound/direct_sound_samples/crown_ostrc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_ostrc4::
-    .incbin "sound/direct_sound_samples/crown_ostrc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_ostrc5::
-    .incbin "sound/direct_sound_samples/crown_ostrc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_ostrc6::
-    .incbin "sound/direct_sound_samples/crown_ostrc6.bin"
-
-	.align 2
-DirectSoundWaveData_crown_p5orgc3::
-    .incbin "sound/direct_sound_samples/crown_p5orgc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_p5orgc5::
-    .incbin "sound/direct_sound_samples/crown_p5orgc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_paccorc3::
-    .incbin "sound/direct_sound_samples/crown_paccorc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_paccorc4::
-    .incbin "sound/direct_sound_samples/crown_paccorc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_paccorc5::
-    .incbin "sound/direct_sound_samples/crown_paccorc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_panflc4::
-    .incbin "sound/direct_sound_samples/crown_panflc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_panflc5::
-    .incbin "sound/direct_sound_samples/crown_panflc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_panflc6::
-    .incbin "sound/direct_sound_samples/crown_panflc6.bin"
-
-	.align 2
-DirectSoundWaveData_crown_pdiste2::
-    .incbin "sound/direct_sound_samples/crown_pdiste2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_pdiste3::
-    .incbin "sound/direct_sound_samples/crown_pdiste3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_pdiste4::
-    .incbin "sound/direct_sound_samples/crown_pdiste4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_pdiste5::
-    .incbin "sound/direct_sound_samples/crown_pdiste5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_perkysc4::
-    .incbin "sound/direct_sound_samples/crown_perkysc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_phatkick::
-    .incbin "sound/direct_sound_samples/crown_phatkick.bin"
-
-	.align 2
-DirectSoundWaveData_crown_phatsnare::
-    .incbin "sound/direct_sound_samples/crown_phatsnare.bin"
-
-	.align 2
-DirectSoundWaveData_crown_pianofc1::
-    .incbin "sound/direct_sound_samples/crown_pianofc1.bin"
-
-	.align 2
-DirectSoundWaveData_crown_pianofc2::
-    .incbin "sound/direct_sound_samples/crown_pianofc2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_pianofc3::
-    .incbin "sound/direct_sound_samples/crown_pianofc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_pianofc4::
-    .incbin "sound/direct_sound_samples/crown_pianofc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_pianofc5::
-    .incbin "sound/direct_sound_samples/crown_pianofc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_pianofc6::
-    .incbin "sound/direct_sound_samples/crown_pianofc6.bin"
-
-	.align 2
-DirectSoundWaveData_crown_pianofc7::
-    .incbin "sound/direct_sound_samples/crown_pianofc7.bin"
-
-	.align 2
-DirectSoundWaveData_crown_pianopc1::
-    .incbin "sound/direct_sound_samples/crown_pianopc1.bin"
-
-	.align 2
-DirectSoundWaveData_crown_pianopc2::
-    .incbin "sound/direct_sound_samples/crown_pianopc2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_pianopc3::
-    .incbin "sound/direct_sound_samples/crown_pianopc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_pianopc4::
-    .incbin "sound/direct_sound_samples/crown_pianopc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_pianopc5::
-    .incbin "sound/direct_sound_samples/crown_pianopc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_pianopc6::
-    .incbin "sound/direct_sound_samples/crown_pianopc6.bin"
-
-	.align 2
-DirectSoundWaveData_crown_pianopc7::
-    .incbin "sound/direct_sound_samples/crown_pianopc7.bin"
-
-	.align 2
-DirectSoundWaveData_crown_piccoc7::
-    .incbin "sound/direct_sound_samples/crown_piccoc7.bin"
-
-	.align 2
-DirectSoundWaveData_crown_piccoe6::
-    .incbin "sound/direct_sound_samples/crown_piccoe6.bin"
-
-	.align 2
-DirectSoundWaveData_crown_piccog5::
-    .incbin "sound/direct_sound_samples/crown_piccog5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_pizzc2::
-    .incbin "sound/direct_sound_samples/crown_pizzc2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_pizzc3::
-    .incbin "sound/direct_sound_samples/crown_pizzc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_pizzc4::
-    .incbin "sound/direct_sound_samples/crown_pizzc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_pizzc5::
-    .incbin "sound/direct_sound_samples/crown_pizzc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_pizzc6::
-    .incbin "sound/direct_sound_samples/crown_pizzc6.bin"
-
-	.align 2
-DirectSoundWaveData_crown_pmutee2::
-    .incbin "sound/direct_sound_samples/crown_pmutee2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_pmutee3::
-    .incbin "sound/direct_sound_samples/crown_pmutee3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_pmutee4::
-    .incbin "sound/direct_sound_samples/crown_pmutee4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_pmutee5::
-    .incbin "sound/direct_sound_samples/crown_pmutee5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_porga4::
-    .incbin "sound/direct_sound_samples/crown_porga4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_porgc4::
-    .incbin "sound/direct_sound_samples/crown_porgc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_porge3::
-    .incbin "sound/direct_sound_samples/crown_porge3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_porgf5::
-    .incbin "sound/direct_sound_samples/crown_porgf5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_porgg2::
-    .incbin "sound/direct_sound_samples/crown_porgg2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_powere2::
-    .incbin "sound/direct_sound_samples/crown_powere2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_powere3::
-    .incbin "sound/direct_sound_samples/crown_powere3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_psyepc3::
-    .incbin "sound/direct_sound_samples/crown_psyepc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_psyepc4::
-    .incbin "sound/direct_sound_samples/crown_psyepc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_psyepc5::
-    .incbin "sound/direct_sound_samples/crown_psyepc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_revcymc3::
-    .incbin "sound/direct_sound_samples/crown_revcymc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_rickenc2::
-    .incbin "sound/direct_sound_samples/crown_rickenc2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_rickenc3::
-    .incbin "sound/direct_sound_samples/crown_rickenc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_rickenc4::
-    .incbin "sound/direct_sound_samples/crown_rickenc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_rocorgc3::
-    .incbin "sound/direct_sound_samples/crown_rocorgc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_rocorgc4::
-    .incbin "sound/direct_sound_samples/crown_rocorgc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_rocorgc5::
-    .incbin "sound/direct_sound_samples/crown_rocorgc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_rocorgc6::
-    .incbin "sound/direct_sound_samples/crown_rocorgc6.bin"
-
-	.align 2
-DirectSoundWaveData_crown_sc55tpta5::
-    .incbin "sound/direct_sound_samples/crown_sc55tpta5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_sc55tptb4::
-    .incbin "sound/direct_sound_samples/crown_sc55tptb4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_sc55tptd4::
-    .incbin "sound/direct_sound_samples/crown_sc55tptd4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_sc88chh::
-    .incbin "sound/direct_sound_samples/crown_sc88chh.bin"
-
-	.align 2
-DirectSoundWaveData_crown_sc88china::
-    .incbin "sound/direct_sound_samples/crown_sc88china.bin"
-
-	.align 2
-DirectSoundWaveData_crown_sc88clap::
-    .incbin "sound/direct_sound_samples/crown_sc88clap.bin"
-
-	.align 2
-DirectSoundWaveData_crown_sc88crash::
-    .incbin "sound/direct_sound_samples/crown_sc88crash.bin"
-
-	.align 2
-DirectSoundWaveData_crown_sc88ohh::
-    .incbin "sound/direct_sound_samples/crown_sc88ohh.bin"
-
-	.align 2
-DirectSoundWaveData_crown_sc88phh::
-    .incbin "sound/direct_sound_samples/crown_sc88phh.bin"
-
-	.align 2
-DirectSoundWaveData_crown_sc88rbel::
-    .incbin "sound/direct_sound_samples/crown_sc88rbel.bin"
-
-	.align 2
-DirectSoundWaveData_crown_sc88ride::
-    .incbin "sound/direct_sound_samples/crown_sc88ride.bin"
-
-	.align 2
-DirectSoundWaveData_crown_sc88snare::
-    .incbin "sound/direct_sound_samples/crown_sc88snare.bin"
-
-	.align 2
-DirectSoundWaveData_crown_sc88splash::
-    .incbin "sound/direct_sound_samples/crown_sc88splash.bin"
-
-	.align 2
-DirectSoundWaveData_crown_sc88tom3::
-    .incbin "sound/direct_sound_samples/crown_sc88tom3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_sctimpd3::
-    .incbin "sound/direct_sound_samples/crown_sctimpd3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_sd20china::
-    .incbin "sound/direct_sound_samples/crown_sd20china.bin"
-
-	.align 2
-DirectSoundWaveData_crown_sd20kick::
-    .incbin "sound/direct_sound_samples/crown_sd20kick.bin"
-
-	.align 2
-DirectSoundWaveData_crown_sd20sleigh::
-    .incbin "sound/direct_sound_samples/crown_sd20sleigh.bin"
-
-	.align 2
-DirectSoundWaveData_crown_sd20snare::
-    .incbin "sound/direct_sound_samples/crown_sd20snare.bin"
-
-	.align 2
-DirectSoundWaveData_crown_sd20splash::
-    .incbin "sound/direct_sound_samples/crown_sd20splash.bin"
-
-	.align 2
-DirectSoundWaveData_crown_sd20tamb::
-    .incbin "sound/direct_sound_samples/crown_sd20tamb.bin"
-
-	.align 2
-DirectSoundWaveData_crown_seashore::
-    .incbin "sound/direct_sound_samples/crown_seashore.bin"
-
-	.align 2
-DirectSoundWaveData_crown_shakuc4::
-    .incbin "sound/direct_sound_samples/crown_shakuc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_shakuc5::
-    .incbin "sound/direct_sound_samples/crown_shakuc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_shakufx::
-    .incbin "sound/direct_sound_samples/crown_shakufx.bin"
-
-	.align 2
-DirectSoundWaveData_crown_shakug4::
-    .incbin "sound/direct_sound_samples/crown_shakug4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_shakug5::
-    .incbin "sound/direct_sound_samples/crown_shakug5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_shamic3::
-    .incbin "sound/direct_sound_samples/crown_shamic3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_shamic4::
-    .incbin "sound/direct_sound_samples/crown_shamic4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_shamig4::
-    .incbin "sound/direct_sound_samples/crown_shamig4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_shoutbass::
-    .incbin "sound/direct_sound_samples/crown_shoutbass.bin"
-
-	.align 2
-DirectSoundWaveData_crown_sitara3::
-    .incbin "sound/direct_sound_samples/crown_sitara3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_sitarb4::
-    .incbin "sound/direct_sound_samples/crown_sitarb4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_spicce2::
-    .incbin "sound/direct_sound_samples/crown_spicce2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_srxorccym::
-    .incbin "sound/direct_sound_samples/crown_srxorccym.bin"
-
-	.align 2
-DirectSoundWaveData_crown_srxrevcym::
-    .incbin "sound/direct_sound_samples/crown_srxrevcym.bin"
-
-	.align 2
-DirectSoundWaveData_crown_srxsnare::
-    .incbin "sound/direct_sound_samples/crown_srxsnare.bin"
-
-	.align 2
-DirectSoundWaveData_crown_srxsnroll::
-    .incbin "sound/direct_sound_samples/crown_srxsnroll.bin"
-
-	.align 2
-DirectSoundWaveData_crown_srxtimroll::
-    .incbin "sound/direct_sound_samples/crown_srxtimroll.bin"
-
-	.align 2
-DirectSoundWaveData_crown_ssawzg3::
-    .incbin "sound/direct_sound_samples/crown_ssawzg3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_ssawzg4::
-    .incbin "sound/direct_sound_samples/crown_ssawzg4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_ssawzg5::
-    .incbin "sound/direct_sound_samples/crown_ssawzg5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_ssaxb4::
-    .incbin "sound/direct_sound_samples/crown_ssaxb4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_ssaxd4::
-    .incbin "sound/direct_sound_samples/crown_ssaxd4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_ssaxg5::
-    .incbin "sound/direct_sound_samples/crown_ssaxg5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_steelc5::
-    .incbin "sound/direct_sound_samples/crown_steelc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_steele4::
-    .incbin "sound/direct_sound_samples/crown_steele4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_steelg2::
-    .incbin "sound/direct_sound_samples/crown_steelg2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_steelg3::
-    .incbin "sound/direct_sound_samples/crown_steelg3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_steelk1::
-    .incbin "sound/direct_sound_samples/crown_steelk1.bin"
-
-	.align 2
-DirectSoundWaveData_crown_steelk2::
-    .incbin "sound/direct_sound_samples/crown_steelk2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_steelk3::
-    .incbin "sound/direct_sound_samples/crown_steelk3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_steelrc5::
-    .incbin "sound/direct_sound_samples/crown_steelrc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_steelre4::
-    .incbin "sound/direct_sound_samples/crown_steelre4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_steelrg2::
-    .incbin "sound/direct_sound_samples/crown_steelrg2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_steelrg3::
-    .incbin "sound/direct_sound_samples/crown_steelrg3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_stlpana3::
-    .incbin "sound/direct_sound_samples/crown_stlpana3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_stlpanb4::
-    .incbin "sound/direct_sound_samples/crown_stlpanb4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_strensc2::
-    .incbin "sound/direct_sound_samples/crown_strensc2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_strensc3::
-    .incbin "sound/direct_sound_samples/crown_strensc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_strensc4::
-    .incbin "sound/direct_sound_samples/crown_strensc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_strensc5::
-    .incbin "sound/direct_sound_samples/crown_strensc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_strensc6::
-    .incbin "sound/direct_sound_samples/crown_strensc6.bin"
-
-	.align 2
-DirectSoundWaveData_crown_sword::
-    .incbin "sound/direct_sound_samples/crown_sword.bin"
-
-	.align 2
-DirectSoundWaveData_crown_synstrc2::
-    .incbin "sound/direct_sound_samples/crown_synstrc2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_synstrc3::
-    .incbin "sound/direct_sound_samples/crown_synstrc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_synstrc4::
-    .incbin "sound/direct_sound_samples/crown_synstrc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_synstrc5::
-    .incbin "sound/direct_sound_samples/crown_synstrc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_t9crash::
-    .incbin "sound/direct_sound_samples/crown_t9crash.bin"
-
-	.align 2
-DirectSoundWaveData_crown_t9kick::
-    .incbin "sound/direct_sound_samples/crown_t9kick.bin"
-
-	.align 2
-DirectSoundWaveData_crown_t9sfx::
-    .incbin "sound/direct_sound_samples/crown_t9sfx.bin"
-
-	.align 2
-DirectSoundWaveData_crown_t9snare::
-    .incbin "sound/direct_sound_samples/crown_t9snare.bin"
-
-	.align 2
-DirectSoundWaveData_crown_tbellc4::
-    .incbin "sound/direct_sound_samples/crown_tbellc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_tbellc5::
-    .incbin "sound/direct_sound_samples/crown_tbellc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_tbellg4::
-    .incbin "sound/direct_sound_samples/crown_tbellg4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_timpc2::
-    .incbin "sound/direct_sound_samples/crown_timpc2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_timpc3::
-    .incbin "sound/direct_sound_samples/crown_timpc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_tpta5::
-    .incbin "sound/direct_sound_samples/crown_tpta5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_tptb4::
-    .incbin "sound/direct_sound_samples/crown_tptb4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_tptd4::
-    .incbin "sound/direct_sound_samples/crown_tptd4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_tremstrc2::
-    .incbin "sound/direct_sound_samples/crown_tremstrc2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_tremstrc3::
-    .incbin "sound/direct_sound_samples/crown_tremstrc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_tremstrc4::
-    .incbin "sound/direct_sound_samples/crown_tremstrc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_tremstrc5::
-    .incbin "sound/direct_sound_samples/crown_tremstrc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_tremstrc6::
-    .incbin "sound/direct_sound_samples/crown_tremstrc6.bin"
-
-	.align 2
-DirectSoundWaveData_crown_tripnoc2::
-    .incbin "sound/direct_sound_samples/crown_tripnoc2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_tripnoc3::
-    .incbin "sound/direct_sound_samples/crown_tripnoc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_tripnoc4::
-    .incbin "sound/direct_sound_samples/crown_tripnoc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_tripnoc5::
-    .incbin "sound/direct_sound_samples/crown_tripnoc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_tripnoc6::
-    .incbin "sound/direct_sound_samples/crown_tripnoc6.bin"
-
-	.align 2
-DirectSoundWaveData_crown_tromc3::
-    .incbin "sound/direct_sound_samples/crown_tromc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_tromc4::
-    .incbin "sound/direct_sound_samples/crown_tromc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_tromc5::
-    .incbin "sound/direct_sound_samples/crown_tromc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_tsaxb3::
-    .incbin "sound/direct_sound_samples/crown_tsaxb3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_tsaxd3::
-    .incbin "sound/direct_sound_samples/crown_tsaxd3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_tsaxg4::
-    .incbin "sound/direct_sound_samples/crown_tsaxg4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_ttstaccs2::
-    .incbin "sound/direct_sound_samples/crown_ttstaccs2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_tubac1::
-    .incbin "sound/direct_sound_samples/crown_tubac1.bin"
-
-	.align 2
-DirectSoundWaveData_crown_tubac2::
-    .incbin "sound/direct_sound_samples/crown_tubac2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_tubac3::
-    .incbin "sound/direct_sound_samples/crown_tubac3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_ueberkick::
-    .incbin "sound/direct_sound_samples/crown_ueberkick.bin"
-
-	.align 2
-DirectSoundWaveData_crown_uprigrc::
-    .incbin "sound/direct_sound_samples/crown_uprigrc-1.bin"
-
-	.align 2
-DirectSoundWaveData_crown_uprigrc3::
-    .incbin "sound/direct_sound_samples/crown_uprigrc3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_uprigrc4::
-    .incbin "sound/direct_sound_samples/crown_uprigrc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_uprigrcs::
-    .incbin "sound/direct_sound_samples/crown_uprigrcs-1.bin"
-
-	.align 2
-DirectSoundWaveData_crown_uprigre2::
-    .incbin "sound/direct_sound_samples/crown_uprigre2.bin"
-
-	.align 2
-DirectSoundWaveData_crown_vibrc4::
-    .incbin "sound/direct_sound_samples/crown_vibrc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_vibrc5::
-    .incbin "sound/direct_sound_samples/crown_vibrc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_vibrc6::
-    .incbin "sound/direct_sound_samples/crown_vibrc6.bin"
-
-	.align 2
-DirectSoundWaveData_crown_violac3::
-    .incbin "sound/direct_sound_samples/crown_violac3.bin"
-
-	.align 2
-DirectSoundWaveData_crown_violac4::
-    .incbin "sound/direct_sound_samples/crown_violac4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_violac5::
-    .incbin "sound/direct_sound_samples/crown_violac5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_violac6::
-    .incbin "sound/direct_sound_samples/crown_violac6.bin"
-
-	.align 2
-DirectSoundWaveData_crown_violinc4::
-    .incbin "sound/direct_sound_samples/crown_violinc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_violinc5::
-    .incbin "sound/direct_sound_samples/crown_violinc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_violinc6::
-    .incbin "sound/direct_sound_samples/crown_violinc6.bin"
-
-	.align 2
-DirectSoundWaveData_crown_voohc4::
-    .incbin "sound/direct_sound_samples/crown_voohc4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_voohc5::
-    .incbin "sound/direct_sound_samples/crown_voohc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_voohg4::
-    .incbin "sound/direct_sound_samples/crown_voohg4.bin"
-
-	.align 2
-DirectSoundWaveData_crown_whistlc5::
-    .incbin "sound/direct_sound_samples/crown_whistlc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_whistlc6::
-    .incbin "sound/direct_sound_samples/crown_whistlc6.bin"
-
-	.align 2
-DirectSoundWaveData_crown_wind::
-    .incbin "sound/direct_sound_samples/crown_wind.bin"
-
-	.align 2
-DirectSoundWaveData_crown_xyloc5::
-    .incbin "sound/direct_sound_samples/crown_xyloc5.bin"
-
-	.align 2
-DirectSoundWaveData_crown_xyloc6::
-    .incbin "sound/direct_sound_samples/crown_xyloc6.bin"
-
-	.align 2
-DirectSoundWaveData_crown_xyloc7::
-    .incbin "sound/direct_sound_samples/crown_xyloc7.bin"
+    .align 2
+crown_2clara4:
+	.incbin "sound/direct_sound_samples/crown_2clara4.bin"
+
+    .align 2
+crown_2clarc4:
+	.incbin "sound/direct_sound_samples/crown_2clarc4.bin"
+
+    .align 2
+crown_2clarg5:
+	.incbin "sound/direct_sound_samples/crown_2clarg5.bin"
+
+    .align 2
+crown_80brsc3:
+	.incbin "sound/direct_sound_samples/crown_80brsc3.bin"
+
+    .align 2
+crown_80brsc4:
+	.incbin "sound/direct_sound_samples/crown_80brsc4.bin"
+
+    .align 2
+crown_80brsc5:
+	.incbin "sound/direct_sound_samples/crown_80brsc5.bin"
+
+    .align 2
+crown_80brsds6:
+	.incbin "sound/direct_sound_samples/crown_80brsds6.bin"
+
+    .align 2
+crown_80brsgs5:
+	.incbin "sound/direct_sound_samples/crown_80brsgs5.bin"
+
+    .align 2
+crown_adchh:
+	.incbin "sound/direct_sound_samples/crown_adchh.bin"
+
+    .align 2
+crown_adcowbl:
+	.incbin "sound/direct_sound_samples/crown_adcowbl.bin"
+
+    .align 2
+crown_adcrash1:
+	.incbin "sound/direct_sound_samples/crown_adcrash1.bin"
+
+    .align 2
+crown_adcrash2:
+	.incbin "sound/direct_sound_samples/crown_adcrash2.bin"
+
+    .align 2
+crown_adjazchh:
+	.incbin "sound/direct_sound_samples/crown_adjazchh.bin"
+
+    .align 2
+crown_adjazcrash:
+	.incbin "sound/direct_sound_samples/crown_adjazcrash.bin"
+
+    .align 2
+crown_adjazkick:
+	.incbin "sound/direct_sound_samples/crown_adjazkick.bin"
+
+    .align 2
+crown_adjazohh:
+	.incbin "sound/direct_sound_samples/crown_adjazohh.bin"
+
+    .align 2
+crown_adjazphh:
+	.incbin "sound/direct_sound_samples/crown_adjazphh.bin"
+
+    .align 2
+crown_adjazrbel:
+	.incbin "sound/direct_sound_samples/crown_adjazrbel.bin"
+
+    .align 2
+crown_adjazride:
+	.incbin "sound/direct_sound_samples/crown_adjazride.bin"
+
+    .align 2
+crown_adjazsnare:
+	.incbin "sound/direct_sound_samples/crown_adjazsnare.bin"
+
+    .align 2
+crown_adkick:
+	.incbin "sound/direct_sound_samples/crown_adkick.bin"
+
+    .align 2
+crown_adohh:
+	.incbin "sound/direct_sound_samples/crown_adohh.bin"
+
+    .align 2
+crown_adphh:
+	.incbin "sound/direct_sound_samples/crown_adphh.bin"
+
+    .align 2
+crown_adrbel:
+	.incbin "sound/direct_sound_samples/crown_adrbel.bin"
+
+    .align 2
+crown_adride:
+	.incbin "sound/direct_sound_samples/crown_adride.bin"
+
+    .align 2
+crown_adsidestk:
+	.incbin "sound/direct_sound_samples/crown_adsidestk.bin"
+
+    .align 2
+crown_adsnare:
+	.incbin "sound/direct_sound_samples/crown_adsnare.bin"
+
+    .align 2
+crown_adtom1:
+	.incbin "sound/direct_sound_samples/crown_adtom1.bin"
+
+    .align 2
+crown_adtom2:
+	.incbin "sound/direct_sound_samples/crown_adtom2.bin"
+
+    .align 2
+crown_adtom4:
+	.incbin "sound/direct_sound_samples/crown_adtom4.bin"
+
+    .align 2
+crown_adtom5:
+	.incbin "sound/direct_sound_samples/crown_adtom5.bin"
+
+    .align 2
+crown_adtom6:
+	.incbin "sound/direct_sound_samples/crown_adtom6.bin"
+
+    .align 2
+crown_aflta4:
+	.incbin "sound/direct_sound_samples/crown_aflta4.bin"
+
+    .align 2
+crown_afltc4:
+	.incbin "sound/direct_sound_samples/crown_afltc4.bin"
+
+    .align 2
+crown_afltc6:
+	.incbin "sound/direct_sound_samples/crown_afltc6.bin"
+
+    .align 2
+crown_afltf5:
+	.incbin "sound/direct_sound_samples/crown_afltf5.bin"
+
+    .align 2
+crown_applause:
+	.incbin "sound/direct_sound_samples/crown_applause.bin"
+
+    .align 2
+crown_asaxc5:
+	.incbin "sound/direct_sound_samples/crown_asaxc5.bin"
+
+    .align 2
+crown_asaxe4:
+	.incbin "sound/direct_sound_samples/crown_asaxe4.bin"
+
+    .align 2
+crown_asaxg3:
+	.incbin "sound/direct_sound_samples/crown_asaxg3.bin"
+
+    .align 2
+crown_atkanac2:
+	.incbin "sound/direct_sound_samples/crown_atkanac2.bin"
+
+    .align 2
+crown_bagpipeas2:
+	.incbin "sound/direct_sound_samples/crown_bagpipeas2.bin"
+
+    .align 2
+crown_bagpipeas4:
+	.incbin "sound/direct_sound_samples/crown_bagpipeas4.bin"
+
+    .align 2
+crown_bagpipeg5:
+	.incbin "sound/direct_sound_samples/crown_bagpipeg5.bin"
+
+    .align 2
+crown_bangstc1:
+	.incbin "sound/direct_sound_samples/crown_bangstc1.bin"
+
+    .align 2
+crown_bangstc2:
+	.incbin "sound/direct_sound_samples/crown_bangstc2.bin"
+
+    .align 2
+crown_bangstc3:
+	.incbin "sound/direct_sound_samples/crown_bangstc3.bin"
+
+    .align 2
+crown_banjoe3:
+	.incbin "sound/direct_sound_samples/crown_banjoe3.bin"
+
+    .align 2
+crown_banjoe4:
+	.incbin "sound/direct_sound_samples/crown_banjoe4.bin"
+
+    .align 2
+crown_bassna3:
+	.incbin "sound/direct_sound_samples/crown_bassna3.bin"
+
+    .align 2
+crown_bassnc3:
+	.incbin "sound/direct_sound_samples/crown_bassnc3.bin"
+
+    .align 2
+crown_bassne2:
+	.incbin "sound/direct_sound_samples/crown_bassne2.bin"
+
+    .align 2
+crown_bassnf4:
+	.incbin "sound/direct_sound_samples/crown_bassnf4.bin"
+
+    .align 2
+crown_bdownc2:
+	.incbin "sound/direct_sound_samples/crown_bdownc2.bin"
+
+    .align 2
+crown_bdownc3:
+	.incbin "sound/direct_sound_samples/crown_bdownc3.bin"
+
+    .align 2
+crown_bdownc4:
+	.incbin "sound/direct_sound_samples/crown_bdownc4.bin"
+
+    .align 2
+crown_brushhit:
+	.incbin "sound/direct_sound_samples/crown_brushhit.bin"
+
+    .align 2
+crown_brushrapid:
+	.incbin "sound/direct_sound_samples/crown_brushrapid.bin"
+
+    .align 2
+crown_brushswirl:
+	.incbin "sound/direct_sound_samples/crown_brushswirl.bin"
+
+    .align 2
+crown_bsaxb3:
+	.incbin "sound/direct_sound_samples/crown_bsaxb3.bin"
+
+    .align 2
+crown_bsaxd3:
+	.incbin "sound/direct_sound_samples/crown_bsaxd3.bin"
+
+    .align 2
+crown_bsaxf2:
+	.incbin "sound/direct_sound_samples/crown_bsaxf2.bin"
+
+    .align 2
+crown_celestac4:
+	.incbin "sound/direct_sound_samples/crown_celestac4.bin"
+
+    .align 2
+crown_celestac5:
+	.incbin "sound/direct_sound_samples/crown_celestac5.bin"
+
+    .align 2
+crown_celestac6:
+	.incbin "sound/direct_sound_samples/crown_celestac6.bin"
+
+    .align 2
+crown_celloc2:
+	.incbin "sound/direct_sound_samples/crown_celloc2.bin"
+
+    .align 2
+crown_celloc3:
+	.incbin "sound/direct_sound_samples/crown_celloc3.bin"
+
+    .align 2
+crown_celloc4:
+	.incbin "sound/direct_sound_samples/crown_celloc4.bin"
+
+    .align 2
+crown_celloc5:
+	.incbin "sound/direct_sound_samples/crown_celloc5.bin"
+
+    .align 2
+crown_chmchh:
+	.incbin "sound/direct_sound_samples/crown_chmchh.bin"
+
+    .align 2
+crown_chmcrash:
+	.incbin "sound/direct_sound_samples/crown_chmcrash.bin"
+
+    .align 2
+crown_chmkick:
+	.incbin "sound/direct_sound_samples/crown_chmkick.bin"
+
+    .align 2
+crown_chmohh:
+	.incbin "sound/direct_sound_samples/crown_chmohh.bin"
+
+    .align 2
+crown_chmride:
+	.incbin "sound/direct_sound_samples/crown_chmride.bin"
+
+    .align 2
+crown_chmsnare:
+	.incbin "sound/direct_sound_samples/crown_chmsnare.bin"
+
+    .align 2
+crown_chmtom1:
+	.incbin "sound/direct_sound_samples/crown_chmtom1.bin"
+
+    .align 2
+crown_chmtom3:
+	.incbin "sound/direct_sound_samples/crown_chmtom3.bin"
+
+    .align 2
+crown_choirc3:
+	.incbin "sound/direct_sound_samples/crown_choirc3.bin"
+
+    .align 2
+crown_choirc4:
+	.incbin "sound/direct_sound_samples/crown_choirc4.bin"
+
+    .align 2
+crown_choirc5:
+	.incbin "sound/direct_sound_samples/crown_choirc5.bin"
+
+    .align 2
+crown_choirc6:
+	.incbin "sound/direct_sound_samples/crown_choirc6.bin"
+
+    .align 2
+crown_clavc2:
+	.incbin "sound/direct_sound_samples/crown_clavc2.bin"
+
+    .align 2
+crown_clavc3:
+	.incbin "sound/direct_sound_samples/crown_clavc3.bin"
+
+    .align 2
+crown_clavc4:
+	.incbin "sound/direct_sound_samples/crown_clavc4.bin"
+
+    .align 2
+crown_clavc5:
+	.incbin "sound/direct_sound_samples/crown_clavc5.bin"
+
+    .align 2
+crown_clnstrc5:
+	.incbin "sound/direct_sound_samples/crown_clnstrc5.bin"
+
+    .align 2
+crown_clnstre4:
+	.incbin "sound/direct_sound_samples/crown_clnstre4.bin"
+
+    .align 2
+crown_clnstrg2:
+	.incbin "sound/direct_sound_samples/crown_clnstrg2.bin"
+
+    .align 2
+crown_clnstrg3:
+	.incbin "sound/direct_sound_samples/crown_clnstrg3.bin"
+
+    .align 2
+crown_cosmc2:
+	.incbin "sound/direct_sound_samples/crown_cosmc2.bin"
+
+    .align 2
+crown_cosmc3:
+	.incbin "sound/direct_sound_samples/crown_cosmc3.bin"
+
+    .align 2
+crown_cosmc4:
+	.incbin "sound/direct_sound_samples/crown_cosmc4.bin"
+
+    .align 2
+crown_cosmc5:
+	.incbin "sound/direct_sound_samples/crown_cosmc5.bin"
+
+    .align 2
+crown_cosmc6:
+	.incbin "sound/direct_sound_samples/crown_cosmc6.bin"
+
+    .align 2
+crown_crysepc3:
+	.incbin "sound/direct_sound_samples/crown_crysepc3.bin"
+
+    .align 2
+crown_crysepc4:
+	.incbin "sound/direct_sound_samples/crown_crysepc4.bin"
+
+    .align 2
+crown_cuatroa4:
+	.incbin "sound/direct_sound_samples/crown_cuatroa4.bin"
+
+    .align 2
+crown_cuatrod4:
+	.incbin "sound/direct_sound_samples/crown_cuatrod4.bin"
+
+    .align 2
+crown_cuatroe5:
+	.incbin "sound/direct_sound_samples/crown_cuatroe5.bin"
+
+    .align 2
+crown_cuatrog3:
+	.incbin "sound/direct_sound_samples/crown_cuatrog3.bin"
+
+    .align 2
+crown_dighrpc3:
+	.incbin "sound/direct_sound_samples/crown_dighrpc3.bin"
+
+    .align 2
+crown_dighrpc5:
+	.incbin "sound/direct_sound_samples/crown_dighrpc5.bin"
+
+    .align 2
+crown_disgtslide:
+	.incbin "sound/direct_sound_samples/crown_disgtslide.bin"
+
+    .align 2
+crown_disharmoc5:
+	.incbin "sound/direct_sound_samples/crown_disharmoc5.bin"
+
+    .align 2
+crown_dulcimc3:
+	.incbin "sound/direct_sound_samples/crown_dulcimc3.bin"
+
+    .align 2
+crown_dulcimc4:
+	.incbin "sound/direct_sound_samples/crown_dulcimc4.bin"
+
+    .align 2
+crown_dulcimc5:
+	.incbin "sound/direct_sound_samples/crown_dulcimc5.bin"
+
+    .align 2
+crown_dulcimc6:
+	.incbin "sound/direct_sound_samples/crown_dulcimc6.bin"
+
+    .align 2
+crown_erhua4:
+	.incbin "sound/direct_sound_samples/crown_erhua4.bin"
+
+    .align 2
+crown_erhua5:
+	.incbin "sound/direct_sound_samples/crown_erhua5.bin"
+
+    .align 2
+crown_erhud4:
+	.incbin "sound/direct_sound_samples/crown_erhud4.bin"
+
+    .align 2
+crown_erhue5:
+	.incbin "sound/direct_sound_samples/crown_erhue5.bin"
+
+    .align 2
+crown_etherec5:
+	.incbin "sound/direct_sound_samples/crown_etherec5.bin"
+
+    .align 2
+crown_fanbela5:
+	.incbin "sound/direct_sound_samples/crown_fanbela5.bin"
+
+    .align 2
+crown_fanbelg4:
+	.incbin "sound/direct_sound_samples/crown_fanbelg4.bin"
+
+    .align 2
+crown_fantasc5:
+	.incbin "sound/direct_sound_samples/crown_fantasc5.bin"
+
+    .align 2
+crown_fantasg3:
+	.incbin "sound/direct_sound_samples/crown_fantasg3.bin"
+
+    .align 2
+crown_fatbrassc3:
+	.incbin "sound/direct_sound_samples/crown_fatbrassc3.bin"
+
+    .align 2
+crown_fatbrassc4:
+	.incbin "sound/direct_sound_samples/crown_fatbrassc4.bin"
+
+    .align 2
+crown_fatbrassc5:
+	.incbin "sound/direct_sound_samples/crown_fatbrassc5.bin"
+
+    .align 2
+crown_fatmonoc3:
+	.incbin "sound/direct_sound_samples/crown_fatmonoc3.bin"
+
+    .align 2
+crown_fatmonoc4:
+	.incbin "sound/direct_sound_samples/crown_fatmonoc4.bin"
+
+    .align 2
+crown_fatmonoc5:
+	.incbin "sound/direct_sound_samples/crown_fatmonoc5.bin"
+
+    .align 2
+crown_fenbassc1:
+	.incbin "sound/direct_sound_samples/crown_fenbassc1.bin"
+
+    .align 2
+crown_fenbassc2:
+	.incbin "sound/direct_sound_samples/crown_fenbassc2.bin"
+
+    .align 2
+crown_fenbassc3:
+	.incbin "sound/direct_sound_samples/crown_fenbassc3.bin"
+
+    .align 2
+crown_fhnsc3:
+	.incbin "sound/direct_sound_samples/crown_fhnsc3.bin"
+
+    .align 2
+crown_fhnsc4:
+	.incbin "sound/direct_sound_samples/crown_fhnsc4.bin"
+
+    .align 2
+crown_fhnsc5:
+	.incbin "sound/direct_sound_samples/crown_fhnsc5.bin"
+
+    .align 2
+crown_fretlsc1:
+	.incbin "sound/direct_sound_samples/crown_fretlsc1.bin"
+
+    .align 2
+crown_fretlsc2:
+	.incbin "sound/direct_sound_samples/crown_fretlsc2.bin"
+
+    .align 2
+crown_fretlsc3:
+	.incbin "sound/direct_sound_samples/crown_fretlsc3.bin"
+
+    .align 2
+crown_funkinc5:
+	.incbin "sound/direct_sound_samples/crown_funkinc5.bin"
+
+    .align 2
+crown_funkine4:
+	.incbin "sound/direct_sound_samples/crown_funkine4.bin"
+
+    .align 2
+crown_funking2:
+	.incbin "sound/direct_sound_samples/crown_funking2.bin"
+
+    .align 2
+crown_funking3:
+	.incbin "sound/direct_sound_samples/crown_funking3.bin"
+
+    .align 2
+crown_glockc5:
+	.incbin "sound/direct_sound_samples/crown_glockc5.bin"
+
+    .align 2
+crown_glockc6:
+	.incbin "sound/direct_sound_samples/crown_glockc6.bin"
+
+    .align 2
+crown_glockc7:
+	.incbin "sound/direct_sound_samples/crown_glockc7.bin"
+
+    .align 2
+crown_haljazchina:
+	.incbin "sound/direct_sound_samples/crown_haljazchina.bin"
+
+    .align 2
+crown_haljazkick:
+	.incbin "sound/direct_sound_samples/crown_haljazkick.bin"
+
+    .align 2
+crown_haljazride:
+	.incbin "sound/direct_sound_samples/crown_haljazride.bin"
+
+    .align 2
+crown_haljazsidestk:
+	.incbin "sound/direct_sound_samples/crown_haljazsidestk.bin"
+
+    .align 2
+crown_haljazsnare:
+	.incbin "sound/direct_sound_samples/crown_haljazsnare.bin"
+
+    .align 2
+crown_haljazsplash:
+	.incbin "sound/direct_sound_samples/crown_haljazsplash.bin"
+
+    .align 2
+crown_haljaztom1:
+	.incbin "sound/direct_sound_samples/crown_haljaztom1.bin"
+
+    .align 2
+crown_haljaztom3:
+	.incbin "sound/direct_sound_samples/crown_haljaztom3.bin"
+
+    .align 2
+crown_haljaztom4:
+	.incbin "sound/direct_sound_samples/crown_haljaztom4.bin"
+
+    .align 2
+crown_haljaztom6:
+	.incbin "sound/direct_sound_samples/crown_haljaztom6.bin"
+
+    .align 2
+crown_harmona4:
+	.incbin "sound/direct_sound_samples/crown_harmona4.bin"
+
+    .align 2
+crown_harmone4:
+	.incbin "sound/direct_sound_samples/crown_harmone4.bin"
+
+    .align 2
+crown_harmone5:
+	.incbin "sound/direct_sound_samples/crown_harmone5.bin"
+
+    .align 2
+crown_harpc3:
+	.incbin "sound/direct_sound_samples/crown_harpc3.bin"
+
+    .align 2
+crown_harpc4:
+	.incbin "sound/direct_sound_samples/crown_harpc4.bin"
+
+    .align 2
+crown_harpc5:
+	.incbin "sound/direct_sound_samples/crown_harpc5.bin"
+
+    .align 2
+crown_harpsic2:
+	.incbin "sound/direct_sound_samples/crown_harpsic2.bin"
+
+    .align 2
+crown_harpsic3:
+	.incbin "sound/direct_sound_samples/crown_harpsic3.bin"
+
+    .align 2
+crown_harpsic4:
+	.incbin "sound/direct_sound_samples/crown_harpsic4.bin"
+
+    .align 2
+crown_harpsic5:
+	.incbin "sound/direct_sound_samples/crown_harpsic5.bin"
+
+    .align 2
+crown_harpsic6:
+	.incbin "sound/direct_sound_samples/crown_harpsic6.bin"
+
+    .align 2
+crown_hsawc4:
+	.incbin "sound/direct_sound_samples/crown_hsawc4.bin"
+
+    .align 2
+crown_hsawd5:
+	.incbin "sound/direct_sound_samples/crown_hsawd5.bin"
+
+    .align 2
+crown_hsawe3:
+	.incbin "sound/direct_sound_samples/crown_hsawe3.bin"
+
+    .align 2
+crown_hsawg4:
+	.incbin "sound/direct_sound_samples/crown_hsawg4.bin"
+
+    .align 2
+crown_hslapc1:
+	.incbin "sound/direct_sound_samples/crown_hslapc1.bin"
+
+    .align 2
+crown_hslapc2:
+	.incbin "sound/direct_sound_samples/crown_hslapc2.bin"
+
+    .align 2
+crown_hslapc3:
+	.incbin "sound/direct_sound_samples/crown_hslapc3.bin"
+
+    .align 2
+crown_jazgtc2:
+	.incbin "sound/direct_sound_samples/crown_jazgtc2.bin"
+
+    .align 2
+crown_jazgtc3:
+	.incbin "sound/direct_sound_samples/crown_jazgtc3.bin"
+
+    .align 2
+crown_jazgtc4:
+	.incbin "sound/direct_sound_samples/crown_jazgtc4.bin"
+
+    .align 2
+crown_jazgtc5:
+	.incbin "sound/direct_sound_samples/crown_jazgtc5.bin"
+
+    .align 2
+crown_kalimbae4:
+	.incbin "sound/direct_sound_samples/crown_kalimbae4.bin"
+
+    .align 2
+crown_kalimbae5:
+	.incbin "sound/direct_sound_samples/crown_kalimbae5.bin"
+
+    .align 2
+crown_kotoc4:
+	.incbin "sound/direct_sound_samples/crown_kotoc4.bin"
+
+    .align 2
+crown_kotoc5:
+	.incbin "sound/direct_sound_samples/crown_kotoc5.bin"
+
+    .align 2
+crown_kotog5:
+	.incbin "sound/direct_sound_samples/crown_kotog5.bin"
+
+    .align 2
+crown_lizepb1:
+	.incbin "sound/direct_sound_samples/crown_lizepb1.bin"
+
+    .align 2
+crown_lizepc4:
+	.incbin "sound/direct_sound_samples/crown_lizepc4.bin"
+
+    .align 2
+crown_lizepc6:
+	.incbin "sound/direct_sound_samples/crown_lizepc6.bin"
+
+    .align 2
+crown_lizepd3:
+	.incbin "sound/direct_sound_samples/crown_lizepd3.bin"
+
+    .align 2
+crown_lizepd5:
+	.incbin "sound/direct_sound_samples/crown_lizepd5.bin"
+
+    .align 2
+crown_m1crash:
+	.incbin "sound/direct_sound_samples/crown_m1crash.bin"
+
+    .align 2
+crown_m1kick:
+	.incbin "sound/direct_sound_samples/crown_m1kick.bin"
+
+    .align 2
+crown_m1snare:
+	.incbin "sound/direct_sound_samples/crown_m1snare.bin"
+
+    .align 2
+crown_marimc3:
+	.incbin "sound/direct_sound_samples/crown_marimc3.bin"
+
+    .align 2
+crown_marimc4:
+	.incbin "sound/direct_sound_samples/crown_marimc4.bin"
+
+    .align 2
+crown_marimc5:
+	.incbin "sound/direct_sound_samples/crown_marimc5.bin"
+
+    .align 2
+crown_marimg4:
+	.incbin "sound/direct_sound_samples/crown_marimg4.bin"
+
+    .align 2
+crown_mrbrassc2:
+	.incbin "sound/direct_sound_samples/crown_mrbrassc2.bin"
+
+    .align 2
+crown_mrbrassg3:
+	.incbin "sound/direct_sound_samples/crown_mrbrassg3.bin"
+
+    .align 2
+crown_mtpta5:
+	.incbin "sound/direct_sound_samples/crown_mtpta5.bin"
+
+    .align 2
+crown_mtptb4:
+	.incbin "sound/direct_sound_samples/crown_mtptb4.bin"
+
+    .align 2
+crown_mtptd4:
+	.incbin "sound/direct_sound_samples/crown_mtptd4.bin"
+
+    .align 2
+crown_musboxc3:
+	.incbin "sound/direct_sound_samples/crown_musboxc3.bin"
+
+    .align 2
+crown_musboxc4:
+	.incbin "sound/direct_sound_samples/crown_musboxc4.bin"
+
+    .align 2
+crown_musboxc5:
+	.incbin "sound/direct_sound_samples/crown_musboxc5.bin"
+
+    .align 2
+crown_musboxc6:
+	.incbin "sound/direct_sound_samples/crown_musboxc6.bin"
+
+    .align 2
+crown_nylonc5:
+	.incbin "sound/direct_sound_samples/crown_nylonc5.bin"
+
+    .align 2
+crown_nylone4:
+	.incbin "sound/direct_sound_samples/crown_nylone4.bin"
+
+    .align 2
+crown_nylong2:
+	.incbin "sound/direct_sound_samples/crown_nylong2.bin"
+
+    .align 2
+crown_nylong3:
+	.incbin "sound/direct_sound_samples/crown_nylong3.bin"
+
+    .align 2
+crown_nyslapa1:
+	.incbin "sound/direct_sound_samples/crown_nyslapa1.bin"
+
+    .align 2
+crown_nyslapa2:
+	.incbin "sound/direct_sound_samples/crown_nyslapa2.bin"
+
+    .align 2
+crown_nyslapc1:
+	.incbin "sound/direct_sound_samples/crown_nyslapc1.bin"
+
+    .align 2
+crown_nyslapd2:
+	.incbin "sound/direct_sound_samples/crown_nyslapd2.bin"
+
+    .align 2
+crown_nyslapd3:
+	.incbin "sound/direct_sound_samples/crown_nyslapd3.bin"
+
+    .align 2
+crown_nyslaps1:
+	.incbin "sound/direct_sound_samples/crown_nyslaps1.bin"
+
+    .align 2
+crown_nyslaps2:
+	.incbin "sound/direct_sound_samples/crown_nyslaps2.bin"
+
+    .align 2
+crown_nyslaps3:
+	.incbin "sound/direct_sound_samples/crown_nyslaps3.bin"
+
+    .align 2
+crown_nyslaps4:
+	.incbin "sound/direct_sound_samples/crown_nyslaps4.bin"
+
+    .align 2
+crown_oboea5:
+	.incbin "sound/direct_sound_samples/crown_oboea5.bin"
+
+    .align 2
+crown_oboec5:
+	.incbin "sound/direct_sound_samples/crown_oboec5.bin"
+
+    .align 2
+crown_oboee4:
+	.incbin "sound/direct_sound_samples/crown_oboee4.bin"
+
+    .align 2
+crown_okagogo:
+	.incbin "sound/direct_sound_samples/crown_okagogo.bin"
+
+    .align 2
+crown_okbongo:
+	.incbin "sound/direct_sound_samples/crown_okbongo.bin"
+
+    .align 2
+crown_okcasta:
+	.incbin "sound/direct_sound_samples/crown_okcasta.bin"
+
+    .align 2
+crown_okclap:
+	.incbin "sound/direct_sound_samples/crown_okclap.bin"
+
+    .align 2
+crown_okclave:
+	.incbin "sound/direct_sound_samples/crown_okclave.bin"
+
+    .align 2
+crown_okconga:
+	.incbin "sound/direct_sound_samples/crown_okconga.bin"
+
+    .align 2
+crown_okcongam:
+	.incbin "sound/direct_sound_samples/crown_okcongam.bin"
+
+    .align 2
+crown_okgong:
+	.incbin "sound/direct_sound_samples/crown_okgong.bin"
+
+    .align 2
+crown_okguiro:
+	.incbin "sound/direct_sound_samples/crown_okguiro.bin"
+
+    .align 2
+crown_okride:
+	.incbin "sound/direct_sound_samples/crown_okride.bin"
+
+    .align 2
+crown_okshakr1:
+	.incbin "sound/direct_sound_samples/crown_okshakr1.bin"
+
+    .align 2
+crown_okshakr2:
+	.incbin "sound/direct_sound_samples/crown_okshakr2.bin"
+
+    .align 2
+crown_oksnare:
+	.incbin "sound/direct_sound_samples/crown_oksnare.bin"
+
+    .align 2
+crown_oktabla1:
+	.incbin "sound/direct_sound_samples/crown_oktabla1.bin"
+
+    .align 2
+crown_oktabla2:
+	.incbin "sound/direct_sound_samples/crown_oktabla2.bin"
+
+    .align 2
+crown_oktambo:
+	.incbin "sound/direct_sound_samples/crown_oktambo.bin"
+
+    .align 2
+crown_oktrim:
+	.incbin "sound/direct_sound_samples/crown_oktrim.bin"
+
+    .align 2
+crown_oktrio:
+	.incbin "sound/direct_sound_samples/crown_oktrio.bin"
+
+    .align 2
+crown_okwblock:
+	.incbin "sound/direct_sound_samples/crown_okwblock.bin"
+
+    .align 2
+crown_oliverchh:
+	.incbin "sound/direct_sound_samples/crown_oliverchh.bin"
+
+    .align 2
+crown_oliverkick:
+	.incbin "sound/direct_sound_samples/crown_oliverkick.bin"
+
+    .align 2
+crown_oliverohh:
+	.incbin "sound/direct_sound_samples/crown_oliverohh.bin"
+
+    .align 2
+crown_oliverphh:
+	.incbin "sound/direct_sound_samples/crown_oliverphh.bin"
+
+    .align 2
+crown_oliversnare:
+	.incbin "sound/direct_sound_samples/crown_oliversnare.bin"
+
+    .align 2
+crown_olivertom:
+	.incbin "sound/direct_sound_samples/crown_olivertom.bin"
+
+    .align 2
+crown_orchbd1:
+	.incbin "sound/direct_sound_samples/crown_orchbd1.bin"
+
+    .align 2
+crown_orchbd2:
+	.incbin "sound/direct_sound_samples/crown_orchbd2.bin"
+
+    .align 2
+crown_orchcrash1:
+	.incbin "sound/direct_sound_samples/crown_orchcrash1.bin"
+
+    .align 2
+crown_orchcymcl1:
+	.incbin "sound/direct_sound_samples/crown_orchcymcl1.bin"
+
+    .align 2
+crown_orchcymcl2:
+	.incbin "sound/direct_sound_samples/crown_orchcymcl2.bin"
+
+    .align 2
+crown_orchitg4:
+	.incbin "sound/direct_sound_samples/crown_orchitg4.bin"
+
+    .align 2
+crown_orchsnr2:
+	.incbin "sound/direct_sound_samples/crown_orchsnr2.bin"
+
+    .align 2
+crown_orchsnrside:
+	.incbin "sound/direct_sound_samples/crown_orchsnrside.bin"
+
+    .align 2
+crown_ostrc2:
+	.incbin "sound/direct_sound_samples/crown_ostrc2.bin"
+
+    .align 2
+crown_ostrc3:
+	.incbin "sound/direct_sound_samples/crown_ostrc3.bin"
+
+    .align 2
+crown_ostrc4:
+	.incbin "sound/direct_sound_samples/crown_ostrc4.bin"
+
+    .align 2
+crown_ostrc5:
+	.incbin "sound/direct_sound_samples/crown_ostrc5.bin"
+
+    .align 2
+crown_ostrc6:
+	.incbin "sound/direct_sound_samples/crown_ostrc6.bin"
+
+    .align 2
+crown_p5orgc3:
+	.incbin "sound/direct_sound_samples/crown_p5orgc3.bin"
+
+    .align 2
+crown_p5orgc5:
+	.incbin "sound/direct_sound_samples/crown_p5orgc5.bin"
+
+    .align 2
+crown_paccorc3:
+	.incbin "sound/direct_sound_samples/crown_paccorc3.bin"
+
+    .align 2
+crown_paccorc4:
+	.incbin "sound/direct_sound_samples/crown_paccorc4.bin"
+
+    .align 2
+crown_paccorc5:
+	.incbin "sound/direct_sound_samples/crown_paccorc5.bin"
+
+    .align 2
+crown_panflc4:
+	.incbin "sound/direct_sound_samples/crown_panflc4.bin"
+
+    .align 2
+crown_panflc5:
+	.incbin "sound/direct_sound_samples/crown_panflc5.bin"
+
+    .align 2
+crown_panflc6:
+	.incbin "sound/direct_sound_samples/crown_panflc6.bin"
+
+    .align 2
+crown_pdiste2:
+	.incbin "sound/direct_sound_samples/crown_pdiste2.bin"
+
+    .align 2
+crown_pdiste3:
+	.incbin "sound/direct_sound_samples/crown_pdiste3.bin"
+
+    .align 2
+crown_pdiste4:
+	.incbin "sound/direct_sound_samples/crown_pdiste4.bin"
+
+    .align 2
+crown_pdiste5:
+	.incbin "sound/direct_sound_samples/crown_pdiste5.bin"
+
+    .align 2
+crown_perkysc4:
+	.incbin "sound/direct_sound_samples/crown_perkysc4.bin"
+
+    .align 2
+crown_phatkick:
+	.incbin "sound/direct_sound_samples/crown_phatkick.bin"
+
+    .align 2
+crown_phatsnare:
+	.incbin "sound/direct_sound_samples/crown_phatsnare.bin"
+
+    .align 2
+crown_pianofc1:
+	.incbin "sound/direct_sound_samples/crown_pianofc1.bin"
+
+    .align 2
+crown_pianofc2:
+	.incbin "sound/direct_sound_samples/crown_pianofc2.bin"
+
+    .align 2
+crown_pianofc3:
+	.incbin "sound/direct_sound_samples/crown_pianofc3.bin"
+
+    .align 2
+crown_pianofc4:
+	.incbin "sound/direct_sound_samples/crown_pianofc4.bin"
+
+    .align 2
+crown_pianofc5:
+	.incbin "sound/direct_sound_samples/crown_pianofc5.bin"
+
+    .align 2
+crown_pianofc6:
+	.incbin "sound/direct_sound_samples/crown_pianofc6.bin"
+
+    .align 2
+crown_pianofc7:
+	.incbin "sound/direct_sound_samples/crown_pianofc7.bin"
+
+    .align 2
+crown_pianopc1:
+	.incbin "sound/direct_sound_samples/crown_pianopc1.bin"
+
+    .align 2
+crown_pianopc2:
+	.incbin "sound/direct_sound_samples/crown_pianopc2.bin"
+
+    .align 2
+crown_pianopc3:
+	.incbin "sound/direct_sound_samples/crown_pianopc3.bin"
+
+    .align 2
+crown_pianopc4:
+	.incbin "sound/direct_sound_samples/crown_pianopc4.bin"
+
+    .align 2
+crown_pianopc5:
+	.incbin "sound/direct_sound_samples/crown_pianopc5.bin"
+
+    .align 2
+crown_pianopc6:
+	.incbin "sound/direct_sound_samples/crown_pianopc6.bin"
+
+    .align 2
+crown_pianopc7:
+	.incbin "sound/direct_sound_samples/crown_pianopc7.bin"
+
+    .align 2
+crown_piccoc7:
+	.incbin "sound/direct_sound_samples/crown_piccoc7.bin"
+
+    .align 2
+crown_piccoe6:
+	.incbin "sound/direct_sound_samples/crown_piccoe6.bin"
+
+    .align 2
+crown_piccog5:
+	.incbin "sound/direct_sound_samples/crown_piccog5.bin"
+
+    .align 2
+crown_pizzc2:
+	.incbin "sound/direct_sound_samples/crown_pizzc2.bin"
+
+    .align 2
+crown_pizzc3:
+	.incbin "sound/direct_sound_samples/crown_pizzc3.bin"
+
+    .align 2
+crown_pizzc4:
+	.incbin "sound/direct_sound_samples/crown_pizzc4.bin"
+
+    .align 2
+crown_pizzc5:
+	.incbin "sound/direct_sound_samples/crown_pizzc5.bin"
+
+    .align 2
+crown_pizzc6:
+	.incbin "sound/direct_sound_samples/crown_pizzc6.bin"
+
+    .align 2
+crown_pmutee2:
+	.incbin "sound/direct_sound_samples/crown_pmutee2.bin"
+
+    .align 2
+crown_pmutee3:
+	.incbin "sound/direct_sound_samples/crown_pmutee3.bin"
+
+    .align 2
+crown_pmutee4:
+	.incbin "sound/direct_sound_samples/crown_pmutee4.bin"
+
+    .align 2
+crown_pmutee5:
+	.incbin "sound/direct_sound_samples/crown_pmutee5.bin"
+
+    .align 2
+crown_porga4:
+	.incbin "sound/direct_sound_samples/crown_porga4.bin"
+
+    .align 2
+crown_porgc4:
+	.incbin "sound/direct_sound_samples/crown_porgc4.bin"
+
+    .align 2
+crown_porge3:
+	.incbin "sound/direct_sound_samples/crown_porge3.bin"
+
+    .align 2
+crown_porgf5:
+	.incbin "sound/direct_sound_samples/crown_porgf5.bin"
+
+    .align 2
+crown_porgg2:
+	.incbin "sound/direct_sound_samples/crown_porgg2.bin"
+
+    .align 2
+crown_powere2:
+	.incbin "sound/direct_sound_samples/crown_powere2.bin"
+
+    .align 2
+crown_powere3:
+	.incbin "sound/direct_sound_samples/crown_powere3.bin"
+
+    .align 2
+crown_psyepc3:
+	.incbin "sound/direct_sound_samples/crown_psyepc3.bin"
+
+    .align 2
+crown_psyepc4:
+	.incbin "sound/direct_sound_samples/crown_psyepc4.bin"
+
+    .align 2
+crown_psyepc5:
+	.incbin "sound/direct_sound_samples/crown_psyepc5.bin"
+
+    .align 2
+crown_revcymc3:
+	.incbin "sound/direct_sound_samples/crown_revcymc3.bin"
+
+    .align 2
+crown_rickenc2:
+	.incbin "sound/direct_sound_samples/crown_rickenc2.bin"
+
+    .align 2
+crown_rickenc3:
+	.incbin "sound/direct_sound_samples/crown_rickenc3.bin"
+
+    .align 2
+crown_rickenc4:
+	.incbin "sound/direct_sound_samples/crown_rickenc4.bin"
+
+    .align 2
+crown_rocorgc3:
+	.incbin "sound/direct_sound_samples/crown_rocorgc3.bin"
+
+    .align 2
+crown_rocorgc4:
+	.incbin "sound/direct_sound_samples/crown_rocorgc4.bin"
+
+    .align 2
+crown_rocorgc5:
+	.incbin "sound/direct_sound_samples/crown_rocorgc5.bin"
+
+    .align 2
+crown_rocorgc6:
+	.incbin "sound/direct_sound_samples/crown_rocorgc6.bin"
+
+    .align 2
+crown_sc55tpta5:
+	.incbin "sound/direct_sound_samples/crown_sc55tpta5.bin"
+
+    .align 2
+crown_sc55tptb4:
+	.incbin "sound/direct_sound_samples/crown_sc55tptb4.bin"
+
+    .align 2
+crown_sc55tptd4:
+	.incbin "sound/direct_sound_samples/crown_sc55tptd4.bin"
+
+    .align 2
+crown_sc88chh:
+	.incbin "sound/direct_sound_samples/crown_sc88chh.bin"
+
+    .align 2
+crown_sc88china:
+	.incbin "sound/direct_sound_samples/crown_sc88china.bin"
+
+    .align 2
+crown_sc88clap:
+	.incbin "sound/direct_sound_samples/crown_sc88clap.bin"
+
+    .align 2
+crown_sc88crash:
+	.incbin "sound/direct_sound_samples/crown_sc88crash.bin"
+
+    .align 2
+crown_sc88ohh:
+	.incbin "sound/direct_sound_samples/crown_sc88ohh.bin"
+
+    .align 2
+crown_sc88phh:
+	.incbin "sound/direct_sound_samples/crown_sc88phh.bin"
+
+    .align 2
+crown_sc88rbel:
+	.incbin "sound/direct_sound_samples/crown_sc88rbel.bin"
+
+    .align 2
+crown_sc88ride:
+	.incbin "sound/direct_sound_samples/crown_sc88ride.bin"
+
+    .align 2
+crown_sc88snare:
+	.incbin "sound/direct_sound_samples/crown_sc88snare.bin"
+
+    .align 2
+crown_sc88splash:
+	.incbin "sound/direct_sound_samples/crown_sc88splash.bin"
+
+    .align 2
+crown_sc88tom3:
+	.incbin "sound/direct_sound_samples/crown_sc88tom3.bin"
+
+    .align 2
+crown_sctimpd3:
+	.incbin "sound/direct_sound_samples/crown_sctimpd3.bin"
+
+    .align 2
+crown_sd20china:
+	.incbin "sound/direct_sound_samples/crown_sd20china.bin"
+
+    .align 2
+crown_sd20kick:
+	.incbin "sound/direct_sound_samples/crown_sd20kick.bin"
+
+    .align 2
+crown_sd20sleigh:
+	.incbin "sound/direct_sound_samples/crown_sd20sleigh.bin"
+
+    .align 2
+crown_sd20snare:
+	.incbin "sound/direct_sound_samples/crown_sd20snare.bin"
+
+    .align 2
+crown_sd20splash:
+	.incbin "sound/direct_sound_samples/crown_sd20splash.bin"
+
+    .align 2
+crown_sd20tamb:
+	.incbin "sound/direct_sound_samples/crown_sd20tamb.bin"
+
+    .align 2
+crown_seashore:
+	.incbin "sound/direct_sound_samples/crown_seashore.bin"
+
+    .align 2
+crown_shakuc4:
+	.incbin "sound/direct_sound_samples/crown_shakuc4.bin"
+
+    .align 2
+crown_shakuc5:
+	.incbin "sound/direct_sound_samples/crown_shakuc5.bin"
+
+    .align 2
+crown_shakufx:
+	.incbin "sound/direct_sound_samples/crown_shakufx.bin"
+
+    .align 2
+crown_shakug4:
+	.incbin "sound/direct_sound_samples/crown_shakug4.bin"
+
+    .align 2
+crown_shakug5:
+	.incbin "sound/direct_sound_samples/crown_shakug5.bin"
+
+    .align 2
+crown_shamic3:
+	.incbin "sound/direct_sound_samples/crown_shamic3.bin"
+
+    .align 2
+crown_shamic4:
+	.incbin "sound/direct_sound_samples/crown_shamic4.bin"
+
+    .align 2
+crown_shamig4:
+	.incbin "sound/direct_sound_samples/crown_shamig4.bin"
+
+    .align 2
+crown_shoutbass:
+	.incbin "sound/direct_sound_samples/crown_shoutbass.bin"
+
+    .align 2
+crown_sitara3:
+	.incbin "sound/direct_sound_samples/crown_sitara3.bin"
+
+    .align 2
+crown_sitarb4:
+	.incbin "sound/direct_sound_samples/crown_sitarb4.bin"
+
+    .align 2
+crown_spicce2:
+	.incbin "sound/direct_sound_samples/crown_spicce2.bin"
+
+    .align 2
+crown_srxorccym:
+	.incbin "sound/direct_sound_samples/crown_srxorccym.bin"
+
+    .align 2
+crown_srxrevcym:
+	.incbin "sound/direct_sound_samples/crown_srxrevcym.bin"
+
+    .align 2
+crown_srxsnare:
+	.incbin "sound/direct_sound_samples/crown_srxsnare.bin"
+
+    .align 2
+crown_srxsnroll:
+	.incbin "sound/direct_sound_samples/crown_srxsnroll.bin"
+
+    .align 2
+crown_srxtimroll:
+	.incbin "sound/direct_sound_samples/crown_srxtimroll.bin"
+
+    .align 2
+crown_ssawzg3:
+	.incbin "sound/direct_sound_samples/crown_ssawzg3.bin"
+
+    .align 2
+crown_ssawzg4:
+	.incbin "sound/direct_sound_samples/crown_ssawzg4.bin"
+
+    .align 2
+crown_ssawzg5:
+	.incbin "sound/direct_sound_samples/crown_ssawzg5.bin"
+
+    .align 2
+crown_ssaxb4:
+	.incbin "sound/direct_sound_samples/crown_ssaxb4.bin"
+
+    .align 2
+crown_ssaxd4:
+	.incbin "sound/direct_sound_samples/crown_ssaxd4.bin"
+
+    .align 2
+crown_ssaxg5:
+	.incbin "sound/direct_sound_samples/crown_ssaxg5.bin"
+
+    .align 2
+crown_steelc5:
+	.incbin "sound/direct_sound_samples/crown_steelc5.bin"
+
+    .align 2
+crown_steele4:
+	.incbin "sound/direct_sound_samples/crown_steele4.bin"
+
+    .align 2
+crown_steelg2:
+	.incbin "sound/direct_sound_samples/crown_steelg2.bin"
+
+    .align 2
+crown_steelg3:
+	.incbin "sound/direct_sound_samples/crown_steelg3.bin"
+
+    .align 2
+crown_steelk1:
+	.incbin "sound/direct_sound_samples/crown_steelk1.bin"
+
+    .align 2
+crown_steelk2:
+	.incbin "sound/direct_sound_samples/crown_steelk2.bin"
+
+    .align 2
+crown_steelk3:
+	.incbin "sound/direct_sound_samples/crown_steelk3.bin"
+
+    .align 2
+crown_steelrc5:
+	.incbin "sound/direct_sound_samples/crown_steelrc5.bin"
+
+    .align 2
+crown_steelre4:
+	.incbin "sound/direct_sound_samples/crown_steelre4.bin"
+
+    .align 2
+crown_steelrg2:
+	.incbin "sound/direct_sound_samples/crown_steelrg2.bin"
+
+    .align 2
+crown_steelrg3:
+	.incbin "sound/direct_sound_samples/crown_steelrg3.bin"
+
+    .align 2
+crown_stlpana3:
+	.incbin "sound/direct_sound_samples/crown_stlpana3.bin"
+
+    .align 2
+crown_stlpanb4:
+	.incbin "sound/direct_sound_samples/crown_stlpanb4.bin"
+
+    .align 2
+crown_strensc2:
+	.incbin "sound/direct_sound_samples/crown_strensc2.bin"
+
+    .align 2
+crown_strensc3:
+	.incbin "sound/direct_sound_samples/crown_strensc3.bin"
+
+    .align 2
+crown_strensc4:
+	.incbin "sound/direct_sound_samples/crown_strensc4.bin"
+
+    .align 2
+crown_strensc5:
+	.incbin "sound/direct_sound_samples/crown_strensc5.bin"
+
+    .align 2
+crown_strensc6:
+	.incbin "sound/direct_sound_samples/crown_strensc6.bin"
+
+    .align 2
+crown_sword:
+	.incbin "sound/direct_sound_samples/crown_sword.bin"
+
+    .align 2
+crown_synstrc2:
+	.incbin "sound/direct_sound_samples/crown_synstrc2.bin"
+
+    .align 2
+crown_synstrc3:
+	.incbin "sound/direct_sound_samples/crown_synstrc3.bin"
+
+    .align 2
+crown_synstrc4:
+	.incbin "sound/direct_sound_samples/crown_synstrc4.bin"
+
+    .align 2
+crown_synstrc5:
+	.incbin "sound/direct_sound_samples/crown_synstrc5.bin"
+
+    .align 2
+crown_t9crash:
+	.incbin "sound/direct_sound_samples/crown_t9crash.bin"
+
+    .align 2
+crown_t9kick:
+	.incbin "sound/direct_sound_samples/crown_t9kick.bin"
+
+    .align 2
+crown_t9sfx:
+	.incbin "sound/direct_sound_samples/crown_t9sfx.bin"
+
+    .align 2
+crown_t9snare:
+	.incbin "sound/direct_sound_samples/crown_t9snare.bin"
+
+    .align 2
+crown_tbellc4:
+	.incbin "sound/direct_sound_samples/crown_tbellc4.bin"
+
+    .align 2
+crown_tbellc5:
+	.incbin "sound/direct_sound_samples/crown_tbellc5.bin"
+
+    .align 2
+crown_tbellg4:
+	.incbin "sound/direct_sound_samples/crown_tbellg4.bin"
+
+    .align 2
+crown_timpc2:
+	.incbin "sound/direct_sound_samples/crown_timpc2.bin"
+
+    .align 2
+crown_timpc3:
+	.incbin "sound/direct_sound_samples/crown_timpc3.bin"
+
+    .align 2
+crown_tpta5:
+	.incbin "sound/direct_sound_samples/crown_tpta5.bin"
+
+    .align 2
+crown_tptb4:
+	.incbin "sound/direct_sound_samples/crown_tptb4.bin"
+
+    .align 2
+crown_tptd4:
+	.incbin "sound/direct_sound_samples/crown_tptd4.bin"
+
+    .align 2
+crown_tremstrc2:
+	.incbin "sound/direct_sound_samples/crown_tremstrc2.bin"
+
+    .align 2
+crown_tremstrc3:
+	.incbin "sound/direct_sound_samples/crown_tremstrc3.bin"
+
+    .align 2
+crown_tremstrc4:
+	.incbin "sound/direct_sound_samples/crown_tremstrc4.bin"
+
+    .align 2
+crown_tremstrc5:
+	.incbin "sound/direct_sound_samples/crown_tremstrc5.bin"
+
+    .align 2
+crown_tremstrc6:
+	.incbin "sound/direct_sound_samples/crown_tremstrc6.bin"
+
+    .align 2
+crown_tripnoc2:
+	.incbin "sound/direct_sound_samples/crown_tripnoc2.bin"
+
+    .align 2
+crown_tripnoc3:
+	.incbin "sound/direct_sound_samples/crown_tripnoc3.bin"
+
+    .align 2
+crown_tripnoc4:
+	.incbin "sound/direct_sound_samples/crown_tripnoc4.bin"
+
+    .align 2
+crown_tripnoc5:
+	.incbin "sound/direct_sound_samples/crown_tripnoc5.bin"
+
+    .align 2
+crown_tripnoc6:
+	.incbin "sound/direct_sound_samples/crown_tripnoc6.bin"
+
+    .align 2
+crown_tromc3:
+	.incbin "sound/direct_sound_samples/crown_tromc3.bin"
+
+    .align 2
+crown_tromc4:
+	.incbin "sound/direct_sound_samples/crown_tromc4.bin"
+
+    .align 2
+crown_tromc5:
+	.incbin "sound/direct_sound_samples/crown_tromc5.bin"
+
+    .align 2
+crown_tsaxb3:
+	.incbin "sound/direct_sound_samples/crown_tsaxb3.bin"
+
+    .align 2
+crown_tsaxd3:
+	.incbin "sound/direct_sound_samples/crown_tsaxd3.bin"
+
+    .align 2
+crown_tsaxg4:
+	.incbin "sound/direct_sound_samples/crown_tsaxg4.bin"
+
+    .align 2
+crown_ttstaccs2:
+	.incbin "sound/direct_sound_samples/crown_ttstaccs2.bin"
+
+    .align 2
+crown_tubac1:
+	.incbin "sound/direct_sound_samples/crown_tubac1.bin"
+
+    .align 2
+crown_tubac2:
+	.incbin "sound/direct_sound_samples/crown_tubac2.bin"
+
+    .align 2
+crown_tubac3:
+	.incbin "sound/direct_sound_samples/crown_tubac3.bin"
+
+    .align 2
+crown_ueberkick:
+	.incbin "sound/direct_sound_samples/crown_ueberkick.bin"
+
+    .align 2
+crown_uprigrcn1:
+	.incbin "sound/direct_sound_samples/crown_uprigrc-1.bin"
+
+    .align 2
+crown_uprigrc3:
+	.incbin "sound/direct_sound_samples/crown_uprigrc3.bin"
+
+    .align 2
+crown_uprigrc4:
+	.incbin "sound/direct_sound_samples/crown_uprigrc4.bin"
+
+    .align 2
+crown_uprigrcsn1:
+	.incbin "sound/direct_sound_samples/crown_uprigrcs-1.bin"
+
+    .align 2
+crown_uprigre2:
+	.incbin "sound/direct_sound_samples/crown_uprigre2.bin"
+
+    .align 2
+crown_vibrc4:
+	.incbin "sound/direct_sound_samples/crown_vibrc4.bin"
+
+    .align 2
+crown_vibrc5:
+	.incbin "sound/direct_sound_samples/crown_vibrc5.bin"
+
+    .align 2
+crown_vibrc6:
+	.incbin "sound/direct_sound_samples/crown_vibrc6.bin"
+
+    .align 2
+crown_violac3:
+	.incbin "sound/direct_sound_samples/crown_violac3.bin"
+
+    .align 2
+crown_violac4:
+	.incbin "sound/direct_sound_samples/crown_violac4.bin"
+
+    .align 2
+crown_violac5:
+	.incbin "sound/direct_sound_samples/crown_violac5.bin"
+
+    .align 2
+crown_violac6:
+	.incbin "sound/direct_sound_samples/crown_violac6.bin"
+
+    .align 2
+crown_violinc4:
+	.incbin "sound/direct_sound_samples/crown_violinc4.bin"
+
+    .align 2
+crown_violinc5:
+	.incbin "sound/direct_sound_samples/crown_violinc5.bin"
+
+    .align 2
+crown_violinc6:
+	.incbin "sound/direct_sound_samples/crown_violinc6.bin"
+
+    .align 2
+crown_voohc4:
+	.incbin "sound/direct_sound_samples/crown_voohc4.bin"
+
+    .align 2
+crown_voohc5:
+	.incbin "sound/direct_sound_samples/crown_voohc5.bin"
+
+    .align 2
+crown_voohg4:
+	.incbin "sound/direct_sound_samples/crown_voohg4.bin"
+
+    .align 2
+crown_whistlc5:
+	.incbin "sound/direct_sound_samples/crown_whistlc5.bin"
+
+    .align 2
+crown_whistlc6:
+	.incbin "sound/direct_sound_samples/crown_whistlc6.bin"
+
+    .align 2
+crown_wind:
+	.incbin "sound/direct_sound_samples/crown_wind.bin"
+
+    .align 2
+crown_xyloc5:
+	.incbin "sound/direct_sound_samples/crown_xyloc5.bin"
+
+    .align 2
+crown_xyloc6:
+	.incbin "sound/direct_sound_samples/crown_xyloc6.bin"
+
+    .align 2
+crown_xyloc7:
+	.incbin "sound/direct_sound_samples/crown_xyloc7.bin"

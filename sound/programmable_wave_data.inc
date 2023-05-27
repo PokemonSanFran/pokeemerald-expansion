@@ -76,3 +76,19 @@ ProgrammableWaveData_24::
 
 ProgrammableWaveData_25::
 	.incbin "sound/programmable_wave_samples/25.pcm"
+
+Crown_Wave_Sine::
+//BYTE $86 $53 $21 $10 $00 $11 $23 $56 $79 $ac $de $ef $ff $ee $dc $a9
+	.incbin "sound/programmable_wave_samples/26.pcm"
+
+Crown_Wave_Saw::
+//BYTE $88 $99 $aa $bb $cc $dd $ee $ff $00 $11 $22 $33 $44 $55 $66 $77
+	.incbin "sound/programmable_wave_samples/27.pcm"
+
+Crown_Wave_Triangle::
+//BYTE $89 $ab $cd $ef $fe $dc $ba $98 $76 $54 $32 $10 $01 $23 $45 $67
+	.incbin "sound/programmable_wave_samples/28.pcm"
+
+Crown_Wave_SqFilter::
+//BYTE $af $a7 $87 $af $50 $58 $78 $50 $af $a7 $87 $af $50 $58 $78 $50
+	.incbin "sound/programmable_wave_samples/29.pcm"
