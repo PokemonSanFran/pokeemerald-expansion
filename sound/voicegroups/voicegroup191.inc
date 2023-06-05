@@ -1,4 +1,4 @@
-MusicVoices::
+voicegroup191::
 voice_keysplit	Crown_NI_Grandeur_Forte,Keysplit_29_41_53_65_80_92
 voice_keysplit	Crown_Korg_Trinity_Acoustic_Piano,Keysplit_36_52_67_80
 voice_keysplit	Crown_Lounge_Lizard_EP,Keysplit_37_52_62_76
