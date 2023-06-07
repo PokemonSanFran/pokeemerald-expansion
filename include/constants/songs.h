@@ -544,6 +544,9 @@
 #define PH_NURSE_HELD               608
 #define PH_NURSE_SOLO               609
 #define MUS_PASCAL_CENTER           610
+#define MUS_PASCAL_ECRUTEAK         611
+#define MUS_PASCAL_OPELUCID         612
+#define MUS_PASCAL_MASTERDOJO       613
 
 #define MUS_ROUTE118                0x7FFF  // Map is split into 2 music sections. controlled by GetCurrLocationDefaultMusic().
 

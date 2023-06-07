@@ -1265,3 +1265,12 @@ $(MID_SUBDIR)/se_dex_search.s: %.s: %.mid
 
 $(MID_SUBDIR)/mus_pascal_center.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092
+
+$(MID_SUBDIR)/mus_pascal_ecruteak.s: %.s: %.mid
+	$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092
+
+$(MID_SUBDIR)/mus_pascal_opelucid.s: %.s: %.mid
+	$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092
+
+$(MID_SUBDIR)/mus_pascal_masterdojo.s: %.s: %.mid
+	$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092
