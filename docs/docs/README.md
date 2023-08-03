@@ -2,7 +2,7 @@
 
 # How to see the manual right now
 
-You can [view pages on Github directly](https://github.com/PokemonSanFran/pokeemerald-expansion/tree/features.md/docs/docs), *but* it is not an accurate representation of how they'll look in the manual itself. To see the manual in all its glory:
+You can [view pages on GitHub directly](https://github.com/PokemonSanFran/pokeemerald-expansion/tree/features.md/docs/docs), *but* it is not an accurate representation of how they'll look in the manual itself. To see the manual in all its glory:
 
 1. Clone this repo: https://github.com/PokemonSanFran/pokeemerald-expansion/tree/features.md
 1. Navigate to `docs/` in your terminal and run 
@@ -12,14 +12,14 @@ You can [view pages on Github directly](https://github.com/PokemonSanFran/pokeem
 
 # How to help and give feedback
 
-* If you have insight or an opinion, use the [Discord channel](https://discord.com/channels/419213663107416084/1093302480395309099) to weigh in on any of the discussion points listed below.
-* If you're willing and able to contribute to any of the TODOs, please let psf#2936 know! ⚠️ **This is the most important piece right now.**
+* If you have insight or an opinion, use the [Discord channel](https://discord.com/channels/419213663107416084/1136732669057716355) to weigh in on any of the discussion points listed below.
+* If you're willing and able to contribute to any of the TODOs, please let pkmnsnfrn know! ⚠️ **This is the most important piece right now.**
 
 # Discussion Topics
 
 ## Top Level Pages
 
-There are some features specifically called out in [Egg's original post](https://www.pokecommunity.com/showthread.php?t=417820), or the [Github README](https://github.com/rh-hideout/pokeemerald-expansion#readme) but I don't think they need top level pages in documentation.
+There are some features specifically called out in [Egg's original post](https://www.pokecommunity.com/showthread.php?t=417820), or the [Github README](https://github.com/rh-hideout/pokeemerald-expansion#readme) but I don't think they need top-level pages in the documentation.
 
 | Egg                            | README                                     |
 | ------------------------------ | ------------------------------------------ |
@@ -63,7 +63,7 @@ I believe that tutorials like "how to add a new type" should be **referenced** i
 ---
 ## Expansion Credits
 
-I don't think its sustainable to list everybody who has helped with expansion, as nice as that would be. My proposal for that page:
+It's not sustainable to list everybody who has helped with expansion, as nice as that would be. My proposal for that page:
 
 1. Maintainers
 2. Alphabetical or Chronological List of Non-Code Contributions / Resources Used
@@ -77,7 +77,7 @@ I don't think its sustainable to list everybody who has helped with expansion, a
 
 ## Videos vs Gif
 
-I would like to use videos instead of gifs, as people can pause and rewind them to see the things they actually care about. I'm unsure if this will work unless we can find an external hosting solution, since the .mp4 files are going to greatly balloon the size of the repository.
+I want to use videos instead of gifs, as people can pause and rewind them to see the things they actually care about. I'm unsure if this will work unless we can find an external hosting solution since the .mp4 files are going to balloon the size of the repository greatly.
 
 If videos don't work, its not hard to just convert them all to gifs later.
 
@@ -86,13 +86,13 @@ If videos don't work, its not hard to just convert them all to gifs later.
 Your browser does not support the video tag.
 </video>
 
-**If there's no strong feedback, I'm going to include the raw videos in the repo itself, unless the repo goes to some ridiculous and unmanagable size, at which case I will reevaluate.**
+**If there's no strong feedback, I'm going to include the raw videos in the repo itself, unless the repo goes to some ridiculous and unmanageable size, at which case I will reevaluate.**
 
 ---
 
 ## Feedback Collection
 
-I would like people to give suggestions and improvements to the wording and explanation of certain topics. Originally, I was going to create a series of Google Docs for that people could add comments and suggestions to, and then I would port those suggestions to the repo itself.
+I would like people to give suggestions and improvements to the wording and explanation of certain topics. Originally, I was going to create a series of Google Docs for that people could add comments and suggestions, and then I would port those suggestions to the repo itself.
 
 This is a lot of work for me, and I don't want to do that if its going to go to waste.
 
@@ -122,14 +122,14 @@ D) something else
 
 ## Recordings
 
-- [ ] Create list of videos/gifs to record. **⬅️ psf is here**
+- [ ] Create a list of videos/gifs to record. **⬅️ psf is here**
 - [ ] Figure out how to control damage rolls to influence recording outcomes
-- [ ] Record videos and embed into pages.
+- [ ] Record videos and embed them into pages.
 
 ## Feedback
 
 - [ ] Implement feedback collection method or skip this step, pending discussion.
-- [ ] Imeplement feedback. 
+- [ ] Implement feedback. 
 
 ## Final Check
 
@@ -138,8 +138,8 @@ D) something else
 ## Deployment
 
 - [ ] Open PR against upcoming.
-- [ ] Hand off to a maintainer to handle deploying / working build process in CI pipeline.
-- [ ] Delete irrelevant wiki pages based on dicussion.
+- [ ] Handoff to a maintainer to handle deploying/working build process in CI pipeline.
+- [ ] Delete irrelevant wiki pages based on discussion.
 
 # Recording List (in progress)
 
