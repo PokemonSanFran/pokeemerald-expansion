@@ -1,6 +1,7 @@
 #ifndef GUARD_BATTLE_SCRIPTS_H
 #define GUARD_BATTLE_SCRIPTS_H
 
+extern const u8 BattleScript_OpportunistCopyStatChange[];
 extern const u8 BattleScript_MirrorHerbCopyStatChange[];
 extern const u8 BattleScript_MirrorHerbCopyStatChangeEnd2[];
 extern const u8 BattleScript_NotAffected[];
@@ -10,7 +11,8 @@ extern const u8 BattleScript_MakeMoveMissed[];
 extern const u8 BattleScript_PrintMoveMissed[];
 extern const u8 BattleScript_MoveMissedPause[];
 extern const u8 BattleScript_MoveMissed[];
-extern const u8 BattleScript_ButItFailedAtkStringPpReduce[];
+extern const u8 BattleScript_FlingFailConsumeItem[];
+extern const u8 BattleScript_FailedFromAtkString[];
 extern const u8 BattleScript_ButItFailed[];
 extern const u8 BattleScript_StatUp[];
 extern const u8 BattleScript_StatDown[];
@@ -168,6 +170,7 @@ extern const u8 BattleScript_MonMadeMoveUseless[];
 extern const u8 BattleScript_FlashFireBoost_PPLoss[];
 extern const u8 BattleScript_FlashFireBoost[];
 extern const u8 BattleScript_AbilityNoStatLoss[];
+extern const u8 BattleScript_ItemNoStatLoss[];
 extern const u8 BattleScript_BRNPrevention[];
 extern const u8 BattleScript_PRLZPrevention[];
 extern const u8 BattleScript_PSNPrevention[];
@@ -212,6 +215,7 @@ extern const u8 BattleScript_WhiteHerbRet[];
 extern const u8 BattleScript_ItemHealHP_RemoveItemRet[];
 extern const u8 BattleScript_ItemHealHP_RemoveItemEnd2[];
 extern const u8 BattleScript_BerryPPHealEnd2[];
+extern const u8 BattleScript_BerryPPHealRet[];
 extern const u8 BattleScript_ItemHealHP_End2[];
 extern const u8 BattleScript_ItemHealHP_Ret[];
 extern const u8 BattleScript_SelectingNotAllowedMoveChoiceItem[];
@@ -408,15 +412,15 @@ extern const u8 BattleScript_GulpMissileGorging[];
 extern const u8 BattleScript_GulpMissileGulping[];
 extern const u8 BattleScript_BattleBondActivatesOnMoveEndAttacker[];
 extern const u8 BattleScript_DesolateLandActivates[];
-extern const u8 BattleScript_DesolateLandEvaporatesWaterTypeMoves[];
 extern const u8 BattleScript_PrimordialSeaActivates[];
-extern const u8 BattleScript_PrimordialSeaFizzlesOutFireTypeMoves[];
+extern const u8 BattleScript_PrimalWeatherBlocksMove[];
 extern const u8 BattleScript_DeltaStreamActivates[];
 extern const u8 BattleScript_MysteriousAirCurrentBlowsOn[];
 extern const u8 BattleScript_AttackWeakenedByStrongWinds[];
 extern const u8 BattleScript_BlockedByPrimalWeatherEnd3[];
 extern const u8 BattleScript_BlockedByPrimalWeatherRet[];
 extern const u8 BattleScript_PrimalReversion[];
+extern const u8 BattleScript_PrimalReversionRestoreAttacker[];
 extern const u8 BattleScript_HyperspaceFuryRemoveProtect[];
 extern const u8 BattleScript_SelectingNotAllowedMoveGorillaTactics[];
 extern const u8 BattleScript_SelectingNotAllowedMoveGorillaTacticsInPalace[];
@@ -455,6 +459,7 @@ extern const u8 BattleScript_RuinAbilityActivates[];
 extern const u8 BattleScript_CudChewActivates[];
 extern const u8 BattleScript_SupremeOverlordActivates[];
 extern const u8 BattleScript_CostarActivates[];
+extern const u8 BattleScript_ZeroToHeroActivates[];
 extern const u8 BattleScript_ToxicDebrisActivates[];
 extern const u8 BattleScript_EarthEaterActivates[];
 extern const u8 BattleScript_MimicryActivates_End3[];
@@ -464,12 +469,27 @@ extern const u8 BattleScript_DampPreventsAftermath[];
 extern const u8 BattleScript_HealingWishActivates[];
 extern const u8 BattleScript_LunarDanceActivates[];
 extern const u8 BattleScript_ShellTrapSetUp[];
+extern const u8 BattleScript_StealthRockActivates[];
 extern const u8 BattleScript_CouldntFullyProtect[];
 extern const u8 BattleScript_MoveEffectStockpileWoreOff[];
 extern const u8 BattleScript_StealthRockActivates[];
 extern const u8 BattleScript_SpikesActivates[];
 extern const u8 BattleScript_BerserkGeneRet[];
 extern const u8 BattleScript_TargetFormChangeWithStringNoPopup[];
+extern const u8 BattleScript_DefDown[];
+extern const u8 BattleScript_UltraBurst[];
+extern const u8 BattleScript_SelectingNotAllowedCurrentMove[];
+extern const u8 BattleScript_SelectingNotAllowedCurrentMoveInPalace[];
+extern const u8 BattleScript_SaltCureExtraDamage[];
+extern const u8 BattleScript_SyrupBombEndTurn[];
+extern const u8 BattleScript_SyrupBombActivates[];
+extern const u8 BattleScript_EffectCombinedPledge_Water[];
+extern const u8 BattleScript_EffectCombinedPledge_Fire[];
+extern const u8 BattleScript_EffectCombinedPledge_Grass[];
+extern const u8 BattleScript_TheRainbowDisappeared[];
+extern const u8 BattleScript_HurtByTheSeaOfFire[];
+extern const u8 BattleScript_TheSeaOfFireDisappeared[];
+extern const u8 BattleScript_TheSwampDisappeared[];
 
 // zmoves
 extern const u8 BattleScript_ZMoveActivateDamaging[];
@@ -479,5 +499,34 @@ extern const u8 BattleScript_RecoverHPZMove[];
 extern const u8 BattleScript_StatUpZMove[];
 extern const u8 BattleScript_HealReplacementZMove[];
 extern const u8 BattleScript_EffectExtremeEvoboost[];
+
+// max moves
+extern const u8 BattleScript_EffectRaiseStatAllies[];
+extern const u8 BattleScript_EffectLowerStatFoes[];
+extern const u8 BattleScript_EffectSetWeather[];
+extern const u8 BattleScript_EffectSetTerrain[];
+extern const u8 BattleScript_EffectStonesurge[];
+extern const u8 BattleScript_EffectSteelsurge[];
+extern const u8 BattleScript_SteelsurgeFree[];
+extern const u8 BattleScript_SteelsurgeDefog[];
+extern const u8 BattleScript_DamageNonTypesStarts[];
+extern const u8 BattleScript_DamageNonTypesContinues[];
+extern const u8 BattleScript_DefogTryHazards[];
+extern const u8 BattleScript_EffectAuroraVeilSuccess[];
+extern const u8 BattleScript_EffectGravitySuccess[];
+extern const u8 BattleScript_EffectYawnSuccess[];
+extern const u8 BattleScript_EffectTryReducePP[];
+extern const u8 BattleScript_EffectStatus1Foes[];
+extern const u8 BattleScript_EffectStatus2Foes[];
+extern const u8 BattleScript_TormentEnds[];
+extern const u8 BattleScript_EffectRaiseCritAlliesAnim[];
+extern const u8 BattleScript_EffectHealOneSixthAllies[];
+extern const u8 BattleScript_EffectCureStatusAllies[];
+extern const u8 BattleScript_EffectRecycleBerriesAllies[];
+
+// dynamax and max raids
+extern const u8 BattleScript_DynamaxBegins[];
+extern const u8 BattleScript_DynamaxEnds[];
+extern const u8 BattleScript_MoveBlockedByDynamax[];
 
 #endif // GUARD_BATTLE_SCRIPTS_H

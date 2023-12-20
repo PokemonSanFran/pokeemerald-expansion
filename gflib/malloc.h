@@ -1,7 +1,6 @@
 #ifndef GUARD_ALLOC_H
 #define GUARD_ALLOC_H
 
-#define HEAP_SIZE 0x1C000
 
 #define FREE_AND_SET_NULL(ptr)          \
 {                                       \
@@ -42,10 +41,20 @@ struct MemBlock
     u8 data[0];
 };
 
-extern u8 gHeap[];
+#define HEAP_SIZE 0x1C000
+extern u8 gHeap[HEAP_SIZE];
+
+#if TESTING || !defined(NDEBUG)
 
 #define Alloc(size) Alloc_(size, __FILE__ ":" STR(__LINE__))
 #define AllocZeroed(size) AllocZeroed_(size, __FILE__ ":" STR(__LINE__))
+
+#else
+
+#define Alloc(size) Alloc_(size, NULL)
+#define AllocZeroed(size) AllocZeroed_(size, NULL)
+
+#endif
 
 void *Alloc_(u32 size, const char *location);
 void *AllocZeroed_(u32 size, const char *location);
