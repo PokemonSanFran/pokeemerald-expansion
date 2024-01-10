@@ -96,18 +96,28 @@ Debug_BoxFilledMessage_Text:
 	.string "Storage boxes filled!$"
 
 Debug_EventScript_Script_1::
+    giveitem ITEM_MAX_POTION,2
+    closemessage
 	end
 
 Debug_EventScript_Script_2::
+    giveitem ITEM_MASTER_BALL,4
+    closemessage
 	end
 
 Debug_EventScript_Script_3::
+    giveitem ITEM_CHERI_BERRY,1
+    closemessage
 	end
 
 Debug_EventScript_Script_4::
+    giveitem ITEM_TM42,99
+    closemessage
 	end
 
 Debug_EventScript_Script_5::
+    giveitem ITEM_BASEMENT_KEY, 3
+    closemessage
 	end
 
 Debug_EventScript_Script_6::
