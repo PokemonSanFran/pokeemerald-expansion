@@ -257,7 +257,6 @@ static bool8 Mugshot_GradualWhiteFade(struct Task *);
 static bool8 Mugshot_InitFadeWhiteToBlack(struct Task *);
 static bool8 Mugshot_FadeToBlack(struct Task *);
 static bool8 Mugshot_End(struct Task *);
-static void DoMugshotTransition(u8);
 static void Mugshots_CreateTrainerPics(struct Task *);
 static void VBlankCB_Mugshots(void);
 static void VBlankCB_MugshotsFadeOut(void);
@@ -2262,7 +2261,6 @@ static bool8 Mugshot_SetGfx(struct Task *task)
     s16 i, j;
     u16 *tilemap, *tileset;
 	const u16 *mugshotsMap = sMugshotsTilemap;
-    u8 trainerPicId = gTrainers[gTrainerBattleOpponent_A].trainerPic;
     u8 mugshotColor = gTrainers[gTrainerBattleOpponent_A].mugshotColor;
 
 
@@ -2524,7 +2522,7 @@ static void Mugshots_CreateTrainerPics(struct Task *task)
     struct Sprite *opponentSprite, *playerSprite;
 
 	    u8 trainerPicId = gTrainers[gTrainerBattleOpponent_A].trainerPic;
-    s16 opponentRotationScales;
+		s16 opponentRotationScales = 0;
 
 	    gReservedSpritePaletteCount = 10;
     task->tOpponentSpriteId = CreateTrainerSprite(trainerPicId,
@@ -2559,10 +2557,12 @@ static void Mugshots_CreateTrainerPics(struct Task *task)
     CalcCenterToCornerVec(opponentSprite, SPRITE_SHAPE(64x32), SPRITE_SIZE(64x32), ST_OAM_AFFINE_DOUBLE);
     CalcCenterToCornerVec(playerSprite, SPRITE_SHAPE(64x32), SPRITE_SIZE(64x32), ST_OAM_AFFINE_DOUBLE);
 
-	    if (trainerPicId >= ARRAY_COUNT(sMugshotsopponentRotationScales))
-        opponentRotationScales = 0x200;
+    if (trainerPicId >= ARRAY_COUNT(sMugshotsOpponentRotationScales))
+		opponentRotationScales = 0x200;
     else
-        opponentRotationScales = sMugshotsopponentRotationScales[trainerPicId];
+		opponentRotationScales = sMugshotsOpponentRotationScales[trainerPicId];
+
+	SetOamMatrixRotationScaling(opponentSprite->oam.matrixNum, opponentRotationScales, opponentRotationScales, 0);
 
     SetOamMatrixRotationScaling(playerSprite->oam.matrixNum, -512, 512, 0);
 }
