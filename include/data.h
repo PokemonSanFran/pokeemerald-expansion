@@ -75,16 +75,18 @@ struct TrainerMon
 
 struct Trainer
 {
-    /*0x00*/ u32 aiFlags;
-    /*0x04*/ const struct TrainerMon *party;
-    /*0x08*/ u16 items[MAX_TRAINER_ITEMS];
-    /*0x10*/ u8 trainerClass;
-    /*0x11*/ u8 encounterMusic_gender; // last bit is gender
-    /*0x12*/ u8 trainerPic;
-    /*0x13*/ u8 trainerName[TRAINER_NAME_LENGTH + 1];
-    /*0x1E*/ bool8 doubleBattle:1;
-             u8 padding:7;
-    /*0x1F*/ u8 partySize;
+	/*0x00*/ u32 aiFlags;
+	/*0x04*/ const struct TrainerMon *party;
+	/*0x08*/ u16 items[MAX_TRAINER_ITEMS];
+	/*0x10*/ u8 trainerClass;
+	/*0x11*/ u8 encounterMusic_gender; // last bit is gender
+	/*0x12*/ u8 trainerPic;
+	/*0x13*/ u8 trainerName[TRAINER_NAME_LENGTH + 1];
+	/*0x1E*/ bool8 doubleBattle:1;
+	/*0x19*/ bool8 mugshotEnabled;
+	/*0x1A*/ u8 mugshotColor;
+	u8 padding:7;
+	/*0x1F*/ u8 partySize;
 };
 
 struct TrainerClass

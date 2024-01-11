@@ -20,6 +20,8 @@
 #include "task.h"
 #include "trig.h"
 #include "util.h"
+#include "battle_setup.h"
+#include "data.h"
 #include "constants/field_effects.h"
 #include "constants/songs.h"
 #include "constants/trainers.h"
@@ -107,11 +109,7 @@ static void Task_Slice(u8);
 static void Task_WhiteBarsFade(u8);
 static void Task_GridSquares(u8);
 static void Task_AngledWipes(u8);
-static void Task_Sidney(u8);
-static void Task_Phoebe(u8);
-static void Task_Glacia(u8);
-static void Task_Drake(u8);
-static void Task_Champion(u8);
+static void Task_Mugshot(u8);
 static void Task_Aqua(u8);
 static void Task_Magma(u8);
 static void Task_Regice(u8);
@@ -358,11 +356,7 @@ static const TaskFunc sTasks_Main[B_TRANSITION_COUNT] =
     [B_TRANSITION_WHITE_BARS_FADE] = Task_WhiteBarsFade,
     [B_TRANSITION_GRID_SQUARES] = Task_GridSquares,
     [B_TRANSITION_ANGLED_WIPES] = Task_AngledWipes,
-    [B_TRANSITION_SIDNEY] = Task_Sidney,
-    [B_TRANSITION_PHOEBE] = Task_Phoebe,
-    [B_TRANSITION_GLACIA] = Task_Glacia,
-    [B_TRANSITION_DRAKE] = Task_Drake,
-    [B_TRANSITION_CHAMPION] = Task_Champion,
+    [B_TRANSITION_MUGSHOT] = Task_Mugshot,
     [B_TRANSITION_AQUA] = Task_Aqua,
     [B_TRANSITION_MAGMA] = Task_Magma,
     [B_TRANSITION_REGICE] = Task_Regice,
@@ -541,29 +535,198 @@ static const TransitionStateFunc sMugshot_Funcs[] =
     Mugshot_End
 };
 
-static const u8 sMugshotsTrainerPicIDsTable[MUGSHOTS_COUNT] =
+static const s16 sMugshotsOpponentRotationScales[TRAINER_PIC_COUNT] =
 {
-    [MUGSHOT_SIDNEY]   = TRAINER_PIC_ELITE_FOUR_SIDNEY,
-    [MUGSHOT_PHOEBE]   = TRAINER_PIC_ELITE_FOUR_PHOEBE,
-    [MUGSHOT_GLACIA]   = TRAINER_PIC_ELITE_FOUR_GLACIA,
-    [MUGSHOT_DRAKE]    = TRAINER_PIC_ELITE_FOUR_DRAKE,
-    [MUGSHOT_CHAMPION] = TRAINER_PIC_CHAMPION_WALLACE,
+	[TRAINER_PIC_HIKER]                 = 0x200,
+	[TRAINER_PIC_AQUA_GRUNT_M]          = 0x200,
+	[TRAINER_PIC_POKEMON_BREEDER_F]     = 0x200,
+	[TRAINER_PIC_COOLTRAINER_M]         = 0x200,
+	[TRAINER_PIC_BIRD_KEEPER]           = 0x200,
+	[TRAINER_PIC_COLLECTOR]             = 0x200,
+	[TRAINER_PIC_AQUA_GRUNT_F]          = 0x200,
+	[TRAINER_PIC_SWIMMER_M]             = 0x200,
+	[TRAINER_PIC_MAGMA_GRUNT_M]         = 0x200,
+	[TRAINER_PIC_EXPERT_M]              = 0x200,
+	[TRAINER_PIC_AQUA_ADMIN_M]          = 0x200,
+	[TRAINER_PIC_BLACK_BELT]            = 0x200,
+	[TRAINER_PIC_AQUA_ADMIN_F]          = 0x200,
+	[TRAINER_PIC_AQUA_LEADER_ARCHIE]    = 0x200,
+	[TRAINER_PIC_HEX_MANIAC]            = 0x200,
+	[TRAINER_PIC_AROMA_LADY]            = 0x200,
+	[TRAINER_PIC_RUIN_MANIAC]           = 0x200,
+	[TRAINER_PIC_INTERVIEWER]           = 0x200,
+	[TRAINER_PIC_TUBER_F]               = 0x200,
+	[TRAINER_PIC_TUBER_M]               = 0x200,
+	[TRAINER_PIC_COOLTRAINER_F]         = 0x200,
+	[TRAINER_PIC_LADY]                  = 0x200,
+	[TRAINER_PIC_BEAUTY]                = 0x200,
+	[TRAINER_PIC_RICH_BOY]              = 0x200,
+	[TRAINER_PIC_EXPERT_F]              = 0x200,
+	[TRAINER_PIC_POKEMANIAC]            = 0x200,
+	[TRAINER_PIC_MAGMA_GRUNT_F]         = 0x200,
+	[TRAINER_PIC_GUITARIST]             = 0x200,
+	[TRAINER_PIC_KINDLER]               = 0x200,
+	[TRAINER_PIC_CAMPER]                = 0x200,
+	[TRAINER_PIC_PICNICKER]             = 0x200,
+	[TRAINER_PIC_BUG_MANIAC]            = 0x200,
+	[TRAINER_PIC_POKEMON_BREEDER_M]     = 0x200,
+	[TRAINER_PIC_PSYCHIC_M]             = 0x200,
+	[TRAINER_PIC_PSYCHIC_F]             = 0x200,
+	[TRAINER_PIC_GENTLEMAN]             = 0x200,
+	[TRAINER_PIC_ELITE_FOUR_SIDNEY]     = 0x200,
+	[TRAINER_PIC_ELITE_FOUR_PHOEBE]     = 0x200,
+	[TRAINER_PIC_ELITE_FOUR_GLACIA]     = 0x1B0,
+	[TRAINER_PIC_ELITE_FOUR_DRAKE]      = 0x1A0,
+	[TRAINER_PIC_LEADER_ROXANNE]        = 0x200,
+	[TRAINER_PIC_LEADER_BRAWLY]         = 0x200,
+	[TRAINER_PIC_LEADER_WATTSON]        = 0x200,
+	[TRAINER_PIC_LEADER_FLANNERY]       = 0x200,
+	[TRAINER_PIC_LEADER_NORMAN]         = 0x200,
+	[TRAINER_PIC_LEADER_WINONA]         = 0x200,
+	[TRAINER_PIC_LEADER_TATE_AND_LIZA]  = 0x200,
+	[TRAINER_PIC_LEADER_JUAN]           = 0x200,
+	[TRAINER_PIC_SCHOOL_KID_M]          = 0x200,
+	[TRAINER_PIC_SCHOOL_KID_F]          = 0x200,
+	[TRAINER_PIC_SR_AND_JR]             = 0x200,
+	[TRAINER_PIC_POKEFAN_M]             = 0x200,
+	[TRAINER_PIC_POKEFAN_F]             = 0x200,
+	[TRAINER_PIC_YOUNGSTER]             = 0x200,
+	[TRAINER_PIC_CHAMPION_WALLACE]      = 0x188,
+	[TRAINER_PIC_FISHERMAN]             = 0x200,
+	[TRAINER_PIC_CYCLING_TRIATHLETE_M]  = 0x200,
+	[TRAINER_PIC_CYCLING_TRIATHLETE_F]  = 0x200,
+	[TRAINER_PIC_RUNNING_TRIATHLETE_M]  = 0x200,
+	[TRAINER_PIC_RUNNING_TRIATHLETE_F]  = 0x200,
+	[TRAINER_PIC_SWIMMING_TRIATHLETE_M] = 0x200,
+	[TRAINER_PIC_SWIMMING_TRIATHLETE_F] = 0x200,
+	[TRAINER_PIC_DRAGON_TAMER]          = 0x200,
+	[TRAINER_PIC_NINJA_BOY]             = 0x200,
+	[TRAINER_PIC_BATTLE_GIRL]           = 0x200,
+	[TRAINER_PIC_PARASOL_LADY]          = 0x200,
+	[TRAINER_PIC_SWIMMER_F]             = 0x200,
+	[TRAINER_PIC_TWINS]                 = 0x200,
+	[TRAINER_PIC_MAGMA_ADMIN]           = 0x200,
+	[TRAINER_PIC_SAILOR]                = 0x200,
+	[TRAINER_PIC_WALLY]                 = 0x200,
+	[TRAINER_PIC_BRENDAN]               = 0x200,
+	[TRAINER_PIC_MAY]                   = 0x200,
+	[TRAINER_PIC_BUG_CATCHER]           = 0x200,
+	[TRAINER_PIC_POKEMON_RANGER_M]      = 0x200,
+	[TRAINER_PIC_POKEMON_RANGER_F]      = 0x200,
+	[TRAINER_PIC_MAGMA_LEADER_MAXIE]    = 0x200,
+	[TRAINER_PIC_LASS]                  = 0x200,
+	[TRAINER_PIC_YOUNG_COUPLE]          = 0x200,
+	[TRAINER_PIC_OLD_COUPLE]            = 0x200,
+	[TRAINER_PIC_SIS_AND_BRO]           = 0x200,
+	[TRAINER_PIC_STEVEN]                = 0x188,
+	[TRAINER_PIC_SALON_MAIDEN_ANABEL]   = 0x200,
+	[TRAINER_PIC_DOME_ACE_TUCKER]       = 0x200,
+	[TRAINER_PIC_PALACE_MAVEN_SPENSER]  = 0x200,
+	[TRAINER_PIC_ARENA_TYCOON_GRETA]    = 0x200,
+	[TRAINER_PIC_FACTORY_HEAD_NOLAND]   = 0x200,
+	[TRAINER_PIC_PIKE_QUEEN_LUCY]       = 0x200,
+	[TRAINER_PIC_PYRAMID_KING_BRANDON]  = 0x200,
+	[TRAINER_PIC_RED]                   = 0x200,
+	[TRAINER_PIC_LEAF]                  = 0x200,
+	[TRAINER_PIC_RS_BRENDAN]            = 0x200,
+	[TRAINER_PIC_RS_MAY]                = 0x200,
 };
-static const s16 sMugshotsOpponentRotationScales[MUGSHOTS_COUNT][2] =
+
+static const s16 sMugshotsOpponentCoords[TRAINER_PIC_COUNT][2] =
 {
-    [MUGSHOT_SIDNEY] =   {0x200, 0x200},
-    [MUGSHOT_PHOEBE] =   {0x200, 0x200},
-    [MUGSHOT_GLACIA] =   {0x1B0, 0x1B0},
-    [MUGSHOT_DRAKE] =    {0x1A0, 0x1A0},
-    [MUGSHOT_CHAMPION] = {0x188, 0x188},
-};
-static const s16 sMugshotsOpponentCoords[MUGSHOTS_COUNT][2] =
-{
-    [MUGSHOT_SIDNEY] =   { 0,  0},
-    [MUGSHOT_PHOEBE] =   { 0,  0},
-    [MUGSHOT_GLACIA] =   {-4,  4},
-    [MUGSHOT_DRAKE] =    { 0,  5},
-    [MUGSHOT_CHAMPION] = {-8,  7},
+    [TRAINER_PIC_HIKER]                 = { 0,  0},
+    [TRAINER_PIC_AQUA_GRUNT_M]          = { 0,  0},
+    [TRAINER_PIC_POKEMON_BREEDER_F]     = { 0,  0},
+    [TRAINER_PIC_COOLTRAINER_M]         = { 0,  0},
+    [TRAINER_PIC_BIRD_KEEPER]           = { 0,  0},
+    [TRAINER_PIC_COLLECTOR]             = { 0,  0},
+    [TRAINER_PIC_AQUA_GRUNT_F]          = { 0,  0},
+    [TRAINER_PIC_SWIMMER_M]             = { 0,  0},
+    [TRAINER_PIC_MAGMA_GRUNT_M]         = { 0,  0},
+    [TRAINER_PIC_EXPERT_M]              = { 0,  0},
+    [TRAINER_PIC_AQUA_ADMIN_M]          = { 0,  0},
+    [TRAINER_PIC_BLACK_BELT]            = { 0,  0},
+    [TRAINER_PIC_AQUA_ADMIN_F]          = { 0,  0},
+    [TRAINER_PIC_AQUA_LEADER_ARCHIE]    = { 0,  0},
+    [TRAINER_PIC_HEX_MANIAC]            = { 0,  0},
+    [TRAINER_PIC_AROMA_LADY]            = { 0,  0},
+    [TRAINER_PIC_RUIN_MANIAC]           = { 0,  0},
+    [TRAINER_PIC_INTERVIEWER]           = { 0,  0},
+    [TRAINER_PIC_TUBER_F]               = { 0,  0},
+    [TRAINER_PIC_TUBER_M]               = { 0,  0},
+    [TRAINER_PIC_COOLTRAINER_F]         = { 0,  0},
+    [TRAINER_PIC_LADY]                  = { 0,  0},
+    [TRAINER_PIC_BEAUTY]                = { 0,  0},
+    [TRAINER_PIC_RICH_BOY]              = { 0,  0},
+    [TRAINER_PIC_EXPERT_F]              = { 0,  0},
+    [TRAINER_PIC_POKEMANIAC]            = { 0,  0},
+    [TRAINER_PIC_MAGMA_GRUNT_F]         = { 0,  0},
+    [TRAINER_PIC_GUITARIST]             = { 0,  0},
+    [TRAINER_PIC_KINDLER]               = { 0,  0},
+    [TRAINER_PIC_CAMPER]                = { 0,  0},
+    [TRAINER_PIC_PICNICKER]             = { 0,  0},
+    [TRAINER_PIC_BUG_MANIAC]            = { 0,  0},
+    [TRAINER_PIC_POKEMON_BREEDER_M]     = { 0,  0},
+    [TRAINER_PIC_PSYCHIC_M]             = { 0,  0},
+    [TRAINER_PIC_PSYCHIC_F]             = { 0,  0},
+    [TRAINER_PIC_GENTLEMAN]             = { 0,  0},
+    [TRAINER_PIC_ELITE_FOUR_SIDNEY]     = { 0,  0},
+    [TRAINER_PIC_ELITE_FOUR_PHOEBE]     = { 0,  0},
+    [TRAINER_PIC_ELITE_FOUR_GLACIA]     = {-4,  4},
+    [TRAINER_PIC_ELITE_FOUR_DRAKE]      = { 0,  5},
+    [TRAINER_PIC_LEADER_ROXANNE]        = { 0,  0},
+    [TRAINER_PIC_LEADER_BRAWLY]         = { 0,  0},
+    [TRAINER_PIC_LEADER_WATTSON]        = { 0,  0},
+    [TRAINER_PIC_LEADER_FLANNERY]       = { 0,  0},
+    [TRAINER_PIC_LEADER_NORMAN]         = { 0,  0},
+    [TRAINER_PIC_LEADER_WINONA]         = { 0,  0},
+    [TRAINER_PIC_LEADER_TATE_AND_LIZA]  = { 0,  0},
+    [TRAINER_PIC_LEADER_JUAN]           = { 0,  0},
+    [TRAINER_PIC_SCHOOL_KID_M]          = { 0,  0},
+    [TRAINER_PIC_SCHOOL_KID_F]          = { 0,  0},
+    [TRAINER_PIC_SR_AND_JR]             = { 0,  0},
+    [TRAINER_PIC_POKEFAN_M]             = { 0,  0},
+    [TRAINER_PIC_POKEFAN_F]             = { 0,  0},
+    [TRAINER_PIC_YOUNGSTER]             = { 0,  0},
+    [TRAINER_PIC_CHAMPION_WALLACE]      = {-8,  7},
+    [TRAINER_PIC_FISHERMAN]             = { 0,  0},
+    [TRAINER_PIC_CYCLING_TRIATHLETE_M]  = { 0,  0},
+    [TRAINER_PIC_CYCLING_TRIATHLETE_F]  = { 0,  0},
+    [TRAINER_PIC_RUNNING_TRIATHLETE_M]  = { 0,  0},
+    [TRAINER_PIC_RUNNING_TRIATHLETE_F]  = { 0,  0},
+    [TRAINER_PIC_SWIMMING_TRIATHLETE_M] = { 0,  0},
+    [TRAINER_PIC_SWIMMING_TRIATHLETE_F] = { 0,  0},
+    [TRAINER_PIC_DRAGON_TAMER]          = { 0,  0},
+    [TRAINER_PIC_NINJA_BOY]             = { 0,  0},
+    [TRAINER_PIC_BATTLE_GIRL]           = { 0,  0},
+    [TRAINER_PIC_PARASOL_LADY]          = { 0,  0},
+    [TRAINER_PIC_SWIMMER_F]             = { 0,  0},
+    [TRAINER_PIC_TWINS]                 = { 0,  0},
+    [TRAINER_PIC_MAGMA_ADMIN]           = { 0,  0},
+    [TRAINER_PIC_SAILOR]                = { 0,  0},
+    [TRAINER_PIC_WALLY]                 = { 0,  0},
+    [TRAINER_PIC_BRENDAN]               = { 0,  0},
+    [TRAINER_PIC_MAY]                   = { 0,  0},
+    [TRAINER_PIC_BUG_CATCHER]           = { 0,  0},
+    [TRAINER_PIC_POKEMON_RANGER_M]      = { 0,  0},
+    [TRAINER_PIC_POKEMON_RANGER_F]      = { 0,  0},
+    [TRAINER_PIC_MAGMA_LEADER_MAXIE]    = { 0,  0},
+    [TRAINER_PIC_LASS]                  = { 0,  0},
+    [TRAINER_PIC_YOUNG_COUPLE]          = { 0,  0},
+    [TRAINER_PIC_OLD_COUPLE]            = { 0,  0},
+    [TRAINER_PIC_SIS_AND_BRO]           = { 0,  0},
+    [TRAINER_PIC_STEVEN]                = { 0,  7},
+    [TRAINER_PIC_SALON_MAIDEN_ANABEL]   = { 0,  0},
+    [TRAINER_PIC_DOME_ACE_TUCKER]       = { 0,  0},
+    [TRAINER_PIC_PALACE_MAVEN_SPENSER]  = { 0,  0},
+    [TRAINER_PIC_ARENA_TYCOON_GRETA]    = { 0,  0},
+    [TRAINER_PIC_FACTORY_HEAD_NOLAND]   = { 0,  0},
+    [TRAINER_PIC_PIKE_QUEEN_LUCY]       = { 0,  0},
+    [TRAINER_PIC_PYRAMID_KING_BRANDON]  = { 0,  0},
+    [TRAINER_PIC_RED]                   = { 0,  0},
+    [TRAINER_PIC_LEAF]                  = { 0,  0},
+    [TRAINER_PIC_RS_BRENDAN]            = { 0,  0},
+    [TRAINER_PIC_RS_MAY]                = { 0,  0},
 };
 
 static const TransitionSpriteCallback sMugshotTrainerPicFuncs[] =
@@ -886,21 +1049,21 @@ static const u16 sFieldEffectPal_Pokeball[] = INCBIN_U16("graphics/field_effects
 
 const struct SpritePalette gSpritePalette_Pokeball = {sFieldEffectPal_Pokeball, FLDEFF_PAL_TAG_POKEBALL_TRAIL};
 
-static const u16 sMugshotPal_Sidney[] = INCBIN_U16("graphics/battle_transitions/sidney_bg.gbapal");
-static const u16 sMugshotPal_Phoebe[] = INCBIN_U16("graphics/battle_transitions/phoebe_bg.gbapal");
-static const u16 sMugshotPal_Glacia[] = INCBIN_U16("graphics/battle_transitions/glacia_bg.gbapal");
-static const u16 sMugshotPal_Drake[] = INCBIN_U16("graphics/battle_transitions/drake_bg.gbapal");
-static const u16 sMugshotPal_Champion[] = INCBIN_U16("graphics/battle_transitions/wallace_bg.gbapal");
+static const u16 sMugshotPal_Purple[] = INCBIN_U16("graphics/battle_transitions/purple_bg.gbapal");
+static const u16 sMugshotPal_Green[]  = INCBIN_U16("graphics/battle_transitions/green_bg.gbapal");
+static const u16 sMugshotPal_Pink[]   = INCBIN_U16("graphics/battle_transitions/pink_bg.gbapal");
+static const u16 sMugshotPal_Blue[]   = INCBIN_U16("graphics/battle_transitions/blue_bg.gbapal");
+static const u16 sMugshotPal_Yellow[] = INCBIN_U16("graphics/battle_transitions/yellow_bg.gbapal");
 static const u16 sMugshotPal_Brendan[] = INCBIN_U16("graphics/battle_transitions/brendan_bg.gbapal");
 static const u16 sMugshotPal_May[] = INCBIN_U16("graphics/battle_transitions/may_bg.gbapal");
 
-static const u16 *const sOpponentMugshotsPals[MUGSHOTS_COUNT] =
+static const u16 *const sOpponentMugshotsPals[MUGSHOT_COLOR_COUNT] =
 {
-    [MUGSHOT_SIDNEY] = sMugshotPal_Sidney,
-    [MUGSHOT_PHOEBE] = sMugshotPal_Phoebe,
-    [MUGSHOT_GLACIA] = sMugshotPal_Glacia,
-    [MUGSHOT_DRAKE] = sMugshotPal_Drake,
-    [MUGSHOT_CHAMPION] = sMugshotPal_Champion
+	[MUGSHOT_COLOR_PURPLE] = sMugshotPal_Purple,
+	[MUGSHOT_COLOR_GREEN]  = sMugshotPal_Green,
+	[MUGSHOT_COLOR_PINK]   = sMugshotPal_Pink,
+	[MUGSHOT_COLOR_BLUE]   = sMugshotPal_Blue,
+	[MUGSHOT_COLOR_YELLOW] = sMugshotPal_Yellow
 };
 
 static const u16 *const sPlayerMugshotsPals[GENDER_COUNT] =
@@ -2235,13 +2398,11 @@ static void VBlankCB_Wave(void)
 #undef tX
 #undef tSinIndex
 
-//----------------------------------------------------------------
-// B_TRANSITION_SIDNEY, B_TRANSITION_PHOEBE, B_TRANSITION_GLACIA,
-// B_TRANSITION_DRAKE, and B_TRANSITION_CHAMPION
-//
-// These are all the "mugshot" transitions, where a banner shows
-// the trainer pic of the player and their opponent.
-//----------------------------------------------------------------
+//----------------------------------------------------
+// B_TRANSITION_MUGSHOT
+// Where a banner shows the trainer pic of the player
+// and their opponent.
+//----------------------------------------------------
 
 #define tSinIndex           data[1]
 #define tTopBannerX         data[2]
@@ -2250,7 +2411,6 @@ static void VBlankCB_Wave(void)
 #define tFadeSpread         data[4]
 #define tOpponentSpriteId   data[13]
 #define tPlayerSpriteId     data[14]
-#define tMugshotId          data[15]
 
 // Sprite data for trainer sprites in mugshots
 #define sState       data[0]
@@ -2259,37 +2419,7 @@ static void VBlankCB_Wave(void)
 #define sDone        data[6]
 #define sSlideDir    data[7]
 
-static void Task_Sidney(u8 taskId)
-{
-    gTasks[taskId].tMugshotId = MUGSHOT_SIDNEY;
-    DoMugshotTransition(taskId);
-}
-
-static void Task_Phoebe(u8 taskId)
-{
-    gTasks[taskId].tMugshotId = MUGSHOT_PHOEBE;
-    DoMugshotTransition(taskId);
-}
-
-static void Task_Glacia(u8 taskId)
-{
-    gTasks[taskId].tMugshotId = MUGSHOT_GLACIA;
-    DoMugshotTransition(taskId);
-}
-
-static void Task_Drake(u8 taskId)
-{
-    gTasks[taskId].tMugshotId = MUGSHOT_DRAKE;
-    DoMugshotTransition(taskId);
-}
-
-static void Task_Champion(u8 taskId)
-{
-    gTasks[taskId].tMugshotId = MUGSHOT_CHAMPION;
-    DoMugshotTransition(taskId);
-}
-
-static void DoMugshotTransition(u8 taskId)
+static void Task_Mugshot(u8 taskId)
 {
     while (sMugshot_Funcs[gTasks[taskId].tState](&gTasks[taskId]));
 }
@@ -2322,12 +2452,18 @@ static bool8 Mugshot_SetGfx(struct Task *task)
 {
     s16 i, j;
     u16 *tilemap, *tileset;
-    const u16 *mugshotsMap;
+	const u16 *mugshotsMap = sMugshotsTilemap;
+    u8 trainerPicId = gTrainers[gTrainerBattleOpponent_A].trainerPic;
+    u8 mugshotColor = gTrainers[gTrainerBattleOpponent_A].mugshotColor;
 
-    mugshotsMap = sMugshotsTilemap;
+
     GetBg0TilesDst(&tilemap, &tileset);
     CpuSet(sEliteFour_Tileset, tileset, 0xF0);
-    LoadPalette(sOpponentMugshotsPals[task->tMugshotId], BG_PLTT_ID(15), PLTT_SIZE_4BPP);
+
+    if (mugshotColor >= ARRAY_COUNT(sOpponentMugshotsPals))
+        mugshotColor = MUGSHOT_COLOR_PURPLE;
+
+    LoadPalette(sOpponentMugshotsPals[mugshotColor], 0xF0, 0x20);
     LoadPalette(sPlayerMugshotsPals[gSaveBlock2Ptr->playerGender], BG_PLTT_ID(15) + 10, PLTT_SIZEOF(6));
 
     for (i = 0; i < 20; i++)
@@ -2578,11 +2714,16 @@ static void Mugshots_CreateTrainerPics(struct Task *task)
 {
     struct Sprite *opponentSprite, *playerSprite;
 
-    s16 mugshotId = task->tMugshotId;
-    task->tOpponentSpriteId = CreateTrainerSprite(sMugshotsTrainerPicIDsTable[mugshotId],
-                                                  sMugshotsOpponentCoords[mugshotId][0] - 32,
-                                                  sMugshotsOpponentCoords[mugshotId][1] + 42,
+	    u8 trainerPicId = gTrainers[gTrainerBattleOpponent_A].trainerPic;
+    s16 OpponentRotationScales;
+
+	    gReservedSpritePaletteCount = 10;
+    task->tOpponentSpriteId = CreateTrainerSprite(trainerPicId,
+                                                  sMugshotsOpponentCoords[trainerPicId][0] - 32,
+                                                  sMugshotsOpponentCoords[trainerPicId][1] + 42,
                                                   0, gDecompressionBuffer);
+	gReservedSpritePaletteCount = 12;
+
     task->tPlayerSpriteId = CreateTrainerSprite(PlayerGenderToFrontTrainerPicId(gSaveBlock2Ptr->playerGender),
                                                 DISPLAY_WIDTH + 32,
                                                 106,
@@ -2609,7 +2750,11 @@ static void Mugshots_CreateTrainerPics(struct Task *task)
     CalcCenterToCornerVec(opponentSprite, SPRITE_SHAPE(64x32), SPRITE_SIZE(64x32), ST_OAM_AFFINE_DOUBLE);
     CalcCenterToCornerVec(playerSprite, SPRITE_SHAPE(64x32), SPRITE_SIZE(64x32), ST_OAM_AFFINE_DOUBLE);
 
-    SetOamMatrixRotationScaling(opponentSprite->oam.matrixNum, sMugshotsOpponentRotationScales[mugshotId][0], sMugshotsOpponentRotationScales[mugshotId][1], 0);
+	    if (trainerPicId >= ARRAY_COUNT(sMugshotsOpponentRotationScales))
+        OpponentRotationScales = 0x200;
+    else
+        OpponentRotationScales = sMugshotsOpponentRotationScales[trainerPicId];
+
     SetOamMatrixRotationScaling(playerSprite->oam.matrixNum, -512, 512, 0);
 }
 
@@ -2706,7 +2851,6 @@ static s16 IsTrainerPicSlideDone(s16 spriteId)
 #undef tFadeSpread
 #undef tOpponentSpriteId
 #undef tPlayerSpriteId
-#undef tMugshotId
 
 //--------------------
 // B_TRANSITION_SLICE
