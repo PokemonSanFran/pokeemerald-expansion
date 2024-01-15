@@ -95,10 +95,30 @@ Debug_BoxFilledMessage::
 Debug_BoxFilledMessage_Text:
 	.string "Storage boxes filled!$"
 
+GiveItem_Text:
+	.string "this is the player getting 2\nof each item via giveitem$"
+
+FindItem_Text:
+	.string "this is the player getting 2\nof each item via finditem$"
+
 Debug_EventScript_Script_1::
+msgbox GiveItem_Text
+giveitem ITEM_OLD_GATEAU, 2
+giveitem ITEM_MOOMOO_MILK,2
+giveitem ITEM_GUARD_SPEC, 2
+giveitem ITEM_MAX_REVIVE,2
+giveitem ITEM_DEEP_SEA_TOOTH, 2
+closemessage
 	end
 
 Debug_EventScript_Script_2::
+msgbox FindItem_Text
+finditem ITEM_OLD_GATEAU, 3
+finditem ITEM_MOOMOO_MILK,3
+finditem ITEM_GUARD_SPEC, 3
+finditem ITEM_MAX_REVIVE,3
+finditem ITEM_DEEP_SEA_TOOTH, 3
+closemessage
 	end
 
 Debug_EventScript_Script_3::

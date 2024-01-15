@@ -1,0 +1,3216 @@
+From bf8b09b1b6e3d57ba5812a186fca4d3e12af5046 Mon Sep 17 00:00:00 2001
+From: psf <77138753+pkmnsnfrn@users.noreply.github.com>
+Date: Sun, 14 Jan 2024 12:35:45 -0800
+Subject: [PATCH 1/2] Item Ball refactor / Pluralize item names for giveitem
+ and finditem (#3942)
+
+* Emptied out item_ball_scripts
+Added GetObjectEventTrainerRangeFromTemplate
+Added Common_EventScript_FindItem
+
+* Replaced trainer_sight_or_berry_tree_id with item constant
+Replaced scripts with Common_EventScript_FindItem
+
+* Renamed to GetItemBallIdAndAmountFromTemplate
+Moved to item_ball.c
+
+* Updated ObjectEventTemplate
+
+* Updated inc files to support plural item names
+
+* Refactored CopyItemNameHandlePlural to handle all items
+
+* Change failsafe in GetItemBallIdFromTemplate to be ITEM_NONE + 1 instead of ITEMS_COUNT
+
+* Converted spaces to tabs
+https://github.com/rh-hideout/pokeemerald-expansion/pull/3942\#discussion_r1446415663
+https://github.com/rh-hideout/pokeemerald-expansion/pull/3942\#discussion_r1446415525
+https://github.com/rh-hideout/pokeemerald-expansion/pull/3942\#discussion_r1446415409
+https://github.com/rh-hideout/pokeemerald-expansion/pull/3942\#discussion_r1446415130
+
+* Added warning on object_event macro to prevent silent failure
+Reverted global.fieldmap to original state, per feedback
+
+---------
+
+Co-authored-by: Bassoonian <iasperbassoonian@gmail.com>
+---
+ asm/macros/map.inc                            |   4 +
+ data/event_scripts.s                          |   4 +
+ .../AbandonedShip_CaptainsOffice/map.json     |   4 +-
+ .../AbandonedShip_HiddenFloorRooms/map.json   |  16 +-
+ data/maps/AbandonedShip_Room_B1F/map.json     |   4 +-
+ data/maps/AbandonedShip_Rooms2_1F/map.json    |   4 +-
+ data/maps/AbandonedShip_Rooms2_B1F/map.json   |   4 +-
+ data/maps/AbandonedShip_Rooms_1F/map.json     |   4 +-
+ data/maps/AbandonedShip_Rooms_B1F/map.json    |   4 +-
+ data/maps/AquaHideout_B1F/map.json            |  12 +-
+ data/maps/AquaHideout_B2F/map.json            |   4 +-
+ data/maps/ArtisanCave_1F/map.json             |   4 +-
+ data/maps/ArtisanCave_B1F/map.json            |   4 +-
+ data/maps/FieryPath/map.json                  |   8 +-
+ data/maps/GraniteCave_1F/map.json             |   4 +-
+ data/maps/GraniteCave_B1F/map.json            |   4 +-
+ data/maps/GraniteCave_B2F/map.json            |   8 +-
+ data/maps/JaggedPass/map.json                 |   4 +-
+ data/maps/LilycoveCity/map.json               |   4 +-
+ data/maps/MagmaHideout_1F/map.json            |   4 +-
+ data/maps/MagmaHideout_2F_2R/map.json         |   8 +-
+ data/maps/MagmaHideout_3F_1R/map.json         |   4 +-
+ data/maps/MagmaHideout_3F_2R/map.json         |   4 +-
+ data/maps/MagmaHideout_3F_3R/map.json         |   4 +-
+ data/maps/MagmaHideout_4F/map.json            |   4 +-
+ data/maps/MauvilleCity/map.json               |   4 +-
+ data/maps/MeteorFalls_1F_1R/map.json          |  16 +-
+ data/maps/MeteorFalls_B1F_2R/map.json         |   4 +-
+ data/maps/MossdeepCity/map.json               |   4 +-
+ data/maps/MtPyre_2F/map.json                  |   4 +-
+ data/maps/MtPyre_3F/map.json                  |   4 +-
+ data/maps/MtPyre_4F/map.json                  |   4 +-
+ data/maps/MtPyre_5F/map.json                  |   4 +-
+ data/maps/MtPyre_6F/map.json                  |   4 +-
+ data/maps/MtPyre_Exterior/map.json            |   8 +-
+ data/maps/NewMauville_Inside/map.json         |  20 +-
+ data/maps/PetalburgCity/map.json              |   8 +-
+ data/maps/PetalburgWoods/map.json             |  16 +-
+ data/maps/Route102/map.json                   |   4 +-
+ data/maps/Route103/map.json                   |   8 +-
+ data/maps/Route104/map.json                   |  16 +-
+ data/maps/Route105/map.json                   |   4 +-
+ data/maps/Route106/map.json                   |   4 +-
+ data/maps/Route108/map.json                   |   4 +-
+ data/maps/Route109/map.json                   |   8 +-
+ data/maps/Route110/map.json                   |  12 +-
+ data/maps/Route110_TrickHousePuzzle1/map.json |   4 +-
+ data/maps/Route110_TrickHousePuzzle2/map.json |   8 +-
+ data/maps/Route110_TrickHousePuzzle3/map.json |   8 +-
+ data/maps/Route110_TrickHousePuzzle4/map.json |   4 +-
+ data/maps/Route110_TrickHousePuzzle6/map.json |   4 +-
+ data/maps/Route110_TrickHousePuzzle7/map.json |   4 +-
+ data/maps/Route110_TrickHousePuzzle8/map.json |   4 +-
+ data/maps/Route111/map.json                   |  16 +-
+ data/maps/Route112/map.json                   |   4 +-
+ data/maps/Route113/map.json                   |  12 +-
+ data/maps/Route114/map.json                   |  12 +-
+ data/maps/Route115/map.json                   |  24 +-
+ data/maps/Route116/map.json                   |  20 +-
+ data/maps/Route117/map.json                   |   8 +-
+ data/maps/Route118/map.json                   |   4 +-
+ data/maps/Route119/map.json                   |  36 +-
+ data/maps/Route120/map.json                   |  20 +-
+ data/maps/Route121/map.json                   |  12 +-
+ data/maps/Route123/map.json                   |  20 +-
+ data/maps/Route124/map.json                   |  12 +-
+ data/maps/Route125/map.json                   |   4 +-
+ data/maps/Route126/map.json                   |   4 +-
+ data/maps/Route127/map.json                   |  12 +-
+ data/maps/Route132/map.json                   |   8 +-
+ data/maps/Route133/map.json                   |  12 +-
+ data/maps/Route134/map.json                   |   8 +-
+ data/maps/RustboroCity/map.json               |   4 +-
+ data/maps/RusturfTunnel/map.json              |   8 +-
+ data/maps/SafariZone_North/map.json           |   4 +-
+ data/maps/SafariZone_Northeast/map.json       |   4 +-
+ data/maps/SafariZone_Northwest/map.json       |   4 +-
+ data/maps/SafariZone_Southeast/map.json       |   4 +-
+ data/maps/SafariZone_Southwest/map.json       |   4 +-
+ data/maps/ScorchedSlab/map.json               |   4 +-
+ data/maps/SeafloorCavern_Room9/map.json       |   4 +-
+ .../ShoalCave_LowTideEntranceRoom/map.json    |   4 +-
+ data/maps/ShoalCave_LowTideIceRoom/map.json   |   8 +-
+ data/maps/ShoalCave_LowTideInnerRoom/map.json |   4 +-
+ .../maps/ShoalCave_LowTideStairsRoom/map.json |   4 +-
+ data/maps/VictoryRoad_1F/map.json             |   8 +-
+ data/maps/VictoryRoad_B1F/map.json            |   8 +-
+ data/maps/VictoryRoad_B2F/map.json            |   4 +-
+ data/scripts/item_ball_scripts.inc            | 661 +-----------------
+ data/scripts/obtain_item.inc                  |  20 +
+ data/text/obtain_item.inc                     |   6 +
+ include/item_ball.h                           |   6 +
+ src/item.c                                    |  23 +-
+ src/item_ball.c                               |  32 +
+ 94 files changed, 409 insertions(+), 995 deletions(-)
+ create mode 100644 include/item_ball.h
+ create mode 100644 src/item_ball.c
+
+diff --git a/asm/macros/map.inc b/asm/macros/map.inc
+index 21445138d..eb9d205f4 100644
+--- a/asm/macros/map.inc
++++ b/asm/macros/map.inc
+@@ -28,6 +28,10 @@
+ 	.2byte \x, \y
+ 	.byte \elevation
+ 	.byte \movement_type
++	.if \x_radius > 15
++		@ This warning is relevant for GetItemBallIdAndAmountFromTemplate
++		.error "movementRangeX has a bitfield of 4 bytes, so values over 15 will overflow. Use a custom script for item balls that should give the player more than 15 items."
++	.endif
+ 	.byte ((\y_radius << 4) | \x_radius)
+ 	.space 1  @ Padding
+ 	.2byte \trainer_type
+diff --git a/data/event_scripts.s b/data/event_scripts.s
+index 7ce6f6048..0524ec684 100644
+--- a/data/event_scripts.s
++++ b/data/event_scripts.s
+@@ -947,6 +947,10 @@ gText_PlayerFoundOneTMHM::
+ 	.string "{PLAYER} found one {STR_VAR_1}\n"
+ 	.string "{STR_VAR_2}!$"
+ 
++gText_PlayerFoundTMHMs::
++	.string "{PLAYER} found {STR_VAR_3} {STR_VAR_1}\n"
++	.string "{STR_VAR_2}!$"
++
+ gText_Sudowoodo_Attacked::
+ 	.string "The weird tree doesn't like the\n"
+ 	.string "WAILMER PAIL!\p"
+diff --git a/data/maps/AbandonedShip_CaptainsOffice/map.json b/data/maps/AbandonedShip_CaptainsOffice/map.json
+index 3b7ee528f..e841deeed 100644
+--- a/data/maps/AbandonedShip_CaptainsOffice/map.json
++++ b/data/maps/AbandonedShip_CaptainsOffice/map.json
+@@ -36,8 +36,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "AbandonedShip_CaptainsOffice_EventScript_ItemStorageKey",
++      "trainer_sight_or_berry_tree_id": "ITEM_STORAGE_KEY",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ABANDONED_SHIP_CAPTAINS_OFFICE_STORAGE_KEY"
+     }
+   ],
+diff --git a/data/maps/AbandonedShip_HiddenFloorRooms/map.json b/data/maps/AbandonedShip_HiddenFloorRooms/map.json
+index 10fe7419b..2756bc8bf 100644
+--- a/data/maps/AbandonedShip_HiddenFloorRooms/map.json
++++ b/data/maps/AbandonedShip_HiddenFloorRooms/map.json
+@@ -23,8 +23,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "AbandonedShip_HiddenFloorRooms_EventScript_ItemLuxuryBall",
++      "trainer_sight_or_berry_tree_id": "ITEM_LUXURY_BALL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ABANDONED_SHIP_HIDDEN_FLOOR_ROOM_6_LUXURY_BALL"
+     },
+     {
+@@ -36,8 +36,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "AbandonedShip_HiddenFloorRooms_EventScript_ItemScanner",
++      "trainer_sight_or_berry_tree_id": "ITEM_SCANNER",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ABANDONED_SHIP_HIDDEN_FLOOR_ROOM_2_SCANNER"
+     },
+     {
+@@ -49,8 +49,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "AbandonedShip_HiddenFloorRooms_EventScript_ItemTMRainDance",
++      "trainer_sight_or_berry_tree_id": "ITEM_TM_RAIN_DANCE",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ABANDONED_SHIP_HIDDEN_FLOOR_ROOM_1_TM_RAIN_DANCE"
+     },
+     {
+@@ -62,8 +62,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "AbandonedShip_HiddenFloorRooms_EventScript_ItemWaterStone",
++      "trainer_sight_or_berry_tree_id": "ITEM_WATER_STONE",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ABANDONED_SHIP_HIDDEN_FLOOR_ROOM_3_WATER_STONE"
+     }
+   ],
+diff --git a/data/maps/AbandonedShip_Room_B1F/map.json b/data/maps/AbandonedShip_Room_B1F/map.json
+index ac9820a8a..eea0d116d 100644
+--- a/data/maps/AbandonedShip_Room_B1F/map.json
++++ b/data/maps/AbandonedShip_Room_B1F/map.json
+@@ -23,8 +23,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "AbandonedShip_Room_B1F_EventScript_ItemTMIceBeam",
++      "trainer_sight_or_berry_tree_id": "ITEM_TM_ICE_BEAM",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ABANDONED_SHIP_ROOMS_B1F_TM_ICE_BEAM"
+     }
+   ],
+diff --git a/data/maps/AbandonedShip_Rooms2_1F/map.json b/data/maps/AbandonedShip_Rooms2_1F/map.json
+index 32db9dcaa..08e87ba7f 100644
+--- a/data/maps/AbandonedShip_Rooms2_1F/map.json
++++ b/data/maps/AbandonedShip_Rooms2_1F/map.json
+@@ -49,8 +49,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "AbandonedShip_Rooms2_1F_EventScript_ItemRevive",
++      "trainer_sight_or_berry_tree_id": "ITEM_REVIVE",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ABANDONED_SHIP_ROOMS_2_1F_REVIVE"
+     },
+     {
+diff --git a/data/maps/AbandonedShip_Rooms2_B1F/map.json b/data/maps/AbandonedShip_Rooms2_B1F/map.json
+index d8dace774..6ea1265ea 100644
+--- a/data/maps/AbandonedShip_Rooms2_B1F/map.json
++++ b/data/maps/AbandonedShip_Rooms2_B1F/map.json
+@@ -36,8 +36,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "AbandonedShip_Rooms2_B1F_EventScript_ItemDiveBall",
++      "trainer_sight_or_berry_tree_id": "ITEM_DIVE_BALL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ABANDONED_SHIP_ROOMS_2_B1F_DIVE_BALL"
+     }
+   ],
+diff --git a/data/maps/AbandonedShip_Rooms_1F/map.json b/data/maps/AbandonedShip_Rooms_1F/map.json
+index 6c0614ac7..e64bec8c1 100644
+--- a/data/maps/AbandonedShip_Rooms_1F/map.json
++++ b/data/maps/AbandonedShip_Rooms_1F/map.json
+@@ -36,8 +36,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "AbandonedShip_Rooms_1F_EventScript_ItemHarborMail",
++      "trainer_sight_or_berry_tree_id": "ITEM_HARBOR_MAIL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ABANDONED_SHIP_ROOMS_1F_HARBOR_MAIL"
+     },
+     {
+diff --git a/data/maps/AbandonedShip_Rooms_B1F/map.json b/data/maps/AbandonedShip_Rooms_B1F/map.json
+index a698e0575..2b79e5485 100644
+--- a/data/maps/AbandonedShip_Rooms_B1F/map.json
++++ b/data/maps/AbandonedShip_Rooms_B1F/map.json
+@@ -36,8 +36,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "AbandonedShip_Rooms_B1F_EventScript_ItemEscapeRope",
++      "trainer_sight_or_berry_tree_id": "ITEM_ESCAPE_ROPE",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ABANDONED_SHIP_ROOMS_B1F_ESCAPE_ROPE"
+     }
+   ],
+diff --git a/data/maps/AquaHideout_B1F/map.json b/data/maps/AquaHideout_B1F/map.json
+index 471ffb951..96a66b3c0 100644
+--- a/data/maps/AquaHideout_B1F/map.json
++++ b/data/maps/AquaHideout_B1F/map.json
+@@ -49,8 +49,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "AquaHideout_B1F_EventScript_ItemMaxElixir",
++      "trainer_sight_or_berry_tree_id": "ITEM_MAX_ELIXIR",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_AQUA_HIDEOUT_B1F_MAX_ELIXIR"
+     },
+     {
+@@ -75,8 +75,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "AquaHideout_B1F_EventScript_ItemMasterBall",
++      "trainer_sight_or_berry_tree_id": "ITEM_MASTER_BALL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_AQUA_HIDEOUT_B1F_MASTER_BALL"
+     },
+     {
+@@ -101,8 +101,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "AquaHideout_B1F_EventScript_ItemNugget",
++      "trainer_sight_or_berry_tree_id": "ITEM_NUGGET",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_AQUA_HIDEOUT_B1F_NUGGET"
+     },
+     {
+diff --git a/data/maps/AquaHideout_B2F/map.json b/data/maps/AquaHideout_B2F/map.json
+index bc58b8d6b..b2a84f2eb 100644
+--- a/data/maps/AquaHideout_B2F/map.json
++++ b/data/maps/AquaHideout_B2F/map.json
+@@ -49,8 +49,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "AquaHideout_B2F_EventScript_ItemNestBall",
++      "trainer_sight_or_berry_tree_id": "ITEM_NEST_BALL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_AQUA_HIDEOUT_B2F_NEST_BALL"
+     },
+     {
+diff --git a/data/maps/ArtisanCave_1F/map.json b/data/maps/ArtisanCave_1F/map.json
+index d424b07d5..b8404a3ca 100644
+--- a/data/maps/ArtisanCave_1F/map.json
++++ b/data/maps/ArtisanCave_1F/map.json
+@@ -23,8 +23,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "ArtisanCave_1F_EventScript_ItemCarbos",
++      "trainer_sight_or_berry_tree_id": "ITEM_CARBOS",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ARTISAN_CAVE_1F_CARBOS"
+     }
+   ],
+diff --git a/data/maps/ArtisanCave_B1F/map.json b/data/maps/ArtisanCave_B1F/map.json
+index f7b315e6e..0e151399a 100644
+--- a/data/maps/ArtisanCave_B1F/map.json
++++ b/data/maps/ArtisanCave_B1F/map.json
+@@ -23,8 +23,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "ArtisanCave_B1F_EventScript_ItemHPUp",
++      "trainer_sight_or_berry_tree_id": "ITEM_HP_UP",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ARTISAN_CAVE_B1F_HP_UP"
+     }
+   ],
+diff --git a/data/maps/FieryPath/map.json b/data/maps/FieryPath/map.json
+index 69f5050ad..3d1a77cfa 100644
+--- a/data/maps/FieryPath/map.json
++++ b/data/maps/FieryPath/map.json
+@@ -23,8 +23,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "FieryPath_EventScript_ItemTMToxic",
++      "trainer_sight_or_berry_tree_id": "ITEM_TM_TOXIC",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_FIERY_PATH_TM_TOXIC"
+     },
+     {
+@@ -114,8 +114,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "FieryPath_EventScript_ItemFireStone",
++      "trainer_sight_or_berry_tree_id": "ITEM_FIRE_STONE",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_FIERY_PATH_FIRE_STONE"
+     }
+   ],
+diff --git a/data/maps/GraniteCave_1F/map.json b/data/maps/GraniteCave_1F/map.json
+index c254c4b00..097c20429 100644
+--- a/data/maps/GraniteCave_1F/map.json
++++ b/data/maps/GraniteCave_1F/map.json
+@@ -36,8 +36,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "GraniteCave_1F_EventScript_ItemEscapeRope",
++      "trainer_sight_or_berry_tree_id": "ITEM_ESCAPE_ROPE",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_GRANITE_CAVE_1F_ESCAPE_ROPE"
+     }
+   ],
+diff --git a/data/maps/GraniteCave_B1F/map.json b/data/maps/GraniteCave_B1F/map.json
+index 8c6a112a6..c7129051e 100644
+--- a/data/maps/GraniteCave_B1F/map.json
++++ b/data/maps/GraniteCave_B1F/map.json
+@@ -23,8 +23,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "GraniteCave_B1F_EventScript_ItemPokeBall",
++      "trainer_sight_or_berry_tree_id": "ITEM_POKE_BALL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_GRANITE_CAVE_B1F_POKE_BALL"
+     }
+   ],
+diff --git a/data/maps/GraniteCave_B2F/map.json b/data/maps/GraniteCave_B2F/map.json
+index e3748ee4b..5e4c864f5 100644
+--- a/data/maps/GraniteCave_B2F/map.json
++++ b/data/maps/GraniteCave_B2F/map.json
+@@ -23,8 +23,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "GraniteCave_B2F_EventScript_ItemRepel",
++      "trainer_sight_or_berry_tree_id": "ITEM_REPEL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_GRANITE_CAVE_B2F_REPEL"
+     },
+     {
+@@ -36,8 +36,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "GraniteCave_B2F_EventScript_ItemRareCandy",
++      "trainer_sight_or_berry_tree_id": "ITEM_RARE_CANDY",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_GRANITE_CAVE_B2F_RARE_CANDY"
+     },
+     {
+diff --git a/data/maps/JaggedPass/map.json b/data/maps/JaggedPass/map.json
+index ba4cdf3e0..0fd4f1aa4 100644
+--- a/data/maps/JaggedPass/map.json
++++ b/data/maps/JaggedPass/map.json
+@@ -49,8 +49,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "JaggedPass_EventScript_ItemBurnHeal",
++      "trainer_sight_or_berry_tree_id": "ITEM_BURN_HEAL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_JAGGED_PASS_BURN_HEAL"
+     },
+     {
+diff --git a/data/maps/LilycoveCity/map.json b/data/maps/LilycoveCity/map.json
+index 398cf219e..0b829ea09 100644
+--- a/data/maps/LilycoveCity/map.json
++++ b/data/maps/LilycoveCity/map.json
+@@ -164,8 +164,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "LilycoveCity_EventScript_ItemMaxRepel",
++      "trainer_sight_or_berry_tree_id": "ITEM_MAX_REPEL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_LILYCOVE_CITY_MAX_REPEL"
+     },
+     {
+diff --git a/data/maps/MagmaHideout_1F/map.json b/data/maps/MagmaHideout_1F/map.json
+index ad36acca3..dd3771ea8 100644
+--- a/data/maps/MagmaHideout_1F/map.json
++++ b/data/maps/MagmaHideout_1F/map.json
+@@ -36,8 +36,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "MagmaHideout_1F_EventScript_ItemRareCandy",
++      "trainer_sight_or_berry_tree_id": "ITEM_RARE_CANDY",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_MAGMA_HIDEOUT_1F_RARE_CANDY"
+     },
+     {
+diff --git a/data/maps/MagmaHideout_2F_2R/map.json b/data/maps/MagmaHideout_2F_2R/map.json
+index a5f79b3e9..43c18be85 100644
+--- a/data/maps/MagmaHideout_2F_2R/map.json
++++ b/data/maps/MagmaHideout_2F_2R/map.json
+@@ -49,8 +49,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "MagmaHideout_2F_2R_EventScript_ItemMaxElixir",
++      "trainer_sight_or_berry_tree_id": "ITEM_MAX_ELIXIR",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_MAGMA_HIDEOUT_2F_2R_MAX_ELIXIR"
+     },
+     {
+@@ -88,8 +88,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "MagmaHideout_2F_2R_EventScript_ItemFullRestore",
++      "trainer_sight_or_berry_tree_id": "ITEM_FULL_RESTORE",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_MAGMA_HIDEOUT_2F_2R_FULL_RESTORE"
+     }
+   ],
+diff --git a/data/maps/MagmaHideout_3F_1R/map.json b/data/maps/MagmaHideout_3F_1R/map.json
+index 48dd16844..fd14b9acb 100644
+--- a/data/maps/MagmaHideout_3F_1R/map.json
++++ b/data/maps/MagmaHideout_3F_1R/map.json
+@@ -49,8 +49,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "MagmaHideout_3F_1R_EventScript_ItemNugget",
++      "trainer_sight_or_berry_tree_id": "ITEM_NUGGET",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_MAGMA_HIDEOUT_3F_1R_NUGGET"
+     }
+   ],
+diff --git a/data/maps/MagmaHideout_3F_2R/map.json b/data/maps/MagmaHideout_3F_2R/map.json
+index 51ad53545..3e96c1f73 100644
+--- a/data/maps/MagmaHideout_3F_2R/map.json
++++ b/data/maps/MagmaHideout_3F_2R/map.json
+@@ -36,8 +36,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "MagmaHideout_3F_2R_EventScript_ItemPPMax",
++      "trainer_sight_or_berry_tree_id": "ITEM_PP_MAX",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_MAGMA_HIDEOUT_3F_2R_PP_MAX"
+     }
+   ],
+diff --git a/data/maps/MagmaHideout_3F_3R/map.json b/data/maps/MagmaHideout_3F_3R/map.json
+index c3e7f3241..4574b8b44 100644
+--- a/data/maps/MagmaHideout_3F_3R/map.json
++++ b/data/maps/MagmaHideout_3F_3R/map.json
+@@ -23,8 +23,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "MagmaHideout_3F_3R_EventScript_ItemEscapeRope",
++      "trainer_sight_or_berry_tree_id": "ITEM_ESCAPE_ROPE",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_MAGMA_HIDEOUT_3F_3R_ECAPE_ROPE"
+     }
+   ],
+diff --git a/data/maps/MagmaHideout_4F/map.json b/data/maps/MagmaHideout_4F/map.json
+index d426affde..3733018da 100644
+--- a/data/maps/MagmaHideout_4F/map.json
++++ b/data/maps/MagmaHideout_4F/map.json
+@@ -114,8 +114,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "MagmaHideout_4F_EventScript_ItemMaxRevive",
++      "trainer_sight_or_berry_tree_id": "ITEM_MAX_REVIVE",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_MAGMA_HIDEOUT_4F_MAX_REVIVE"
+     }
+   ],
+diff --git a/data/maps/MauvilleCity/map.json b/data/maps/MauvilleCity/map.json
+index f4da4222b..0d193e402 100644
+--- a/data/maps/MauvilleCity/map.json
++++ b/data/maps/MauvilleCity/map.json
+@@ -148,8 +148,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "MauvilleCity_EventScript_ItemXSpeed",
++      "trainer_sight_or_berry_tree_id": "ITEM_X_SPEED",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_MAUVILLE_CITY_X_SPEED"
+     },
+     {
+diff --git a/data/maps/MeteorFalls_1F_1R/map.json b/data/maps/MeteorFalls_1F_1R/map.json
+index e0d32c580..bd0820e1e 100644
+--- a/data/maps/MeteorFalls_1F_1R/map.json
++++ b/data/maps/MeteorFalls_1F_1R/map.json
+@@ -23,8 +23,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "MeteorFalls_1F_1R_EventScript_ItemTMIronTail",
++      "trainer_sight_or_berry_tree_id": "ITEM_TM_IRON_TAIL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_METEOR_FALLS_1F_1R_TM_IRON_TAIL"
+     },
+     {
+@@ -36,8 +36,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "MeteorFalls_1F_1R_EventScript_ItemMoonStone",
++      "trainer_sight_or_berry_tree_id": "ITEM_MOON_STONE",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_METEOR_FALLS_1F_1R_MOON_STONE"
+     },
+     {
+@@ -49,8 +49,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "MeteorFalls_1F_1R_EventScript_ItemFullHeal",
++      "trainer_sight_or_berry_tree_id": "ITEM_FULL_HEAL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_METEOR_FALLS_1F_1R_FULL_HEAL"
+     },
+     {
+@@ -62,8 +62,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "MeteorFalls_1F_1R_EventScript_ItemPPUP",
++      "trainer_sight_or_berry_tree_id": "ITEM_PP_UP",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_METEOR_FALLS_1F_1R_PP_UP"
+     },
+     {
+diff --git a/data/maps/MeteorFalls_B1F_2R/map.json b/data/maps/MeteorFalls_B1F_2R/map.json
+index 79a89874e..42a0c0d98 100644
+--- a/data/maps/MeteorFalls_B1F_2R/map.json
++++ b/data/maps/MeteorFalls_B1F_2R/map.json
+@@ -23,8 +23,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "MeteorFalls_B1F_2R_EventScript_ItemTMDragonClaw",
++      "trainer_sight_or_berry_tree_id": "ITEM_TM_DRAGON_CLAW",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_METEOR_FALLS_B1F_2R_TM_DRAGON_CLAW"
+     }
+   ],
+diff --git a/data/maps/MossdeepCity/map.json b/data/maps/MossdeepCity/map.json
+index 3759694d8..a7ec32d7b 100644
+--- a/data/maps/MossdeepCity/map.json
++++ b/data/maps/MossdeepCity/map.json
+@@ -104,8 +104,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "MossdeepCity_EventScript_ItemNetBall",
++      "trainer_sight_or_berry_tree_id": "ITEM_NET_BALL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_MOSSDEEP_CITY_NET_BALL"
+     },
+     {
+diff --git a/data/maps/MtPyre_2F/map.json b/data/maps/MtPyre_2F/map.json
+index a0a86cd84..896d13e33 100644
+--- a/data/maps/MtPyre_2F/map.json
++++ b/data/maps/MtPyre_2F/map.json
+@@ -36,8 +36,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "MtPyre_2F_EventScript_ItemUltraBall",
++      "trainer_sight_or_berry_tree_id": "ITEM_ULTRA_BALL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_MT_PYRE_2F_ULTRA_BALL"
+     },
+     {
+diff --git a/data/maps/MtPyre_3F/map.json b/data/maps/MtPyre_3F/map.json
+index 5202a583b..bb879855c 100644
+--- a/data/maps/MtPyre_3F/map.json
++++ b/data/maps/MtPyre_3F/map.json
+@@ -49,8 +49,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "MtPyre_3F_EventScript_ItemSuperRepel",
++      "trainer_sight_or_berry_tree_id": "ITEM_SUPER_REPEL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_MT_PYRE_3F_SUPER_REPEL"
+     },
+     {
+diff --git a/data/maps/MtPyre_4F/map.json b/data/maps/MtPyre_4F/map.json
+index 48fdeec2d..866389829 100644
+--- a/data/maps/MtPyre_4F/map.json
++++ b/data/maps/MtPyre_4F/map.json
+@@ -36,8 +36,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "MtPyre_4F_EventScript_ItemSeaIncense",
++      "trainer_sight_or_berry_tree_id": "ITEM_SEA_INCENSE",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_MT_PYRE_4F_SEA_INCENSE"
+     }
+   ],
+diff --git a/data/maps/MtPyre_5F/map.json b/data/maps/MtPyre_5F/map.json
+index 04b889c6c..49d2c4ebb 100644
+--- a/data/maps/MtPyre_5F/map.json
++++ b/data/maps/MtPyre_5F/map.json
+@@ -36,8 +36,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "MtPyre_5F_EventScript_ItemLaxIncense",
++      "trainer_sight_or_berry_tree_id": "ITEM_LAX_INCENSE",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_MT_PYRE_5F_LAX_INCENSE"
+     }
+   ],
+diff --git a/data/maps/MtPyre_6F/map.json b/data/maps/MtPyre_6F/map.json
+index 06bd940ea..477106010 100644
+--- a/data/maps/MtPyre_6F/map.json
++++ b/data/maps/MtPyre_6F/map.json
+@@ -36,8 +36,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "MtPyre_6F_EventScript_ItemTMShadowBall",
++      "trainer_sight_or_berry_tree_id": "ITEM_TM_SHADOW_BALL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_MT_PYRE_6F_TM_SHADOW_BALL"
+     },
+     {
+diff --git a/data/maps/MtPyre_Exterior/map.json b/data/maps/MtPyre_Exterior/map.json
+index a65f1259d..db8707d9e 100644
+--- a/data/maps/MtPyre_Exterior/map.json
++++ b/data/maps/MtPyre_Exterior/map.json
+@@ -23,8 +23,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "MtPyre_Exterior_EventScript_ItemMaxPotion",
++      "trainer_sight_or_berry_tree_id": "ITEM_MAX_POTION",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_MT_PYRE_EXTERIOR_MAX_POTION"
+     },
+     {
+@@ -36,8 +36,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "MtPyre_Exterior_EventScript_ItemTMSkillSwap",
++      "trainer_sight_or_berry_tree_id": "ITEM_TM_SKILL_SWAP",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_MT_PYRE_EXTERIOR_TM_SKILL_SWAP"
+     }
+   ],
+diff --git a/data/maps/NewMauville_Inside/map.json b/data/maps/NewMauville_Inside/map.json
+index 8524c25ec..8f661807d 100644
+--- a/data/maps/NewMauville_Inside/map.json
++++ b/data/maps/NewMauville_Inside/map.json
+@@ -23,8 +23,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "NewMauville_Inside_EventScript_ItemUltraBall",
++      "trainer_sight_or_berry_tree_id": "ITEM_ULTRA_BALL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_NEW_MAUVILLE_ULTRA_BALL"
+     },
+     {
+@@ -36,8 +36,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "NewMauville_Inside_EventScript_ItemEscapeRope",
++      "trainer_sight_or_berry_tree_id": "ITEM_ESCAPE_ROPE",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_NEW_MAUVILLE_ESCAPE_ROPE"
+     },
+     {
+@@ -49,8 +49,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "NewMauville_Inside_EventScript_ItemThunderStone",
++      "trainer_sight_or_berry_tree_id": "ITEM_THUNDER_STONE",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_NEW_MAUVILLE_THUNDER_STONE"
+     },
+     {
+@@ -62,8 +62,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "NewMauville_Inside_EventScript_ItemFullHeal",
++      "trainer_sight_or_berry_tree_id": "ITEM_FULL_HEAL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_NEW_MAUVILLE_FULL_HEAL"
+     },
+     {
+@@ -75,8 +75,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "NewMauville_Inside_EventScript_ItemParalyzeHeal",
++      "trainer_sight_or_berry_tree_id": "ITEM_PARALYZE_HEAL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_NEW_MAUVILLE_PARALYZE_HEAL"
+     },
+     {
+diff --git a/data/maps/PetalburgCity/map.json b/data/maps/PetalburgCity/map.json
+index d653e46ae..7aaca8145 100644
+--- a/data/maps/PetalburgCity/map.json
++++ b/data/maps/PetalburgCity/map.json
+@@ -99,8 +99,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "PetalburgCity_EventScript_ItemMaxRevive",
++      "trainer_sight_or_berry_tree_id": "ITEM_MAX_REVIVE",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_PETALBURG_CITY_MAX_REVIVE"
+     },
+     {
+@@ -112,8 +112,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "PetalburgCity_EventScript_ItemEther",
++      "trainer_sight_or_berry_tree_id": "ITEM_ETHER",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_PETALBURG_CITY_ETHER"
+     },
+     {
+diff --git a/data/maps/PetalburgWoods/map.json b/data/maps/PetalburgWoods/map.json
+index 2979e7e46..9ef6c93ae 100644
+--- a/data/maps/PetalburgWoods/map.json
++++ b/data/maps/PetalburgWoods/map.json
+@@ -75,8 +75,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "PetalburgWoods_EventScript_ItemGreatBall",
++      "trainer_sight_or_berry_tree_id": "ITEM_GREAT_BALL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_PETALBURG_WOODS_GREAT_BALL"
+     },
+     {
+@@ -88,8 +88,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "PetalburgWoods_EventScript_ItemXAttack",
++      "trainer_sight_or_berry_tree_id": "ITEM_X_ATTACK",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_PETALBURG_WOODS_X_ATTACK"
+     },
+     {
+@@ -101,8 +101,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "PetalburgWoods_EventScript_ItemEther",
++      "trainer_sight_or_berry_tree_id": "ITEM_ETHER",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_PETALBURG_WOODS_ETHER"
+     },
+     {
+@@ -166,8 +166,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "PetalburgWoods_EventScript_ItemParalyzeHeal",
++      "trainer_sight_or_berry_tree_id": "ITEM_PARALYZE_HEAL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_PETALBURG_WOODS_PARALYZE_HEAL"
+     },
+     {
+diff --git a/data/maps/Route102/map.json b/data/maps/Route102/map.json
+index 68e3549db..8ad17aae4 100644
+--- a/data/maps/Route102/map.json
++++ b/data/maps/Route102/map.json
+@@ -99,8 +99,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route102_EventScript_ItemPotion",
++      "trainer_sight_or_berry_tree_id": "ITEM_POTION",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_102_POTION"
+     },
+     {
+diff --git a/data/maps/Route103/map.json b/data/maps/Route103/map.json
+index 9bc6fed67..45c8fb874 100644
+--- a/data/maps/Route103/map.json
++++ b/data/maps/Route103/map.json
+@@ -190,8 +190,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route103_EventScript_ItemGuardSpec",
++      "trainer_sight_or_berry_tree_id": "ITEM_GUARD_SPEC",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_103_GUARD_SPEC"
+     },
+     {
+@@ -281,8 +281,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route103_EventScript_ItemPPUp",
++      "trainer_sight_or_berry_tree_id": "ITEM_PP_UP",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_103_PP_UP"
+     }
+   ],
+diff --git a/data/maps/Route104/map.json b/data/maps/Route104/map.json
+index 80af8aa6d..5ae19796a 100644
+--- a/data/maps/Route104/map.json
++++ b/data/maps/Route104/map.json
+@@ -299,8 +299,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route104_EventScript_ItemPPUp",
++      "trainer_sight_or_berry_tree_id": "ITEM_PP_UP",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_104_PP_UP"
+     },
+     {
+@@ -377,8 +377,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route104_EventScript_ItemPokeBall",
++      "trainer_sight_or_berry_tree_id": "ITEM_POKE_BALL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_104_POKE_BALL"
+     },
+     {
+@@ -403,8 +403,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route104_EventScript_ItemXAccuracy",
++      "trainer_sight_or_berry_tree_id": "ITEM_X_ACCURACY",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_104_X_ACCURACY"
+     },
+     {
+@@ -429,8 +429,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route104_EventScript_ItemPotion",
++      "trainer_sight_or_berry_tree_id": "ITEM_POTION",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_104_POTION"
+     },
+     {
+diff --git a/data/maps/Route105/map.json b/data/maps/Route105/map.json
+index ae9bb6a5a..a42962132 100644
+--- a/data/maps/Route105/map.json
++++ b/data/maps/Route105/map.json
+@@ -91,8 +91,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route105_EventScript_ItemIron",
++      "trainer_sight_or_berry_tree_id": "ITEM_IRON",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_105_IRON"
+     },
+     {
+diff --git a/data/maps/Route106/map.json b/data/maps/Route106/map.json
+index 5a0a38dc9..a3160fdd4 100644
+--- a/data/maps/Route106/map.json
++++ b/data/maps/Route106/map.json
+@@ -86,8 +86,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route106_EventScript_ItemProtein",
++      "trainer_sight_or_berry_tree_id": "ITEM_PROTEIN",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_106_PROTEIN"
+     }
+   ],
+diff --git a/data/maps/Route108/map.json b/data/maps/Route108/map.json
+index 405ae3401..beee6556a 100644
+--- a/data/maps/Route108/map.json
++++ b/data/maps/Route108/map.json
+@@ -112,8 +112,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route108_EventScript_ItemStarPiece",
++      "trainer_sight_or_berry_tree_id": "ITEM_STAR_PIECE",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_108_STAR_PIECE"
+     }
+   ],
+diff --git a/data/maps/Route109/map.json b/data/maps/Route109/map.json
+index 49357f0a0..72d9f5c0a 100644
+--- a/data/maps/Route109/map.json
++++ b/data/maps/Route109/map.json
+@@ -151,8 +151,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route109_EventScript_ItemPPUp",
++      "trainer_sight_or_berry_tree_id": "ITEM_PP_UP",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_109_PP_UP"
+     },
+     {
+@@ -320,8 +320,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route109_EventScript_ItemPotion",
++      "trainer_sight_or_berry_tree_id": "ITEM_POTION",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_109_POTION"
+     },
+     {
+diff --git a/data/maps/Route110/map.json b/data/maps/Route110/map.json
+index 2b5216411..448cd442d 100644
+--- a/data/maps/Route110/map.json
++++ b/data/maps/Route110/map.json
+@@ -273,8 +273,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route110_EventScript_ItemDireHit",
++      "trainer_sight_or_berry_tree_id": "ITEM_DIRE_HIT",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_110_DIRE_HIT"
+     },
+     {
+@@ -286,8 +286,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route110_EventScript_ItemRareCandy",
++      "trainer_sight_or_berry_tree_id": "ITEM_RARE_CANDY",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_110_RARE_CANDY"
+     },
+     {
+@@ -481,8 +481,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route110_EventScript_ItemElixir",
++      "trainer_sight_or_berry_tree_id": "ITEM_ELIXIR",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_110_ELIXIR"
+     },
+     {
+diff --git a/data/maps/Route110_TrickHousePuzzle1/map.json b/data/maps/Route110_TrickHousePuzzle1/map.json
+index 1af3b9de2..fd78aa183 100644
+--- a/data/maps/Route110_TrickHousePuzzle1/map.json
++++ b/data/maps/Route110_TrickHousePuzzle1/map.json
+@@ -179,8 +179,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route110_TrickHousePuzzle1_EventScript_ItemOrangeMail",
++      "trainer_sight_or_berry_tree_id": "ITEM_ORANGE_MAIL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_TRICK_HOUSE_PUZZLE_1_ORANGE_MAIL"
+     },
+     {
+diff --git a/data/maps/Route110_TrickHousePuzzle2/map.json b/data/maps/Route110_TrickHousePuzzle2/map.json
+index 1aea0fde0..b18fe0a7b 100644
+--- a/data/maps/Route110_TrickHousePuzzle2/map.json
++++ b/data/maps/Route110_TrickHousePuzzle2/map.json
+@@ -62,8 +62,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route110_TrickHousePuzzle2_EventScript_ItemWaveMail",
++      "trainer_sight_or_berry_tree_id": "ITEM_WAVE_MAIL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_TRICK_HOUSE_PUZZLE_2_WAVE_MAIL"
+     },
+     {
+@@ -75,8 +75,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route110_TrickHousePuzzle2_EventScript_ItemHarborMail",
++      "trainer_sight_or_berry_tree_id": "ITEM_HARBOR_MAIL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_TRICK_HOUSE_PUZZLE_2_HARBOR_MAIL"
+     }
+   ],
+diff --git a/data/maps/Route110_TrickHousePuzzle3/map.json b/data/maps/Route110_TrickHousePuzzle3/map.json
+index ba6c31c5d..abc4bd61f 100644
+--- a/data/maps/Route110_TrickHousePuzzle3/map.json
++++ b/data/maps/Route110_TrickHousePuzzle3/map.json
+@@ -62,8 +62,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route110_TrickHousePuzzle3_EventScript_ItemWoodMail",
++      "trainer_sight_or_berry_tree_id": "ITEM_WOOD_MAIL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_TRICK_HOUSE_PUZZLE_3_WOOD_MAIL"
+     },
+     {
+@@ -75,8 +75,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route110_TrickHousePuzzle3_EventScript_ItemShadowMail",
++      "trainer_sight_or_berry_tree_id": "ITEM_SHADOW_MAIL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_TRICK_HOUSE_PUZZLE_3_SHADOW_MAIL"
+     },
+     {
+diff --git a/data/maps/Route110_TrickHousePuzzle4/map.json b/data/maps/Route110_TrickHousePuzzle4/map.json
+index 3653dfba9..14a745f92 100644
+--- a/data/maps/Route110_TrickHousePuzzle4/map.json
++++ b/data/maps/Route110_TrickHousePuzzle4/map.json
+@@ -62,8 +62,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route110_TrickHousePuzzle4_EventScript_ItemMechMail",
++      "trainer_sight_or_berry_tree_id": "ITEM_MECH_MAIL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_TRICK_HOUSE_PUZZLE_4_MECH_MAIL"
+     },
+     {
+diff --git a/data/maps/Route110_TrickHousePuzzle6/map.json b/data/maps/Route110_TrickHousePuzzle6/map.json
+index 8c6aa3048..e7eb20118 100644
+--- a/data/maps/Route110_TrickHousePuzzle6/map.json
++++ b/data/maps/Route110_TrickHousePuzzle6/map.json
+@@ -62,8 +62,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route110_TrickHousePuzzle6_EventScript_ItemGlitterMail",
++      "trainer_sight_or_berry_tree_id": "ITEM_GLITTER_MAIL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_TRICK_HOUSE_PUZZLE_6_GLITTER_MAIL"
+     }
+   ],
+diff --git a/data/maps/Route110_TrickHousePuzzle7/map.json b/data/maps/Route110_TrickHousePuzzle7/map.json
+index 15237e23c..f10c14a06 100644
+--- a/data/maps/Route110_TrickHousePuzzle7/map.json
++++ b/data/maps/Route110_TrickHousePuzzle7/map.json
+@@ -62,8 +62,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route110_TrickHousePuzzle7_EventScript_ItemTropicMail",
++      "trainer_sight_or_berry_tree_id": "ITEM_TROPIC_MAIL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_TRICK_HOUSE_PUZZLE_7_TROPIC_MAIL"
+     },
+     {
+diff --git a/data/maps/Route110_TrickHousePuzzle8/map.json b/data/maps/Route110_TrickHousePuzzle8/map.json
+index c9fa42d7b..63dfd125c 100644
+--- a/data/maps/Route110_TrickHousePuzzle8/map.json
++++ b/data/maps/Route110_TrickHousePuzzle8/map.json
+@@ -62,8 +62,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route110_TrickHousePuzzle8_EventScript_ItemBeadMail",
++      "trainer_sight_or_berry_tree_id": "ITEM_BEAD_MAIL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_TRICK_HOUSE_PUZZLE_8_BEAD_MAIL"
+     }
+   ],
+diff --git a/data/maps/Route111/map.json b/data/maps/Route111/map.json
+index 6efa1770e..3e893d0a6 100644
+--- a/data/maps/Route111/map.json
++++ b/data/maps/Route111/map.json
+@@ -260,8 +260,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route111_EventScript_ItemTMSandstorm",
++      "trainer_sight_or_berry_tree_id": "ITEM_TM_SANDSTORM",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_111_TM_SANDSTORM"
+     },
+     {
+@@ -351,8 +351,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route111_EventScript_ItemStardust",
++      "trainer_sight_or_berry_tree_id": "ITEM_STARDUST",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_111_STARDUST"
+     },
+     {
+@@ -364,8 +364,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route111_EventScript_ItemHPUp",
++      "trainer_sight_or_berry_tree_id": "ITEM_HP_UP",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_111_HP_UP"
+     },
+     {
+@@ -572,8 +572,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route111_EventScript_ItemElixir",
++      "trainer_sight_or_berry_tree_id": "ITEM_ELIXIR",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_111_ELIXIR"
+     },
+     {
+diff --git a/data/maps/Route112/map.json b/data/maps/Route112/map.json
+index 5340680ea..f8e8851fa 100644
+--- a/data/maps/Route112/map.json
++++ b/data/maps/Route112/map.json
+@@ -182,8 +182,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route112_EventScript_ItemNugget",
++      "trainer_sight_or_berry_tree_id": "ITEM_NUGGET",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_112_NUGGET"
+     },
+     {
+diff --git a/data/maps/Route113/map.json b/data/maps/Route113/map.json
+index 2e5890d65..45abde83c 100644
+--- a/data/maps/Route113/map.json
++++ b/data/maps/Route113/map.json
+@@ -104,8 +104,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route113_EventScript_ItemMaxEther",
++      "trainer_sight_or_berry_tree_id": "ITEM_MAX_ETHER",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_113_MAX_ETHER"
+     },
+     {
+@@ -117,8 +117,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route113_EventScript_ItemSuperRepel",
++      "trainer_sight_or_berry_tree_id": "ITEM_SUPER_REPEL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_113_SUPER_REPEL"
+     },
+     {
+@@ -182,8 +182,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route113_EventScript_ItemHyperPotion",
++      "trainer_sight_or_berry_tree_id": "ITEM_HYPER_POTION",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_113_HYPER_POTION"
+     },
+     {
+diff --git a/data/maps/Route114/map.json b/data/maps/Route114/map.json
+index 17c483c0f..931f40f40 100644
+--- a/data/maps/Route114/map.json
++++ b/data/maps/Route114/map.json
+@@ -138,8 +138,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route114_EventScript_ItemRareCandy",
++      "trainer_sight_or_berry_tree_id": "ITEM_RARE_CANDY",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_114_RARE_CANDY"
+     },
+     {
+@@ -151,8 +151,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route114_EventScript_ItemProtein",
++      "trainer_sight_or_berry_tree_id": "ITEM_PROTEIN",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_114_PROTEIN"
+     },
+     {
+@@ -359,8 +359,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route114_EventScript_ItemEnergyPowder",
++      "trainer_sight_or_berry_tree_id": "ITEM_ENERGY_POWDER",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_114_ENERGY_POWDER"
+     },
+     {
+diff --git a/data/maps/Route115/map.json b/data/maps/Route115/map.json
+index ee0d71349..be57ca15d 100644
+--- a/data/maps/Route115/map.json
++++ b/data/maps/Route115/map.json
+@@ -151,8 +151,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route115_EventScript_ItemSuperPotion",
++      "trainer_sight_or_berry_tree_id": "ITEM_SUPER_POTION",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_115_SUPER_POTION"
+     },
+     {
+@@ -164,8 +164,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route115_EventScript_ItemTMFocusPunch",
++      "trainer_sight_or_berry_tree_id": "ITEM_TM_FOCUS_PUNCH",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_115_TM_FOCUS_PUNCH"
+     },
+     {
+@@ -177,8 +177,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route115_EventScript_ItemIron",
++      "trainer_sight_or_berry_tree_id": "ITEM_IRON",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_115_IRON"
+     },
+     {
+@@ -229,8 +229,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route115_EventScript_ItemGreatBall",
++      "trainer_sight_or_berry_tree_id": "ITEM_GREAT_BALL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_115_GREAT_BALL"
+     },
+     {
+@@ -307,8 +307,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route115_EventScript_ItemPPUp",
++      "trainer_sight_or_berry_tree_id": "ITEM_PP_UP",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_115_PP_UP"
+     },
+     {
+@@ -320,8 +320,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route115_EventScript_ItemHealPowder",
++      "trainer_sight_or_berry_tree_id": "ITEM_HEAL_POWDER",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_115_HEAL_POWDER"
+     }
+   ],
+diff --git a/data/maps/Route116/map.json b/data/maps/Route116/map.json
+index adf9a86d5..18239a42a 100644
+--- a/data/maps/Route116/map.json
++++ b/data/maps/Route116/map.json
+@@ -112,8 +112,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route116_EventScript_ItemEther",
++      "trainer_sight_or_berry_tree_id": "ITEM_ETHER",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_116_ETHER"
+     },
+     {
+@@ -125,8 +125,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route116_EventScript_ItemRepel",
++      "trainer_sight_or_berry_tree_id": "ITEM_REPEL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_116_REPEL"
+     },
+     {
+@@ -216,8 +216,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route116_EventScript_ItemHPUp",
++      "trainer_sight_or_berry_tree_id": "ITEM_HP_UP",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_116_HP_UP"
+     },
+     {
+@@ -281,8 +281,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route116_EventScript_ItemXSpecial",
++      "trainer_sight_or_berry_tree_id": "ITEM_X_SPECIAL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_116_X_SPECIAL"
+     },
+     {
+@@ -346,8 +346,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route116_EventScript_ItemPotion",
++      "trainer_sight_or_berry_tree_id": "ITEM_POTION",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_116_POTION"
+     },
+     {
+diff --git a/data/maps/Route117/map.json b/data/maps/Route117/map.json
+index 80304ddf4..4105dc158 100644
+--- a/data/maps/Route117/map.json
++++ b/data/maps/Route117/map.json
+@@ -203,8 +203,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route117_EventScript_ItemGreatBall",
++      "trainer_sight_or_berry_tree_id": "ITEM_GREAT_BALL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_117_GREAT_BALL"
+     },
+     {
+@@ -229,8 +229,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route117_EventScript_ItemRevive",
++      "trainer_sight_or_berry_tree_id": "ITEM_REVIVE",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_117_REVIVE"
+     },
+     {
+diff --git a/data/maps/Route118/map.json b/data/maps/Route118/map.json
+index 1068e4a1a..09d7d8e46 100644
+--- a/data/maps/Route118/map.json
++++ b/data/maps/Route118/map.json
+@@ -286,8 +286,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route118_EventScript_ItemHyperPotion",
++      "trainer_sight_or_berry_tree_id": "ITEM_HYPER_POTION",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_118_HYPER_POTION"
+     },
+     {
+diff --git a/data/maps/Route119/map.json b/data/maps/Route119/map.json
+index f8591a5ba..22473850d 100644
+--- a/data/maps/Route119/map.json
++++ b/data/maps/Route119/map.json
+@@ -242,8 +242,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route119_EventScript_ItemSuperRepel",
++      "trainer_sight_or_berry_tree_id": "ITEM_SUPER_REPEL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_119_SUPER_REPEL"
+     },
+     {
+@@ -255,8 +255,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route119_EventScript_ItemZinc",
++      "trainer_sight_or_berry_tree_id": "ITEM_ZINC",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_119_ZINC"
+     },
+     {
+@@ -268,8 +268,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route119_EventScript_ItemElixir",
++      "trainer_sight_or_berry_tree_id": "ITEM_ELIXIR",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_119_ELIXIR_1"
+     },
+     {
+@@ -281,8 +281,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route119_EventScript_ItemLeafStone",
++      "trainer_sight_or_berry_tree_id": "ITEM_LEAF_STONE",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_119_LEAF_STONE"
+     },
+     {
+@@ -294,8 +294,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route119_EventScript_ItemRareCandy",
++      "trainer_sight_or_berry_tree_id": "ITEM_RARE_CANDY",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_119_RARE_CANDY"
+     },
+     {
+@@ -307,8 +307,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route119_EventScript_ItemHyperPotion",
++      "trainer_sight_or_berry_tree_id": "ITEM_HYPER_POTION",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_119_HYPER_POTION_1"
+     },
+     {
+@@ -437,8 +437,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route119_EventScript_ItemHyperPotion2",
++      "trainer_sight_or_berry_tree_id": "ITEM_HYPER_POTION",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_119_HYPER_POTION_2"
+     },
+     {
+@@ -554,8 +554,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route119_EventScript_ItemNugget",
++      "trainer_sight_or_berry_tree_id": "ITEM_NUGGET",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_119_NUGGET"
+     },
+     {
+@@ -567,8 +567,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route119_EventScript_ItemElixir2",
++      "trainer_sight_or_berry_tree_id": "ITEM_ELIXIR",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_119_ELIXIR_2"
+     },
+     {
+diff --git a/data/maps/Route120/map.json b/data/maps/Route120/map.json
+index 6bb2c84c1..29712c35a 100644
+--- a/data/maps/Route120/map.json
++++ b/data/maps/Route120/map.json
+@@ -229,8 +229,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route120_EventScript_ItemNugget",
++      "trainer_sight_or_berry_tree_id": "ITEM_NUGGET",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_120_NUGGET"
+     },
+     {
+@@ -307,8 +307,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route120_EventScript_ItemFullHeal",
++      "trainer_sight_or_berry_tree_id": "ITEM_FULL_HEAL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_120_FULL_HEAL"
+     },
+     {
+@@ -385,8 +385,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route120_EventScript_ItemNestBall",
++      "trainer_sight_or_berry_tree_id": "ITEM_NEST_BALL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_120_NEST_BALL"
+     },
+     {
+@@ -398,8 +398,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route120_EventScript_ItemHyperPotion",
++      "trainer_sight_or_berry_tree_id": "ITEM_HYPER_POTION",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_120_HYPER_POTION"
+     },
+     {
+@@ -593,8 +593,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route120_EventScript_ItemRevive",
++      "trainer_sight_or_berry_tree_id": "ITEM_REVIVE",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_120_REVIVE"
+     }
+   ],
+diff --git a/data/maps/Route121/map.json b/data/maps/Route121/map.json
+index 4a73f3fdd..f7a27d4c7 100644
+--- a/data/maps/Route121/map.json
++++ b/data/maps/Route121/map.json
+@@ -299,8 +299,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route121_EventScript_ItemCarbos",
++      "trainer_sight_or_berry_tree_id": "ITEM_CARBOS",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_121_CARBOS"
+     },
+     {
+@@ -390,8 +390,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route121_EventScript_ItemRevive",
++      "trainer_sight_or_berry_tree_id": "ITEM_REVIVE",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_121_REVIVE"
+     },
+     {
+@@ -403,8 +403,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route121_EventScript_ItemZinc",
++      "trainer_sight_or_berry_tree_id": "ITEM_ZINC",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_121_ZINC"
+     }
+   ],
+diff --git a/data/maps/Route123/map.json b/data/maps/Route123/map.json
+index 11798b95d..27de5ab0e 100644
+--- a/data/maps/Route123/map.json
++++ b/data/maps/Route123/map.json
+@@ -294,8 +294,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route123_EventScript_ItemCalcium",
++      "trainer_sight_or_berry_tree_id": "ITEM_CALCIUM",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_123_CALCIUM"
+     },
+     {
+@@ -437,8 +437,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route123_EventScript_ItemUltraBall",
++      "trainer_sight_or_berry_tree_id": "ITEM_ULTRA_BALL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_123_ULTRA_BALL"
+     },
+     {
+@@ -450,8 +450,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route123_EventScript_ItemElixir",
++      "trainer_sight_or_berry_tree_id": "ITEM_ELIXIR",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_123_ELIXIR"
+     },
+     {
+@@ -541,8 +541,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route123_EventScript_ItemPPUp",
++      "trainer_sight_or_berry_tree_id": "ITEM_PP_UP",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_123_PP_UP"
+     },
+     {
+@@ -580,8 +580,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route123_EventScript_ItemRevivalHerb",
++      "trainer_sight_or_berry_tree_id": "ITEM_REVIVAL_HERB",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_123_REVIVAL_HERB"
+     }
+   ],
+diff --git a/data/maps/Route124/map.json b/data/maps/Route124/map.json
+index 21e2ecd06..869ca2db8 100644
+--- a/data/maps/Route124/map.json
++++ b/data/maps/Route124/map.json
+@@ -114,8 +114,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route124_EventScript_ItemRedShard",
++      "trainer_sight_or_berry_tree_id": "ITEM_RED_SHARD",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_124_RED_SHARD"
+     },
+     {
+@@ -127,8 +127,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route124_EventScript_ItemBlueShard",
++      "trainer_sight_or_berry_tree_id": "ITEM_BLUE_SHARD",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_124_BLUE_SHARD"
+     },
+     {
+@@ -140,8 +140,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route124_EventScript_ItemYellowShard",
++      "trainer_sight_or_berry_tree_id": "ITEM_YELLOW_SHARD",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_124_YELLOW_SHARD"
+     },
+     {
+diff --git a/data/maps/Route125/map.json b/data/maps/Route125/map.json
+index cc8bdf09c..6e44df1f3 100644
+--- a/data/maps/Route125/map.json
++++ b/data/maps/Route125/map.json
+@@ -156,8 +156,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route125_EventScript_ItemBigPearl",
++      "trainer_sight_or_berry_tree_id": "ITEM_BIG_PEARL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_125_BIG_PEARL"
+     }
+   ],
+diff --git a/data/maps/Route126/map.json b/data/maps/Route126/map.json
+index 0997e46b1..5e835b8c1 100644
+--- a/data/maps/Route126/map.json
++++ b/data/maps/Route126/map.json
+@@ -91,8 +91,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route126_EventScript_ItemGreenShard",
++      "trainer_sight_or_berry_tree_id": "ITEM_GREEN_SHARD",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_126_GREEN_SHARD"
+     },
+     {
+diff --git a/data/maps/Route127/map.json b/data/maps/Route127/map.json
+index 30652264e..27a5892e7 100644
+--- a/data/maps/Route127/map.json
++++ b/data/maps/Route127/map.json
+@@ -70,8 +70,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route127_EventScript_ItemZinc",
++      "trainer_sight_or_berry_tree_id": "ITEM_ZINC",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_127_ZINC"
+     },
+     {
+@@ -83,8 +83,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route127_EventScript_ItemCarbos",
++      "trainer_sight_or_berry_tree_id": "ITEM_CARBOS",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_127_CARBOS"
+     },
+     {
+@@ -174,8 +174,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route127_EventScript_ItemRareCandy",
++      "trainer_sight_or_berry_tree_id": "ITEM_RARE_CANDY",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_127_RARE_CANDY"
+     }
+   ],
+diff --git a/data/maps/Route132/map.json b/data/maps/Route132/map.json
+index 698dd050f..9615ee07a 100644
+--- a/data/maps/Route132/map.json
++++ b/data/maps/Route132/map.json
+@@ -60,8 +60,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route132_EventScript_ItemRareCandy",
++      "trainer_sight_or_berry_tree_id": "ITEM_RARE_CANDY",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_132_RARE_CANDY"
+     },
+     {
+@@ -151,8 +151,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route132_EventScript_ItemProtein",
++      "trainer_sight_or_berry_tree_id": "ITEM_PROTEIN",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_132_PROTEIN"
+     }
+   ],
+diff --git a/data/maps/Route133/map.json b/data/maps/Route133/map.json
+index 106546ef5..def733466 100644
+--- a/data/maps/Route133/map.json
++++ b/data/maps/Route133/map.json
+@@ -73,8 +73,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route133_EventScript_ItemBigPearl",
++      "trainer_sight_or_berry_tree_id": "ITEM_BIG_PEARL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_133_BIG_PEARL"
+     },
+     {
+@@ -86,8 +86,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route133_EventScript_ItemStarPiece",
++      "trainer_sight_or_berry_tree_id": "ITEM_STAR_PIECE",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_133_STAR_PIECE"
+     },
+     {
+@@ -151,8 +151,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route133_EventScript_ItemMaxRevive",
++      "trainer_sight_or_berry_tree_id": "ITEM_MAX_REVIVE",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_133_MAX_REVIVE"
+     }
+   ],
+diff --git a/data/maps/Route134/map.json b/data/maps/Route134/map.json
+index f516f16de..123565123 100644
+--- a/data/maps/Route134/map.json
++++ b/data/maps/Route134/map.json
+@@ -151,8 +151,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route134_EventScript_ItemCarbos",
++      "trainer_sight_or_berry_tree_id": "ITEM_CARBOS",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_134_CARBOS"
+     },
+     {
+@@ -164,8 +164,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "Route134_EventScript_ItemStarPiece",
++      "trainer_sight_or_berry_tree_id": "ITEM_STAR_PIECE",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_ROUTE_134_STAR_PIECE"
+     }
+   ],
+diff --git a/data/maps/RustboroCity/map.json b/data/maps/RustboroCity/map.json
+index 3d77404ee..9a987ab28 100644
+--- a/data/maps/RustboroCity/map.json
++++ b/data/maps/RustboroCity/map.json
+@@ -182,8 +182,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "RustboroCity_EventScript_ItemXDefend",
++      "trainer_sight_or_berry_tree_id": "ITEM_X_DEFEND",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_RUSTBORO_CITY_X_DEFEND"
+     },
+     {
+diff --git a/data/maps/RusturfTunnel/map.json b/data/maps/RusturfTunnel/map.json
+index ef07714ad..93c6aea07 100644
+--- a/data/maps/RusturfTunnel/map.json
++++ b/data/maps/RusturfTunnel/map.json
+@@ -49,8 +49,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "RusturfTunnel_EventScript_ItemPokeBall",
++      "trainer_sight_or_berry_tree_id": "ITEM_POKE_BALL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_RUSTURF_TUNNEL_POKE_BALL"
+     },
+     {
+@@ -62,8 +62,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "RusturfTunnel_EventScript_ItemMaxEther",
++      "trainer_sight_or_berry_tree_id": "ITEM_MAX_ETHER",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_RUSTURF_TUNNEL_MAX_ETHER"
+     },
+     {
+diff --git a/data/maps/SafariZone_North/map.json b/data/maps/SafariZone_North/map.json
+index f1e9048b1..d505405aa 100644
+--- a/data/maps/SafariZone_North/map.json
++++ b/data/maps/SafariZone_North/map.json
+@@ -143,8 +143,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "SafariZone_North_EventScript_ItemCalcium",
++      "trainer_sight_or_berry_tree_id": "ITEM_CALCIUM",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_SAFARI_ZONE_NORTH_CALCIUM"
+     }
+   ],
+diff --git a/data/maps/SafariZone_Northeast/map.json b/data/maps/SafariZone_Northeast/map.json
+index 876ffb8f6..f1e1d933b 100644
+--- a/data/maps/SafariZone_Northeast/map.json
++++ b/data/maps/SafariZone_Northeast/map.json
+@@ -138,8 +138,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "SafariZone_Northeast_EventScript_ItemNugget",
++      "trainer_sight_or_berry_tree_id": "ITEM_NUGGET",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_SAFARI_ZONE_NORTH_EAST_NUGGET"
+     }
+   ],
+diff --git a/data/maps/SafariZone_Northwest/map.json b/data/maps/SafariZone_Northwest/map.json
+index f30ef030a..ef77910d3 100644
+--- a/data/maps/SafariZone_Northwest/map.json
++++ b/data/maps/SafariZone_Northwest/map.json
+@@ -47,8 +47,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "SafariZone_Northwest_EventScript_ItemTMSolarBeam",
++      "trainer_sight_or_berry_tree_id": "ITEM_TM_SOLAR_BEAM",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_SAFARI_ZONE_NORTH_WEST_TM_SOLAR_BEAM"
+     }
+   ],
+diff --git a/data/maps/SafariZone_Southeast/map.json b/data/maps/SafariZone_Southeast/map.json
+index 87fdc8318..69bbb9fc1 100644
+--- a/data/maps/SafariZone_Southeast/map.json
++++ b/data/maps/SafariZone_Southeast/map.json
+@@ -73,8 +73,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "SafariZone_Southeast_EventScript_ItemBigPearl",
++      "trainer_sight_or_berry_tree_id": "ITEM_BIG_PEARL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_SAFARI_ZONE_SOUTH_EAST_BIG_PEARL"
+     },
+     {
+diff --git a/data/maps/SafariZone_Southwest/map.json b/data/maps/SafariZone_Southwest/map.json
+index 39edcb2c6..9a2d9f3a7 100644
+--- a/data/maps/SafariZone_Southwest/map.json
++++ b/data/maps/SafariZone_Southwest/map.json
+@@ -47,8 +47,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "SafariZone_Southwest_EventScript_ItemMaxRevive",
++      "trainer_sight_or_berry_tree_id": "ITEM_MAX_REVIVE",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_SAFARI_ZONE_SOUTH_WEST_MAX_REVIVE"
+     }
+   ],
+diff --git a/data/maps/ScorchedSlab/map.json b/data/maps/ScorchedSlab/map.json
+index 5e0380b4e..3bd8386b8 100644
+--- a/data/maps/ScorchedSlab/map.json
++++ b/data/maps/ScorchedSlab/map.json
+@@ -23,8 +23,8 @@
+       "movement_range_x": 0,
+       "movement_range_y": 0,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "ScorchedSlab_EventScript_ItemTMSunnyDay",
++      "trainer_sight_or_berry_tree_id": "ITEM_TM_SUNNY_DAY",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_SCORCHED_SLAB_TM_SUNNY_DAY"
+     }
+   ],
+diff --git a/data/maps/SeafloorCavern_Room9/map.json b/data/maps/SeafloorCavern_Room9/map.json
+index 04fb621df..0cf1b44a0 100644
+--- a/data/maps/SeafloorCavern_Room9/map.json
++++ b/data/maps/SeafloorCavern_Room9/map.json
+@@ -88,8 +88,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "SeafloorCavern_Room9_EventScript_ItemTMEarthquake",
++      "trainer_sight_or_berry_tree_id": "ITEM_TM_EARTHQUAKE",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_SEAFLOOR_CAVERN_ROOM_9_TM_EARTHQUAKE"
+     },
+     {
+diff --git a/data/maps/ShoalCave_LowTideEntranceRoom/map.json b/data/maps/ShoalCave_LowTideEntranceRoom/map.json
+index 652038dac..8ac9f2217 100644
+--- a/data/maps/ShoalCave_LowTideEntranceRoom/map.json
++++ b/data/maps/ShoalCave_LowTideEntranceRoom/map.json
+@@ -23,8 +23,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "ShoalCave_LowTideEntranceRoom_EventScript_ItemBigPearl",
++      "trainer_sight_or_berry_tree_id": "ITEM_BIG_PEARL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_SHOAL_CAVE_ENTRANCE_BIG_PEARL"
+     },
+     {
+diff --git a/data/maps/ShoalCave_LowTideIceRoom/map.json b/data/maps/ShoalCave_LowTideIceRoom/map.json
+index dffa6d0de..c8d1d0131 100644
+--- a/data/maps/ShoalCave_LowTideIceRoom/map.json
++++ b/data/maps/ShoalCave_LowTideIceRoom/map.json
+@@ -23,8 +23,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "ShoalCave_LowTideIceRoom_EventScript_ItemTMHail",
++      "trainer_sight_or_berry_tree_id": "ITEM_TM_HAIL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_SHOAL_CAVE_ICE_ROOM_TM_HAIL"
+     },
+     {
+@@ -36,8 +36,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "ShoalCave_LowTideIceRoom_EventScript_ItemNeverMeltIce",
++      "trainer_sight_or_berry_tree_id": "ITEM_NEVER_MELT_ICE",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_SHOAL_CAVE_ICE_ROOM_NEVER_MELT_ICE"
+     }
+   ],
+diff --git a/data/maps/ShoalCave_LowTideInnerRoom/map.json b/data/maps/ShoalCave_LowTideInnerRoom/map.json
+index e7261f295..b5b47e8e1 100644
+--- a/data/maps/ShoalCave_LowTideInnerRoom/map.json
++++ b/data/maps/ShoalCave_LowTideInnerRoom/map.json
+@@ -23,8 +23,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "ShoalCave_LowTideInnerRoom_EventScript_ItemRareCandy",
++      "trainer_sight_or_berry_tree_id": "ITEM_RARE_CANDY",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_SHOAL_CAVE_INNER_ROOM_RARE_CANDY"
+     }
+   ],
+diff --git a/data/maps/ShoalCave_LowTideStairsRoom/map.json b/data/maps/ShoalCave_LowTideStairsRoom/map.json
+index 758781a03..a2acba7b4 100644
+--- a/data/maps/ShoalCave_LowTideStairsRoom/map.json
++++ b/data/maps/ShoalCave_LowTideStairsRoom/map.json
+@@ -23,8 +23,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "ShoalCave_LowTideStairsRoom_EventScript_ItemIceHeal",
++      "trainer_sight_or_berry_tree_id": "ITEM_ICE_HEAL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_SHOAL_CAVE_STAIRS_ROOM_ICE_HEAL"
+     }
+   ],
+diff --git a/data/maps/VictoryRoad_1F/map.json b/data/maps/VictoryRoad_1F/map.json
+index 44a2bca66..4c348ba8e 100644
+--- a/data/maps/VictoryRoad_1F/map.json
++++ b/data/maps/VictoryRoad_1F/map.json
+@@ -75,8 +75,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "VictoryRoad_1F_EventScript_ItemMaxElixir",
++      "trainer_sight_or_berry_tree_id": "ITEM_MAX_ELIXIR",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_VICTORY_ROAD_1F_MAX_ELIXIR"
+     },
+     {
+@@ -88,8 +88,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "VictoryRoad_1F_EventScript_ItemPPUp",
++      "trainer_sight_or_berry_tree_id": "ITEM_PP_UP",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_VICTORY_ROAD_1F_PP_UP"
+     },
+     {
+diff --git a/data/maps/VictoryRoad_B1F/map.json b/data/maps/VictoryRoad_B1F/map.json
+index c6033354c..65bb0e54d 100644
+--- a/data/maps/VictoryRoad_B1F/map.json
++++ b/data/maps/VictoryRoad_B1F/map.json
+@@ -244,8 +244,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "VictoryRoad_B1F_EventScript_ItemTMPsychic",
++      "trainer_sight_or_berry_tree_id": "ITEM_TM_PSYCHIC",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_VICTORY_ROAD_B1F_TM_PSYCHIC"
+     },
+     {
+@@ -257,8 +257,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "VictoryRoad_B1F_EventScript_ItemFullRestore",
++      "trainer_sight_or_berry_tree_id": "ITEM_FULL_RESTORE",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_VICTORY_ROAD_B1F_FULL_RESTORE"
+     },
+     {
+diff --git a/data/maps/VictoryRoad_B2F/map.json b/data/maps/VictoryRoad_B2F/map.json
+index d38bda2a7..16dc854b0 100644
+--- a/data/maps/VictoryRoad_B2F/map.json
++++ b/data/maps/VictoryRoad_B2F/map.json
+@@ -75,8 +75,8 @@
+       "movement_range_x": 1,
+       "movement_range_y": 1,
+       "trainer_type": "TRAINER_TYPE_NONE",
+-      "trainer_sight_or_berry_tree_id": "0",
+-      "script": "VictoryRoad_B2F_EventScript_ItemFullHeal",
++      "trainer_sight_or_berry_tree_id": "ITEM_FULL_HEAL",
++      "script": "Common_EventScript_FindItem",
+       "flag": "FLAG_ITEM_VICTORY_ROAD_B2F_FULL_HEAL"
+     },
+     {
+diff --git a/data/scripts/item_ball_scripts.inc b/data/scripts/item_ball_scripts.inc
+index 44800dd55..c140c91d7 100644
+--- a/data/scripts/item_ball_scripts.inc
++++ b/data/scripts/item_ball_scripts.inc
+@@ -1,659 +1,4 @@
+-Route102_EventScript_ItemPotion::
+-	finditem ITEM_POTION
+-	end
+-
+-Route103_EventScript_ItemGuardSpec::
+-	finditem ITEM_GUARD_SPEC
+-	end
+-
+-Route103_EventScript_ItemPPUp::
+-	finditem ITEM_PP_UP
+-	end
+-
+-Route104_EventScript_ItemPPUp::
+-	finditem ITEM_PP_UP
+-	end
+-
+-Route104_EventScript_ItemPokeBall::
+-	finditem ITEM_POKE_BALL
+-	end
+-
+-Route104_EventScript_ItemXAccuracy::
+-	finditem ITEM_X_ACCURACY
+-	end
+-
+-Route104_EventScript_ItemPotion::
+-	finditem ITEM_POTION
+-	end
+-
+-Route105_EventScript_ItemIron::
+-	finditem ITEM_IRON
+-	end
+-
+-Route106_EventScript_ItemProtein::
+-	finditem ITEM_PROTEIN
+-	end
+-
+-Route108_EventScript_ItemStarPiece::
+-	finditem ITEM_STAR_PIECE
+-	end
+-
+-Route109_EventScript_ItemPPUp::
+-	finditem ITEM_PP_UP
+-	end
+-
+-Route109_EventScript_ItemPotion::
+-	finditem ITEM_POTION
+-	end
+-
+-Route110_EventScript_ItemRareCandy::
+-	finditem ITEM_RARE_CANDY
+-	end
+-
+-Route110_EventScript_ItemDireHit::
+-	finditem ITEM_DIRE_HIT
+-	end
+-
+-Route110_EventScript_ItemElixir::
+-	finditem ITEM_ELIXIR
+-	end
+-
+-Route111_EventScript_ItemTMSandstorm::
+-	finditem ITEM_TM_SANDSTORM
+-	end
+-
+-Route111_EventScript_ItemStardust::
+-	finditem ITEM_STARDUST
+-	end
+-
+-Route111_EventScript_ItemHPUp::
+-	finditem ITEM_HP_UP
+-	end
+-
+-Route111_EventScript_ItemElixir::
+-	finditem ITEM_ELIXIR
+-	end
+-
+-Route112_EventScript_ItemNugget::
+-	finditem ITEM_NUGGET
+-	end
+-
+-Route113_EventScript_ItemMaxEther::
+-	finditem ITEM_MAX_ETHER
+-	end
+-
+-Route113_EventScript_ItemSuperRepel::
+-	finditem ITEM_SUPER_REPEL
+-	end
+-
+-Route113_EventScript_ItemHyperPotion::
+-	finditem ITEM_HYPER_POTION
+-	end
+-
+-Route114_EventScript_ItemRareCandy::
+-	finditem ITEM_RARE_CANDY
+-	end
+-
+-Route114_EventScript_ItemProtein::
+-	finditem ITEM_PROTEIN
+-	end
+-
+-Route114_EventScript_ItemEnergyPowder::
+-	finditem ITEM_ENERGY_POWDER
+-	end
+-
+-Route115_EventScript_ItemSuperPotion::
+-	finditem ITEM_SUPER_POTION
+-	end
+-
+-Route115_EventScript_ItemTMFocusPunch::
+-	finditem ITEM_TM_FOCUS_PUNCH
+-	end
+-
+-Route115_EventScript_ItemIron::
+-	finditem ITEM_IRON
+-	end
+-
+-Route115_EventScript_ItemGreatBall::
+-	finditem ITEM_GREAT_BALL
+-	end
+-
+-Route115_EventScript_ItemHealPowder::
+-	finditem ITEM_HEAL_POWDER
+-	end
+-
+-Route115_EventScript_ItemPPUp::
+-	finditem ITEM_PP_UP
+-	end
+-
+-Route116_EventScript_ItemXSpecial::
+-	finditem ITEM_X_SP_ATK
+-	end
+-
+-Route116_EventScript_ItemEther::
+-	finditem ITEM_ETHER
+-	end
+-
+-Route116_EventScript_ItemRepel::
+-	finditem ITEM_REPEL
+-	end
+-
+-Route116_EventScript_ItemHPUp::
+-	finditem ITEM_HP_UP
+-	end
+-
+-Route116_EventScript_ItemPotion::
+-	finditem ITEM_POTION
+-	end
+-
+-Route117_EventScript_ItemGreatBall::
+-	finditem ITEM_GREAT_BALL
+-	end
+-
+-Route117_EventScript_ItemRevive::
+-	finditem ITEM_REVIVE
+-	end
+-
+-Route118_EventScript_ItemHyperPotion::
+-	finditem ITEM_HYPER_POTION
+-	end
+-
+-Route119_EventScript_ItemSuperRepel::
+-	finditem ITEM_SUPER_REPEL
+-	end
+-
+-Route119_EventScript_ItemZinc::
+-	finditem ITEM_ZINC
+-	end
+-
+-Route119_EventScript_ItemElixir::
+-	finditem ITEM_ELIXIR
+-	end
+-
+-Route119_EventScript_ItemLeafStone::
+-	finditem ITEM_LEAF_STONE
+-	end
+-
+-Route119_EventScript_ItemRareCandy::
+-	finditem ITEM_RARE_CANDY
+-	end
+-
+-Route119_EventScript_ItemHyperPotion::
+-	finditem ITEM_HYPER_POTION
+-	end
+-
+-Route119_EventScript_ItemHyperPotion2::
+-	finditem ITEM_HYPER_POTION
+-	end
+-
+-Route119_EventScript_ItemElixir2::
+-	finditem ITEM_ELIXIR
+-	end
+-
+-Route120_EventScript_ItemNugget::
+-	finditem ITEM_NUGGET
+-	end
+-
+-Route120_EventScript_ItemFullHeal::
+-	finditem ITEM_FULL_HEAL
+-	end
+-
+-Route120_EventScript_ItemHyperPotion::
+-	finditem ITEM_HYPER_POTION
+-	end
+-
+-Route120_EventScript_ItemNestBall::
+-	finditem ITEM_NEST_BALL
+-	end
+-
+-Route120_EventScript_ItemRevive::
+-	finditem ITEM_REVIVE
+-	end
+-
+-Route121_EventScript_ItemCarbos::
+-	finditem ITEM_CARBOS
+-	end
+-
+-Route121_EventScript_ItemRevive::
+-	finditem ITEM_REVIVE
+-	end
+-
+-Route121_EventScript_ItemZinc::
+-	finditem ITEM_ZINC
+-	end
+-
+-Route123_EventScript_ItemCalcium::
+-	finditem ITEM_CALCIUM
+-	end
+-
+-Route123_EventScript_ItemUltraBall::
+-	finditem ITEM_ULTRA_BALL
+-	end
+-
+-Route123_EventScript_ItemElixir::
+-	finditem ITEM_ELIXIR
+-	end
+-
+-Route123_EventScript_ItemPPUp::
+-	finditem ITEM_PP_UP
+-	end
+-
+-Route123_EventScript_ItemRevivalHerb::
+-	finditem ITEM_REVIVAL_HERB
+-	end
+-
+-Route124_EventScript_ItemRedShard::
+-	finditem ITEM_RED_SHARD
+-	end
+-
+-Route124_EventScript_ItemBlueShard::
+-	finditem ITEM_BLUE_SHARD
+-	end
+-
+-Route124_EventScript_ItemYellowShard::
+-	finditem ITEM_YELLOW_SHARD
+-	end
+-
+-Route125_EventScript_ItemBigPearl::
+-	finditem ITEM_BIG_PEARL
+-	end
+-
+-Route126_EventScript_ItemGreenShard::
+-	finditem ITEM_GREEN_SHARD
+-	end
+-
+-Route127_EventScript_ItemZinc::
+-	finditem ITEM_ZINC
+-	end
+-
+-Route127_EventScript_ItemCarbos::
+-	finditem ITEM_CARBOS
+-	end
+-
+-Route127_EventScript_ItemRareCandy::
+-	finditem ITEM_RARE_CANDY
+-	end
+-
+-Route132_EventScript_ItemRareCandy::
+-	finditem ITEM_RARE_CANDY
+-	end
+-
+-Route132_EventScript_ItemProtein::
+-	finditem ITEM_PROTEIN
+-	end
+-
+-Route133_EventScript_ItemBigPearl::
+-	finditem ITEM_BIG_PEARL
+-	end
+-
+-Route133_EventScript_ItemStarPiece::
+-	finditem ITEM_STAR_PIECE
+-	end
+-
+-Route133_EventScript_ItemMaxRevive::
+-	finditem ITEM_MAX_REVIVE
+-	end
+-
+-Route134_EventScript_ItemCarbos::
+-	finditem ITEM_CARBOS
+-	end
+-
+-Route134_EventScript_ItemStarPiece::
+-	finditem ITEM_STAR_PIECE
+-	end
+-
+-PetalburgCity_EventScript_ItemMaxRevive::
+-	finditem ITEM_MAX_REVIVE
+-	end
+-
+-PetalburgCity_EventScript_ItemEther::
+-	finditem ITEM_ETHER
+-	end
+-
+-MauvilleCity_EventScript_ItemXSpeed::
+-	finditem ITEM_X_SPEED
+-	end
+-
+-RustboroCity_EventScript_ItemXDefend::
+-	finditem ITEM_X_DEFENSE
+-	end
+-
+-LilycoveCity_EventScript_ItemMaxRepel::
+-	finditem ITEM_MAX_REPEL
+-	end
+-
+-MossdeepCity_EventScript_ItemNetBall::
+-	finditem ITEM_NET_BALL
+-	end
+-
+-PetalburgWoods_EventScript_ItemXAttack::
+-	finditem ITEM_X_ATTACK
+-	end
+-
+-PetalburgWoods_EventScript_ItemGreatBall::
+-	finditem ITEM_GREAT_BALL
+-	end
+-
+-PetalburgWoods_EventScript_ItemEther::
+-	finditem ITEM_ETHER
+-	end
+-
+-PetalburgWoods_EventScript_ItemParalyzeHeal::
+-	finditem ITEM_PARALYZE_HEAL
+-	end
+-
+-RusturfTunnel_EventScript_ItemPokeBall::
+-	finditem ITEM_POKE_BALL
+-	end
+-
+-RusturfTunnel_EventScript_ItemMaxEther::
+-	finditem ITEM_MAX_ETHER
+-	end
+-
+-GraniteCave_1F_EventScript_ItemEscapeRope::
+-	finditem ITEM_ESCAPE_ROPE
+-	end
+-
+-GraniteCave_B1F_EventScript_ItemPokeBall::
+-	finditem ITEM_POKE_BALL
+-	end
+-
+-GraniteCave_B2F_EventScript_ItemRepel::
+-	finditem ITEM_REPEL
+-	end
+-
+-GraniteCave_B2F_EventScript_ItemRareCandy::
+-	finditem ITEM_RARE_CANDY
+-	end
+-
+-JaggedPass_EventScript_ItemBurnHeal::
+-	finditem ITEM_BURN_HEAL
+-	end
+-
+-FieryPath_EventScript_ItemFireStone::
+-	finditem ITEM_FIRE_STONE
+-	end
+-
+-FieryPath_EventScript_ItemTMToxic::
+-	finditem ITEM_TM_TOXIC
+-	end
+-
+-MeteorFalls_1F_1R_EventScript_ItemTMIronTail::
+-	finditem ITEM_TM_IRON_TAIL
+-	end
+-
+-MeteorFalls_1F_1R_EventScript_ItemFullHeal::
+-	finditem ITEM_FULL_HEAL
+-	end
+-
+-MeteorFalls_1F_1R_EventScript_ItemMoonStone::
+-	finditem ITEM_MOON_STONE
+-	end
+-
+-MeteorFalls_1F_1R_EventScript_ItemPPUP::
+-	finditem ITEM_PP_UP
+-	end
+-
+-MeteorFalls_B1F_2R_EventScript_ItemTMDragonClaw::
+-	finditem ITEM_TM_DRAGON_CLAW
+-	end
+-
+-NewMauville_Inside_EventScript_ItemUltraBall::
+-	finditem ITEM_ULTRA_BALL
+-	end
+-
+-NewMauville_Inside_EventScript_ItemEscapeRope::
+-	finditem ITEM_ESCAPE_ROPE
+-	end
+-
+-NewMauville_Inside_EventScript_ItemThunderStone::
+-	finditem ITEM_THUNDER_STONE
+-	end
+-
+-NewMauville_Inside_EventScript_ItemFullHeal::
+-	finditem ITEM_FULL_HEAL
+-	end
+-
+-NewMauville_Inside_EventScript_ItemParalyzeHeal::
+-	finditem ITEM_PARALYZE_HEAL
+-	end
+-
+-AbandonedShip_Rooms_1F_EventScript_ItemHarborMail::
+-	finditem ITEM_HARBOR_MAIL
+-	end
+-
+-AbandonedShip_Rooms_B1F_EventScript_ItemEscapeRope::
+-	finditem ITEM_ESCAPE_ROPE
+-	end
+-
+-AbandonedShip_Rooms2_B1F_EventScript_ItemDiveBall::
+-	finditem ITEM_DIVE_BALL
+-	end
+-
+-AbandonedShip_Room_B1F_EventScript_ItemTMIceBeam::
+-	finditem ITEM_TM_ICE_BEAM
+-	end
+-
+-AbandonedShip_Rooms2_1F_EventScript_ItemRevive::
+-	finditem ITEM_REVIVE
+-	end
+-
+-AbandonedShip_CaptainsOffice_EventScript_ItemStorageKey::
+-	finditem ITEM_STORAGE_KEY
+-	end
+-
+-AbandonedShip_HiddenFloorRooms_EventScript_ItemLuxuryBall::
+-	finditem ITEM_LUXURY_BALL
+-	end
+-
+-AbandonedShip_HiddenFloorRooms_EventScript_ItemScanner::
+-	finditem ITEM_SCANNER
+-	end
+-
+-AbandonedShip_HiddenFloorRooms_EventScript_ItemWaterStone::
+-	finditem ITEM_WATER_STONE
+-	end
+-
+-AbandonedShip_HiddenFloorRooms_EventScript_ItemTMRainDance::
+-	finditem ITEM_TM_RAIN_DANCE
+-	end
+-
+-ScorchedSlab_EventScript_ItemTMSunnyDay::
+-	finditem ITEM_TM_SUNNY_DAY
+-	end
+-
+-SafariZone_Northwest_EventScript_ItemTMSolarBeam::
+-	finditem ITEM_TM_SOLAR_BEAM
+-	end
+-
+-SafariZone_North_EventScript_ItemCalcium::
+-	finditem ITEM_CALCIUM
+-	end
+-
+-SafariZone_Southwest_EventScript_ItemMaxRevive::
+-	finditem ITEM_MAX_REVIVE
+-	end
+-
+-SafariZone_Northeast_EventScript_ItemNugget::
+-	finditem ITEM_NUGGET
+-	end
+-
+-SafariZone_Southeast_EventScript_ItemBigPearl::
+-	finditem ITEM_BIG_PEARL
+-	end
+-
+-MtPyre_2F_EventScript_ItemUltraBall::
+-	finditem ITEM_ULTRA_BALL
+-	end
+-
+-MtPyre_3F_EventScript_ItemSuperRepel::
+-	finditem ITEM_SUPER_REPEL
+-	end
+-
+-MtPyre_4F_EventScript_ItemSeaIncense::
+-	finditem ITEM_SEA_INCENSE
+-	end
+-
+-MtPyre_5F_EventScript_ItemLaxIncense::
+-	finditem ITEM_LAX_INCENSE
+-	end
+-
+-MtPyre_6F_EventScript_ItemTMShadowBall::
+-	finditem ITEM_TM_SHADOW_BALL
+-	end
+-
+-MtPyre_Exterior_EventScript_ItemMaxPotion::
+-	finditem ITEM_MAX_POTION
+-	end
+-
+-MtPyre_Exterior_EventScript_ItemTMSkillSwap::
+-	finditem ITEM_TM_SKILL_SWAP
+-	end
+-
+-AquaHideout_B1F_EventScript_ItemMasterBall::
+-	finditem ITEM_MASTER_BALL
+-	end
+-
+-AquaHideout_B1F_EventScript_ItemNugget::
+-	finditem ITEM_NUGGET
+-	end
+-
+-AquaHideout_B1F_EventScript_ItemMaxElixir::
+-	finditem ITEM_MAX_ELIXIR
+-	end
+-
+-AquaHideout_B2F_EventScript_ItemNestBall::
+-	finditem ITEM_NEST_BALL
+-	end
+-
+-AquaHideout_B2F_EventScript_ItemMasterBall::
+-	finditem ITEM_MASTER_BALL      // Unused
+-	end
+-
+-Route119_EventScript_ItemNugget::
+-	finditem ITEM_NUGGET
+-	end
+-
+-Route119_EventScript_ItemMaxElixir::
+-	finditem ITEM_MAX_ELIXIR
+-	end
+-
+-Route119_EventScript_ItemNestBall::
+-	finditem ITEM_NEST_BALL
+-	end
+-
+-ShoalCave_LowTideEntranceRoom_EventScript_ItemBigPearl::
+-	finditem ITEM_BIG_PEARL
+-	end
+-
+-ShoalCave_LowTideInnerRoom_EventScript_ItemRareCandy::
+-	finditem ITEM_RARE_CANDY
+-	end
+-
+-ShoalCave_LowTideStairsRoom_EventScript_ItemIceHeal::
+-	finditem ITEM_ICE_HEAL
+-	end
+-
+-ShoalCave_LowTideIceRoom_EventScript_ItemTMHail::
+-	finditem ITEM_TM_HAIL
+-	end
+-
+-ShoalCave_LowTideIceRoom_EventScript_ItemNeverMeltIce::
+-	finditem ITEM_NEVER_MELT_ICE
+-	end
+-
+-SeafloorCavern_Room9_EventScript_ItemTMEarthquake::
+-	finditem ITEM_TM_EARTHQUAKE
+-	end
+-
+-Route110_TrickHousePuzzle1_EventScript_ItemOrangeMail::
+-	finditem ITEM_ORANGE_MAIL
+-	end
+-
+-Route110_TrickHousePuzzle2_EventScript_ItemHarborMail::
+-	finditem ITEM_HARBOR_MAIL
+-	end
+-
+-Route110_TrickHousePuzzle2_EventScript_ItemWaveMail::
+-	finditem ITEM_WAVE_MAIL
+-	end
+-
+-Route110_TrickHousePuzzle3_EventScript_ItemShadowMail::
+-	finditem ITEM_SHADOW_MAIL
+-	end
+-
+-Route110_TrickHousePuzzle3_EventScript_ItemWoodMail::
+-	finditem ITEM_WOOD_MAIL
+-	end
+-
+-Route110_TrickHousePuzzle4_EventScript_ItemMechMail::
+-	finditem ITEM_MECH_MAIL
+-	end
+-
+-Route110_TrickHousePuzzle6_EventScript_ItemGlitterMail::
+-	finditem ITEM_GLITTER_MAIL
+-	end
+-
+-Route110_TrickHousePuzzle7_EventScript_ItemTropicMail::
+-	finditem ITEM_TROPIC_MAIL
+-	end
+-
+-Route110_TrickHousePuzzle8_EventScript_ItemBeadMail::
+-	finditem ITEM_BEAD_MAIL
+-	end
+-
+-VictoryRoad_1F_EventScript_ItemMaxElixir::
+-	finditem ITEM_MAX_ELIXIR
+-	end
+-
+-VictoryRoad_1F_EventScript_ItemPPUp::
+-	finditem ITEM_PP_UP
+-	end
+-
+-VictoryRoad_B1F_EventScript_ItemTMPsychic::
+-	finditem ITEM_TM_PSYCHIC
+-	end
+-
+-VictoryRoad_B1F_EventScript_ItemFullRestore::
+-	finditem ITEM_FULL_RESTORE
+-	end
+-
+-VictoryRoad_B2F_EventScript_ItemFullHeal::
+-	finditem ITEM_FULL_HEAL
+-	end
+-
+-ArtisanCave_B1F_EventScript_ItemHPUp::
+-	finditem ITEM_HP_UP
+-	end
+-
+-ArtisanCave_1F_EventScript_ItemCarbos::
+-	finditem ITEM_CARBOS
+-	end
+-
+-MagmaHideout_1F_EventScript_ItemRareCandy::
+-	finditem ITEM_RARE_CANDY
+-	end
+-
+-MagmaHideout_2F_2R_EventScript_ItemMaxElixir::
+-	finditem ITEM_MAX_ELIXIR
+-	end
+-
+-MagmaHideout_2F_2R_EventScript_ItemFullRestore::
+-	finditem ITEM_FULL_RESTORE
+-	end
+-
+-MagmaHideout_3F_1R_EventScript_ItemNugget::
+-	finditem ITEM_NUGGET
+-	end
+-
+-MagmaHideout_3F_2R_EventScript_ItemPPMax::
+-	finditem ITEM_PP_MAX
+-	end
+-
+-MagmaHideout_4F_EventScript_ItemMaxRevive::
+-	finditem ITEM_MAX_REVIVE
+-	end
+-
+-MagmaHideout_3F_3R_EventScript_ItemEscapeRope::
+-	finditem ITEM_ESCAPE_ROPE
++Common_EventScript_FindItem::
++	callnative GetItemBallIdAndAmountFromTemplate
++	finditem VAR_RESULT VAR_0x8009
+ 	end
+diff --git a/data/scripts/obtain_item.inc b/data/scripts/obtain_item.inc
+index e982858e7..d052fa700 100644
+--- a/data/scripts/obtain_item.inc
++++ b/data/scripts/obtain_item.inc
+@@ -50,7 +50,14 @@ EventScript_BufferBerriesPocket::
+ 	return
+ 
+ EventScript_ObtainedItem::
++	compare VAR_0x8001, TRUE
++	goto_if_eq EventScript_ObtainedItemMessage
++	buffernumberstring 0, VAR_0x8001
++	message gText_ObtainedTheItems
++	goto EventScript_ContinueObtainedItem
++EventScript_ObtainedItemMessage:
+ 	message gText_ObtainedTheItem
++EventScript_ContinueObtainedItem:
+ 	waitfanfare
+ 	msgbox gText_PutItemInPocket, MSGBOX_DEFAULT
+ 	setvar VAR_RESULT, TRUE
+@@ -129,10 +136,23 @@ EventScript_PutBattlePyramidItemInBag::
+ 
+ EventScript_FoundTMHM::
+ 	bufferitemnameplural STR_VAR_1, VAR_0x8004, VAR_0x8005
++	compare VAR_0x8005, 2
++	goto_if_lt EventScript_FoundTMHMMessage
++	buffernumberstring STR_VAR_3, VAR_0x8005
++	message gText_PlayerFoundTMHMs
++	goto EventScript_BufferTMHMsPocket
++	return
++EventScript_FoundTMHMMessage::
+ 	message gText_PlayerFoundOneTMHM
+ 	return
+ 
+ EventScript_FoundItem::
++	compare VAR_0x8001, TRUE
++	goto_if_eq EventScript_FoundItemMessage
++	buffernumberstring 0, VAR_0x8001
++	message gText_PlayerFoundItems
++	return
++EventScript_FoundItemMessage::
+ 	message gText_PlayerFoundOneItem
+ 	return
+ 
+diff --git a/data/text/obtain_item.inc b/data/text/obtain_item.inc
+index 37788a8ff..ff13bc0ba 100644
+--- a/data/text/obtain_item.inc
++++ b/data/text/obtain_item.inc
+@@ -29,3 +29,9 @@ gText_NoRoomLeftForAnother::
+ gText_TheDecorWasTransferredToThePC::
+ 	.string "The {STR_VAR_2} was transferred\n"
+ 	.string "to the PC.$"
++
++gText_ObtainedTheItems::
++	.string "Obtained {STR_VAR_1} {STR_VAR_2}!$"
++
++gText_PlayerFoundItems::
++	.string "{PLAYER} found {STR_VAR_1} {STR_VAR_2}!$"
+diff --git a/include/item_ball.h b/include/item_ball.h
+new file mode 100644
+index 000000000..f08b88df3
+--- /dev/null
++++ b/include/item_ball.h
+@@ -0,0 +1,6 @@
++#ifndef GUARD_ITEM_BALL_H
++#define GUARD_ITEM_BALL_H
++
++void GetItemBallIdAndAmountFromTemplate(void);
++
++#endif //GUARD_ITEM_BALL_H
+diff --git a/src/item.c b/src/item.c
+index 266df45db..04078e60b 100644
+--- a/src/item.c
++++ b/src/item.c
+@@ -84,22 +84,19 @@ void CopyItemName(u16 itemId, u8 *dst)
+     StringCopy(dst, ItemId_GetName(itemId));
+ }
+ 
++const u8 sText_s[] =_("s");
++
+ void CopyItemNameHandlePlural(u16 itemId, u8 *dst, u32 quantity)
+ {
+-    if (itemId == ITEM_POKE_BALL)
+-    {
+-        if (quantity < 2)
+-            StringCopy(dst, ItemId_GetName(ITEM_POKE_BALL));
+-        else
+-            StringCopy(dst, gText_PokeBalls);
+-    }
++    u8 *end = StringCopy(dst, ItemId_GetName(itemId)) - 1;
++
++    if (quantity < 2)
++        return;
++
++    if (ItemId_GetPocket(itemId) == POCKET_BERRIES)
++        GetBerryCountString(dst, gBerries[itemId - FIRST_BERRY_INDEX].name, quantity);
+     else
+-    {
+-        if (itemId >= FIRST_BERRY_INDEX && itemId <= LAST_BERRY_INDEX)
+-            GetBerryCountString(dst, gBerries[itemId - FIRST_BERRY_INDEX].name, quantity);
+-        else
+-            StringCopy(dst, ItemId_GetName(itemId));
+-    }
++        StringAppend(end, sText_s);
+ }
+ 
+ void GetBerryCountString(u8 *dst, const u8 *berryName, u32 quantity)
+diff --git a/src/item_ball.c b/src/item_ball.c
+new file mode 100644
+index 000000000..c5fe99730
+--- /dev/null
++++ b/src/item_ball.c
+@@ -0,0 +1,32 @@
++#include "global.h"
++#include "item_ball.h"
++#include "event_data.h"
++#include "constants/event_objects.h"
++#include "constants/items.h"
++
++static u32 GetItemBallAmountFromTemplate(u32);
++static u32 GetItemBallIdFromTemplate(u32);
++
++static u32 GetItemBallAmountFromTemplate(u32 itemBallId)
++{
++    u32 amount = gMapHeader.events->objectEvents[itemBallId].movementRangeX;
++
++    if (amount > MAX_BAG_ITEM_CAPACITY)
++        return MAX_BAG_ITEM_CAPACITY;
++
++    return (amount == 0) ? 1 : amount;
++}
++
++static u32 GetItemBallIdFromTemplate(u32 itemBallId)
++{
++    u32 itemId = gMapHeader.events->objectEvents[itemBallId].trainerRange_berryTreeId;
++
++    return (itemId >= ITEMS_COUNT) ? (ITEM_NONE + 1) : itemId;
++}
++
++void GetItemBallIdAndAmountFromTemplate(void)
++{
++    u32 itemBallId = (gSpecialVar_LastTalked - 1);
++    gSpecialVar_Result = GetItemBallIdFromTemplate(itemBallId);
++    gSpecialVar_0x8009 = GetItemBallAmountFromTemplate(itemBallId);
++}
+-- 
+2.34.1
+
+
+From 1837cf992eb64e13d78ec416c56dfc8da230dd65 Mon Sep 17 00:00:00 2001
+From: pkmnsnfrn <pkmnsnfrn@gmail.com>
+Date: Sun, 14 Jan 2024 12:47:47 -0800
+Subject: [PATCH 2/2] Updated CopyItemNameHandlePlural to deal with plural
+ names
+
+---
+ include/item.h   |  1 +
+ src/data/items.h |  3 +++
+ src/item.c       | 28 +++++++++++++++++++++-------
+ 3 files changed, 25 insertions(+), 7 deletions(-)
+
+diff --git a/include/item.h b/include/item.h
+index 1388daca8..bce3e7d8d 100644
+--- a/include/item.h
++++ b/include/item.h
+@@ -15,6 +15,7 @@ struct Item
+     const u8 *description;
+     const u8 *effect;
+     u8 name[ITEM_NAME_LENGTH];
++	u8 pluralName[ITEM_NAME_LENGTH];
+     u8 holdEffect;
+     u8 holdEffectParam;
+     u8 importance;
+diff --git a/src/data/items.h b/src/data/items.h
+index cc9372e72..72c768570 100644
+--- a/src/data/items.h
++++ b/src/data/items.h
+@@ -1049,6 +1049,7 @@ const struct Item gItems[] =
+     [ITEM_OLD_GATEAU] =
+     {
+         .name = _("Old Gateau"),
++		.pluralName = _("Old Gateaux"),
+         .price = (I_PRICE >= GEN_7) ? 350 : 200,
+         .description = sFullHealDesc,
+         .pocket = POCKET_ITEMS,
+@@ -2061,6 +2062,7 @@ const struct Item gItems[] =
+     [ITEM_GUARD_SPEC] =
+     {
+         .name = _("Guard Spec."),
++		.pluralName = _("Guard Specs."),
+         .price = (I_PRICE >= GEN_7) ? 1500 : 700,
+         .description = COMPOUND_STRING("Prevents stat\n"
+                                        "reduction when\n"
+@@ -5885,6 +5887,7 @@ const struct Item gItems[] =
+     [ITEM_DEEP_SEA_TOOTH] =
+     {
+         .name = _("DeepSeaTooth"),
++		.pluralName = _("DeepSeaTeeth"),
+         .price = (I_PRICE >= GEN_7) ? 2000 : 200,
+         .holdEffect = HOLD_EFFECT_DEEP_SEA_TOOTH,
+         .description = COMPOUND_STRING("A hold item that\n"
+diff --git a/src/item.c b/src/item.c
+index 04078e60b..6563fccc0 100644
+--- a/src/item.c
++++ b/src/item.c
+@@ -20,6 +20,8 @@
+ 
+ static bool8 CheckPyramidBagHasItem(u16 itemId, u16 count);
+ static bool8 CheckPyramidBagHasSpace(u16 itemId, u16 count);
++static const u8 *ItemId_GetPluralName(u16);
++static bool32 DoesItemHavePluralName(u16);
+ 
+ EWRAM_DATA struct BagPocket gBagPockets[POCKETS_COUNT] = {0};
+ 
+@@ -88,15 +90,17 @@ const u8 sText_s[] =_("s");
+ 
+ void CopyItemNameHandlePlural(u16 itemId, u8 *dst, u32 quantity)
+ {
+-    u8 *end = StringCopy(dst, ItemId_GetName(itemId)) - 1;
++	u8 *end = StringCopy(dst, ItemId_GetName(itemId)) - 1;
+ 
+-    if (quantity < 2)
+-        return;
++	if (quantity < 2)
++		return;
+ 
+-    if (ItemId_GetPocket(itemId) == POCKET_BERRIES)
+-        GetBerryCountString(dst, gBerries[itemId - FIRST_BERRY_INDEX].name, quantity);
+-    else
+-        StringAppend(end, sText_s);
++	if (DoesItemHavePluralName(itemId))
++		StringCopy(dst, ItemId_GetPluralName(itemId));
++	else if (ItemId_GetPocket(itemId) == POCKET_BERRIES)
++		GetBerryCountString(dst, gBerries[itemId - FIRST_BERRY_INDEX].name, quantity);
++	else
++		StringAppend(end, sText_s);
+ }
+ 
+ void GetBerryCountString(u8 *dst, const u8 *berryName, u32 quantity)
+@@ -887,6 +891,16 @@ u32 ItemId_GetPrice(u16 itemId)
+     return gItems[SanitizeItemId(itemId)].price;
+ }
+ 
++static bool32 DoesItemHavePluralName(u16 itemId)
++{
++    return (gItems[SanitizeItemId(itemId)].pluralName[0] != '\0');
++}
++
++static const u8 *ItemId_GetPluralName(u16 itemId)
++{
++    return gItems[SanitizeItemId(itemId)].pluralName;
++}
++
+ const u8 *ItemId_GetEffect(u32 itemId)
+ {
+     if (itemId == ITEM_ENIGMA_BERRY_E_READER)
+-- 
+2.34.1
+
