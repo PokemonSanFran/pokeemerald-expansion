@@ -1306,5 +1306,6 @@ enum {
 };
 
 #define HOENN_DEX_COUNT (HOENN_DEX_DEOXYS + 1)
+#define CHAR_WEIGHT_HEIGHT (16 * sizeof(u8))
 
 #endif // GUARD_CONSTANTS_POKEDEX_H

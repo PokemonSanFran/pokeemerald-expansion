@@ -276,6 +276,8 @@ static void SpriteCB_SlideCaughtMonToCenter(struct Sprite *sprite);
 static void PrintMonInfo(u32 num, u32, u32 owned, u32 newEntry);
 static void PrintMonHeight(u16 height, u8 left, u8 top);
 static void PrintMonWeight(u16 weight, u8 left, u8 top);
+static u8* GetMonWeightImperial(u16 weight);
+static u8* GetMonWeightMetric(u16 weight);
 static void ResetOtherVideoRegisters(u16);
 static u8 PrintCryScreenSpeciesName(u8, u16, u8, u8);
 static void PrintDecimalNum(u8 windowId, u16 num, u8 left, u8 top);
@@ -4141,7 +4143,7 @@ static void PrintMonInfo(u32 num, u32 value, u32 owned, u32 newEntry)
     const u8 *name;
     const u8 *category;
     const u8 *description;
-    u8 digitCount = (NATIONAL_DEX_COUNT > 999 && IsNationalPokedexEnabled()) ? 4 : 3; 
+    u8 digitCount = (NATIONAL_DEX_COUNT > 999 && IsNationalPokedexEnabled()) ? 4 : 3;
 
     if (newEntry)
         PrintInfoScreenText(gText_PokedexRegistration, GetStringCenterAlignXOffset(FONT_NORMAL, gText_PokedexRegistration, DISPLAY_WIDTH), 0);
@@ -4223,7 +4225,70 @@ static void PrintMonHeight(u16 height, u8 left, u8 top)
 
 static void PrintMonWeight(u16 weight, u8 left, u8 top)
 {
-    u8 buffer[16];
+	const u8* buffer;
+
+	if (UNITS != UNITS_IMPERIAL)
+		buffer = GetMonWeightImperial(weight);
+	else
+		buffer = GetMonWeightMetric(weight);
+
+	PrintInfoScreenText(buffer, left, top);
+}
+
+static u8* GetMonWeightMetric(u16 weight)
+{
+	u8* buffer = Alloc(CHAR_WEIGHT_HEIGHT);
+    bool8 output = FALSE;
+    u8 i = 0;
+
+    if ((buffer[i] = (weight /  10000) + CHAR_0) == CHAR_0 && !output)
+    {
+        buffer[i++] = CHAR_SPACER;
+    }
+    else
+    {
+        output = TRUE;
+        i++;
+    }
+
+    weight %=  10000;
+    if ((buffer[i] = (weight /  1000) + CHAR_0) == CHAR_0 && !output)
+    {
+        buffer[i++] = CHAR_SPACER;
+    }
+    else
+    {
+        output = TRUE;
+        i++;
+    }
+
+    weight %=  1000;
+    if ((buffer[i] = (weight /  100) + CHAR_0) == CHAR_0 && !output)
+    {
+        buffer[i++] = CHAR_SPACER;
+    }
+    else
+    {
+        output = TRUE;
+        i++;
+    }
+
+    weight %=  100;
+    buffer[i++] = (weight /  10) + CHAR_0;
+    weight %=  10;
+    buffer[i++] = CHAR_PERIOD;
+    buffer[i++] = (weight /  1) + CHAR_0;
+    buffer[i++] = CHAR_SPACE;
+    buffer[i++] = CHAR_k;
+    buffer[i++] = CHAR_g;
+    buffer[i++] = EOS;
+
+    return buffer;
+}
+
+static u8* GetMonWeightImperial(u16 weight)
+{
+	u8* buffer = Alloc(CHAR_WEIGHT_HEIGHT);
     bool8 output;
     u8 i;
     u32 lbs = (weight * 100000) / 4536;
@@ -4276,7 +4341,8 @@ static void PrintMonWeight(u16 weight, u8 left, u8 top)
     buffer[i++] = CHAR_s;
     buffer[i++] = CHAR_PERIOD;
     buffer[i++] = EOS;
-    PrintInfoScreenText(buffer, left, top);
+
+	return buffer;
 }
 
 s8 GetSetPokedexFlag(u16 nationalDexNo, u8 caseID)
