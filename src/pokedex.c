@@ -275,6 +275,8 @@ static void Task_ExitCaughtMonPage(u8);
 static void SpriteCB_SlideCaughtMonToCenter(struct Sprite *sprite);
 static void PrintMonInfo(u32 num, u32, u32 owned, u32 newEntry);
 static void PrintMonHeight(u16 height, u8 left, u8 top);
+static u8* GetMonHeightImperial(u16 weight);
+static u8* GetMonHeightMetric(u16 weight);
 static void PrintMonWeight(u16 weight, u8 left, u8 top);
 static u8* GetMonWeightImperial(u16 weight);
 static u8* GetMonWeightMetric(u16 weight);
@@ -4198,11 +4200,23 @@ static void PrintMonInfo(u32 num, u32 value, u32 owned, u32 newEntry)
     PrintInfoScreenText(description, GetStringCenterAlignXOffset(FONT_NORMAL, description, DISPLAY_WIDTH), 95);
 }
 
-static void PrintMonHeight(u16 height, u8 left, u8 top)
+static void PrintMonHeight(u16 weight, u8 left, u8 top)
 {
-    u8 buffer[16];
-    u32 inches, feet;
+	const u8* buffer;
+
+	if (UNITS == UNITS_IMPERIAL)
+		buffer = GetMonHeightImperial(weight);
+	else
+		buffer = GetMonHeightMetric(weight);
+
+	PrintInfoScreenText(buffer, left, top);
+}
+
+static u8* GetMonHeightImperial(u16 height)
+{
+	u8* buffer = Alloc(CHAR_WEIGHT_HEIGHT);
     u8 i = 0;
+    u32 inches, feet;
 
     inches = (height * 10000) / 254;
     if (inches % 10 >= 5)
@@ -4228,12 +4242,52 @@ static void PrintMonHeight(u16 height, u8 left, u8 top)
     buffer[i++] = (inches % 10) + CHAR_0;
     buffer[i++] = CHAR_DBL_QUOTE_RIGHT;
     buffer[i++] = EOS;
-    PrintInfoScreenText(buffer, left, top);
+
+    return buffer;
+}
+
+static u8* GetMonHeightMetric(u16 height)
+{
+	u8* buffer = Alloc(CHAR_WEIGHT_HEIGHT);
+	u32 i = 0, digit;
+	bool32 hasNonZeroDigit = FALSE;
+
+	digit = height / 1000;
+
+	if (!digit)
+        buffer[i++] = CHAR_SPACER;
+	else
+	{
+		buffer[i++] = digit + CHAR_0;
+		hasNonZeroDigit = TRUE;
+	}
+
+	digit = (height % 1000) / 100;
+
+	if ((!digit) && (!hasNonZeroDigit))
+        buffer[i++] = CHAR_SPACER;
+	else
+	{
+		buffer[i++] = digit + CHAR_0;
+		hasNonZeroDigit = TRUE;
+	}
+
+	buffer[i++] = (((height % 1000) % 100) / 10) + CHAR_0;
+	buffer[i++] = CHAR_DEC_SEPARATOR;
+	buffer[i++] = (((height % 1000) % 100) % 10) + CHAR_0;
+	buffer[i++] = CHAR_SPACE;
+	buffer[i++] = CHAR_m;
+	buffer[i++] = EOS;
+
+	return buffer;
 }
 
 static void PrintMonWeight(u16 weight, u8 left, u8 top)
 {
 	const u8* buffer;
+
+	DebugPrintf("lang %d",LANGUAGE_MEASUREMENT);
+	DebugPrintf("units %d",UNITS);
 
 	if (UNITS == UNITS_IMPERIAL)
 		buffer = GetMonWeightImperial(weight);
@@ -4246,52 +4300,48 @@ static void PrintMonWeight(u16 weight, u8 left, u8 top)
 static u8* GetMonWeightMetric(u16 weight)
 {
 	u8* buffer = Alloc(CHAR_WEIGHT_HEIGHT);
-    bool8 output = FALSE;
-    u8 i = 0;
+	bool32 output = FALSE;
+	u32 i = 0;
 
-    if ((buffer[i] = (weight /  10000) + CHAR_0) == CHAR_0 && !output)
-    {
-        buffer[i++] = CHAR_SPACER;
-    }
-    else
-    {
-        output = TRUE;
-        i++;
-    }
+	if ((buffer[i] = (weight /  10000) + CHAR_0) == CHAR_0 && !output)
+		buffer[i++] = CHAR_SPACER;
+	else
+	{
+		output = TRUE;
+		i++;
+	}
 
-    weight %=  10000;
-    if ((buffer[i] = (weight /  1000) + CHAR_0) == CHAR_0 && !output)
-    {
-        buffer[i++] = CHAR_SPACER;
-    }
-    else
-    {
-        output = TRUE;
-        i++;
-    }
+	weight %=  10000;
 
-    weight %=  1000;
-    if ((buffer[i] = (weight /  100) + CHAR_0) == CHAR_0 && !output)
-    {
-        buffer[i++] = CHAR_SPACER;
-    }
-    else
-    {
-        output = TRUE;
-        i++;
-    }
+	if ((buffer[i] = (weight /  1000) + CHAR_0) == CHAR_0 && !output)
+		buffer[i++] = CHAR_SPACER;
+	else
+	{
+		output = TRUE;
+		i++;
+	}
 
-    weight %=  100;
-    buffer[i++] = (weight /  10) + CHAR_0;
-    weight %=  10;
-    buffer[i++] = CHAR_PERIOD;
-    buffer[i++] = (weight /  1) + CHAR_0;
-    buffer[i++] = CHAR_SPACE;
-    buffer[i++] = CHAR_k;
-    buffer[i++] = CHAR_g;
-    buffer[i++] = EOS;
+	weight %=  1000;
 
-    return buffer;
+	if ((buffer[i] = (weight /  100) + CHAR_0) == CHAR_0 && !output)
+		buffer[i++] = CHAR_SPACER;
+	else
+	{
+		output = TRUE;
+		i++;
+	}
+
+	weight %=  100;
+	buffer[i++] = (weight /  10) + CHAR_0;
+	weight %=  10;
+	buffer[i++] = CHAR_DEC_SEPARATOR;
+	buffer[i++] = (weight /  1) + CHAR_0;
+	buffer[i++] = CHAR_SPACE;
+	buffer[i++] = CHAR_k;
+	buffer[i++] = CHAR_g;
+	buffer[i++] = EOS;
+
+	return buffer;
 }
 
 static u8* GetMonWeightImperial(u16 weight)
@@ -4341,7 +4391,7 @@ static u8* GetMonWeightImperial(u16 weight)
     lbs %= 1000;
     buffer[i++] = (lbs / 100) + CHAR_0;
     lbs %= 100;
-    buffer[i++] = CHAR_PERIOD;
+    buffer[i++] = CHAR_DEC_SEPARATOR;
     buffer[i++] = (lbs / 10) + CHAR_0;
     buffer[i++] = CHAR_SPACE;
     buffer[i++] = CHAR_l;

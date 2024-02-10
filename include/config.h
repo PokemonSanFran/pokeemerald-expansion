@@ -6,7 +6,7 @@
 // still has them in the ROM. This is because the developers forgot
 // to define NDEBUG before release, however this has been changed as
 // Ruby's actual debug build does not use the AGBPrint features.
-#define NDEBUG
+//#define NDEBUG
 
 // To enable printf debugging, comment out "#define NDEBUG". This allows
 // the various AGBPrint functions to be used. (See include/gba/isagbprint.h).
@@ -32,19 +32,6 @@
 //       AGB_PRINT is supported on respective debug units.
 
 #define LOG_HANDLER (LOG_HANDLER_MGBA_PRINT)
-#endif
-
-#define LANGUAGE_MEASUREMENT (LANGUAGE_SPANISH)
-
-#define UNITS_IMPERIAL 0
-#define UNITS_METRIC 1
-
-#if LANGUAGE_MEASUREMENT == LANGUAGE_ENGLISH
-#define UNITS UNITS_IMPERIAL
-#define CHAR_DEC_SEPARATOR CHAR_PERIOD // Period is used as a decimal separator only in the UK and the US.
-#else
-#define UNITS UNITS_METRIC
-#define CHAR_DEC_SEPARATOR CHAR_COMMA
 #endif
 
 // Uncomment to fix some identified minor bugs
@@ -83,5 +70,23 @@
 #define POKEDEX_PLUS_HGSS            FALSE   // If TRUE, enables the custom HGSS style Pokedex.
 #define SUMMARY_SCREEN_NATURE_COLORS TRUE    // If TRUE, nature-based stat boosts and reductions will be red and blue in the summary screen.
 #define HQ_RANDOM                    TRUE    // If TRUE, replaces the default RNG with an implementation of SFC32 RNG. May break code that relies on RNG.
+
+#define UNITS_IMPERIAL 0
+#define UNITS_METRIC 1
+
+#define LANGUAGE_MEASUREMENT (LANGUAGE_ENGLISH)
+
+#if LANGUAGE_MEASUREMENT == LANGUAGE_ENGLISH
+#define UNITS                UNITS_IMPERIAL
+#define CHAR_DEC_SEPARATOR   CHAR_PERIOD // Period is used as a decimal separator only in the UK and the US.
+#define CHAR_1000_SEPARATOR  CHAR_COMMA
+#endif
+
+#if LANGUAGE_MEASUREMENT != LANGUAGE_ENGLISH
+#define UNITS                UNITS_METRIC
+#define CHAR_DEC_SEPARATOR   CHAR_COMMA
+#define CHAR_1000_SEPARATOR  CHAR_PERIOD
+#endif
+
 
 #endif // GUARD_CONFIG_H
