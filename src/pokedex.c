@@ -275,14 +275,12 @@ static void Task_ExitCaughtMonPage(u8);
 static void SpriteCB_SlideCaughtMonToCenter(struct Sprite *sprite);
 static void PrintMonInfo(u32 num, u32, u32 owned, u32 newEntry);
 static void PrintMonHeight(u16 height, u8 left, u8 top);
-static u8* GetMonHeightImperial(u16 weight);
-static u8* GetMonHeightMetric(u16 weight);
+static u8* ConvertMonHeightToImperialString(u16 weight);
 static void PrintMonWeight(u16 weight, u8 left, u8 top);
-static u8* GetMonWeightImperial(u16 weight);
-static u8* GetMonWeightMetric(u16 weight);
+static u8* ConvertMonWeightToImperialString(u16 weight);
 static void ResetOtherVideoRegisters(u16);
 static u8 PrintCryScreenSpeciesName(u8, u16, u8, u8);
-static void PrintDecimalNum(u8 windowId, u16 num, u8 left, u8 top);
+static void PrintDecimalNum(u8 windowId, u16 num, u8 left, u8 top, u32 stat);
 static u16 GetPokemonScaleFromNationalDexNumber(u16 nationalNum);
 static u16 GetPokemonOffsetFromNationalDexNumber(u16 nationalNum);
 static u16 GetTrainerScaleFromNationalDexNumber(u16 nationalNum);
@@ -4190,7 +4188,7 @@ static void PrintMonInfo(u32 num, u32 value, u32 owned, u32 newEntry)
 		else
 		{
 			PrintInfoScreenText(gText_UnkHeightMetric, 0x81, 0x39);
-			PrintInfoScreenText(gText_UnkWeightMetric, 0x81, 0x39);
+			PrintInfoScreenText(gText_UnkWeightMetric, 0x81, 0x49);
 		}
 	}
     if (owned)
@@ -4200,21 +4198,27 @@ static void PrintMonInfo(u32 num, u32 value, u32 owned, u32 newEntry)
     PrintInfoScreenText(description, GetStringCenterAlignXOffset(FONT_NORMAL, description, DISPLAY_WIDTH), 95);
 }
 
-static void PrintMonHeight(u16 weight, u8 left, u8 top)
+static void PrintMonMeasurements(u32 species, u32 owned)
+{
+	if (owned)
+		PrintOwnedMonMeasurements(species);
+	else
+		PrintUnknownMonMeasurements(species);
+}
+
+static void PrintMonHeight(u16 height, u8 left, u8 top)
 {
 	const u8* buffer;
 
-	if (UNITS == UNITS_IMPERIAL)
-		buffer = GetMonHeightImperial(weight);
+	if (UNITS != UNITS_IMPERIAL)
+		PrintInfoScreenText(ConvertMonHeightToImperialString(height), left, top);
 	else
-		buffer = GetMonHeightMetric(weight);
-
-	PrintInfoScreenText(buffer, left, top);
+		PrintDecimalNum(0, height, left, top, PRINT_HEIGHT);
 }
 
-static u8* GetMonHeightImperial(u16 height)
+static u8* ConvertMonHeightToImperialString(u16 height)
 {
-	u8* buffer = Alloc(CHAR_WEIGHT_HEIGHT);
+	u8* buffer = Alloc(WEIGHT_HEIGHT_STR_MEM);
     u8 i = 0;
     u32 inches, feet;
 
@@ -4246,7 +4250,7 @@ static u8* GetMonHeightImperial(u16 height)
     return buffer;
 }
 
-static u8* GetMonHeightMetric(u16 height)
+static u8* UNUSED GetMonHeightMetric(u16 height)
 {
 	u8* buffer = Alloc(CHAR_WEIGHT_HEIGHT);
 	u32 i = 0, digit;
@@ -4284,20 +4288,13 @@ static u8* GetMonHeightMetric(u16 height)
 
 static void PrintMonWeight(u16 weight, u8 left, u8 top)
 {
-	const u8* buffer;
-
-	DebugPrintf("lang %d",LANGUAGE_MEASUREMENT);
-	DebugPrintf("units %d",UNITS);
-
-	if (UNITS == UNITS_IMPERIAL)
-		buffer = GetMonWeightImperial(weight);
+	if (UNITS != UNITS_IMPERIAL)
+		PrintInfoScreenText(ConvertMonWeightToImperialString(weight), left, top);
 	else
-		buffer = GetMonWeightMetric(weight);
-
-	PrintInfoScreenText(buffer, left, top);
+		PrintDecimalNum(0, weight, left, top, PRINT_WEIGHT);
 }
 
-static u8* GetMonWeightMetric(u16 weight)
+static u8* UNUSED GetMonWeightMetric(u16 weight)
 {
 	u8* buffer = Alloc(CHAR_WEIGHT_HEIGHT);
 	bool32 output = FALSE;
@@ -4344,7 +4341,7 @@ static u8* GetMonWeightMetric(u16 weight)
 	return buffer;
 }
 
-static u8* GetMonWeightImperial(u16 weight)
+static u8* ConvertMonWeightToImperialString(u16 weight)
 {
 	u8* buffer = Alloc(CHAR_WEIGHT_HEIGHT);
     bool8 output;
@@ -4642,41 +4639,53 @@ static void UNUSED UnusedPrintMonName(u8 windowId, const u8 *name, u8 left, u8 t
 }
 
 // Unused in the English version, used to print height/weight in versions which use metric system.
-static void UNUSED PrintDecimalNum(u8 windowId, u16 num, u8 left, u8 top)
+static void UNUSED PrintDecimalNum(u8 windowId, u16 num, u8 left, u8 top, u32 stat)
 {
-    u8 str[6];
-    bool8 outputted = FALSE;
-    u8 result;
+	u8 str[CHAR_WEIGHT_HEIGHT];
+	bool8 outputted = FALSE;
+	u32 result, i = 0;
 
-    result = num / 1000;
-    if (result == 0)
-    {
-        str[0] = CHAR_SPACER;
-        outputted = FALSE;
-    }
-    else
-    {
-        str[0] = CHAR_0 + result;
-        outputted = TRUE;
-    }
+	result = num / 1000;
+	if (result == 0)
+	{
+		str[i++] = CHAR_SPACER;
+		outputted = FALSE;
+	}
+	else
+	{
+		str[i++] = CHAR_0 + result;
+		outputted = TRUE;
+	}
 
-    result = (num % 1000) / 100;
-    if (result == 0 && !outputted)
-    {
-        str[1] = CHAR_SPACER;
-        outputted = FALSE;
-    }
-    else
-    {
-        str[1] = CHAR_0 + result;
-        outputted = TRUE;
-    }
+	result = (num % 1000) / 100;
+	if (result == 0 && !outputted)
+	{
+		str[i++] = CHAR_SPACER;
+		outputted = FALSE;
+	}
+	else
+	{
+		str[i++] = CHAR_0 + result;
+		outputted = TRUE;
+	}
 
-    str[2] = CHAR_0 + ((num % 1000) % 100) / 10;
-    str[3] = CHAR_DEC_SEPARATOR;
-    str[4] = CHAR_0 + ((num % 1000) % 100) % 10;
-    str[5] = EOS;
-    PrintInfoSubMenuText(windowId, str, left, top);
+	str[i++] = CHAR_0 + ((num % 1000) % 100) / 10;
+	str[i++] = CHAR_DEC_SEPARATOR;
+	str[i++] = CHAR_0 + ((num % 1000) % 100) % 10;
+	str[i++] = CHAR_SPACE;
+
+	if (stat == 0)
+	{
+		str[i++] = CHAR_k;
+		str[i++] = CHAR_g;
+		str[i++] = CHAR_PERIOD;
+	}
+	else
+	{
+		str[i++] = CHAR_m;
+	}
+	str[i++] = EOS;
+	PrintInfoSubMenuText(windowId, str, left, top);
 }
 
 // The footprints are drawn on WIN_FOOTPRINT, which uses BG palette 15 (loaded with graphics/text_window/message_box.gbapal)
