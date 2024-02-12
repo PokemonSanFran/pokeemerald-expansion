@@ -71,17 +71,11 @@
 #define SUMMARY_SCREEN_NATURE_COLORS TRUE    // If TRUE, nature-based stat boosts and reductions will be red and blue in the summary screen.
 #define HQ_RANDOM                    TRUE    // If TRUE, replaces the default RNG with an implementation of SFC32 RNG. May break code that relies on RNG.
 
+// Measurement system constants to be used for UNITS
 #define UNITS_IMPERIAL 0
 #define UNITS_METRIC 1
 
-//#define ENGLISH_MEASUREMENT
-
-#ifdef ENGLISH_MEASUREMENT
-#define UNITS UNITS_IMPERIAL
-#define CHAR_DEC_SEPARATOR CHAR_PERIOD // Period is used as a decimal separator only in the UK and the US.
-#else
-#define UNITS UNITS_METRIC
-#define CHAR_DEC_SEPARATOR CHAR_COMMA
-#endif
+#define UNITS                        UNITS_IMPERIAL
+#define CHAR_DEC_SEPARATOR           CHAR_PERIOD // CHAR_PERIOD is used as a decimal separator only in the UK and the US. The rest of the world uses CHAR_COMMA.
 
 #endif // GUARD_CONFIG_H
