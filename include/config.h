@@ -88,5 +88,4 @@
 #define CHAR_1000_SEPARATOR  CHAR_PERIOD
 #endif
 
-
 #endif // GUARD_CONFIG_H

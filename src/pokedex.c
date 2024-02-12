@@ -274,6 +274,8 @@ static void Task_HandleCaughtMonPageInput(u8);
 static void Task_ExitCaughtMonPage(u8);
 static void SpriteCB_SlideCaughtMonToCenter(struct Sprite *sprite);
 static void PrintMonInfo(u32 num, u32, u32 owned, u32 newEntry);
+static void PrintMonHeight(u16 height, u8 left, u8 top);
+static void PrintMonWeight(u16 weight, u8 left, u8 top);
 static void PrintMonMeasurements(u32 species, u32 owned);
 static void PrintUnknownMonMeasurements(void);
 static void PrintUnknownMonMeasurementsImperial(void);
@@ -292,7 +294,7 @@ static u8* ConvertMonWeightToMetricString(u16 weight);
 static u8* ConvertMeasurementToMetricString(u16 height, u8* i);
 static void ResetOtherVideoRegisters(u16);
 static u8 PrintCryScreenSpeciesName(u8, u16, u8, u8);
-static void PrintDecimalNum(u8 windowId, u16 num, u8 left, u8 top, u32 stat);
+static void PrintDecimalNum(u8 windowId, u16 num, u8 left, u8 top);
 static u16 GetPokemonScaleFromNationalDexNumber(u16 nationalNum);
 static u16 GetPokemonOffsetFromNationalDexNumber(u16 nationalNum);
 static u16 GetTrainerScaleFromNationalDexNumber(u16 nationalNum);
@@ -4183,8 +4185,8 @@ static void PrintMonInfo(u32 num, u32 value, u32 owned, u32 newEntry)
         category = gText_5MarksPokemon;
     }
     PrintInfoScreenText(category, 0x64, 0x29);
-    PrintInfoScreenText(gText_HTHeight, 0x60, 57);
-    PrintInfoScreenText(gText_WTWeight, 0x60, 73);
+    PrintInfoScreenText(gText_HTHeight, 96, 57);
+    PrintInfoScreenText(gText_WTWeight, 96, 73);
 	PrintMonMeasurements(species, owned);
 
     if (owned)
@@ -4423,6 +4425,97 @@ static u8* ConvertMonWeightToImperialString(u16 weight)
     buffer[i++] = EOS;
 
 	return buffer;
+}
+
+static void UNUSED PrintMonHeight(u16 height, u8 left, u8 top)
+{
+    u8 buffer[16];
+    u32 inches, feet;
+    u8 i = 0;
+
+    inches = (height * 10000) / 254;
+    if (inches % 10 >= 5)
+        inches += 10;
+    feet = inches / 120;
+    inches = (inches - (feet * 120)) / 10;
+
+    buffer[i++] = EXT_CTRL_CODE_BEGIN;
+    buffer[i++] = EXT_CTRL_CODE_CLEAR_TO;
+    if (feet / 10 == 0)
+    {
+        buffer[i++] = 18;
+        buffer[i++] = feet + CHAR_0;
+    }
+    else
+    {
+        buffer[i++] = 12;
+        buffer[i++] = feet / 10 + CHAR_0;
+        buffer[i++] = (feet % 10) + CHAR_0;
+    }
+    buffer[i++] = CHAR_SGL_QUOTE_RIGHT;
+    buffer[i++] = (inches / 10) + CHAR_0;
+    buffer[i++] = (inches % 10) + CHAR_0;
+    buffer[i++] = CHAR_DBL_QUOTE_RIGHT;
+    buffer[i++] = EOS;
+    PrintInfoScreenText(buffer, left, top);
+}
+
+static void UNUSED PrintMonWeight(u16 weight, u8 left, u8 top)
+{
+    u8 buffer[16];
+    bool8 output;
+    u8 i;
+    u32 lbs = (weight * 100000) / 4536;
+
+    if (lbs % 10u >= 5)
+        lbs += 10;
+    i = 0;
+    output = FALSE;
+
+    if ((buffer[i] = (lbs / 100000) + CHAR_0) == CHAR_0 && !output)
+    {
+        buffer[i++] = CHAR_SPACER;
+    }
+    else
+    {
+        output = TRUE;
+        i++;
+    }
+
+    lbs %= 100000;
+    if ((buffer[i] = (lbs / 10000) + CHAR_0) == CHAR_0 && !output)
+    {
+        buffer[i++] = CHAR_SPACER;
+    }
+    else
+    {
+        output = TRUE;
+        i++;
+    }
+
+    lbs %= 10000;
+    if ((buffer[i] = (lbs / 1000) + CHAR_0) == CHAR_0 && !output)
+    {
+        buffer[i++] = CHAR_SPACER;
+    }
+    else
+    {
+        output = TRUE;
+        i++;
+    }
+
+    lbs %= 1000;
+    buffer[i++] = (lbs / 100) + CHAR_0;
+    lbs %= 100;
+    buffer[i++] = CHAR_PERIOD;
+    buffer[i++] = (lbs / 10) + CHAR_0;
+    buffer[i++] = CHAR_SPACE;
+    buffer[i++] = CHAR_l;
+    buffer[i++] = CHAR_b;
+    buffer[i++] = CHAR_s;
+    buffer[i++] = CHAR_PERIOD;
+    buffer[i++] = EOS;
+    PrintInfoScreenText(buffer, left, top);
 }
 
 s8 GetSetPokedexFlag(u16 nationalDexNo, u8 caseID)
@@ -4664,42 +4757,41 @@ static void UNUSED UnusedPrintMonName(u8 windowId, const u8 *name, u8 left, u8 t
 }
 
 // Unused in the English version, used to print height/weight in versions which use metric system.
-static void UNUSED PrintDecimalNum(u8 windowId, u16 num, u8 left, u8 top, u32 stat)
+static void UNUSED PrintDecimalNum(u8 windowId, u16 num, u8 left, u8 top)
 {
-	u8 str[WEIGHT_HEIGHT_STR_MEM];
-	bool8 outputted = FALSE;
-	u32 result, i = 0;
+    u8 str[6];
+    bool8 outputted = FALSE;
+    u8 result;
 
-	result = num / 1000;
-	if (result == 0)
-	{
-		str[i++] = CHAR_SPACER;
-		outputted = FALSE;
-	}
-	else
-	{
-		str[i++] = CHAR_0 + result;
-		outputted = TRUE;
-	}
+    result = num / 1000;
+    if (result == 0)
+    {
+        str[0] = CHAR_SPACER;
+        outputted = FALSE;
+    }
+    else
+    {
+        str[0] = CHAR_0 + result;
+        outputted = TRUE;
+    }
 
-	result = (num % 1000) / 100;
-	if (result == 0 && !outputted)
-	{
-		str[i++] = CHAR_SPACER;
-		outputted = FALSE;
-	}
-	else
-	{
-		str[i++] = CHAR_0 + result;
-		outputted = TRUE;
-	}
+    result = (num % 1000) / 100;
+    if (result == 0 && !outputted)
+    {
+        str[1] = CHAR_SPACER;
+        outputted = FALSE;
+    }
+    else
+    {
+        str[1] = CHAR_0 + result;
+        outputted = TRUE;
+    }
 
-	str[i++] = CHAR_0 + ((num % 1000) % 100) / 10;
-	str[i++] = CHAR_DEC_SEPARATOR;
-	str[i++] = CHAR_0 + ((num % 1000) % 100) % 10;
-	str[i++] = CHAR_SPACE;
-	str[i++] = EOS;
-	PrintInfoSubMenuText(windowId, str, left, top);
+    str[2] = CHAR_0 + ((num % 1000) % 100) / 10;
+    str[3] = CHAR_DEC_SEPARATOR;
+    str[4] = CHAR_0 + ((num % 1000) % 100) % 10;
+    str[5] = EOS;
+    PrintInfoSubMenuText(windowId, str, left, top);
 }
 
 // The footprints are drawn on WIN_FOOTPRINT, which uses BG palette 15 (loaded with graphics/text_window/message_box.gbapal)

@@ -1309,7 +1309,5 @@ enum {
 
 #define WEIGHT_HEIGHT_STR_LEN          16
 #define WEIGHT_HEIGHT_STR_MEM          (WEIGHT_HEIGHT_STR_LEN * sizeof(u8))
-#define PRINT_WEIGHT                    0
-#define PRINT_HEIGHT                    1
 
 #endif // GUARD_CONSTANTS_POKEDEX_H
