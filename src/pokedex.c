@@ -4185,8 +4185,9 @@ static void PrintMonInfo(u32 num, u32 value, u32 owned, u32 newEntry)
         category = gText_5MarksPokemon;
     }
     PrintInfoScreenText(category, 0x64, 0x29);
-    PrintInfoScreenText(gText_HTHeight, 96, 57);
-    PrintInfoScreenText(gText_WTWeight, 96, 73);
+    PrintInfoScreenText(gText_HTHeight, 0x60, 0x39);
+    PrintInfoScreenText(gText_WTWeight, 0x60, 0x49);
+
 	PrintMonMeasurements(species, owned);
 
     if (owned)
