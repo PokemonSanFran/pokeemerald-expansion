@@ -274,10 +274,22 @@ static void Task_HandleCaughtMonPageInput(u8);
 static void Task_ExitCaughtMonPage(u8);
 static void SpriteCB_SlideCaughtMonToCenter(struct Sprite *sprite);
 static void PrintMonInfo(u32 num, u32, u32 owned, u32 newEntry);
-static void PrintMonHeight(u16 height, u8 left, u8 top);
-static u8* ConvertMonHeightToImperialString(u16 weight);
-static void PrintMonWeight(u16 weight, u8 left, u8 top);
+static void PrintMonMeasurements(u32 species, u32 owned);
+static void PrintUnknownMonMeasurements(void);
+static void PrintUnknownMonMeasurementsImperial(void);
+static void PrintUnknownMonMeasurementsMetric(void);
+static void PrintOwnedMonMeasurements(u32 species);
+static void PrintOwnedMonMeasurementsImperial(u32 species);
+static void PrintOwnedMonMeasurementsMetric(u32 species);
+static void PrintOwnedMonHeightImperial(u32 species);
+static void PrintOwnedMonHeightMetric(u32 species);
+static u8* ConvertMonHeightToImperialString(u16 height);
+static u8* ConvertMonHeightToMetricString(u16 height);
+static void PrintOwnedMonWeightImperial(u32 species);
+static void PrintOwnedMonWeightMetric(u32 species);
 static u8* ConvertMonWeightToImperialString(u16 weight);
+static u8* ConvertMonWeightToMetricString(u16 weight);
+static u8* ConvertMeasurementToMetricString(u16 height, u8* i);
 static void ResetOtherVideoRegisters(u16);
 static u8 PrintCryScreenSpeciesName(u8, u16, u8, u8);
 static void PrintDecimalNum(u8 windowId, u16 num, u8 left, u8 top, u32 stat);
@@ -4171,26 +4183,10 @@ static void PrintMonInfo(u32 num, u32 value, u32 owned, u32 newEntry)
         category = gText_5MarksPokemon;
     }
     PrintInfoScreenText(category, 0x64, 0x29);
-    PrintInfoScreenText(gText_HTHeight, 0x60, 0x39);
-    PrintInfoScreenText(gText_WTWeight, 0x60, 0x49);
-    if (owned)
-    {
-        PrintMonHeight(GetSpeciesHeight(species), 0x81, 0x39);
-        PrintMonWeight(GetSpeciesWeight(species), 0x81, 0x49);
-    }
-    else
-	{
-		if (UNITS != UNITS_METRIC)
-		{
-			PrintInfoScreenText(gText_UnkHeight, 0x81, 0x39);
-			PrintInfoScreenText(gText_UnkWeight, 0x81, 0x49);
-		}
-		else
-		{
-			PrintInfoScreenText(gText_UnkHeightMetric, 0x81, 0x39);
-			PrintInfoScreenText(gText_UnkWeightMetric, 0x81, 0x49);
-		}
-	}
+    PrintInfoScreenText(gText_HTHeight, 0x60, 57);
+    PrintInfoScreenText(gText_WTWeight, 0x60, 73);
+	PrintMonMeasurements(species, owned);
+
     if (owned)
         description = GetSpeciesPokedexDescription(species);
     else
@@ -4203,22 +4199,66 @@ static void PrintMonMeasurements(u32 species, u32 owned)
 	if (owned)
 		PrintOwnedMonMeasurements(species);
 	else
-		PrintUnknownMonMeasurements(species);
+		PrintUnknownMonMeasurements();
 }
 
-static void PrintMonHeight(u16 height, u8 left, u8 top)
+static void PrintUnknownMonMeasurements(void)
 {
-	const u8* buffer;
-
 	if (UNITS != UNITS_IMPERIAL)
-		PrintInfoScreenText(ConvertMonHeightToImperialString(height), left, top);
+		PrintUnknownMonMeasurementsImperial();
 	else
-		PrintDecimalNum(0, height, left, top, PRINT_HEIGHT);
+		PrintUnknownMonMeasurementsMetric();
+}
+
+static void PrintUnknownMonMeasurementsImperial(void)
+{
+	PrintInfoScreenText(gText_UnkHeight, 129, 57);
+	PrintInfoScreenText(gText_UnkWeight, 129, 73);
+}
+
+static void PrintUnknownMonMeasurementsMetric(void)
+{
+	PrintInfoScreenText(gText_UnkHeightMetric, 129, 57);
+	PrintInfoScreenText(gText_UnkWeightMetric, 129, 73);
+}
+
+static void PrintOwnedMonMeasurements(u32 species)
+{
+	if (UNITS != UNITS_IMPERIAL)
+		PrintOwnedMonMeasurementsImperial(species);
+	else
+		PrintOwnedMonMeasurementsMetric(species);
+}
+
+static void PrintOwnedMonMeasurementsImperial(u32 species)
+{
+	PrintOwnedMonHeightImperial(species);
+	PrintOwnedMonWeightImperial(species);
+}
+
+static void PrintOwnedMonMeasurementsMetric(u32 species)
+{
+	PrintOwnedMonHeightMetric(species);
+	PrintOwnedMonWeightMetric(species);
+}
+
+static void PrintOwnedMonHeightImperial(u32 species)
+{
+	u32 height = GetSpeciesHeight(species);
+	u8* heightString = ConvertMonHeightToImperialString(height);
+	PrintInfoScreenText(heightString, 129, 57);
+}
+
+static void PrintOwnedMonHeightMetric(u32 species)
+{
+	u32 height = GetSpeciesHeight(species);
+	u8* heightString = ConvertMonHeightToMetricString(height);
+	PrintInfoScreenText(heightString, 129, 57);
 }
 
 static u8* ConvertMonHeightToImperialString(u16 height)
 {
-	u8* buffer = Alloc(WEIGHT_HEIGHT_STR_MEM);
+	u8* string = Alloc(WEIGHT_HEIGHT_STR_MEM);
     u8 i = 0;
     u32 inches, feet;
 
@@ -4228,122 +4268,107 @@ static u8* ConvertMonHeightToImperialString(u16 height)
     feet = inches / 120;
     inches = (inches - (feet * 120)) / 10;
 
-    buffer[i++] = EXT_CTRL_CODE_BEGIN;
-    buffer[i++] = EXT_CTRL_CODE_CLEAR_TO;
+    string[i++] = EXT_CTRL_CODE_BEGIN;
+    string[i++] = EXT_CTRL_CODE_CLEAR_TO;
     if (feet / 10 == 0)
     {
-        buffer[i++] = 18;
-        buffer[i++] = feet + CHAR_0;
+        string[i++] = 18;
+        string[i++] = feet + CHAR_0;
     }
     else
     {
-        buffer[i++] = 12;
-        buffer[i++] = feet / 10 + CHAR_0;
-        buffer[i++] = (feet % 10) + CHAR_0;
+        string[i++] = 12;
+        string[i++] = feet / 10 + CHAR_0;
+        string[i++] = (feet % 10) + CHAR_0;
     }
-    buffer[i++] = CHAR_SGL_QUOTE_RIGHT;
-    buffer[i++] = (inches / 10) + CHAR_0;
-    buffer[i++] = (inches % 10) + CHAR_0;
-    buffer[i++] = CHAR_DBL_QUOTE_RIGHT;
-    buffer[i++] = EOS;
+    string[i++] = CHAR_SGL_QUOTE_RIGHT;
+    string[i++] = (inches / 10) + CHAR_0;
+    string[i++] = (inches % 10) + CHAR_0;
+    string[i++] = CHAR_DBL_QUOTE_RIGHT;
+    string[i++] = EOS;
 
-    return buffer;
+    return string;
 }
 
-static u8* UNUSED GetMonHeightMetric(u16 height)
+static u8* ConvertMonHeightToMetricString(u16 height)
 {
-	u8* buffer = Alloc(CHAR_WEIGHT_HEIGHT);
-	u32 i = 0, digit;
-	bool32 hasNonZeroDigit = FALSE;
+	u8 i = 0;
+	u8* str = Alloc(WEIGHT_HEIGHT_STR_MEM);
+	str = ConvertMeasurementToMetricString(height, &i);
 
-	digit = height / 1000;
-
-	if (!digit)
-        buffer[i++] = CHAR_SPACER;
-	else
-	{
-		buffer[i++] = digit + CHAR_0;
-		hasNonZeroDigit = TRUE;
-	}
-
-	digit = (height % 1000) / 100;
-
-	if ((!digit) && (!hasNonZeroDigit))
-        buffer[i++] = CHAR_SPACER;
-	else
-	{
-		buffer[i++] = digit + CHAR_0;
-		hasNonZeroDigit = TRUE;
-	}
-
-	buffer[i++] = (((height % 1000) % 100) / 10) + CHAR_0;
-	buffer[i++] = CHAR_DEC_SEPARATOR;
-	buffer[i++] = (((height % 1000) % 100) % 10) + CHAR_0;
-	buffer[i++] = CHAR_SPACE;
-	buffer[i++] = CHAR_m;
-	buffer[i++] = EOS;
-
-	return buffer;
+	str[i++] = CHAR_m;
+	str[i++] = EOS;
+	return str;
 }
 
-static void PrintMonWeight(u16 weight, u8 left, u8 top)
+static void PrintOwnedMonWeightImperial(u32 species)
 {
-	if (UNITS != UNITS_IMPERIAL)
-		PrintInfoScreenText(ConvertMonWeightToImperialString(weight), left, top);
-	else
-		PrintDecimalNum(0, weight, left, top, PRINT_WEIGHT);
+	u32 weight = GetSpeciesWeight(species);
+	u8* weightString = ConvertMonWeightToImperialString(weight);
+	PrintInfoScreenText(weightString, 0x81, 73);
 }
 
-static u8* UNUSED GetMonWeightMetric(u16 weight)
+static void PrintOwnedMonWeightMetric(u32 species)
 {
-	u8* buffer = Alloc(CHAR_WEIGHT_HEIGHT);
-	bool32 output = FALSE;
-	u32 i = 0;
+	u32 weight = GetSpeciesWeight(species);
+	u8* weightString = ConvertMonWeightToMetricString(weight);
+	PrintInfoScreenText(weightString, 0x81, 73);
+}
 
-	if ((buffer[i] = (weight /  10000) + CHAR_0) == CHAR_0 && !output)
-		buffer[i++] = CHAR_SPACER;
+static u8* ConvertMonWeightToMetricString(u16 weight)
+{
+	u8 i = 0;
+	u8* str = Alloc(WEIGHT_HEIGHT_STR_MEM);
+	str = ConvertMeasurementToMetricString(weight, &i);
+
+	str[i++] = CHAR_k;
+	str[i++] = CHAR_g;
+	str[i++] = CHAR_PERIOD;
+	str[i++] = EOS;
+	return str;
+}
+
+static u8* ConvertMeasurementToMetricString(u16 num, u8* i)
+{
+	u8* str = Alloc(WEIGHT_HEIGHT_STR_MEM);
+	bool8 outputted = FALSE;
+	u32 result;
+
+	result = num / 1000;
+	if (result == 0)
+	{
+		str[(*i)++] = CHAR_SPACER;
+		outputted = FALSE;
+	}
 	else
 	{
-		output = TRUE;
-		i++;
+		str[(*i)++] = CHAR_0 + result;
+		outputted = TRUE;
 	}
 
-	weight %=  10000;
-
-	if ((buffer[i] = (weight /  1000) + CHAR_0) == CHAR_0 && !output)
-		buffer[i++] = CHAR_SPACER;
+	result = (num % 1000) / 100;
+	if (result == 0 && !outputted)
+	{
+		str[(*i)++] = CHAR_SPACER;
+		outputted = FALSE;
+	}
 	else
 	{
-		output = TRUE;
-		i++;
+		str[(*i)++] = CHAR_0 + result;
+		outputted = TRUE;
 	}
 
-	weight %=  1000;
+	str[(*i)++] = CHAR_0 + ((num % 1000) % 100) / 10;
+	str[(*i)++] = CHAR_DEC_SEPARATOR;
+	str[(*i)++] = CHAR_0 + ((num % 1000) % 100) % 10;
+	str[(*i)++] = CHAR_SPACE;
 
-	if ((buffer[i] = (weight /  100) + CHAR_0) == CHAR_0 && !output)
-		buffer[i++] = CHAR_SPACER;
-	else
-	{
-		output = TRUE;
-		i++;
-	}
-
-	weight %=  100;
-	buffer[i++] = (weight /  10) + CHAR_0;
-	weight %=  10;
-	buffer[i++] = CHAR_DEC_SEPARATOR;
-	buffer[i++] = (weight /  1) + CHAR_0;
-	buffer[i++] = CHAR_SPACE;
-	buffer[i++] = CHAR_k;
-	buffer[i++] = CHAR_g;
-	buffer[i++] = EOS;
-
-	return buffer;
+	return str;
 }
 
 static u8* ConvertMonWeightToImperialString(u16 weight)
 {
-	u8* buffer = Alloc(CHAR_WEIGHT_HEIGHT);
+	u8* buffer = Alloc(WEIGHT_HEIGHT_STR_MEM);
     bool8 output;
     u8 i;
     u32 lbs = (weight * 100000) / 4536;
@@ -4641,7 +4666,7 @@ static void UNUSED UnusedPrintMonName(u8 windowId, const u8 *name, u8 left, u8 t
 // Unused in the English version, used to print height/weight in versions which use metric system.
 static void UNUSED PrintDecimalNum(u8 windowId, u16 num, u8 left, u8 top, u32 stat)
 {
-	u8 str[CHAR_WEIGHT_HEIGHT];
+	u8 str[WEIGHT_HEIGHT_STR_MEM];
 	bool8 outputted = FALSE;
 	u32 result, i = 0;
 
@@ -4673,17 +4698,6 @@ static void UNUSED PrintDecimalNum(u8 windowId, u16 num, u8 left, u8 top, u32 st
 	str[i++] = CHAR_DEC_SEPARATOR;
 	str[i++] = CHAR_0 + ((num % 1000) % 100) % 10;
 	str[i++] = CHAR_SPACE;
-
-	if (stat == 0)
-	{
-		str[i++] = CHAR_k;
-		str[i++] = CHAR_g;
-		str[i++] = CHAR_PERIOD;
-	}
-	else
-	{
-		str[i++] = CHAR_m;
-	}
 	str[i++] = EOS;
 	PrintInfoSubMenuText(windowId, str, left, top);
 }
