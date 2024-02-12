@@ -274,15 +274,13 @@ static void Task_HandleCaughtMonPageInput(u8);
 static void Task_ExitCaughtMonPage(u8);
 static void SpriteCB_SlideCaughtMonToCenter(struct Sprite *sprite);
 static void PrintMonInfo(u32 num, u32, u32 owned, u32 newEntry);
-static void PrintMonHeight(u16 height, u8 left, u8 top);
-static void PrintMonWeight(u16 weight, u8 left, u8 top);
 static void PrintMonMeasurements(u32 species, u32 owned);
 static void PrintUnknownMonMeasurements(void);
 static void PrintUnknownMonMeasurementsImperial(void);
 static void PrintUnknownMonMeasurementsMetric(void);
 static void PrintOwnedMonMeasurements(u32 species);
-static void PrintOwnedMonMeasurementsImperial(u32 species);
-static void PrintOwnedMonMeasurementsMetric(u32 species);
+static void PrintOwnedMonWeight(u32);
+static void PrintOwnedMonHeight(u32);
 static void PrintOwnedMonHeightImperial(u32 species);
 static void PrintOwnedMonHeightMetric(u32 species);
 static u8* ConvertMonHeightToImperialString(u16 height);
@@ -292,6 +290,8 @@ static void PrintOwnedMonWeightMetric(u32 species);
 static u8* ConvertMonWeightToImperialString(u16 weight);
 static u8* ConvertMonWeightToMetricString(u16 weight);
 static u8* ConvertMeasurementToMetricString(u16 height, u8* i);
+static void PrintMonHeight(u16 height, u8 left, u8 top);
+static void PrintMonWeight(u16 weight, u8 left, u8 top);
 static void ResetOtherVideoRegisters(u16);
 static u8 PrintCryScreenSpeciesName(u8, u16, u8, u8);
 static void PrintDecimalNum(u8 windowId, u16 num, u8 left, u8 top);
@@ -4207,56 +4207,37 @@ static void PrintMonMeasurements(u32 species, u32 owned)
 
 static void PrintUnknownMonMeasurements(void)
 {
-	if (UNITS == UNITS_IMPERIAL)
-		PrintUnknownMonMeasurementsImperial();
-	else
-		PrintUnknownMonMeasurementsMetric();
-}
+	const u8* height = (UNITS == UNITS_IMPERIAL) ? gText_UnkHeight : gText_UnkHeightMetric;
+	const u8* weight = (UNITS == UNITS_IMPERIAL) ? gText_UnkWeight : gText_UnkWeightMetric;
 
-static void PrintUnknownMonMeasurementsImperial(void)
-{
-	PrintInfoScreenText(gText_UnkHeight, 129, 57);
-	PrintInfoScreenText(gText_UnkWeight, 129, 73);
-}
-
-static void PrintUnknownMonMeasurementsMetric(void)
-{
-	PrintInfoScreenText(gText_UnkHeightMetric, 129, 57);
-	PrintInfoScreenText(gText_UnkWeightMetric, 129, 73);
+	PrintInfoScreenText(height, 129, 57);
+	PrintInfoScreenText(weight, 129, 73);
 }
 
 static void PrintOwnedMonMeasurements(u32 species)
 {
+	PrintOwnedMonHeight(species);
+	PrintOwnedMonWeight(species);
+}
+
+static void PrintOwnedMonHeight(u32 species)
+{
+	u32 height = GetSpeciesHeight(species);
+
 	if (UNITS == UNITS_IMPERIAL)
-		PrintOwnedMonMeasurementsImperial(species);
+		PrintOwnedMonHeightImperial(height);
 	else
-		PrintOwnedMonMeasurementsMetric(species);
+		PrintOwnedMonHeightMetric(height);
 }
 
-static void PrintOwnedMonMeasurementsImperial(u32 species)
+static void PrintOwnedMonHeightImperial(u32 height)
 {
-	PrintOwnedMonHeightImperial(species);
-	PrintOwnedMonWeightImperial(species);
+	PrintInfoScreenText(ConvertMonHeightToImperialString(height), 129, 57);
 }
 
-static void PrintOwnedMonMeasurementsMetric(u32 species)
+static void PrintOwnedMonHeightMetric(u32 height)
 {
-	PrintOwnedMonHeightMetric(species);
-	PrintOwnedMonWeightMetric(species);
-}
-
-static void PrintOwnedMonHeightImperial(u32 species)
-{
-	u32 height = GetSpeciesHeight(species);
-	u8* heightString = ConvertMonHeightToImperialString(height);
-	PrintInfoScreenText(heightString, 129, 57);
-}
-
-static void PrintOwnedMonHeightMetric(u32 species)
-{
-	u32 height = GetSpeciesHeight(species);
-	u8* heightString = ConvertMonHeightToMetricString(height);
-	PrintInfoScreenText(heightString, 129, 57);
+	PrintInfoScreenText(ConvertMonHeightToMetricString(height), 129, 57);
 }
 
 static u8* ConvertMonHeightToImperialString(u16 height)
@@ -4304,18 +4285,24 @@ static u8* ConvertMonHeightToMetricString(u16 height)
 	return str;
 }
 
-static void PrintOwnedMonWeightImperial(u32 species)
+static void PrintOwnedMonWeight(u32 species)
 {
 	u32 weight = GetSpeciesWeight(species);
-	u8* weightString = ConvertMonWeightToImperialString(weight);
-	PrintInfoScreenText(weightString, 0x81, 73);
+
+	if (UNITS == UNITS_IMPERIAL)
+		PrintOwnedMonWeightImperial(weight);
+	else
+		PrintOwnedMonWeightMetric(weight);
 }
 
-static void PrintOwnedMonWeightMetric(u32 species)
+static void PrintOwnedMonWeightImperial(u32 weight)
 {
-	u32 weight = GetSpeciesWeight(species);
-	u8* weightString = ConvertMonWeightToMetricString(weight);
-	PrintInfoScreenText(weightString, 0x81, 73);
+	PrintInfoScreenText(ConvertMonWeightToImperialString(weight), 0x81, 73);
+}
+
+static void PrintOwnedMonWeightMetric(u32 weight)
+{
+	PrintInfoScreenText(ConvertMonWeightToMetricString(weight), 0x81, 73);
 }
 
 static u8* ConvertMonWeightToMetricString(u16 weight)
