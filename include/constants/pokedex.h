@@ -1307,6 +1307,14 @@ enum {
 
 #define HOENN_DEX_COUNT (HOENN_DEX_DEOXYS + 1)
 
+#define DECAGRAMS_IN_POUND             4536
+
+#define CENTIMETERS_IN_INCH            2.54
+#define CENTIMETERS_IN_INCH_FACTOR	   (CENTIMETERS_IN_INCH * 100)
+#define INCHES_IN_FOOT                 12
+#define INCHES_IN_ONE_AND_HALF_FOOT    (INCHES_IN_FOOT * 1.5)
+#define INCHES_IN_FOOT_FACTOR          (INCHES_IN_FOOT * 10)
+
 #define WEIGHT_HEIGHT_STR_LEN          16
 #define WEIGHT_HEIGHT_STR_MEM          (WEIGHT_HEIGHT_STR_LEN * sizeof(u8))
 
