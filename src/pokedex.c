@@ -4203,8 +4203,35 @@ static void PrintUnknownMonMeasurements(void)
     const u8* height = (UNITS == UNITS_IMPERIAL) ? gText_UnkHeight : gText_UnkHeightMetric;
     const u8* weight = (UNITS == UNITS_IMPERIAL) ? gText_UnkWeight : gText_UnkWeightMetric;
 
-    PrintInfoScreenText(height, 129, 57);
-    PrintInfoScreenText(weight, 129, 73);
+    u8* modifiedHeight = ReplaceDecimalSeparator(height);
+    u8* modifiedWeight = ReplaceDecimalSeparator(weight);
+
+    PrintInfoScreenText(modifiedHeight, 129, 57);
+    PrintInfoScreenText(modifiedWeight, 129, 73);
+
+	Free(modifiedHeight);
+	Free(modifiedWeight);
+}
+
+static u8* ReplaceDecimalSeparator(const u8* originalString)
+{
+	bool32 replaced = FALSE;
+	u32 length = StringLength(originalString);
+	u8* modifiedString = Alloc(WEIGHT_HEIGHT_STR_MEM);
+
+	for (u32 i = 0; i < length; i++)
+	{
+		if ((originalString[i] != CHAR_PERIOD) || replaced)
+		{
+			modifiedString[i] = originalString[i];
+			continue;
+		}
+
+		modifiedString[i] = CHAR_DEC_SEPARATOR;
+		replaced = TRUE;
+	}
+	modifiedString[length] = EOS;
+	return modifiedString;
 }
 
 static void PrintOwnedMonMeasurements(u16 species)
