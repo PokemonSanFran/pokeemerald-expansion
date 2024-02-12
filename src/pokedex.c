@@ -4215,7 +4215,7 @@ static void PrintUnknownMonMeasurements(void)
 
 static u8* GetUnknownMonHeightString(void)
 {
-	if (UNITS_IMPERIAL)
+	if (UNITS == UNITS_IMPERIAL)
 		return ReplaceDecimalSeparator(gText_UnkHeight);
 	else
 		return ReplaceDecimalSeparator(gText_UnkHeightMetric);
@@ -4223,7 +4223,7 @@ static u8* GetUnknownMonHeightString(void)
 
 static u8* GetUnknownMonWeightString(void)
 {
-	if (UNITS_IMPERIAL)
+	if (UNITS == UNITS_IMPERIAL)
 		return ReplaceDecimalSeparator(gText_UnkWeight);
 	else
 		return ReplaceDecimalSeparator(gText_UnkWeightMetric);
@@ -4289,7 +4289,7 @@ static u8* ConvertMonHeightToImperialString(u32 height)
     u8* heightString = Alloc(WEIGHT_HEIGHT_STR_MEM);
     u32 inches, feet, index = 0;
 
-    inches = (height * 10000) / CENTIMETERS_IN_INCH_FACTOR;
+    inches = (height * 10000) / CM_PER_INCH_FACTOR;
     if (inches % 10 >= 5)
         inches += 10;
     feet = inches / INCHES_IN_FOOT_FACTOR;

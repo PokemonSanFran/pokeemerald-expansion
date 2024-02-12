@@ -1309,8 +1309,8 @@ enum {
 
 #define DECAGRAMS_IN_POUND             4536
 
-#define CENTIMETERS_IN_INCH            2.54
-#define CENTIMETERS_IN_INCH_FACTOR	   (CENTIMETERS_IN_INCH * 100)
+#define CM_PER_INCH                    2.54
+#define CM_PER_INCH_FACTOR             (CM_PER_INCH * 100)
 #define INCHES_IN_FOOT                 12
 #define INCHES_IN_ONE_AND_HALF_FOOT    (INCHES_IN_FOOT * 1.5)
 #define INCHES_IN_FOOT_FACTOR          (INCHES_IN_FOOT * 10)
