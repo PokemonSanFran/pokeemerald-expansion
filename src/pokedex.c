@@ -4227,9 +4227,6 @@ static void PrintUnknownMonMeasurementsMetric(void)
 
 static void PrintOwnedMonMeasurements(u32 species)
 {
-	PrintInfoScreenText(gText_HTHeight, 96, 57);
-    PrintInfoScreenText(gText_WTWeight, 96, 73);
-
 	if (UNITS == UNITS_IMPERIAL)
 		PrintOwnedMonMeasurementsImperial(species);
 	else
