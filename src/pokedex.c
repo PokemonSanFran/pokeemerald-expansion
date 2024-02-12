@@ -276,6 +276,9 @@ static void SpriteCB_SlideCaughtMonToCenter(struct Sprite *sprite);
 static void PrintMonInfo(u32 num, u32, u32 owned, u32 newEntry);
 static void PrintMonMeasurements(u16 species, u32 owned);
 static void PrintUnknownMonMeasurements(void);
+static u8* GetUnknownMonHeightString(void);
+static u8* GetUnknownMonWeightString(void);
+static u8* ReplaceDecimalSeparator(const u8* originalString);
 static void PrintOwnedMonMeasurements(u16 species);
 static void PrintOwnedMonHeight(u16 species);
 static void PrintOwnedMonWeight(u16 species);
@@ -4200,17 +4203,30 @@ static void PrintMonMeasurements(u16 species, u32 owned)
 
 static void PrintUnknownMonMeasurements(void)
 {
-    const u8* height = (UNITS == UNITS_IMPERIAL) ? gText_UnkHeight : gText_UnkHeightMetric;
-    const u8* weight = (UNITS == UNITS_IMPERIAL) ? gText_UnkWeight : gText_UnkWeightMetric;
+    u8* heightString = GetUnknownMonHeightString();
+    u8* weightString = GetUnknownMonWeightString();
 
-    u8* modifiedHeight = ReplaceDecimalSeparator(height);
-    u8* modifiedWeight = ReplaceDecimalSeparator(weight);
+    PrintInfoScreenText(heightString, 129, 57);
+    PrintInfoScreenText(weightString, 129, 73);
 
-    PrintInfoScreenText(modifiedHeight, 129, 57);
-    PrintInfoScreenText(modifiedWeight, 129, 73);
+	Free(heightString);
+	Free(weightString);
+}
 
-	Free(modifiedHeight);
-	Free(modifiedWeight);
+static u8* GetUnknownMonHeightString(void)
+{
+	if (UNITS_IMPERIAL)
+		return ReplaceDecimalSeparator(gText_UnkHeight);
+	else
+		return ReplaceDecimalSeparator(gText_UnkHeightMetric);
+}
+
+static u8* GetUnknownMonWeightString(void)
+{
+	if (UNITS_IMPERIAL)
+		return ReplaceDecimalSeparator(gText_UnkWeight);
+	else
+		return ReplaceDecimalSeparator(gText_UnkWeightMetric);
 }
 
 static u8* ReplaceDecimalSeparator(const u8* originalString)
