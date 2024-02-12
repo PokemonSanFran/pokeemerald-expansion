@@ -4207,7 +4207,7 @@ static void PrintMonMeasurements(u32 species, u32 owned)
 
 static void PrintUnknownMonMeasurements(void)
 {
-	if (UNITS != UNITS_IMPERIAL)
+	if (UNITS == UNITS_IMPERIAL)
 		PrintUnknownMonMeasurementsImperial();
 	else
 		PrintUnknownMonMeasurementsMetric();
@@ -4227,7 +4227,10 @@ static void PrintUnknownMonMeasurementsMetric(void)
 
 static void PrintOwnedMonMeasurements(u32 species)
 {
-	if (UNITS != UNITS_IMPERIAL)
+	PrintInfoScreenText(gText_HTHeight, 96, 57);
+    PrintInfoScreenText(gText_WTWeight, 96, 73);
+
+	if (UNITS == UNITS_IMPERIAL)
 		PrintOwnedMonMeasurementsImperial(species);
 	else
 		PrintOwnedMonMeasurementsMetric(species);

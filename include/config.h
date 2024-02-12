@@ -74,18 +74,14 @@
 #define UNITS_IMPERIAL 0
 #define UNITS_METRIC 1
 
-#define LANGUAGE_MEASUREMENT (LANGUAGE_ENGLISH)
+#define ENGLISH_MEASUREMENT
 
-#if LANGUAGE_MEASUREMENT == LANGUAGE_ENGLISH
-#define UNITS                UNITS_IMPERIAL
-#define CHAR_DEC_SEPARATOR   CHAR_PERIOD // Period is used as a decimal separator only in the UK and the US.
-#define CHAR_1000_SEPARATOR  CHAR_COMMA
-#endif
-
-#if LANGUAGE_MEASUREMENT != LANGUAGE_ENGLISH
-#define UNITS                UNITS_METRIC
-#define CHAR_DEC_SEPARATOR   CHAR_COMMA
-#define CHAR_1000_SEPARATOR  CHAR_PERIOD
+#ifdef ENGLISH_MEASUREMENT
+#define UNITS UNITS_IMPERIAL
+#define CHAR_DEC_SEPARATOR CHAR_PERIOD // Period is used as a decimal separator only in the UK and the US.
+#else
+#define UNITS UNITS_METRIC
+#define CHAR_DEC_SEPARATOR CHAR_COMMA
 #endif
 
 #endif // GUARD_CONFIG_H
