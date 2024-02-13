@@ -72,12 +72,10 @@
 #define HQ_RANDOM                    TRUE    // If TRUE, replaces the default RNG with an implementation of SFC32 RNG. May break code that relies on RNG.
 
 // Measurement system constants to be used for UNITS
-#define UNITS_IMPERIAL               0       // Inches, feet, pounds
-#define UNITS_METRIC                 1       // meters, kilograms
+#define UNITS_IMPERIAL 0 // Inches, feet, pounds
+#define UNITS_METRIC 1 // meters, kilograms
 
-//#define UNITS                        UNITS_IMPERIAL
-#define UNITS                        UNITS_METRIC
-//#define CHAR_DEC_SEPARATOR CHAR_COMMA
+#define UNITS                        UNITS_IMPERIAL
 #define CHAR_DEC_SEPARATOR           CHAR_PERIOD // CHAR_PERIOD is used as a decimal separator only in the UK and the US. The rest of the world uses CHAR_COMMA.
 
 #endif // GUARD_CONFIG_H

@@ -1,0 +1,974 @@
+From 7bdb8c98e9b2f37ea10252f8001ea624e7b7ebd8 Mon Sep 17 00:00:00 2001
+From: pkmnsnfrn <pkmnsnfrn@gmail.com>
+Date: Mon, 12 Feb 2024 13:39:15 -0800
+Subject: [PATCH 1/3] =?UTF-8?q?Allow=20developers=20to=20choose=20metric?=
+ =?UTF-8?q?=20or=20imperial,=20and=20their=20decimal=20seperator=20of=20ch?=
+ =?UTF-8?q?oice=20for=20Pok=C3=A9dex=20entries=20-=20Creates=20=20which=20?=
+ =?UTF-8?q?cleans=20up=20the=20existing=20implementing=20of=20printing=20h?=
+ =?UTF-8?q?eight=20and=20weight=20to=20the=20pokedex=20-=20Developers=20ca?=
+ =?UTF-8?q?n=20choose=20to=20use=20metric=20or=20imperial=20units=20of=20m?=
+ =?UTF-8?q?easurement=20in=20the=20Pok=C3=A9dex=20-=20-=20Developers=20can?=
+ =?UTF-8?q?=20choose=20to=20use=20any=20character=20as=20a=20decimal=20sep?=
+ =?UTF-8?q?erator=20in=20the=20Pok=C3=A9dex=20-=20Allows=20users=20to=20de?=
+ =?UTF-8?q?fine=20units=20and=20decimal=20seperators=20independently=20-?=
+ =?UTF-8?q?=20Fixes=20a=20bug=20in=20Lotad=20/=20Seedot=20house?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ include/config.h            |  17 +--
+ include/constants/pokedex.h |  10 ++
+ include/strings.h           |   2 +
+ src/pokedex.c               | 271 ++++++++++++++++++++++++++++++++++--
+ src/pokemon_size_record.c   |   6 +-
+ src/strings.c               |   2 +
+ 6 files changed, 280 insertions(+), 28 deletions(-)
+
+diff --git a/include/config.h b/include/config.h
+index f4be81264..d92aa3df8 100644
+--- a/include/config.h
++++ b/include/config.h
+@@ -34,16 +34,6 @@
+ #define LOG_HANDLER (LOG_HANDLER_MGBA_PRINT)
+ #endif
+ 
+-#define ENGLISH
+-
+-#ifdef ENGLISH
+-#define UNITS_IMPERIAL
+-#define CHAR_DEC_SEPARATOR CHAR_PERIOD // Period is used as a decimal separator only in the UK and the US.
+-#else
+-#define UNITS_METRIC
+-#define CHAR_DEC_SEPARATOR CHAR_COMMA
+-#endif
+-
+ // Uncomment to fix some identified minor bugs
+ #define BUGFIX
+ 
+@@ -81,4 +71,11 @@
+ #define SUMMARY_SCREEN_NATURE_COLORS TRUE    // If TRUE, nature-based stat boosts and reductions will be red and blue in the summary screen.
+ #define HQ_RANDOM                    TRUE    // If TRUE, replaces the default RNG with an implementation of SFC32 RNG. May break code that relies on RNG.
+ 
++// Measurement system constants to be used for UNITS
++#define UNITS_IMPERIAL 0 // Inches, feet, pounds
++#define UNITS_METRIC 1 // meters, kilograms
++
++#define UNITS                        UNITS_IMPERIAL
++#define CHAR_DEC_SEPARATOR           CHAR_PERIOD // CHAR_PERIOD is used as a decimal separator only in the UK and the US. The rest of the world uses CHAR_COMMA.
++
+ #endif // GUARD_CONFIG_H
+diff --git a/include/constants/pokedex.h b/include/constants/pokedex.h
+index c03b096f9..e186e9d2a 100644
+--- a/include/constants/pokedex.h
++++ b/include/constants/pokedex.h
+@@ -1307,4 +1307,14 @@ enum {
+ 
+ #define HOENN_DEX_COUNT (HOENN_DEX_DEOXYS + 1)
+ 
++#define DECAGRAMS_IN_POUND             4536
++#define CM_PER_INCH                    2.54
++#define CM_PER_INCH_FACTOR             (CM_PER_INCH * 100)
++#define INCHES_IN_FOOT                 12
++#define INCHES_IN_ONE_AND_HALF_FOOT    (INCHES_IN_FOOT * 1.5)
++#define INCHES_IN_FOOT_FACTOR          (INCHES_IN_FOOT * 10)
++
++#define WEIGHT_HEIGHT_STR_LEN          16
++#define WEIGHT_HEIGHT_STR_MEM          (WEIGHT_HEIGHT_STR_LEN * sizeof(u8))
++
+ #endif // GUARD_CONSTANTS_POKEDEX_H
+diff --git a/include/strings.h b/include/strings.h
+index bb4c3f9de..431f90df1 100644
+--- a/include/strings.h
++++ b/include/strings.h
+@@ -531,7 +531,9 @@ extern const u8 gText_PokedexRegistration[];
+ extern const u8 gText_NumberClear01[];
+ extern const u8 gText_5MarksPokemon[];
+ extern const u8 gText_UnkHeight[];
++extern const u8 gText_UnkHeightMetric[];
+ extern const u8 gText_UnkWeight[];
++extern const u8 gText_UnkWeightMetric[];
+ extern const u8 gText_HTHeight[];
+ extern const u8 gText_WTWeight[];
+ extern const u8 gText_SearchingPleaseWait[];
+diff --git a/src/pokedex.c b/src/pokedex.c
+index a7aa98c42..2af024b89 100644
+--- a/src/pokedex.c
++++ b/src/pokedex.c
+@@ -274,6 +274,19 @@ static void Task_HandleCaughtMonPageInput(u8);
+ static void Task_ExitCaughtMonPage(u8);
+ static void SpriteCB_SlideCaughtMonToCenter(struct Sprite *sprite);
+ static void PrintMonInfo(u32 num, u32, u32 owned, u32 newEntry);
++static void PrintMonMeasurements(u16 species, u32 owned);
++static void PrintUnknownMonMeasurements(void);
++static u8* GetUnknownMonHeightString(void);
++static u8* GetUnknownMonWeightString(void);
++static u8* ReplaceDecimalSeparator(const u8* originalString);
++static void PrintOwnedMonMeasurements(u16 species);
++static void PrintOwnedMonHeight(u16 species);
++static void PrintOwnedMonWeight(u16 species);
++static u8* ConvertMonHeightToImperialString(u32 height);
++static u8* ConvertMonHeightToMetricString(u32 height);
++static u8* ConvertMonWeightToImperialString(u32 weight);
++static u8* ConvertMonWeightToMetricString(u32 weight);
++static u8* ConvertMeasurementToMetricString(u16 num, u32* index);
+ static void PrintMonHeight(u16 height, u8 left, u8 top);
+ static void PrintMonWeight(u16 weight, u8 left, u8 top);
+ static void ResetOtherVideoRegisters(u16);
+@@ -4141,7 +4154,7 @@ static void PrintMonInfo(u32 num, u32 value, u32 owned, u32 newEntry)
+     const u8 *name;
+     const u8 *category;
+     const u8 *description;
+-    u8 digitCount = (NATIONAL_DEX_COUNT > 999 && IsNationalPokedexEnabled()) ? 4 : 3; 
++    u8 digitCount = (NATIONAL_DEX_COUNT > 999 && IsNationalPokedexEnabled()) ? 4 : 3;
+ 
+     if (newEntry)
+         PrintInfoScreenText(gText_PokedexRegistration, GetStringCenterAlignXOffset(FONT_NORMAL, gText_PokedexRegistration, DISPLAY_WIDTH), 0);
+@@ -4169,26 +4182,258 @@ static void PrintMonInfo(u32 num, u32 value, u32 owned, u32 newEntry)
+         category = gText_5MarksPokemon;
+     }
+     PrintInfoScreenText(category, 0x64, 0x29);
+-    PrintInfoScreenText(gText_HTHeight, 0x60, 0x39);
+-    PrintInfoScreenText(gText_WTWeight, 0x60, 0x49);
++	PrintMonMeasurements(species,owned);
+     if (owned)
++        description = GetSpeciesPokedexDescription(species);
++    else
++        description = sExpandedPlaceholder_PokedexDescription;
++    PrintInfoScreenText(description, GetStringCenterAlignXOffset(FONT_NORMAL, description, DISPLAY_WIDTH), 95);
++}
++
++static void PrintMonMeasurements(u16 species, u32 owned)
++{
++    PrintInfoScreenText(gText_HTHeight, 96, 57);
++    PrintInfoScreenText(gText_WTWeight, 96, 73);
++
++    if (owned)
++        PrintOwnedMonMeasurements(species);
++    else
++        PrintUnknownMonMeasurements();
++}
++
++static void PrintUnknownMonMeasurements(void)
++{
++    u8* heightString = GetUnknownMonHeightString();
++    u8* weightString = GetUnknownMonWeightString();
++
++    PrintInfoScreenText(heightString, 129, 57);
++    PrintInfoScreenText(weightString, 129, 73);
++
++	Free(heightString);
++	Free(weightString);
++}
++
++static u8* GetUnknownMonHeightString(void)
++{
++	if (UNITS == UNITS_IMPERIAL)
++		return ReplaceDecimalSeparator(gText_UnkHeight);
++	else
++		return ReplaceDecimalSeparator(gText_UnkHeightMetric);
++}
++
++static u8* GetUnknownMonWeightString(void)
++{
++	if (UNITS == UNITS_IMPERIAL)
++		return ReplaceDecimalSeparator(gText_UnkWeight);
++	else
++		return ReplaceDecimalSeparator(gText_UnkWeightMetric);
++}
++
++static u8* ReplaceDecimalSeparator(const u8* originalString)
++{
++	bool32 replaced = FALSE;
++	u32 length = StringLength(originalString);
++	u8* modifiedString = Alloc(WEIGHT_HEIGHT_STR_MEM);
++
++	for (u32 i = 0; i < length; i++)
++	{
++		if ((originalString[i] != CHAR_PERIOD) || replaced)
++		{
++			modifiedString[i] = originalString[i];
++			continue;
++		}
++
++		modifiedString[i] = CHAR_DEC_SEPARATOR;
++		replaced = TRUE;
++	}
++	modifiedString[length] = EOS;
++	return modifiedString;
++}
++
++static void PrintOwnedMonMeasurements(u16 species)
++{
++    PrintOwnedMonHeight(species);
++    PrintOwnedMonWeight(species);
++}
++
++static void PrintOwnedMonHeight(u16 species)
++{
++    u32 height = GetSpeciesHeight(species);
++	u8* heightString;
++
++    if (UNITS == UNITS_IMPERIAL)
++		heightString = ConvertMonHeightToImperialString(height);
++    else
++		heightString = ConvertMonHeightToMetricString(height);
++
++    PrintInfoScreenText(heightString, 129, 57);
++	Free(heightString);
++}
++
++static void PrintOwnedMonWeight(u16 species)
++{
++    u32 weight = GetSpeciesWeight(species);
++	u8* weightString;
++
++    if (UNITS == UNITS_IMPERIAL)
++		weightString = ConvertMonWeightToImperialString(weight);
++    else
++		weightString = ConvertMonWeightToMetricString(weight);
++
++    PrintInfoScreenText(weightString, 129, 73);
++	Free(weightString);
++}
++
++static u8* ConvertMonHeightToImperialString(u32 height)
++{
++    u8* heightString = Alloc(WEIGHT_HEIGHT_STR_MEM);
++    u32 inches, feet, index = 0;
++
++    inches = (height * 10000) / CM_PER_INCH_FACTOR;
++    if (inches % 10 >= 5)
++        inches += 10;
++    feet = inches / INCHES_IN_FOOT_FACTOR;
++    inches = (inches - (feet * INCHES_IN_FOOT_FACTOR)) / 10;
++
++    heightString[index++] = EXT_CTRL_CODE_BEGIN;
++    heightString[index++] = EXT_CTRL_CODE_CLEAR_TO;
++    if (feet / 10 == 0)
+     {
+-        PrintMonHeight(GetSpeciesHeight(species), 0x81, 0x39);
+-        PrintMonWeight(GetSpeciesWeight(species), 0x81, 0x49);
++        heightString[index++] = INCHES_IN_ONE_AND_HALF_FOOT;
++        heightString[index++] = feet + CHAR_0;
+     }
+     else
+     {
+-        PrintInfoScreenText(gText_UnkHeight, 0x81, 0x39);
+-        PrintInfoScreenText(gText_UnkWeight, 0x81, 0x49);
++        heightString[index++] = INCHES_IN_FOOT;
++        heightString[index++] = feet / 10 + CHAR_0;
++        heightString[index++] = (feet % 10) + CHAR_0;
++    }
++    heightString[index++] = CHAR_SGL_QUOTE_RIGHT;
++    heightString[index++] = (inches / 10) + CHAR_0;
++    heightString[index++] = (inches % 10) + CHAR_0;
++    heightString[index++] = CHAR_DBL_QUOTE_RIGHT;
++    heightString[index++] = EOS;
++
++    return heightString;
++}
++
++static u8* ConvertMonHeightToMetricString(u32 height)
++{
++    u32 index = 0;
++    u8* heightString = ConvertMeasurementToMetricString(height, &index);
++
++    heightString[index++] = CHAR_m;
++    heightString[index++] = EOS;
++    return heightString;
++}
++
++static u8* ConvertMonWeightToImperialString(u32 weight)
++{
++    u8* weightString = Alloc(WEIGHT_HEIGHT_STR_MEM);
++    bool32 output = FALSE;
++    u32 index = 0, lbs = (weight * 100000) / DECAGRAMS_IN_POUND;
++
++    if (lbs % 10u >= 5)
++        lbs += 10;
++
++    if ((weightString[index] = (lbs / 100000) + CHAR_0) == CHAR_0 && !output)
++    {
++        weightString[index++] = CHAR_SPACER;
+     }
+-    if (owned)
+-        description = GetSpeciesPokedexDescription(species);
+     else
+-        description = sExpandedPlaceholder_PokedexDescription;
+-    PrintInfoScreenText(description, GetStringCenterAlignXOffset(FONT_NORMAL, description, DISPLAY_WIDTH), 95);
++    {
++        output = TRUE;
++        index++;
++    }
++
++    lbs %= 100000;
++    if ((weightString[index] = (lbs / 10000) + CHAR_0) == CHAR_0 && !output)
++    {
++        weightString[index++] = CHAR_SPACER;
++    }
++    else
++    {
++        output = TRUE;
++        index++;
++    }
++
++    lbs %= 10000;
++    if ((weightString[index] = (lbs / 1000) + CHAR_0) == CHAR_0 && !output)
++    {
++        weightString[index++] = CHAR_SPACER;
++    }
++    else
++    {
++        output = TRUE;
++        index++;
++    }
++
++    lbs %= 1000;
++    weightString[index++] = (lbs / 100) + CHAR_0;
++    lbs %= 100;
++    weightString[index++] = CHAR_DEC_SEPARATOR;
++    weightString[index++] = (lbs / 10) + CHAR_0;
++    weightString[index++] = CHAR_SPACE;
++    weightString[index++] = CHAR_l;
++    weightString[index++] = CHAR_b;
++    weightString[index++] = CHAR_s;
++    weightString[index++] = CHAR_PERIOD;
++    weightString[index++] = EOS;
++
++    return weightString;
++}
++
++static u8* ConvertMonWeightToMetricString(u32 weight)
++{
++    u32 index = 0;
++    u8* weightString = ConvertMeasurementToMetricString(weight, &index);
++
++    weightString[index++] = CHAR_k;
++    weightString[index++] = CHAR_g;
++    weightString[index++] = CHAR_PERIOD;
++    weightString[index++] = EOS;
++    return weightString;
++}
++
++static u8* ConvertMeasurementToMetricString(u16 num, u32* index)
++{
++    u8* string = Alloc(WEIGHT_HEIGHT_STR_MEM);
++    bool32 outputted = FALSE;
++    u32 result;
++
++    result = num / 1000;
++    if (result == 0)
++    {
++        string[(*index)++] = CHAR_SPACER;
++        outputted = FALSE;
++    }
++    else
++    {
++        string[(*index)++] = CHAR_0 + result;
++        outputted = TRUE;
++    }
++
++    result = (num % 1000) / 100;
++    if (result == 0 && !outputted)
++    {
++        string[(*index)++] = CHAR_SPACER;
++        outputted = FALSE;
++    }
++    else
++    {
++        string[(*index)++] = CHAR_0 + result;
++        outputted = TRUE;
++    }
++
++    string[(*index)++] = CHAR_0 + ((num % 1000) % 100) / 10;
++    string[(*index)++] = CHAR_DEC_SEPARATOR;
++    string[(*index)++] = CHAR_0 + ((num % 1000) % 100) % 10;
++    string[(*index)++] = CHAR_SPACE;
++
++    return string;
+ }
+ 
+-static void PrintMonHeight(u16 height, u8 left, u8 top)
++static void UNUSED PrintMonHeight(u16 height, u8 left, u8 top)
+ {
+     u8 buffer[16];
+     u32 inches, feet;
+@@ -4221,7 +4466,7 @@ static void PrintMonHeight(u16 height, u8 left, u8 top)
+     PrintInfoScreenText(buffer, left, top);
+ }
+ 
+-static void PrintMonWeight(u16 weight, u8 left, u8 top)
++static void UNUSED PrintMonWeight(u16 weight, u8 left, u8 top)
+ {
+     u8 buffer[16];
+     bool8 output;
+diff --git a/src/pokemon_size_record.c b/src/pokemon_size_record.c
+index 3f98e65ba..54341b96e 100644
+--- a/src/pokemon_size_record.c
++++ b/src/pokemon_size_record.c
+@@ -47,8 +47,6 @@ static const u8 sGiftRibbonsMonDataIds[GIFT_RIBBONS_COUNT - 4] =
+ extern const u8 gText_DecimalPoint[];
+ extern const u8 gText_Marco[];
+ 
+-#define CM_PER_INCH 2.54
+-
+ static u32 GetMonSizeHash(struct Pokemon *pkmn)
+ {
+     u16 personality = GetMonData(pkmn, MON_DATA_PERSONALITY);
+@@ -95,10 +93,8 @@ static u32 GetMonSize(u16 species, u16 b)
+ 
+ static void FormatMonSizeRecord(u8 *string, u32 size)
+ {
+-#ifdef UNITS_IMPERIAL
+     //Convert size from centimeters to inches
+-    size = (f64)(size * 10) / (CM_PER_INCH * 10);
+-#endif
++	size = (f64)(size * 10) / (CM_PER_INCH * 10);
+ 
+     string = ConvertIntToDecimalStringN(string, size / 10, STR_CONV_MODE_LEFT_ALIGN, 8);
+     string = StringAppend(string, gText_DecimalPoint);
+diff --git a/src/strings.c b/src/strings.c
+index 35f610017..c98ff2519 100644
+--- a/src/strings.c
++++ b/src/strings.c
+@@ -101,7 +101,9 @@ const u8 gText_DefaultNameHalie[] = _("HALIE");
+ const u8 gText_ThisIsAPokemon[] = _("This is what we call a “POKéMON.”{PAUSE 96}\p");
+ const u8 gText_5MarksPokemon[] = _("????? POKéMON");
+ const u8 gText_UnkHeight[] = _("{CLEAR_TO 0x0C}??'??”");
++const u8 gText_UnkHeightMetric[] = _("???.? m");
+ const u8 gText_UnkWeight[] = _("????.? lbs.");
++const u8 gText_UnkWeightMetric[] = _("???.? kg.");
+ const u8 gText_EmptyPkmnCategory[] = _("                       POKéMON"); // Unused
+ const u8 gText_EmptyHeight[] = _("{CLEAR_TO 0x0C}    '    ”"); // Unused
+ const u8 gText_EmptyWeight[] = _("        .   lbs."); // Unused
+-- 
+2.34.1
+
+
+From cd79d9a414ea7324247b18bca0e56a780587a306 Mon Sep 17 00:00:00 2001
+From: pkmnsnfrn <pkmnsnfrn@gmail.com>
+Date: Tue, 13 Feb 2024 11:50:12 -0800
+Subject: [PATCH 2/3] Fixed compilation issue with agbcc
+
+---
+ src/pokedex.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/pokedex.c b/src/pokedex.c
+index 2af024b89..95b098b7b 100644
+--- a/src/pokedex.c
++++ b/src/pokedex.c
+@@ -4234,8 +4234,9 @@ static u8* ReplaceDecimalSeparator(const u8* originalString)
+ 	bool32 replaced = FALSE;
+ 	u32 length = StringLength(originalString);
+ 	u8* modifiedString = Alloc(WEIGHT_HEIGHT_STR_MEM);
++	u32 i;
+ 
+-	for (u32 i = 0; i < length; i++)
++	for (i = 0; i < length; i++)
+ 	{
+ 		if ((originalString[i] != CHAR_PERIOD) || replaced)
+ 		{
+-- 
+2.34.1
+
+
+From fd0ab7664345612537c62e1e878263f02568fbfa Mon Sep 17 00:00:00 2001
+From: pkmnsnfrn <pkmnsnfrn@gmail.com>
+Date: Tue, 13 Feb 2024 13:49:37 -0800
+Subject: [PATCH 3/3] Updated to include HGSS Dex and address PR Feedback
+
+---
+ include/config.h            |   4 +-
+ include/constants/pokedex.h |  10 ++
+ include/pokedex.h           |   1 +
+ src/pokedex.c               | 210 +++++++++++++-----------------------
+ src/pokedex_plus_hgss.c     | 108 +------------------
+ 5 files changed, 89 insertions(+), 244 deletions(-)
+
+diff --git a/include/config.h b/include/config.h
+index d92aa3df8..41695a77b 100644
+--- a/include/config.h
++++ b/include/config.h
+@@ -72,8 +72,8 @@
+ #define HQ_RANDOM                    TRUE    // If TRUE, replaces the default RNG with an implementation of SFC32 RNG. May break code that relies on RNG.
+ 
+ // Measurement system constants to be used for UNITS
+-#define UNITS_IMPERIAL 0 // Inches, feet, pounds
+-#define UNITS_METRIC 1 // meters, kilograms
++#define UNITS_IMPERIAL               0       // Inches, feet, pounds
++#define UNITS_METRIC                 1       // meters, kilograms
+ 
+ #define UNITS                        UNITS_IMPERIAL
+ #define CHAR_DEC_SEPARATOR           CHAR_PERIOD // CHAR_PERIOD is used as a decimal separator only in the UK and the US. The rest of the world uses CHAR_COMMA.
+diff --git a/include/constants/pokedex.h b/include/constants/pokedex.h
+index e186e9d2a..8058f01e5 100644
+--- a/include/constants/pokedex.h
++++ b/include/constants/pokedex.h
+@@ -1317,4 +1317,14 @@ enum {
+ #define WEIGHT_HEIGHT_STR_LEN          16
+ #define WEIGHT_HEIGHT_STR_MEM          (WEIGHT_HEIGHT_STR_LEN * sizeof(u8))
+ 
++#define DEX_HEADER_X                   96
++#define DEX_Y_TOP                      57
++#define DEX_Y_BOTTOM                   73
++#define DEX_MEASUREMENT_X              129
++
++#define DEX_HGSS_HEADER_X_PADDING      59
++#define DEX_HGSS_Y_TOP_PADDING         7
++#define DEX_HGSS_Y_BOTTOM_PADDING      4
++#define DEX_HGSS_MEASUREMENT_X_PADDING 51
++
+ #endif // GUARD_CONSTANTS_POKEDEX_H
+diff --git a/include/pokedex.h b/include/pokedex.h
+index c53d3e013..a3f7f80a5 100644
+--- a/include/pokedex.h
++++ b/include/pokedex.h
+@@ -29,5 +29,6 @@ bool16 HasAllHoennMons(void);
+ void ResetPokedexScrollPositions(void);
+ bool16 HasAllMons(void);
+ void CB2_OpenPokedex(void);
++void PrintMonMeasurements(u16 species, u32 owned);
+ 
+ #endif // GUARD_POKEDEX_H
+diff --git a/src/pokedex.c b/src/pokedex.c
+index 95b098b7b..682c000b3 100644
+--- a/src/pokedex.c
++++ b/src/pokedex.c
+@@ -274,7 +274,7 @@ static void Task_HandleCaughtMonPageInput(u8);
+ static void Task_ExitCaughtMonPage(u8);
+ static void SpriteCB_SlideCaughtMonToCenter(struct Sprite *sprite);
+ static void PrintMonInfo(u32 num, u32, u32 owned, u32 newEntry);
+-static void PrintMonMeasurements(u16 species, u32 owned);
++static u32 GetMeasurementTextPositions(u32 textElement);
+ static void PrintUnknownMonMeasurements(void);
+ static u8* GetUnknownMonHeightString(void);
+ static u8* GetUnknownMonWeightString(void);
+@@ -287,8 +287,6 @@ static u8* ConvertMonHeightToMetricString(u32 height);
+ static u8* ConvertMonWeightToImperialString(u32 weight);
+ static u8* ConvertMonWeightToMetricString(u32 weight);
+ static u8* ConvertMeasurementToMetricString(u16 num, u32* index);
+-static void PrintMonHeight(u16 height, u8 left, u8 top);
+-static void PrintMonWeight(u16 weight, u8 left, u8 top);
+ static void ResetOtherVideoRegisters(u16);
+ static u8 PrintCryScreenSpeciesName(u8, u16, u8, u8);
+ static void PrintDecimalNum(u8 windowId, u16 num, u8 left, u8 top);
+@@ -4182,7 +4180,7 @@ static void PrintMonInfo(u32 num, u32 value, u32 owned, u32 newEntry)
+         category = gText_5MarksPokemon;
+     }
+     PrintInfoScreenText(category, 0x64, 0x29);
+-	PrintMonMeasurements(species,owned);
++    PrintMonMeasurements(species,owned);
+     if (owned)
+         description = GetSpeciesPokedexDescription(species);
+     else
+@@ -4190,10 +4188,14 @@ static void PrintMonInfo(u32 num, u32 value, u32 owned, u32 newEntry)
+     PrintInfoScreenText(description, GetStringCenterAlignXOffset(FONT_NORMAL, description, DISPLAY_WIDTH), 95);
+ }
+ 
+-static void PrintMonMeasurements(u16 species, u32 owned)
++void PrintMonMeasurements(u16 species, u32 owned)
+ {
+-    PrintInfoScreenText(gText_HTHeight, 96, 57);
+-    PrintInfoScreenText(gText_WTWeight, 96, 73);
++    u32 x = GetMeasurementTextPositions(DEX_HEADER_X);
++    u32 yTop = GetMeasurementTextPositions(DEX_Y_TOP);
++    u32 yBottom = GetMeasurementTextPositions(DEX_Y_BOTTOM);
++
++    PrintInfoScreenText(gText_HTHeight, x, yTop);
++    PrintInfoScreenText(gText_WTWeight, x, yBottom);
+ 
+     if (owned)
+         PrintOwnedMonMeasurements(species);
+@@ -4201,54 +4203,76 @@ static void PrintMonMeasurements(u16 species, u32 owned)
+         PrintUnknownMonMeasurements();
+ }
+ 
++static u32 GetMeasurementTextPositions(u32 textElement)
++{
++    if (!POKEDEX_PLUS_HGSS)
++        return textElement;
++
++    switch(textElement)
++    {
++        case DEX_HEADER_X:
++            return (DEX_HEADER_X + DEX_HGSS_HEADER_X_PADDING);
++        case DEX_Y_TOP:
++            return (DEX_Y_TOP + DEX_HGSS_Y_TOP_PADDING);
++        case DEX_Y_BOTTOM:
++            return (DEX_Y_BOTTOM + DEX_HGSS_Y_BOTTOM_PADDING);
++        default:
++        case DEX_MEASUREMENT_X:
++            return (DEX_MEASUREMENT_X + DEX_HGSS_MEASUREMENT_X_PADDING);
++    }
++}
++
+ static void PrintUnknownMonMeasurements(void)
+ {
+     u8* heightString = GetUnknownMonHeightString();
+     u8* weightString = GetUnknownMonWeightString();
+ 
+-    PrintInfoScreenText(heightString, 129, 57);
+-    PrintInfoScreenText(weightString, 129, 73);
++    u32 x = GetMeasurementTextPositions(DEX_MEASUREMENT_X);
++    u32 yTop = GetMeasurementTextPositions(DEX_Y_TOP);
++    u32 yBottom = GetMeasurementTextPositions(DEX_Y_BOTTOM);
+ 
+-	Free(heightString);
+-	Free(weightString);
++    PrintInfoScreenText(heightString, x, yTop);
++    PrintInfoScreenText(weightString, x, yBottom);
++
++    Free(heightString);
++    Free(weightString);
+ }
+ 
+ static u8* GetUnknownMonHeightString(void)
+ {
+-	if (UNITS == UNITS_IMPERIAL)
+-		return ReplaceDecimalSeparator(gText_UnkHeight);
+-	else
+-		return ReplaceDecimalSeparator(gText_UnkHeightMetric);
++    if (UNITS == UNITS_IMPERIAL)
++        return ReplaceDecimalSeparator(gText_UnkHeight);
++    else
++        return ReplaceDecimalSeparator(gText_UnkHeightMetric);
+ }
+ 
+ static u8* GetUnknownMonWeightString(void)
+ {
+-	if (UNITS == UNITS_IMPERIAL)
+-		return ReplaceDecimalSeparator(gText_UnkWeight);
+-	else
+-		return ReplaceDecimalSeparator(gText_UnkWeightMetric);
++    if (UNITS == UNITS_IMPERIAL)
++        return ReplaceDecimalSeparator(gText_UnkWeight);
++    else
++        return ReplaceDecimalSeparator(gText_UnkWeightMetric);
+ }
+ 
+ static u8* ReplaceDecimalSeparator(const u8* originalString)
+ {
+-	bool32 replaced = FALSE;
+-	u32 length = StringLength(originalString);
+-	u8* modifiedString = Alloc(WEIGHT_HEIGHT_STR_MEM);
+-	u32 i;
++    bool32 replaced = FALSE;
++    u32 length = StringLength(originalString), i;
++    u8* modifiedString = Alloc(WEIGHT_HEIGHT_STR_MEM);
+ 
+-	for (i = 0; i < length; i++)
+-	{
+-		if ((originalString[i] != CHAR_PERIOD) || replaced)
+-		{
+-			modifiedString[i] = originalString[i];
+-			continue;
+-		}
++    for (i = 0; i < length; i++)
++    {
++        if ((originalString[i] != CHAR_PERIOD) || replaced)
++        {
++            modifiedString[i] = originalString[i];
++            continue;
++        }
+ 
+-		modifiedString[i] = CHAR_DEC_SEPARATOR;
+-		replaced = TRUE;
+-	}
+-	modifiedString[length] = EOS;
+-	return modifiedString;
++        modifiedString[i] = CHAR_DEC_SEPARATOR;
++        replaced = TRUE;
++    }
++    modifiedString[length] = EOS;
++    return modifiedString;
+ }
+ 
+ static void PrintOwnedMonMeasurements(u16 species)
+@@ -4260,29 +4284,34 @@ static void PrintOwnedMonMeasurements(u16 species)
+ static void PrintOwnedMonHeight(u16 species)
+ {
+     u32 height = GetSpeciesHeight(species);
+-	u8* heightString;
++    u8* heightString;
++
++    u32 x = GetMeasurementTextPositions(DEX_MEASUREMENT_X);
++    u32 yTop = GetMeasurementTextPositions(DEX_Y_TOP);
+ 
+     if (UNITS == UNITS_IMPERIAL)
+-		heightString = ConvertMonHeightToImperialString(height);
++        heightString = ConvertMonHeightToImperialString(height);
+     else
+-		heightString = ConvertMonHeightToMetricString(height);
++        heightString = ConvertMonHeightToMetricString(height);
+ 
+-    PrintInfoScreenText(heightString, 129, 57);
+-	Free(heightString);
++    PrintInfoScreenText(heightString, x, yTop);
++    Free(heightString);
+ }
+ 
+ static void PrintOwnedMonWeight(u16 species)
+ {
+     u32 weight = GetSpeciesWeight(species);
+-	u8* weightString;
++    u8* weightString;
++    u32 x = GetMeasurementTextPositions(DEX_MEASUREMENT_X);
++    u32 yBottom = GetMeasurementTextPositions(DEX_Y_BOTTOM);
+ 
+     if (UNITS == UNITS_IMPERIAL)
+-		weightString = ConvertMonWeightToImperialString(weight);
++        weightString = ConvertMonWeightToImperialString(weight);
+     else
+-		weightString = ConvertMonWeightToMetricString(weight);
++        weightString = ConvertMonWeightToMetricString(weight);
+ 
+-    PrintInfoScreenText(weightString, 129, 73);
+-	Free(weightString);
++    PrintInfoScreenText(weightString, x, yBottom);
++    Free(weightString);
+ }
+ 
+ static u8* ConvertMonHeightToImperialString(u32 height)
+@@ -4434,97 +4463,6 @@ static u8* ConvertMeasurementToMetricString(u16 num, u32* index)
+     return string;
+ }
+ 
+-static void UNUSED PrintMonHeight(u16 height, u8 left, u8 top)
+-{
+-    u8 buffer[16];
+-    u32 inches, feet;
+-    u8 i = 0;
+-
+-    inches = (height * 10000) / 254;
+-    if (inches % 10 >= 5)
+-        inches += 10;
+-    feet = inches / 120;
+-    inches = (inches - (feet * 120)) / 10;
+-
+-    buffer[i++] = EXT_CTRL_CODE_BEGIN;
+-    buffer[i++] = EXT_CTRL_CODE_CLEAR_TO;
+-    if (feet / 10 == 0)
+-    {
+-        buffer[i++] = 18;
+-        buffer[i++] = feet + CHAR_0;
+-    }
+-    else
+-    {
+-        buffer[i++] = 12;
+-        buffer[i++] = feet / 10 + CHAR_0;
+-        buffer[i++] = (feet % 10) + CHAR_0;
+-    }
+-    buffer[i++] = CHAR_SGL_QUOTE_RIGHT;
+-    buffer[i++] = (inches / 10) + CHAR_0;
+-    buffer[i++] = (inches % 10) + CHAR_0;
+-    buffer[i++] = CHAR_DBL_QUOTE_RIGHT;
+-    buffer[i++] = EOS;
+-    PrintInfoScreenText(buffer, left, top);
+-}
+-
+-static void UNUSED PrintMonWeight(u16 weight, u8 left, u8 top)
+-{
+-    u8 buffer[16];
+-    bool8 output;
+-    u8 i;
+-    u32 lbs = (weight * 100000) / 4536;
+-
+-    if (lbs % 10u >= 5)
+-        lbs += 10;
+-    i = 0;
+-    output = FALSE;
+-
+-    if ((buffer[i] = (lbs / 100000) + CHAR_0) == CHAR_0 && !output)
+-    {
+-        buffer[i++] = CHAR_SPACER;
+-    }
+-    else
+-    {
+-        output = TRUE;
+-        i++;
+-    }
+-
+-    lbs %= 100000;
+-    if ((buffer[i] = (lbs / 10000) + CHAR_0) == CHAR_0 && !output)
+-    {
+-        buffer[i++] = CHAR_SPACER;
+-    }
+-    else
+-    {
+-        output = TRUE;
+-        i++;
+-    }
+-
+-    lbs %= 10000;
+-    if ((buffer[i] = (lbs / 1000) + CHAR_0) == CHAR_0 && !output)
+-    {
+-        buffer[i++] = CHAR_SPACER;
+-    }
+-    else
+-    {
+-        output = TRUE;
+-        i++;
+-    }
+-
+-    lbs %= 1000;
+-    buffer[i++] = (lbs / 100) + CHAR_0;
+-    lbs %= 100;
+-    buffer[i++] = CHAR_PERIOD;
+-    buffer[i++] = (lbs / 10) + CHAR_0;
+-    buffer[i++] = CHAR_SPACE;
+-    buffer[i++] = CHAR_l;
+-    buffer[i++] = CHAR_b;
+-    buffer[i++] = CHAR_s;
+-    buffer[i++] = CHAR_PERIOD;
+-    buffer[i++] = EOS;
+-    PrintInfoScreenText(buffer, left, top);
+-}
+-
+ s8 GetSetPokedexFlag(u16 nationalDexNo, u8 caseID)
+ {
+     u32 index, bit, mask;
+diff --git a/src/pokedex_plus_hgss.c b/src/pokedex_plus_hgss.c
+index 0e3817d4a..4910fe6e6 100644
+--- a/src/pokedex_plus_hgss.c
++++ b/src/pokedex_plus_hgss.c
+@@ -536,8 +536,6 @@ static void Task_HandleCaughtMonPageInput(u8);
+ static void Task_ExitCaughtMonPage(u8);
+ static void SpriteCB_SlideCaughtMonToCenter(struct Sprite *sprite);
+ static void PrintMonInfo(u32 num, u32, u32 owned, u32 newEntry);
+-static void PrintMonHeight(u16 height, u8 left, u8 top);
+-static void PrintMonWeight(u16 weight, u8 left, u8 top);
+ static void ResetOtherVideoRegisters(u16);
+ static u8 PrintCryScreenSpeciesName(u8, u16, u8, u8);
+ static void PrintDecimalNum(u8 windowId, u16 num, u8 left, u8 top);
+@@ -4487,18 +4485,7 @@ static void PrintMonInfo(u32 num, u32 value, u32 owned, u32 newEntry)
+         category = gText_5MarksPokemon;
+     }
+     PrintInfoScreenText(category, 123, 31);
+-    PrintInfoScreenText(gText_HTHeight, 155, 64);
+-    PrintInfoScreenText(gText_WTWeight, 155, 77);
+-    if (owned)
+-    {
+-        PrintMonHeight(GetSpeciesHeight(species), 180, 64);
+-        PrintMonWeight(GetSpeciesWeight(species), 180, 77);
+-    }
+-    else
+-    {
+-        PrintInfoScreenText(gText_UnkHeight, 180, 64);
+-        PrintInfoScreenText(gText_UnkWeight, 180, 77);
+-    }
++    PrintMonMeasurements(species,owned);
+     if (owned)
+         description = GetSpeciesPokedexDescription(species);
+     else
+@@ -4510,97 +4497,6 @@ static void PrintMonInfo(u32 num, u32 value, u32 owned, u32 newEntry)
+         PrintCurrentSpeciesTypeInfo(newEntry, species);
+ }
+ 
+-static void PrintMonHeight(u16 height, u8 left, u8 top)
+-{
+-    u8 buffer[16];
+-    u32 inches, feet;
+-    u8 i = 0;
+-
+-    inches = (height * 10000) / 254;
+-    if (inches % 10 >= 5)
+-        inches += 10;
+-    feet = inches / 120;
+-    inches = (inches - (feet * 120)) / 10;
+-
+-    buffer[i++] = EXT_CTRL_CODE_BEGIN;
+-    buffer[i++] = EXT_CTRL_CODE_CLEAR_TO;
+-    if (feet / 10 == 0)
+-    {
+-        buffer[i++] = 18;
+-        buffer[i++] = feet + CHAR_0;
+-    }
+-    else
+-    {
+-        buffer[i++] = 12;
+-        buffer[i++] = feet / 10 + CHAR_0;
+-        buffer[i++] = (feet % 10) + CHAR_0;
+-    }
+-    buffer[i++] = CHAR_SGL_QUOTE_RIGHT;
+-    buffer[i++] = (inches / 10) + CHAR_0;
+-    buffer[i++] = (inches % 10) + CHAR_0;
+-    buffer[i++] = CHAR_DBL_QUOTE_RIGHT;
+-    buffer[i++] = EOS;
+-    PrintInfoScreenText(buffer, left, top);
+-}
+-
+-static void PrintMonWeight(u16 weight, u8 left, u8 top)
+-{
+-    u8 buffer[16];
+-    bool8 output;
+-    u8 i;
+-    u32 lbs = (weight * 100000) / 4536;
+-
+-    if (lbs % 10u >= 5)
+-        lbs += 10;
+-    i = 0;
+-    output = FALSE;
+-
+-    if ((buffer[i] = (lbs / 100000) + CHAR_0) == CHAR_0 && !output)
+-    {
+-        buffer[i++] = CHAR_SPACER;
+-    }
+-    else
+-    {
+-        output = TRUE;
+-        i++;
+-    }
+-
+-    lbs %= 100000;
+-    if ((buffer[i] = (lbs / 10000) + CHAR_0) == CHAR_0 && !output)
+-    {
+-        buffer[i++] = CHAR_SPACER;
+-    }
+-    else
+-    {
+-        output = TRUE;
+-        i++;
+-    }
+-
+-    lbs %= 10000;
+-    if ((buffer[i] = (lbs / 1000) + CHAR_0) == CHAR_0 && !output)
+-    {
+-        buffer[i++] = CHAR_SPACER;
+-    }
+-    else
+-    {
+-        output = TRUE;
+-        i++;
+-    }
+-
+-    lbs %= 1000;
+-    buffer[i++] = (lbs / 100) + CHAR_0;
+-    lbs %= 100;
+-    buffer[i++] = CHAR_PERIOD;
+-    buffer[i++] = (lbs / 10) + CHAR_0;
+-    buffer[i++] = CHAR_SPACE;
+-    buffer[i++] = CHAR_l;
+-    buffer[i++] = CHAR_b;
+-    buffer[i++] = CHAR_s;
+-    buffer[i++] = CHAR_PERIOD;
+-    buffer[i++] = EOS;
+-    PrintInfoScreenText(buffer, left, top);
+-}
+-
+ // Unused in the English version, used to print height/weight in versions which use metric system.
+ static void UNUSED PrintDecimalNum(u8 windowId, u16 num, u8 left, u8 top)
+ {
+@@ -5294,7 +5190,7 @@ static bool8 CalculateMoves(void)
+         if (j >= NUM_TECHNICAL_MACHINES + NUM_HIDDEN_MACHINES)
+         {
+             numTutorMoves++;
+-            
++
+             sStatsMoves[movesTotal] = move;
+             movesTotal++;
+         }
+-- 
+2.34.1
+
