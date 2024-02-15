@@ -138,6 +138,9 @@ Debug_EventScript_Text_DefensiveIV:
 	.string "HP IV: {STR_VAR_1}, DEF IV: {STR_VAR_2}, SPDEF IV: {STR_VAR_3}$"
 
 Debug_EventScript_Script_1::
+    givemon SPECIES_SEEDOT, 50, 0
+    givemon SPECIES_LOTAD, 50, 0
+    warp MAP_SOOTOPOOLIS_CITY_LOTAD_AND_SEEDOT_HOUSE,0
 	end
 
 Debug_EventScript_Script_2::

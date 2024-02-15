@@ -1,0 +1,202 @@
+From 2f2f2d862fa60ee1a0c6db5409323426d0073dea Mon Sep 17 00:00:00 2001
+From: pkmnsnfrn <pkmnsnfrn@gmail.com>
+Date: Wed, 14 Feb 2024 10:45:07 -0800
+Subject: [PATCH] - Fixes Seedot and Lotad House to give measurements based on
+ the unit system and decimal seperator chosen by the developer. - Created
+ `ConvertMonHeightToString` and `ConvertMonWeightToString` for developers to
+ use
+
+---
+ .../scripts.inc                               | 12 ++++----
+ include/pokedex.h                             |  2 ++
+ src/pokedex.c                                 | 30 ++++++++++++-------
+ src/pokemon_size_record.c                     | 23 ++++++++++----
+ 4 files changed, 46 insertions(+), 21 deletions(-)
+
+diff --git a/data/maps/SootopolisCity_LotadAndSeedotHouse/scripts.inc b/data/maps/SootopolisCity_LotadAndSeedotHouse/scripts.inc
+index 52bdf3ace..046390650 100644
+--- a/data/maps/SootopolisCity_LotadAndSeedotHouse/scripts.inc
++++ b/data/maps/SootopolisCity_LotadAndSeedotHouse/scripts.inc
+@@ -116,7 +116,7 @@ SootopolisCity_LotadAndSeedotHouse_Text_PleaseShowMeBigSeedot:
+ 	.string "P-p-please, show me!$"
+ 
+ SootopolisCity_LotadAndSeedotHouse_Text_GoshMightBeBiggerThanLotad:
+-	.string "{STR_VAR_2} inches!\n"
++	.string "{STR_VAR_2}!\n"
+ 	.string "Oh, my gosh, this is a big one!\p"
+ 	.string "It might even beat the big LOTAD\n"
+ 	.string "my younger brother saw!\p"
+@@ -132,7 +132,7 @@ SootopolisCity_LotadAndSeedotHouse_Text_BagCrammedFull1:
+ 	.string "Your BAG is crammed full.$"
+ 
+ SootopolisCity_LotadAndSeedotHouse_Text_SeenBiggerSeedot:
+-	.string "{STR_VAR_2} inches, is it?\p"
++	.string "{STR_VAR_2}, is it?\p"
+ 	.string "Hmm… I've seen a bigger SEEDOT\n"
+ 	.string "than this one.$"
+ 
+@@ -148,7 +148,7 @@ SootopolisCity_LotadAndSeedotHouse_Text_DontHaveBigSeedot:
+ 
+ SootopolisCity_LotadAndSeedotHouse_Text_BiggestSeedotInHistory:
+ 	.string "The biggest SEEDOT in history!\n"
+-	.string "{STR_VAR_2}'s {STR_VAR_3}-inch giant!\p"
++	.string "{STR_VAR_2}'s {STR_VAR_3} giant!\p"
+ 	.string "A SEEDOT bigger than a LOTAD\n"
+ 	.string "always wanted!$"
+ 
+@@ -164,7 +164,7 @@ SootopolisCity_LotadAndSeedotHouse_Text_PleaseShowMeBigLotad:
+ 	.string "P-p-please show me!$"
+ 
+ SootopolisCity_LotadAndSeedotHouse_Text_WowMightBeBiggerThanSeedot:
+-	.string "{STR_VAR_2} inches!\n"
++	.string "{STR_VAR_2}!\n"
+ 	.string "Wow, that is big!\p"
+ 	.string "It might be even bigger than the huge\n"
+ 	.string "SEEDOT my big brother saw.\p"
+@@ -180,7 +180,7 @@ SootopolisCity_LotadAndSeedotHouse_Text_BagCrammedFull2:
+ 	.string "Your BAG is crammed full.$"
+ 
+ SootopolisCity_LotadAndSeedotHouse_Text_SeenBiggerLotad:
+-	.string "{STR_VAR_2} inches?\p"
++	.string "{STR_VAR_2}?\p"
+ 	.string "Hmm… I've seen a bigger LOTAD\n"
+ 	.string "than this one here.$"
+ 
+@@ -196,7 +196,7 @@ SootopolisCity_LotadAndSeedotHouse_Text_DontHaveBigLotad:
+ 
+ SootopolisCity_LotadAndSeedotHouse_Text_BiggestLotadInHistory:
+ 	.string "The biggest LOTAD in history!\n"
+-	.string "{STR_VAR_2}'s {STR_VAR_3}-inch colossus!\p"
++	.string "{STR_VAR_2}'s {STR_VAR_3} colossus!\p"
+ 	.string "A LOTAD bigger than a SEEDOT\n"
+ 	.string "always wanted!$"
+ 
+diff --git a/include/pokedex.h b/include/pokedex.h
+index a3f7f80a5..be861fe68 100644
+--- a/include/pokedex.h
++++ b/include/pokedex.h
+@@ -30,5 +30,7 @@ void ResetPokedexScrollPositions(void);
+ bool16 HasAllMons(void);
+ void CB2_OpenPokedex(void);
+ void PrintMonMeasurements(u16 species, u32 owned);
++u8* ConvertMonHeightToString(u32 height);
++u8* ConvertMonWeightToString(u32 weight);
+ 
+ #endif // GUARD_POKEDEX_H
+diff --git a/src/pokedex.c b/src/pokedex.c
+index 682c000b3..74a95aa1d 100644
+--- a/src/pokedex.c
++++ b/src/pokedex.c
+@@ -286,7 +286,7 @@ static u8* ConvertMonHeightToImperialString(u32 height);
+ static u8* ConvertMonHeightToMetricString(u32 height);
+ static u8* ConvertMonWeightToImperialString(u32 weight);
+ static u8* ConvertMonWeightToMetricString(u32 weight);
+-static u8* ConvertMeasurementToMetricString(u16 num, u32* index);
++static u8* ConvertMeasurementToMetricString(u32 num, u32* index);
+ static void ResetOtherVideoRegisters(u16);
+ static u8 PrintCryScreenSpeciesName(u8, u16, u8, u8);
+ static void PrintDecimalNum(u8 windowId, u16 num, u8 left, u8 top);
+@@ -4289,15 +4289,20 @@ static void PrintOwnedMonHeight(u16 species)
+     u32 x = GetMeasurementTextPositions(DEX_MEASUREMENT_X);
+     u32 yTop = GetMeasurementTextPositions(DEX_Y_TOP);
+ 
+-    if (UNITS == UNITS_IMPERIAL)
+-        heightString = ConvertMonHeightToImperialString(height);
+-    else
+-        heightString = ConvertMonHeightToMetricString(height);
++    heightString = ConvertMonHeightToString(height);
+ 
+     PrintInfoScreenText(heightString, x, yTop);
+     Free(heightString);
+ }
+ 
++u8* ConvertMonHeightToString(u32 height)
++{
++    if (UNITS == UNITS_IMPERIAL)
++        return ConvertMonHeightToImperialString(height);
++    else
++        return ConvertMonHeightToMetricString(height);
++}
++
+ static void PrintOwnedMonWeight(u16 species)
+ {
+     u32 weight = GetSpeciesWeight(species);
+@@ -4305,15 +4310,20 @@ static void PrintOwnedMonWeight(u16 species)
+     u32 x = GetMeasurementTextPositions(DEX_MEASUREMENT_X);
+     u32 yBottom = GetMeasurementTextPositions(DEX_Y_BOTTOM);
+ 
+-    if (UNITS == UNITS_IMPERIAL)
+-        weightString = ConvertMonWeightToImperialString(weight);
+-    else
+-        weightString = ConvertMonWeightToMetricString(weight);
++    weightString = ConvertMonWeightToString(weight);
+ 
+     PrintInfoScreenText(weightString, x, yBottom);
+     Free(weightString);
+ }
+ 
++u8* ConvertMonWeightToString(u32 weight)
++{
++    if (UNITS == UNITS_IMPERIAL)
++        return ConvertMonWeightToImperialString(weight);
++    else
++        return ConvertMonWeightToMetricString(weight);
++}
++
+ static u8* ConvertMonHeightToImperialString(u32 height)
+ {
+     u8* heightString = Alloc(WEIGHT_HEIGHT_STR_MEM);
+@@ -4425,7 +4435,7 @@ static u8* ConvertMonWeightToMetricString(u32 weight)
+     return weightString;
+ }
+ 
+-static u8* ConvertMeasurementToMetricString(u16 num, u32* index)
++static u8* ConvertMeasurementToMetricString(u32 num, u32* index)
+ {
+     u8* string = Alloc(WEIGHT_HEIGHT_STR_MEM);
+     bool32 outputted = FALSE;
+diff --git a/src/pokemon_size_record.c b/src/pokemon_size_record.c
+index 54341b96e..d7eaa5383 100644
+--- a/src/pokemon_size_record.c
++++ b/src/pokemon_size_record.c
+@@ -8,6 +8,7 @@
+ #include "text.h"
+ 
+ #define DEFAULT_MAX_SIZE 0x8000 // was 0x8100 in Ruby/Sapphire
++static u8* ReturnHeightStringNoWhitespace(u32 size);
+ 
+ struct UnknownStruct
+ {
+@@ -93,12 +94,24 @@ static u32 GetMonSize(u16 species, u16 b)
+ 
+ static void FormatMonSizeRecord(u8 *string, u32 size)
+ {
+-    //Convert size from centimeters to inches
+-	size = (f64)(size * 10) / (CM_PER_INCH * 10);
++    size = (f64)(size / 100);
++    StringCopy(string,ReturnHeightStringNoWhitespace(size));
++}
++
++static u8* ReturnHeightStringNoWhitespace(u32 size)
++{
++    u8* heightStr = ConvertMonHeightToString(size);
++    u32 length = StringLength(heightStr);
++    u32 i =  0, j =  0;
++
++    while (i < length && !(heightStr[i] >= CHAR_0 && heightStr[i] <= CHAR_9))
++        i++;
++
++    while (i < length)
++        heightStr[j++] = heightStr[i++];
+ 
+-    string = ConvertIntToDecimalStringN(string, size / 10, STR_CONV_MODE_LEFT_ALIGN, 8);
+-    string = StringAppend(string, gText_DecimalPoint);
+-    ConvertIntToDecimalStringN(string, size % 10, STR_CONV_MODE_LEFT_ALIGN, 1);
++    heightStr[j] = EOS;
++    return heightStr;
+ }
+ 
+ static u8 CompareMonSize(u16 species, u16 *sizeRecord)
+-- 
+2.34.1
+
