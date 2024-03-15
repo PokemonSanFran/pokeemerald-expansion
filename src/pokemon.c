@@ -881,6 +881,8 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
             if (IsCurrentEncounterFishing())
                 totalRerolls += CalculateChainFishingShinyRolls();
 
+            DebugPrintf("Total Shiny Rolls %d",totalRerolls);
+
             while (GET_SHINY_VALUE(value, personality) >= SHINY_ODDS && totalRerolls > 0)
             {
                 personality = Random32();
