@@ -2118,7 +2118,12 @@ static u32 CalculateFishingBiteOdds(bool32 isStickyHold)
     if (isStickyHold)
         odds -= FISHING_STICKY_BOOST;
 
-    return (odds -= CalculateFishingProximityBoost(odds));
+
+    odds -= CalculateFishingProximityBoost(odds);
+
+    DebugPrintf("Must roll above %d to hook a mon",odds);
+
+    return odds;
 }
 
 static u32 CalculateFishingProximityBoost(u32 odds)
@@ -2147,10 +2152,9 @@ static u32 CalculateFishingProximityBoost(u32 odds)
     GetCoordinatesAroundBobber(bobber, surroundingTile, facingDirection);
     numQualifyingTile = CountQualifyingTiles(surroundingTile, player, facingDirection, objectEvent, isTileLand);
 
-    if (numQualifyingTile)
-        numQualifyingTile += CountLandTiles(isTileLand);
+    numQualifyingTile += CountLandTiles(isTileLand);
 
-    DebugPrintf("numQu %d", numQualifyingTile);
+    DebugPrintf("There are %d blocked sides", numQualifyingTile);
 
     return (numQualifyingTile == 3) ? odds : (numQualifyingTile * FISHING_PROXIMITY_BOOST);
 }
@@ -2185,18 +2189,51 @@ static u32 CountQualifyingTiles(s16 surroundingTile[][AXIS_COUNT], s16 player[],
     return numQualifyingTile;
 }
 
+static void PrintDirection(u32 direction)
+{
+    switch(direction)
+    {
+        case DIR_SOUTH:
+            DebugPrintf("south");
+            break;
+        case DIR_NORTH:
+            DebugPrintf("north");
+            break;
+        case DIR_WEST:
+            DebugPrintf("west");
+            break;
+        case DIR_EAST:
+            DebugPrintf("east");
+            break;
+    }
+}
+
 static bool32 CheckTileQualification(s16 tile[], s16 player[], u32 facingDirection, struct ObjectEvent* objectEvent, bool32 isTileLand[], u32 direction)
 {
     u32 collison = GetCollisionAtCoords(objectEvent, tile[AXIS_X], tile[AXIS_Y], facingDirection);
 
+    //PrintDirection(direction);
+
     if (IsPlayerHere(tile[AXIS_X], tile[AXIS_Y], player[AXIS_X], player[AXIS_Y]))
+    {
+        //DebugPrintf("player is here");
         return FALSE;
-    else if (MetatileBehavior_IsSurfableFishableWater(MapGridGetMetatileBehaviorAt(tile[AXIS_X], tile[AXIS_Y])))
-        return FALSE;
+    }
     else if (IsMetatileBlocking(tile[AXIS_X], tile[AXIS_Y], collison))
+    {
+        //DebugPrintf("tile is blocking");
         return TRUE;
+    }
+    else if (MetatileBehavior_IsSurfableFishableWater(MapGridGetMetatileBehaviorAt(tile[AXIS_X], tile[AXIS_Y])))
+    {
+        //DebugPrintf("tile is surfable");
+        return FALSE;
+    }
     else if (IsMetatileLand(tile[AXIS_X], tile[AXIS_Y], collison))
+    {
+        //DebugPrintf("tile is land");
         isTileLand[direction] = TRUE;
+    }
 
     return FALSE;
 }
@@ -2209,7 +2246,7 @@ static u32 CountLandTiles(bool32 isTileLand[])
         if (isTileLand[direction])
             numQualifyingTile++;
 
-    return numQualifyingTile;
+    return (numQualifyingTile < 2) ? 0 : numQualifyingTile;
 }
 
 static bool32 IsPlayerHere(s16 x, s16 y, s16 playerX, s16 playerY)
@@ -2238,7 +2275,15 @@ static bool32 IsMetatileBlocking(s16 x, s16 y, u32 collison)
 
 static bool32 IsMetatileLand(s16 x, s16 y, u32 collison)
 {
-    return (collison == COLLISION_NONE);
+    switch(collison)
+    {
+        case COLLISION_NONE:
+        case COLLISION_STOP_SURFING:
+        case COLLISION_ELEVATION_MISMATCH:
+            return TRUE;
+        default:
+            return FALSE;
+    }
 }
 
 #undef tStep

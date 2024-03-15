@@ -876,6 +876,9 @@ static u32 GetLastFishingSpecies(void)
 
 static bool32 DoesSpeciesMatchLastFishingSpecies(u32 species)
 {
+    DebugPrintf("Current species %d",species);
+    DebugPrintf("Last species %d",GetLastFishingSpecies());
+
     return (species == GetLastFishingSpecies());
 }
 
@@ -886,13 +889,12 @@ static u32 GetCurrentFishingStreak(void)
 
 static bool32 IsChainFishingStreakAtMax(void)
 {
-    return (GetCurrentFishingStreak() < CHAIN_FISHING_LENGTH_MAX);
+    return (GetCurrentFishingStreak() >= CHAIN_FISHING_LENGTH_MAX);
 }
 
 static void IncrementChainFishingStreak(void)
 {
-    if (GetCurrentFishingStreak() < UCHAR_MAX)
-        gChainFishingStreak++;
+    gChainFishingStreak++;
 }
 
 void ResetChainFishingStreak(void)
@@ -912,6 +914,7 @@ static void SetEncounterFishing(void)
 
 u32 CalculateChainFishingShinyRolls(void)
 {
+    DebugPrintf("Added Shiny Rolls %d",(1 + 2 * GetCurrentFishingStreak()));
     return (1 + (2 * GetCurrentFishingStreak()));
 }
 
@@ -922,13 +925,21 @@ static void SetLastFishingSpecies(u32 species)
 
 static void HandleChainFishingStreak(u32 species)
 {
-    if (DoesSpeciesMatchLastFishingSpecies(species))
+    if (!DoesSpeciesMatchLastFishingSpecies(species))
     {
-        if (!IsChainFishingStreakAtMax())
-            IncrementChainFishingStreak();
-    }
-    else
+        DebugPrintf("no match");
         ResetChainFishingStreak();
+        return;
+    }
+
+    if (IsChainFishingStreakAtMax())
+    {
+        DebugPrintf("maxed");
+        return;
+    }
+
+    IncrementChainFishingStreak();
+    DebugPrintf("Fishing Chain %d",GetCurrentFishingStreak());
 }
 
 static void UpdateChainFishingSpeciesAndStreak(u32 species)
@@ -936,14 +947,15 @@ static void UpdateChainFishingSpeciesAndStreak(u32 species)
     if (!I_FISHING_CHAIN)
         return;
 
-    SetLastFishingSpecies(species);
     HandleChainFishingStreak(species);
+    SetLastFishingSpecies(species);
 }
 
 void FishingWildEncounter(u8 rod)
 {
     u16 species;
 
+    SetEncounterFishing();
     if (CheckFeebas() == TRUE)
     {
         u8 level = ChooseWildMonLevel(&sWildFeebas, 0, WILD_AREA_FISHING);
@@ -959,7 +971,6 @@ void FishingWildEncounter(u8 rod)
     UpdateChainFishingSpeciesAndStreak(species);
     IncrementGameStat(GAME_STAT_FISHING_ENCOUNTERS);
     SetPokemonAnglerSpecies(species);
-    SetEncounterFishing();
     BattleSetup_StartWildBattle();
 }
 
