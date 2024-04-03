@@ -2011,7 +2011,7 @@ static bool8 Fishing_StartEncounter(struct Task *task)
 
 static bool8 Fishing_NotEvenNibble(struct Task *task)
 {
-    ResetChainFishingStreak();
+    ResetChainFishingDexnavStreak();
     AlignFishingAnimationFrames();
     StartSpriteAnim(&gSprites[gPlayerAvatar.spriteId], GetFishingNoCatchDirectionAnimNum(GetPlayerFacingDirection()));
     FillWindowPixelBuffer(0, PIXEL_FILL(1));
@@ -2022,7 +2022,7 @@ static bool8 Fishing_NotEvenNibble(struct Task *task)
 
 static bool8 Fishing_GotAway(struct Task *task)
 {
-    ResetChainFishingStreak();
+    ResetChainFishingDexnavStreak();
     AlignFishingAnimationFrames();
     StartSpriteAnim(&gSprites[gPlayerAvatar.spriteId], GetFishingNoCatchDirectionAnimNum(GetPlayerFacingDirection()));
     FillWindowPixelBuffer(0, PIXEL_FILL(1));
@@ -2118,7 +2118,6 @@ static u32 CalculateFishingBiteOdds(bool32 isStickyHold)
     if (isStickyHold)
         odds -= FISHING_STICKY_BOOST;
 
-
     odds -= CalculateFishingProximityBoost(odds);
 
     DebugPrintf("Must roll above %d to hook a mon",odds);
@@ -2136,8 +2135,6 @@ static u32 CalculateFishingProximityBoost(u32 odds)
 
     if (!I_FISHING_PROXIMITY)
         return 0;
-
-    // It is unknown how exactly the feature in XY works. This is an approximation of the observed effects of the feature, and should be updated once a Pokemon X decomp or datamine is available with this information.
 
     objectEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
 
@@ -2175,8 +2172,9 @@ static u32 CountQualifyingTiles(s16 surroundingTile[][AXIS_COUNT], s16 player[],
 {
     u32 numQualifyingTile = 0;
     s16 tile[AXIS_COUNT];
+    u8 direction = DIR_SOUTH;
 
-    for (u8 direction = DIR_SOUTH; direction < CARDINAL_DIRECTION_COUNT; direction++)
+    for (direction = DIR_SOUTH; direction < CARDINAL_DIRECTION_COUNT; direction++)
     {
         tile[AXIS_X] = surroundingTile[direction][AXIS_X];
         tile[AXIS_Y] = surroundingTile[direction][AXIS_Y];
@@ -2251,10 +2249,7 @@ static u32 CountLandTiles(bool32 isTileLand[])
 
 static bool32 IsPlayerHere(s16 x, s16 y, s16 playerX, s16 playerY)
 {
-    return (
-            x == playerX &&
-            y == playerY
-           );
+    return ((x == playerX) && (y == playerY));
 }
 
 static bool32 IsMetatileBlocking(s16 x, s16 y, u32 collison)
