@@ -885,9 +885,6 @@ static u32 GetLastFishingSpecies(void)
 
 static bool32 DoesSpeciesMatchLastFishingSpecies(u32 species)
 {
-    DebugPrintf("Current species %d",species);
-    DebugPrintf("Last species %d",GetLastFishingSpecies());
-
     return (species == GetLastFishingSpecies());
 }
 
@@ -923,7 +920,6 @@ static void SetEncounterFishing(void)
 
 u32 CalculateChainFishingShinyRolls(void)
 {
-    DebugPrintf("Added Shiny Rolls %d",(1 + 2 * GetCurrentChainFishingDexnavStreak()));
     return (1 + (2 * GetCurrentChainFishingDexnavStreak()));
 }
 
@@ -936,19 +932,14 @@ static void HandleChainFishingStreak(u32 species)
 {
     if (!DoesSpeciesMatchLastFishingSpecies(species))
     {
-        DebugPrintf("no match");
         ResetChainFishingDexnavStreak();
         return;
     }
 
     if (IsChainFishingStreakAtMax())
-    {
-        DebugPrintf("maxed");
         return;
-    }
 
     IncrementChainFishingDexnavStreak();
-    DebugPrintf("Fishing Chain %d",GetCurrentChainFishingDexnavStreak());
 }
 
 static void UpdateChainFishingSpeciesAndStreak(u32 species)

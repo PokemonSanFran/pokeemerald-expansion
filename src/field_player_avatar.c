@@ -143,8 +143,6 @@ static u8 Fishing_EndNoMon(struct Task *);
 static void AlignFishingAnimationFrames(void);
 static bool32 DoesFishingMinigameAllowCancel(void);
 static bool32 Fishing_DoesFirstMonInPartyHaveSuctionCupsOrStickyHold(void);
-static bool32 Fishing_CheckForBiteWithStickyHold(void);
-static bool32 Fishing_CheckForBiteNoStickyHold(void);
 static bool32 Fishing_RollForBite(bool32);
 static u32 CalculateFishingBiteOdds(bool32);
 static u32 CalculateFishingProximityBoost(u32 odds);
@@ -1858,7 +1856,7 @@ static bool8 Fishing_ShowDots(struct Task *task)
 
 static bool8 Fishing_CheckForBite(struct Task *task)
 {
-    bool8 bite;
+    bool32 bite, firstMonHasSuctionOrSticky;
 
     AlignFishingAnimationFrames();
     task->tStep++;
@@ -1870,11 +1868,13 @@ static bool8 Fishing_CheckForBite(struct Task *task)
         return TRUE;
     }
 
-    if(Fishing_DoesFirstMonInPartyHaveSuctionCupsOrStickyHold())
-        bite = Fishing_CheckForBiteWithStickyHold();
+    firstMonHasSuctionOrSticky = Fishing_DoesFirstMonInPartyHaveSuctionCupsOrStickyHold();
+
+    if(firstMonHasSuctionOrSticky)
+        bite = Fishing_RollForBite(firstMonHasSuctionOrSticky);
 
     if (!bite)
-        bite = Fishing_CheckForBiteNoStickyHold();
+        bite = Fishing_RollForBite(FALSE);
 
     if (!bite)
         task->tStep = FISHING_NO_BITE;
@@ -2096,16 +2096,6 @@ static bool32 Fishing_DoesFirstMonInPartyHaveSuctionCupsOrStickyHold(void)
     return (ability == ABILITY_SUCTION_CUPS || ability == ABILITY_STICKY_HOLD);
 }
 
-static bool32 Fishing_CheckForBiteWithStickyHold(void)
-{
-    return Fishing_RollForBite(TRUE);
-}
-
-static bool32 Fishing_CheckForBiteNoStickyHold(void)
-{
-    return Fishing_RollForBite(FALSE);
-}
-
 static bool32 Fishing_RollForBite(bool32 isStickyHold)
 {
     return ((Random() % 100) > CalculateFishingBiteOdds(isStickyHold));
@@ -2119,9 +2109,6 @@ static u32 CalculateFishingBiteOdds(bool32 isStickyHold)
         odds -= FISHING_STICKY_BOOST;
 
     odds -= CalculateFishingProximityBoost(odds);
-
-    DebugPrintf("Must roll above %d to hook a mon",odds);
-
     return odds;
 }
 
@@ -2150,8 +2137,6 @@ static u32 CalculateFishingProximityBoost(u32 odds)
     numQualifyingTile = CountQualifyingTiles(surroundingTile, player, facingDirection, objectEvent, isTileLand);
 
     numQualifyingTile += CountLandTiles(isTileLand);
-
-    DebugPrintf("There are %d blocked sides", numQualifyingTile);
 
     return (numQualifyingTile == 3) ? odds : (numQualifyingTile * FISHING_PROXIMITY_BOOST);
 }
@@ -2187,51 +2172,18 @@ static u32 CountQualifyingTiles(s16 surroundingTile[][AXIS_COUNT], s16 player[],
     return numQualifyingTile;
 }
 
-static void PrintDirection(u32 direction)
-{
-    switch(direction)
-    {
-        case DIR_SOUTH:
-            DebugPrintf("south");
-            break;
-        case DIR_NORTH:
-            DebugPrintf("north");
-            break;
-        case DIR_WEST:
-            DebugPrintf("west");
-            break;
-        case DIR_EAST:
-            DebugPrintf("east");
-            break;
-    }
-}
-
 static bool32 CheckTileQualification(s16 tile[], s16 player[], u32 facingDirection, struct ObjectEvent* objectEvent, bool32 isTileLand[], u32 direction)
 {
     u32 collison = GetCollisionAtCoords(objectEvent, tile[AXIS_X], tile[AXIS_Y], facingDirection);
 
-    //PrintDirection(direction);
-
     if (IsPlayerHere(tile[AXIS_X], tile[AXIS_Y], player[AXIS_X], player[AXIS_Y]))
-    {
-        //DebugPrintf("player is here");
         return FALSE;
-    }
     else if (IsMetatileBlocking(tile[AXIS_X], tile[AXIS_Y], collison))
-    {
-        //DebugPrintf("tile is blocking");
         return TRUE;
-    }
     else if (MetatileBehavior_IsSurfableFishableWater(MapGridGetMetatileBehaviorAt(tile[AXIS_X], tile[AXIS_Y])))
-    {
-        //DebugPrintf("tile is surfable");
         return FALSE;
-    }
     else if (IsMetatileLand(tile[AXIS_X], tile[AXIS_Y], collison))
-    {
-        //DebugPrintf("tile is land");
         isTileLand[direction] = TRUE;
-    }
 
     return FALSE;
 }
