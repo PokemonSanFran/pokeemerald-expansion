@@ -61,7 +61,7 @@ index 13e760068..5db83e91d 100644
  
  #endif // GUARD_WILD_ENCOUNTER_H
 diff --git a/src/field_player_avatar.c b/src/field_player_avatar.c
-index 99cab7fd7..c96803975 100644
+index 99cab7fd7..7342a386e 100644
 --- a/src/field_player_avatar.c
 +++ b/src/field_player_avatar.c
 @@ -129,7 +129,9 @@ static u8 Fishing_InitDots(struct Task *);
@@ -74,14 +74,12 @@ index 99cab7fd7..c96803975 100644
  static u8 Fishing_CheckMoreDots(struct Task *);
  static u8 Fishing_MonOnHook(struct Task *);
  static u8 Fishing_StartEncounter(struct Task *);
-@@ -139,6 +141,20 @@ static u8 Fishing_NoMon(struct Task *);
+@@ -139,6 +141,18 @@ static u8 Fishing_NoMon(struct Task *);
  static u8 Fishing_PutRodAway(struct Task *);
  static u8 Fishing_EndNoMon(struct Task *);
  static void AlignFishingAnimationFrames(void);
 +static bool32 DoesFishingMinigameAllowCancel(void);
 +static bool32 Fishing_DoesFirstMonInPartyHaveSuctionCupsOrStickyHold(void);
-+static bool32 Fishing_CheckForBiteWithStickyHold(void);
-+static bool32 Fishing_CheckForBiteNoStickyHold(void);
 +static bool32 Fishing_RollForBite(bool32);
 +static u32 CalculateFishingBiteOdds(bool32);
 +static u32 CalculateFishingProximityBoost(u32 odds);
@@ -95,7 +93,7 @@ index 99cab7fd7..c96803975 100644
  
  static u8 TrySpinPlayerForWarp(struct ObjectEvent *, s16 *);
  
-@@ -1678,32 +1694,52 @@ static void Task_WaitStopSurfing(u8 taskId)
+@@ -1678,32 +1692,52 @@ static void Task_WaitStopSurfing(u8 taskId)
  #define tPlayerGfxId       data[14]
  #define tFishingRod        data[15]
  
@@ -171,7 +169,7 @@ index 99cab7fd7..c96803975 100644
  };
  
  void StartFishing(u8 rod)
-@@ -1790,6 +1826,9 @@ static bool8 Fishing_ShowDots(struct Task *task)
+@@ -1790,6 +1824,9 @@ static bool8 Fishing_ShowDots(struct Task *task)
      task->tFrameCounter++;
      if (JOY_NEW(A_BUTTON))
      {
@@ -181,7 +179,16 @@ index 99cab7fd7..c96803975 100644
          task->tStep = FISHING_NO_BITE;
          if (task->tRoundsPlayed != 0)
              task->tStep = FISHING_GOT_AWAY;
-@@ -1828,30 +1867,21 @@ static bool8 Fishing_CheckForBite(struct Task *task)
+@@ -1819,7 +1856,7 @@ static bool8 Fishing_ShowDots(struct Task *task)
+ 
+ static bool8 Fishing_CheckForBite(struct Task *task)
+ {
+-    bool8 bite;
++    bool32 bite, firstMonHasSuctionOrSticky;
+ 
+     AlignFishingAnimationFrames();
+     task->tStep++;
+@@ -1828,30 +1865,23 @@ static bool8 Fishing_CheckForBite(struct Task *task)
      if (!DoesCurrentMapHaveFishingMons())
      {
          task->tStep = FISHING_NO_BITE;
@@ -206,11 +213,13 @@ index 99cab7fd7..c96803975 100644
 -            else
 -                bite = TRUE;
 -        }
-+    if(Fishing_DoesFirstMonInPartyHaveSuctionCupsOrStickyHold())
-+        bite = Fishing_CheckForBiteWithStickyHold();
++    firstMonHasSuctionOrSticky = Fishing_DoesFirstMonInPartyHaveSuctionCupsOrStickyHold();
++
++    if(firstMonHasSuctionOrSticky)
++        bite = Fishing_RollForBite(firstMonHasSuctionOrSticky);
 +
 +    if (!bite)
-+        bite = Fishing_CheckForBiteNoStickyHold();
++        bite = Fishing_RollForBite(FALSE);
 +
 +    if (!bite)
 +        task->tStep = FISHING_NO_BITE;
@@ -278,7 +287,7 @@ index 99cab7fd7..c96803975 100644
      AlignFishingAnimationFrames();
      StartSpriteAnim(&gSprites[gPlayerAvatar.spriteId], GetFishingNoCatchDirectionAnimNum(GetPlayerFacingDirection()));
      FillWindowPixelBuffer(0, PIXEL_FILL(1));
-@@ -2015,6 +2071,178 @@ static bool8 Fishing_EndNoMon(struct Task *task)
+@@ -2015,6 +2071,168 @@ static bool8 Fishing_EndNoMon(struct Task *task)
      return FALSE;
  }
  
@@ -305,16 +314,6 @@ index 99cab7fd7..c96803975 100644
 +    ability = GetMonAbility(&gPlayerParty[0]);
 +
 +    return (ability == ABILITY_SUCTION_CUPS || ability == ABILITY_STICKY_HOLD);
-+}
-+
-+static bool32 Fishing_CheckForBiteWithStickyHold(void)
-+{
-+    return Fishing_RollForBite(TRUE);
-+}
-+
-+static bool32 Fishing_CheckForBiteNoStickyHold(void)
-+{
-+    return Fishing_RollForBite(FALSE);
 +}
 +
 +static bool32 Fishing_RollForBite(bool32 isStickyHold)
