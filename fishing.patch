@@ -1,0 +1,641 @@
+diff --git a/include/config/item.h b/include/config/item.h
+index 9b2f4156d..db20545bc 100644
+--- a/include/config/item.h
++++ b/include/config/item.h
+@@ -36,4 +36,9 @@
+ // Vs. Seeker
+ #define I_VS_SEEKER_CHARGING        0     // If this flag is assigned, the Vs Seeker functionality will be enabled. When the player has the Vs. Seeker, Match Call rematch functions will stop working.
+ 
++//Fishing
++#define I_FISHING_CHAIN             TRUE    // Introduced in XY, hooking the same Pokémon repeatedly will increase the odds of that mon being shiny. NOTE: This implementation is an approximation of the actual feature, as XY have not been throughoutly documented or datamined.
++#define I_FISHING_MINIGAME          GEN_1   // Each generation uses a variation of reeling in Pokémon once they have been hooked.
++#define I_FISHING_PROXIMITY         TRUE    // Introduced in XY, fishing away from other people in enclosed areas will increase the chances of a Pokémon being hooked. NOTE: This implementation is an approximation of the actual feature, as XY have not been throughoutly documented or datamined.
++
+ #endif // GUARD_CONFIG_ITEM_H
+diff --git a/include/constants/global.h b/include/constants/global.h
+index bcbf37e2d..b8ac7559a 100644
+--- a/include/constants/global.h
++++ b/include/constants/global.h
+@@ -155,6 +155,11 @@
+ #define DIR_SOUTHEAST   6
+ #define DIR_NORTHWEST   7
+ #define DIR_NORTHEAST   8
++#define CARDINAL_DIRECTION_COUNT DIR_SOUTHWEST
++
++#define AXIS_X     0
++#define AXIS_Y     1
++#define AXIS_COUNT 2
+ 
+ #define CONNECTION_INVALID -1
+ #define CONNECTION_NONE     0
+diff --git a/include/constants/wild_encounter.h b/include/constants/wild_encounter.h
+index a78cd126f..8902f2ef4 100644
+--- a/include/constants/wild_encounter.h
++++ b/include/constants/wild_encounter.h
+@@ -8,4 +8,6 @@
+ 
+ #define NUM_ALTERING_CAVE_TABLES 9
+ 
++#define FISHING_CHAIN_LENGTH_MAX 20
++
+ #endif // GUARD_CONSTANTS_WILD_ENCOUNTER_H
+diff --git a/include/wild_encounter.h b/include/wild_encounter.h
+index 13e760068..5db83e91d 100644
+--- a/include/wild_encounter.h
++++ b/include/wild_encounter.h
+@@ -29,6 +29,7 @@ struct WildPokemonHeader
+ extern const struct WildPokemonHeader gWildMonHeaders[];
+ extern bool8 gIsFishingEncounter;
+ extern bool8 gIsSurfingEncounter;
++extern u8 gChainFishingDexNavStreak;
+ 
+ void DisableWildEncounters(bool8 disabled);
+ u8 PickWildMonNature(void);
+@@ -41,5 +42,8 @@ u16 GetLocalWaterMon(void);
+ bool8 UpdateRepelCounter(void);
+ bool8 TryDoDoubleWildBattle(void);
+ bool8 StandardWildEncounter_Debug(void);
++void ResetChainFishingDexnavStreak(void);
++bool32 IsCurrentEncounterFishing(void);
++u32 CalculateChainFishingShinyRolls(void);
+ 
+ #endif // GUARD_WILD_ENCOUNTER_H
+diff --git a/src/field_player_avatar.c b/src/field_player_avatar.c
+index 99cab7fd7..c96803975 100644
+--- a/src/field_player_avatar.c
++++ b/src/field_player_avatar.c
+@@ -129,7 +129,9 @@ static u8 Fishing_InitDots(struct Task *);
+ static u8 Fishing_ShowDots(struct Task *);
+ static u8 Fishing_CheckForBite(struct Task *);
+ static u8 Fishing_GotBite(struct Task *);
++static u8 Fishing_ChangeMinigame(struct Task *);
+ static u8 Fishing_WaitForA(struct Task *);
++static u8 Fishing_APressNoMinigame(struct Task *);
+ static u8 Fishing_CheckMoreDots(struct Task *);
+ static u8 Fishing_MonOnHook(struct Task *);
+ static u8 Fishing_StartEncounter(struct Task *);
+@@ -139,6 +141,20 @@ static u8 Fishing_NoMon(struct Task *);
+ static u8 Fishing_PutRodAway(struct Task *);
+ static u8 Fishing_EndNoMon(struct Task *);
+ static void AlignFishingAnimationFrames(void);
++static bool32 DoesFishingMinigameAllowCancel(void);
++static bool32 Fishing_DoesFirstMonInPartyHaveSuctionCupsOrStickyHold(void);
++static bool32 Fishing_CheckForBiteWithStickyHold(void);
++static bool32 Fishing_CheckForBiteNoStickyHold(void);
++static bool32 Fishing_RollForBite(bool32);
++static u32 CalculateFishingBiteOdds(bool32);
++static u32 CalculateFishingProximityBoost(u32 odds);
++static void GetCoordinatesAroundBobber(s16[], s16[][AXIS_COUNT], u32);
++static u32 CountQualifyingTiles(s16[][AXIS_COUNT], s16 player[], u8 facingDirection, struct ObjectEvent *objectEvent, bool32 isTileLand[]);
++static bool32 CheckTileQualification(s16 tile[], s16 player[], u32 facingDirection, struct ObjectEvent* objectEvent, bool32 isTileLand[], u32 direction);
++static u32 CountLandTiles(bool32 isTileLand[]);
++static bool32 IsPlayerHere(s16, s16, s16, s16);
++static bool32 IsMetatileBlocking(s16, s16, u32);
++static bool32 IsMetatileLand(s16, s16, u32);
+ 
+ static u8 TrySpinPlayerForWarp(struct ObjectEvent *, s16 *);
+ 
+@@ -1678,32 +1694,52 @@ static void Task_WaitStopSurfing(u8 taskId)
+ #define tPlayerGfxId       data[14]
+ #define tFishingRod        data[15]
+ 
+-// Some states are jumped to directly, labeled below
+-#define FISHING_START_ROUND 3
+-#define FISHING_GOT_BITE 6
+-#define FISHING_ON_HOOK 9
+-#define FISHING_NO_BITE 11
+-#define FISHING_GOT_AWAY 12
+-#define FISHING_SHOW_RESULT 13
++#define FISHING_PROXIMITY_BOOST 4
++#define FISHING_STICKY_BOOST    36
++#define FISHING_DEFAULT_ODDS    50
++
++enum
++{
++    FISHING_INIT,
++    FISHING_GET_ROD_OUT,
++    FISHING_WAIT_BEFORE_DOTS,
++    FISHING_START_ROUND,
++    FISHING_SHOW_DOTS,
++    FISHING_CHECK_FOR_BITE,
++    FISHING_GOT_BITE,
++    FISHING_CHANGE_MINIGAME,
++    FISHING_WAIT_FOR_A,
++    FISHING_A_PRESS_NO_MINIGAME,
++    FISHING_CHECK_MORE_DOTS,
++    FISHING_ON_HOOK,
++    FISHING_START_ENCOUNTER,
++    FISHING_NO_BITE,
++    FISHING_GOT_AWAY,
++    FISHING_SHOW_RESULT,
++    FISHING_PUT_ROD_AWAY,
++    FISHING_END_NO_MON,
++};
+ 
+ static bool8 (*const sFishingStateFuncs[])(struct Task *) =
+ {
+-    Fishing_Init,
+-    Fishing_GetRodOut,
+-    Fishing_WaitBeforeDots,
+-    Fishing_InitDots,       // FISHING_START_ROUND
+-    Fishing_ShowDots,
+-    Fishing_CheckForBite,
+-    Fishing_GotBite,        // FISHING_GOT_BITE
+-    Fishing_WaitForA,
+-    Fishing_CheckMoreDots,
+-    Fishing_MonOnHook,      // FISHING_ON_HOOK
+-    Fishing_StartEncounter,
+-    Fishing_NotEvenNibble,  // FISHING_NO_BITE
+-    Fishing_GotAway,        // FISHING_GOT_AWAY
+-    Fishing_NoMon,          // FISHING_SHOW_RESULT
+-    Fishing_PutRodAway,
+-    Fishing_EndNoMon,
++    Fishing_Init,             // FISHING_INIT,
++    Fishing_GetRodOut,        // FISHING_GET_ROD_OUT,
++    Fishing_WaitBeforeDots,   // FISHING_WAIT_BEFORE_DOTS,
++    Fishing_InitDots,         // FISHING_START_ROUND,
++    Fishing_ShowDots,         // FISHING_SHOW_DOTS,
++    Fishing_CheckForBite,     // FISHING_CHECK_FOR_BITE,
++    Fishing_GotBite,          // FISHING_GOT_BITE,
++    Fishing_ChangeMinigame,   // FISHING_CHANGE_MINIGAME,
++    Fishing_WaitForA,         // FISHING_WAIT_FOR_A,
++    Fishing_APressNoMinigame, // FISHING_A_PRESS_NO_MINIGAME,
++    Fishing_CheckMoreDots,    // FISHING_CHECK_MORE_DOTS,
++    Fishing_MonOnHook,        // FISHING_ON_HOOK,
++    Fishing_StartEncounter,   // FISHING_START_ENCOUNTER,
++    Fishing_NotEvenNibble,    // FISHING_NO_BITE,
++    Fishing_GotAway,          // FISHING_GOT_AWAY,
++    Fishing_NoMon,            // FISHING_SHOW_RESULT,
++    Fishing_PutRodAway,       // FISHING_PUT_ROD_AWAY,
++    Fishing_EndNoMon,         // FISHING_END_NO_MON,
+ };
+ 
+ void StartFishing(u8 rod)
+@@ -1790,6 +1826,9 @@ static bool8 Fishing_ShowDots(struct Task *task)
+     task->tFrameCounter++;
+     if (JOY_NEW(A_BUTTON))
+     {
++        if (!DoesFishingMinigameAllowCancel())
++            return FALSE;
++
+         task->tStep = FISHING_NO_BITE;
+         if (task->tRoundsPlayed != 0)
+             task->tStep = FISHING_GOT_AWAY;
+@@ -1828,30 +1867,21 @@ static bool8 Fishing_CheckForBite(struct Task *task)
+     if (!DoesCurrentMapHaveFishingMons())
+     {
+         task->tStep = FISHING_NO_BITE;
++        return TRUE;
+     }
+-    else
+-    {
+-        if (!GetMonData(&gPlayerParty[0], MON_DATA_SANITY_IS_EGG))
+-        {
+-            u16 ability = GetMonAbility(&gPlayerParty[0]);
+-            if (ability == ABILITY_SUCTION_CUPS || ability  == ABILITY_STICKY_HOLD)
+-            {
+-                if (Random() % 100 > 14)
+-                    bite = TRUE;
+-            }
+-        }
+ 
+-        if (!bite)
+-        {
+-            if (Random() & 1)
+-                task->tStep = FISHING_NO_BITE;
+-            else
+-                bite = TRUE;
+-        }
++    if(Fishing_DoesFirstMonInPartyHaveSuctionCupsOrStickyHold())
++        bite = Fishing_CheckForBiteWithStickyHold();
++
++    if (!bite)
++        bite = Fishing_CheckForBiteNoStickyHold();
++
++    if (!bite)
++        task->tStep = FISHING_NO_BITE;
++
++    if (bite)
++        StartSpriteAnim(&gSprites[gPlayerAvatar.spriteId], GetFishingBiteDirectionAnimNum(GetPlayerFacingDirection()));
+ 
+-        if (bite == TRUE)
+-            StartSpriteAnim(&gSprites[gPlayerAvatar.spriteId], GetFishingBiteDirectionAnimNum(GetPlayerFacingDirection()));
+-    }
+     return TRUE;
+ }
+ 
+@@ -1864,6 +1894,22 @@ static bool8 Fishing_GotBite(struct Task *task)
+     return FALSE;
+ }
+ 
++static u8 Fishing_ChangeMinigame(struct Task *task)
++{
++    switch (I_FISHING_MINIGAME)
++    {
++        case GEN_1:
++        case GEN_2:
++            task->tStep = FISHING_A_PRESS_NO_MINIGAME;
++            break;
++        case GEN_3:
++        default:
++            task->tStep = FISHING_WAIT_FOR_A;
++            break;
++    }
++    return TRUE;
++}
++
+ // We have a bite. Now, wait for the player to press A, or the timer to expire.
+ static bool8 Fishing_WaitForA(struct Task *task)
+ {
+@@ -1882,6 +1928,14 @@ static bool8 Fishing_WaitForA(struct Task *task)
+     return FALSE;
+ }
+ 
++static bool8 Fishing_APressNoMinigame(struct Task *task)
++{
++    AlignFishingAnimationFrames();
++    if (JOY_NEW(A_BUTTON))
++        task->tStep = FISHING_ON_HOOK;
++    return FALSE;
++}
++
+ // Determine if we're going to play the dot game again
+ static bool8 Fishing_CheckMoreDots(struct Task *task)
+ {
+@@ -1957,6 +2011,7 @@ static bool8 Fishing_StartEncounter(struct Task *task)
+ 
+ static bool8 Fishing_NotEvenNibble(struct Task *task)
+ {
++    ResetChainFishingDexnavStreak();
+     AlignFishingAnimationFrames();
+     StartSpriteAnim(&gSprites[gPlayerAvatar.spriteId], GetFishingNoCatchDirectionAnimNum(GetPlayerFacingDirection()));
+     FillWindowPixelBuffer(0, PIXEL_FILL(1));
+@@ -1967,6 +2022,7 @@ static bool8 Fishing_NotEvenNibble(struct Task *task)
+ 
+ static bool8 Fishing_GotAway(struct Task *task)
+ {
++    ResetChainFishingDexnavStreak();
+     AlignFishingAnimationFrames();
+     StartSpriteAnim(&gSprites[gPlayerAvatar.spriteId], GetFishingNoCatchDirectionAnimNum(GetPlayerFacingDirection()));
+     FillWindowPixelBuffer(0, PIXEL_FILL(1));
+@@ -2015,6 +2071,178 @@ static bool8 Fishing_EndNoMon(struct Task *task)
+     return FALSE;
+ }
+ 
++static bool32 DoesFishingMinigameAllowCancel(void)
++{
++    switch(I_FISHING_MINIGAME)
++    {
++        case GEN_1:
++        case GEN_2:
++            return FALSE;
++        case GEN_3:
++        default:
++            return TRUE;
++    }
++}
++
++static bool32 Fishing_DoesFirstMonInPartyHaveSuctionCupsOrStickyHold(void)
++{
++    u32 ability;
++
++    if (GetMonData(&gPlayerParty[0], MON_DATA_SANITY_IS_EGG))
++        return FALSE;
++
++    ability = GetMonAbility(&gPlayerParty[0]);
++
++    return (ability == ABILITY_SUCTION_CUPS || ability == ABILITY_STICKY_HOLD);
++}
++
++static bool32 Fishing_CheckForBiteWithStickyHold(void)
++{
++    return Fishing_RollForBite(TRUE);
++}
++
++static bool32 Fishing_CheckForBiteNoStickyHold(void)
++{
++    return Fishing_RollForBite(FALSE);
++}
++
++static bool32 Fishing_RollForBite(bool32 isStickyHold)
++{
++    return ((Random() % 100) > CalculateFishingBiteOdds(isStickyHold));
++}
++
++static u32 CalculateFishingBiteOdds(bool32 isStickyHold)
++{
++    u32 odds = FISHING_DEFAULT_ODDS;
++
++    if (isStickyHold)
++        odds -= FISHING_STICKY_BOOST;
++
++    odds -= CalculateFishingProximityBoost(odds);
++    return odds;
++}
++
++static u32 CalculateFishingProximityBoost(u32 odds)
++{
++    s16 player[AXIS_COUNT], bobber[AXIS_COUNT];
++    s16 surroundingTile[CARDINAL_DIRECTION_COUNT][AXIS_COUNT] = {{0, 0}};
++    bool32 isTileLand[CARDINAL_DIRECTION_COUNT] = {FALSE};
++    u32 facingDirection, numQualifyingTile = 0;
++    struct ObjectEvent *objectEvent;
++
++    if (!I_FISHING_PROXIMITY)
++        return 0;
++
++    objectEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
++
++    player[AXIS_X] = objectEvent->currentCoords.x;
++    player[AXIS_Y] = objectEvent->currentCoords.y;
++    bobber[AXIS_X] = objectEvent->currentCoords.x;
++    bobber[AXIS_Y] = objectEvent->currentCoords.y;
++
++    facingDirection = GetPlayerFacingDirection();
++    MoveCoords(facingDirection, &bobber[AXIS_X], &bobber[AXIS_Y]);
++
++    GetCoordinatesAroundBobber(bobber, surroundingTile, facingDirection);
++    numQualifyingTile = CountQualifyingTiles(surroundingTile, player, facingDirection, objectEvent, isTileLand);
++
++    numQualifyingTile += CountLandTiles(isTileLand);
++
++    return (numQualifyingTile == 3) ? odds : (numQualifyingTile * FISHING_PROXIMITY_BOOST);
++}
++
++static void GetCoordinatesAroundBobber(s16 bobber[], s16 surroundingTile[][AXIS_COUNT], u32 facingDirection)
++{
++    u32 direction;
++
++    for (direction = DIR_SOUTH; direction < CARDINAL_DIRECTION_COUNT; direction++)
++    {
++        surroundingTile[direction][AXIS_X] = bobber[AXIS_X];
++        surroundingTile[direction][AXIS_Y] = bobber[AXIS_Y];
++        MoveCoords(direction, &surroundingTile[direction][AXIS_X], &surroundingTile[direction][AXIS_Y]);
++    }
++}
++
++static u32 CountQualifyingTiles(s16 surroundingTile[][AXIS_COUNT], s16 player[], u8 facingDirection, struct ObjectEvent *objectEvent, bool32 isTileLand[])
++{
++    u32 numQualifyingTile = 0;
++    s16 tile[AXIS_COUNT];
++    u8 direction = DIR_SOUTH;
++
++    for (direction = DIR_SOUTH; direction < CARDINAL_DIRECTION_COUNT; direction++)
++    {
++        tile[AXIS_X] = surroundingTile[direction][AXIS_X];
++        tile[AXIS_Y] = surroundingTile[direction][AXIS_Y];
++
++        if (!CheckTileQualification(tile, player, facingDirection, objectEvent, isTileLand, direction))
++            continue;
++
++        numQualifyingTile++;
++    }
++    return numQualifyingTile;
++}
++
++static bool32 CheckTileQualification(s16 tile[], s16 player[], u32 facingDirection, struct ObjectEvent* objectEvent, bool32 isTileLand[], u32 direction)
++{
++    u32 collison = GetCollisionAtCoords(objectEvent, tile[AXIS_X], tile[AXIS_Y], facingDirection);
++
++    if (IsPlayerHere(tile[AXIS_X], tile[AXIS_Y], player[AXIS_X], player[AXIS_Y]))
++        return FALSE;
++    else if (IsMetatileBlocking(tile[AXIS_X], tile[AXIS_Y], collison))
++        return TRUE;
++    else if (MetatileBehavior_IsSurfableFishableWater(MapGridGetMetatileBehaviorAt(tile[AXIS_X], tile[AXIS_Y])))
++        return FALSE;
++    else if (IsMetatileLand(tile[AXIS_X], tile[AXIS_Y], collison))
++        isTileLand[direction] = TRUE;
++
++    return FALSE;
++}
++
++static u32 CountLandTiles(bool32 isTileLand[])
++{
++    u32 direction, numQualifyingTile = 0;
++
++    for (direction = DIR_SOUTH; direction < CARDINAL_DIRECTION_COUNT; direction++)
++        if (isTileLand[direction])
++            numQualifyingTile++;
++
++    return (numQualifyingTile < 2) ? 0 : numQualifyingTile;
++}
++
++static bool32 IsPlayerHere(s16 x, s16 y, s16 playerX, s16 playerY)
++{
++    return ((x == playerX) && (y == playerY));
++}
++
++static bool32 IsMetatileBlocking(s16 x, s16 y, u32 collison)
++{
++    switch(collison)
++    {
++        case COLLISION_NONE:
++        case COLLISION_STOP_SURFING:
++        case COLLISION_ELEVATION_MISMATCH:
++            return FALSE;
++        default:
++            return TRUE;
++        case COLLISION_OBJECT_EVENT:
++            return (gObjectEvents[GetObjectEventIdByXY(x,y)].inanimate);
++    }
++    return TRUE;
++}
++
++static bool32 IsMetatileLand(s16 x, s16 y, u32 collison)
++{
++    switch(collison)
++    {
++        case COLLISION_NONE:
++        case COLLISION_STOP_SURFING:
++        case COLLISION_ELEVATION_MISMATCH:
++            return TRUE;
++        default:
++            return FALSE;
++    }
++}
++
+ #undef tStep
+ #undef tFrameCounter
+ #undef tFishingRod
+diff --git a/src/fieldmap.c b/src/fieldmap.c
+index 5e8ffec4a..9305f0d23 100644
+--- a/src/fieldmap.c
++++ b/src/fieldmap.c
+@@ -16,6 +16,7 @@
+ #include "tv.h"
+ #include "constants/rgb.h"
+ #include "constants/metatile_behaviors.h"
++#include "wild_encounter.h"
+ 
+ struct ConnectionFlags
+ {
+@@ -66,6 +67,7 @@ const struct MapHeader *const GetMapHeaderFromConnection(const struct MapConnect
+ 
+ void InitMap(void)
+ {
++    ResetChainFishingDexnavStreak();
+     InitMapLayoutData(&gMapHeader);
+     SetOccupiedSecretBaseEntranceMetatiles(gMapHeader.events);
+     RunOnLoadMapScript();
+diff --git a/src/pokemon.c b/src/pokemon.c
+index 4f21b3ea1..a535dc868 100644
+--- a/src/pokemon.c
++++ b/src/pokemon.c
+@@ -56,6 +56,7 @@
+ #include "constants/trainers.h"
+ #include "constants/union_room.h"
+ #include "constants/weather.h"
++#include "wild_encounter.h"
+ 
+ #define FRIENDSHIP_EVO_THRESHOLD ((P_FRIENDSHIP_EVO_THRESHOLD >= GEN_9) ? 160 : 220)
+ 
+@@ -877,6 +878,8 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV,
+                 totalRerolls += I_SHINY_CHARM_ADDITIONAL_ROLLS;
+             if (LURE_STEP_COUNT != 0)
+                 totalRerolls += 1;
++            if (IsCurrentEncounterFishing())
++                totalRerolls += CalculateChainFishingShinyRolls();
+ 
+             while (GET_SHINY_VALUE(value, personality) >= SHINY_ODDS && totalRerolls > 0)
+             {
+diff --git a/src/wild_encounter.c b/src/wild_encounter.c
+index d59b88711..7a885b841 100644
+--- a/src/wild_encounter.c
++++ b/src/wild_encounter.c
+@@ -51,6 +51,15 @@ enum {
+ 
+ static u16 FeebasRandom(void);
+ static void FeebasSeedRng(u16 seed);
++static u32 GetLastFishingSpecies(void);
++static bool32 DoesSpeciesMatchLastFishingSpecies(u32 species);
++static u32 GetCurrentChainFishingDexnavStreak(void);
++static bool32 IsChainFishingStreakAtMax(void);
++static void IncrementChainFishingDexnavStreak(void);
++static void SetEncounterFishing(void);
++static void SetLastFishingSpecies(u32 species);
++static void HandleChainFishingStreak(u32 species);
++static void UpdateChainFishingSpeciesAndStreak(u32 species);
+ static bool8 IsWildLevelAllowedByRepel(u8 level);
+ static void ApplyFluteEncounterRateMod(u32 *encRate);
+ static void ApplyCleanseTagEncounterRateMod(u32 *encRate);
+@@ -67,6 +76,9 @@ EWRAM_DATA static u32 sFeebasRngValue = 0;
+ EWRAM_DATA bool8 gIsFishingEncounter = 0;
+ EWRAM_DATA bool8 gIsSurfingEncounter = 0;
+ 
++EWRAM_DATA u8 gChainFishingDexNavStreak = 0;
++EWRAM_DATA static u16 sLastFishingSpecies = 0;
++
+ #include "data/wild_encounters.h"
+ 
+ static const struct WildPokemon sWildFeebas = {20, 25, SPECIES_FEEBAS};
+@@ -514,10 +526,12 @@ static bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, u8 ar
+ static u16 GenerateFishingWildMon(const struct WildPokemonInfo *wildMonInfo, u8 rod)
+ {
+     u8 wildMonIndex = ChooseWildMonIndex_Fishing(rod);
++    u8 wildMonSpecies = wildMonInfo->wildPokemon[wildMonIndex].species;
+     u8 level = ChooseWildMonLevel(wildMonInfo->wildPokemon, wildMonIndex, WILD_AREA_FISHING);
+ 
+-    CreateWildMon(wildMonInfo->wildPokemon[wildMonIndex].species, level);
+-    return wildMonInfo->wildPokemon[wildMonIndex].species;
++    UpdateChainFishingSpeciesAndStreak(wildMonSpecies);
++    CreateWildMon(wildMonSpecies, level);
++    return wildMonSpecies;
+ }
+ 
+ static bool8 SetUpMassOutbreakEncounter(u8 flags)
+@@ -864,10 +878,84 @@ bool8 DoesCurrentMapHaveFishingMons(void)
+         return FALSE;
+ }
+ 
++static u32 GetLastFishingSpecies(void)
++{
++    return sLastFishingSpecies;
++}
++
++static bool32 DoesSpeciesMatchLastFishingSpecies(u32 species)
++{
++    return (species == GetLastFishingSpecies());
++}
++
++static u32 GetCurrentChainFishingDexnavStreak(void)
++{
++    return gChainFishingDexNavStreak;
++}
++
++static bool32 IsChainFishingStreakAtMax(void)
++{
++    return (GetCurrentChainFishingDexnavStreak() >= FISHING_CHAIN_LENGTH_MAX);
++}
++
++static void IncrementChainFishingDexnavStreak(void)
++{
++    gChainFishingDexNavStreak++;
++}
++
++void ResetChainFishingDexnavStreak(void)
++{
++    gChainFishingDexNavStreak = 0;
++}
++
++bool32 IsCurrentEncounterFishing(void)
++{
++    return gIsFishingEncounter;
++}
++
++static void SetEncounterFishing(void)
++{
++    gIsFishingEncounter = TRUE;
++}
++
++u32 CalculateChainFishingShinyRolls(void)
++{
++    return (1 + (2 * GetCurrentChainFishingDexnavStreak()));
++}
++
++static void SetLastFishingSpecies(u32 species)
++{
++    sLastFishingSpecies = species;
++}
++
++static void HandleChainFishingStreak(u32 species)
++{
++    if (!DoesSpeciesMatchLastFishingSpecies(species))
++    {
++        ResetChainFishingDexnavStreak();
++        return;
++    }
++
++    if (IsChainFishingStreakAtMax())
++        return;
++
++    IncrementChainFishingDexnavStreak();
++}
++
++static void UpdateChainFishingSpeciesAndStreak(u32 species)
++{
++    if (!I_FISHING_CHAIN)
++        return;
++
++    HandleChainFishingStreak(species);
++    SetLastFishingSpecies(species);
++}
++
+ void FishingWildEncounter(u8 rod)
+ {
+     u16 species;
+ 
++    SetEncounterFishing();
+     if (CheckFeebas() == TRUE)
+     {
+         u8 level = ChooseWildMonLevel(&sWildFeebas, 0, WILD_AREA_FISHING);
+@@ -879,9 +967,9 @@ void FishingWildEncounter(u8 rod)
+     {
+         species = GenerateFishingWildMon(gWildMonHeaders[GetCurrentMapWildMonHeaderId()].fishingMonsInfo, rod);
+     }
++
+     IncrementGameStat(GAME_STAT_FISHING_ENCOUNTERS);
+     SetPokemonAnglerSpecies(species);
+-    gIsFishingEncounter = TRUE;
+     BattleSetup_StartWildBattle();
+ }
+ 
