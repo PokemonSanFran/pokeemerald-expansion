@@ -42,7 +42,7 @@ u16 GetLocalWaterMon(void);
 bool8 UpdateRepelCounter(void);
 bool8 TryDoDoubleWildBattle(void);
 bool8 StandardWildEncounter_Debug(void);
-void ResetChainFishingDexnavStreak(void);
+void ResetChainFishingDexNavStreak(void);
 bool32 IsCurrentEncounterFishing(void);
 u32 CalculateChainFishingShinyRolls(void);
 

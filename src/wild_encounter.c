@@ -53,9 +53,9 @@ static u16 FeebasRandom(void);
 static void FeebasSeedRng(u16 seed);
 static u32 GetLastFishingSpecies(void);
 static bool32 DoesSpeciesMatchLastFishingSpecies(u32 species);
-static u32 GetCurrentChainFishingDexnavStreak(void);
+static u32 GetCurrentChainFishingDexNavStreak(void);
 static bool32 IsChainFishingStreakAtMax(void);
-static void IncrementChainFishingDexnavStreak(void);
+static void IncrementChainFishingDexNavStreak(void);
 static void SetEncounterFishing(void);
 static void SetLastFishingSpecies(u32 species);
 static void HandleChainFishingStreak(u32 species);
@@ -76,8 +76,10 @@ EWRAM_DATA static u32 sFeebasRngValue = 0;
 EWRAM_DATA bool8 gIsFishingEncounter = 0;
 EWRAM_DATA bool8 gIsSurfingEncounter = 0;
 
+#ifdef I_FISHING_CHAIN
 EWRAM_DATA u8 gChainFishingDexNavStreak = 0;
 EWRAM_DATA static u16 sLastFishingSpecies = 0;
+#endif
 
 #include "data/wild_encounters.h"
 
@@ -888,22 +890,22 @@ static bool32 DoesSpeciesMatchLastFishingSpecies(u32 species)
     return (species == GetLastFishingSpecies());
 }
 
-static u32 GetCurrentChainFishingDexnavStreak(void)
+static u32 GetCurrentChainFishingDexNavStreak(void)
 {
     return gChainFishingDexNavStreak;
 }
 
 static bool32 IsChainFishingStreakAtMax(void)
 {
-    return (GetCurrentChainFishingDexnavStreak() >= FISHING_CHAIN_LENGTH_MAX);
+    return (GetCurrentChainFishingDexNavStreak() >= FISHING_CHAIN_LENGTH_MAX);
 }
 
-static void IncrementChainFishingDexnavStreak(void)
+static void IncrementChainFishingDexNavStreak(void)
 {
     gChainFishingDexNavStreak++;
 }
 
-void ResetChainFishingDexnavStreak(void)
+void ResetChainFishingDexNavStreak(void)
 {
     gChainFishingDexNavStreak = 0;
 }
@@ -920,7 +922,7 @@ static void SetEncounterFishing(void)
 
 u32 CalculateChainFishingShinyRolls(void)
 {
-    return (1 + (2 * GetCurrentChainFishingDexnavStreak()));
+    return (1 + (2 * GetCurrentChainFishingDexNavStreak()));
 }
 
 static void SetLastFishingSpecies(u32 species)
@@ -932,14 +934,14 @@ static void HandleChainFishingStreak(u32 species)
 {
     if (!DoesSpeciesMatchLastFishingSpecies(species))
     {
-        ResetChainFishingDexnavStreak();
+        ResetChainFishingDexNavStreak();
         return;
     }
 
     if (IsChainFishingStreakAtMax())
         return;
 
-    IncrementChainFishingDexnavStreak();
+    IncrementChainFishingDexNavStreak();
 }
 
 static void UpdateChainFishingSpeciesAndStreak(u32 species)
