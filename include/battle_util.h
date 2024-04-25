@@ -39,6 +39,7 @@
 #define ABILITYEFFECT_SWITCH_IN_TERRAIN          16
 #define ABILITYEFFECT_SWITCH_IN_WEATHER          17
 #define ABILITYEFFECT_OPPORTUNIST                18
+#define ABILITYEFFECT_SWITCH_IN_STATUSES         19
 // Special cases
 #define ABILITYEFFECT_MUD_SPORT                  252 // Only used if B_SPORT_TURNS >= GEN_6
 #define ABILITYEFFECT_WATER_SPORT                253 // Only used if B_SPORT_TURNS >= GEN_6
@@ -53,6 +54,7 @@
 #define ITEMEFFECT_ORBS                         6
 #define ITEMEFFECT_LIFEORB_SHELLBELL            7
 #define ITEMEFFECT_USE_LAST_ITEM                8 // move end effects for just the battler, not whole field
+#define ITEMEFFECT_STATS_CHANGED                9 // For White Herb and Eject Pack
 
 #define WEATHER_HAS_EFFECT ((!IsAbilityOnField(ABILITY_CLOUD_NINE) && !IsAbilityOnField(ABILITY_AIR_LOCK)))
 
@@ -163,6 +165,8 @@ u32 SetRandomTarget(u32 battler);
 u32 GetMoveTarget(u16 move, u8 setTarget);
 u8 IsMonDisobedient(void);
 u32 GetBattlerHoldEffect(u32 battler, bool32 checkNegating);
+u32 GetBattlerHoldEffectIgnoreAbility(u32 battler, bool32 checkNegating);
+u32 GetBattlerHoldEffectInternal(u32 battler, bool32 checkNegating, bool32 checkAbility);
 u32 GetBattlerHoldEffectParam(u32 battler);
 bool32 IsMoveMakingContact(u32 move, u32 battlerAtk);
 bool32 IsBattlerGrounded(u32 battler);
@@ -200,7 +204,8 @@ bool32 IsHealBlockPreventingMove(u32 battler, u32 move);
 bool32 HasEnoughHpToEatBerry(u32 battler, u32 hpFraction, u32 itemId);
 bool32 IsPartnerMonFromSameTrainer(u32 battler);
 u8 GetCategoryBasedOnStats(u32 battler);
-bool32 TestSheerForceFlag(u32 battler, u16 move);
+bool32 MoveIsAffectedBySheerForce(u32 move);
+bool32 TestIfSheerForceAffected(u32 battler, u16 move);
 void TryRestoreHeldItems(void);
 bool32 CanStealItem(u32 battlerStealing, u32 battlerItem, u16 item);
 void TrySaveExchangedItem(u32 battler, u16 stolenItem);
@@ -221,10 +226,11 @@ void CopyMonAbilityAndTypesToBattleMon(u32 battler, struct Pokemon *mon);
 void RecalcBattlerStats(u32 battler, struct Pokemon *mon);
 bool32 IsAlly(u32 battlerAtk, u32 battlerDef);
 bool32 IsGen6ExpShareEnabled(void);
-bool32 MoveHasMoveEffect(u32 move, u32 moveEffect);
-bool32 MoveHasMoveEffectWithChance(u32 move, u32 moveEffect, u32 chance);
-bool32 MoveHasMoveEffectSelf(u32 move, u32 moveEffect);
-bool32 MoveHasMoveEffectSelfArg(u32 move, u32 moveEffect, u32 argument);
+bool32 MoveHasAdditionalEffect(u32 move, u32 moveEffect);
+bool32 MoveHasAdditionalEffectWithChance(u32 move, u32 moveEffect, u32 chance);
+bool32 MoveHasAdditionalEffectSelf(u32 move, u32 moveEffect);
+bool32 MoveHasAdditionalEffectSelfArg(u32 move, u32 moveEffect, u32 argument);
+bool32 MoveHasChargeTurnAdditionalEffect(u32 move);
 
 bool32 CanSleep(u32 battler);
 bool32 CanBePoisoned(u32 battlerAttacker, u32 battlerTarget);
@@ -244,7 +250,7 @@ bool32 AreBattlersOfOppositeGender(u32 battler1, u32 battler2);
 bool32 AreBattlersOfSameGender(u32 battler1, u32 battler2);
 u32 CalcSecondaryEffectChance(u32 battler, u32 battlerAbility, const struct AdditionalEffect *additionalEffect);
 bool32 MoveEffectIsGuaranteed(u32 battler, u32 battlerAbility, const struct AdditionalEffect *additionalEffect);
-u8 GetBattlerType(u32 battler, u8 typeIndex);
+u8 GetBattlerType(u32 battler, u8 typeIndex, bool32 ignoreTera);
 bool8 CanMonParticipateInSkyBattle(struct Pokemon *mon);
 bool8 IsMonBannedFromSkyBattles(u16 species);
 void RemoveBattlerType(u32 battler, u8 type);

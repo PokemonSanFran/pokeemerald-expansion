@@ -7,7 +7,8 @@ SINGLE_BATTLE_TEST("X Attack sharply raises battler's Attack stat", s16 damage)
     PARAMETRIZE { useItem = FALSE; }
     PARAMETRIZE { useItem = TRUE; }
     GIVEN {
-        ASSUME(gItems[ITEM_X_ATTACK].battleUsage == EFFECT_ITEM_INCREASE_STAT);
+        ASSUME(gItemsInfo[ITEM_X_ATTACK].battleUsage == EFFECT_ITEM_INCREASE_STAT);
+        ASSUME(gMovesInfo[MOVE_TACKLE].category == DAMAGE_CATEGORY_PHYSICAL);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -30,7 +31,8 @@ SINGLE_BATTLE_TEST("X Defense sharply raises battler's Defense stat", s16 damage
     PARAMETRIZE { useItem = FALSE; }
     PARAMETRIZE { useItem = TRUE; }
     GIVEN {
-        ASSUME(gItems[ITEM_X_DEFENSE].battleUsage == EFFECT_ITEM_INCREASE_STAT);
+        ASSUME(gItemsInfo[ITEM_X_DEFENSE].battleUsage == EFFECT_ITEM_INCREASE_STAT);
+        ASSUME(gMovesInfo[MOVE_TACKLE].category == DAMAGE_CATEGORY_PHYSICAL);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -53,14 +55,15 @@ SINGLE_BATTLE_TEST("X Sp. Atk sharply raises battler's Sp. Attack stat", s16 dam
     PARAMETRIZE { useItem = FALSE; }
     PARAMETRIZE { useItem = TRUE; }
     GIVEN {
-        ASSUME(gItems[ITEM_X_SP_ATK].battleUsage == EFFECT_ITEM_INCREASE_STAT);
+        ASSUME(gItemsInfo[ITEM_X_SP_ATK].battleUsage == EFFECT_ITEM_INCREASE_STAT);
+        ASSUME(gMovesInfo[MOVE_DISARMING_VOICE].category == DAMAGE_CATEGORY_SPECIAL);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
         if (useItem) TURN { USE_ITEM(player, ITEM_X_SP_ATK); }
         TURN { MOVE(player, MOVE_DISARMING_VOICE); }
     } SCENE {
-        MESSAGE("Wobbuffet used DisrmngVoice!");
+        MESSAGE("Wobbuffet used Disarming Voice!");
         HP_BAR(opponent, captureDamage: &results[i].damage);
     } FINALLY {
         if (B_X_ITEMS_BUFF >= GEN_7)
@@ -76,14 +79,15 @@ SINGLE_BATTLE_TEST("X Sp. Def sharply raises battler's Sp. Defense stat", s16 da
     PARAMETRIZE { useItem = FALSE; }
     PARAMETRIZE { useItem = TRUE; }
     GIVEN {
-        ASSUME(gItems[ITEM_X_SP_DEF].battleUsage == EFFECT_ITEM_INCREASE_STAT);
+        ASSUME(gItemsInfo[ITEM_X_SP_DEF].battleUsage == EFFECT_ITEM_INCREASE_STAT);
+        ASSUME(gMovesInfo[MOVE_DISARMING_VOICE].category == DAMAGE_CATEGORY_SPECIAL);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
         if (useItem) TURN { USE_ITEM(player, ITEM_X_SP_DEF); }
         TURN { MOVE(opponent, MOVE_DISARMING_VOICE); }
     } SCENE {
-        MESSAGE("Foe Wobbuffet used DisrmngVoice!");
+        MESSAGE("Foe Wobbuffet used Disarming Voice!");
         HP_BAR(player, captureDamage: &results[i].damage);
     } FINALLY {
         if (B_X_ITEMS_BUFF >= GEN_7)
@@ -99,7 +103,7 @@ SINGLE_BATTLE_TEST("X Speed sharply raises battler's Speed stat", s16 damage)
     PARAMETRIZE { useItem = FALSE; }
     PARAMETRIZE { useItem = TRUE; }
     GIVEN {
-        ASSUME(gItems[ITEM_X_SPEED].battleUsage == EFFECT_ITEM_INCREASE_STAT);
+        ASSUME(gItemsInfo[ITEM_X_SPEED].battleUsage == EFFECT_ITEM_INCREASE_STAT);
         if (B_X_ITEMS_BUFF >= GEN_7)
         {
             PLAYER(SPECIES_WOBBUFFET) { Speed(3); }
@@ -130,13 +134,13 @@ SINGLE_BATTLE_TEST("X Speed sharply raises battler's Speed stat", s16 damage)
 SINGLE_BATTLE_TEST("X Accuracy sharply raises battler's Accuracy stat")
 {
 
-    ASSUME(gBattleMoves[MOVE_SING].accuracy == 55);
+    ASSUME(gMovesInfo[MOVE_SING].accuracy == 55);
     if (B_X_ITEMS_BUFF >= GEN_7)
-        PASSES_RANDOMLY(gBattleMoves[MOVE_SING].accuracy * 5 / 3, 100, RNG_ACCURACY);
+        PASSES_RANDOMLY(gMovesInfo[MOVE_SING].accuracy * 5 / 3, 100, RNG_ACCURACY);
     else
-        PASSES_RANDOMLY(gBattleMoves[MOVE_SING].accuracy * 4 / 3, 100, RNG_ACCURACY);
+        PASSES_RANDOMLY(gMovesInfo[MOVE_SING].accuracy * 4 / 3, 100, RNG_ACCURACY);
     GIVEN {
-        ASSUME(gItems[ITEM_X_ACCURACY].battleUsage == EFFECT_ITEM_INCREASE_STAT);
+        ASSUME(gItemsInfo[ITEM_X_ACCURACY].battleUsage == EFFECT_ITEM_INCREASE_STAT);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -154,7 +158,7 @@ SINGLE_BATTLE_TEST("Max Mushrooms raises battler's Attack stat", s16 damage)
     PARAMETRIZE { useItem = FALSE; }
     PARAMETRIZE { useItem = TRUE; }
     GIVEN {
-        ASSUME(gItems[ITEM_MAX_MUSHROOMS].battleUsage == EFFECT_ITEM_INCREASE_ALL_STATS);
+        ASSUME(gItemsInfo[ITEM_MAX_MUSHROOMS].battleUsage == EFFECT_ITEM_INCREASE_ALL_STATS);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -174,7 +178,7 @@ SINGLE_BATTLE_TEST("Max Mushrooms raises battler's Defense stat", s16 damage)
     PARAMETRIZE { useItem = FALSE; }
     PARAMETRIZE { useItem = TRUE; }
     GIVEN {
-        ASSUME(gItems[ITEM_MAX_MUSHROOMS].battleUsage == EFFECT_ITEM_INCREASE_ALL_STATS);
+        ASSUME(gItemsInfo[ITEM_MAX_MUSHROOMS].battleUsage == EFFECT_ITEM_INCREASE_ALL_STATS);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -194,14 +198,14 @@ SINGLE_BATTLE_TEST("Max Mushrooms raises battler's Sp. Attack stat", s16 damage)
     PARAMETRIZE { useItem = FALSE; }
     PARAMETRIZE { useItem = TRUE; }
     GIVEN {
-        ASSUME(gItems[ITEM_MAX_MUSHROOMS].battleUsage == EFFECT_ITEM_INCREASE_ALL_STATS);
+        ASSUME(gItemsInfo[ITEM_MAX_MUSHROOMS].battleUsage == EFFECT_ITEM_INCREASE_ALL_STATS);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
         if (useItem) TURN { USE_ITEM(player, ITEM_MAX_MUSHROOMS); }
         TURN { MOVE(player, MOVE_DISARMING_VOICE); }
     } SCENE {
-        MESSAGE("Wobbuffet used DisrmngVoice!");
+        MESSAGE("Wobbuffet used Disarming Voice!");
         HP_BAR(opponent, captureDamage: &results[i].damage);
     } FINALLY {
         EXPECT_MUL_EQ(results[0].damage, Q_4_12(1.5), results[1].damage);
@@ -214,14 +218,14 @@ SINGLE_BATTLE_TEST("Max Mushrooms battler's Sp. Defense stat", s16 damage)
     PARAMETRIZE { useItem = FALSE; }
     PARAMETRIZE { useItem = TRUE; }
     GIVEN {
-        ASSUME(gItems[ITEM_MAX_MUSHROOMS].battleUsage == EFFECT_ITEM_INCREASE_ALL_STATS);
+        ASSUME(gItemsInfo[ITEM_MAX_MUSHROOMS].battleUsage == EFFECT_ITEM_INCREASE_ALL_STATS);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
         if (useItem) TURN { USE_ITEM(player, ITEM_MAX_MUSHROOMS); }
         TURN { MOVE(opponent, MOVE_DISARMING_VOICE); }
     } SCENE {
-        MESSAGE("Foe Wobbuffet used DisrmngVoice!");
+        MESSAGE("Foe Wobbuffet used Disarming Voice!");
         HP_BAR(player, captureDamage: &results[i].damage);
     } FINALLY {
         EXPECT_MUL_EQ(results[0].damage, Q_4_12(0.66), results[1].damage);
@@ -234,7 +238,7 @@ SINGLE_BATTLE_TEST("Max Mushrooms raises battler's Speed stat", s16 damage)
     PARAMETRIZE { useItem = FALSE; }
     PARAMETRIZE { useItem = TRUE; }
     GIVEN {
-        ASSUME(gItems[ITEM_MAX_MUSHROOMS].battleUsage == EFFECT_ITEM_INCREASE_ALL_STATS);
+        ASSUME(gItemsInfo[ITEM_MAX_MUSHROOMS].battleUsage == EFFECT_ITEM_INCREASE_ALL_STATS);
         PLAYER(SPECIES_WOBBUFFET) { Speed(4); }
         OPPONENT(SPECIES_WOBBUFFET) { Speed(5); }
     } WHEN {

@@ -3,9 +3,9 @@
 
 ASSUMPTIONS
 {
-    ASSUME(gBattleMoves[MOVE_WATER_PLEDGE].effect == EFFECT_PLEDGE);
-    ASSUME(gBattleMoves[MOVE_FIRE_PLEDGE].effect == EFFECT_PLEDGE);
-    ASSUME(gBattleMoves[MOVE_GRASS_PLEDGE].effect == EFFECT_PLEDGE);
+    ASSUME(gMovesInfo[MOVE_WATER_PLEDGE].effect == EFFECT_PLEDGE);
+    ASSUME(gMovesInfo[MOVE_FIRE_PLEDGE].effect == EFFECT_PLEDGE);
+    ASSUME(gMovesInfo[MOVE_GRASS_PLEDGE].effect == EFFECT_PLEDGE);
 }
 
 DOUBLE_BATTLE_TEST("Water and Fire Pledge create a rainbow on the user's side of the field for four turns")
@@ -38,7 +38,7 @@ DOUBLE_BATTLE_TEST("Rainbow doubles the chance of secondary move effects")
 {
     PASSES_RANDOMLY(20, 100, RNG_SECONDARY_EFFECT);
     GIVEN {
-        ASSUME(MoveHasMoveEffect(MOVE_EMBER, MOVE_EFFECT_BURN) == TRUE);
+        ASSUME(MoveHasAdditionalEffect(MOVE_EMBER, MOVE_EFFECT_BURN) == TRUE);
         PLAYER(SPECIES_WOBBUFFET) { Speed(4); }
         PLAYER(SPECIES_WYNAUT) { Speed(3); }
         OPPONENT(SPECIES_WOBBUFFET) { Speed(8); }
@@ -59,7 +59,7 @@ DOUBLE_BATTLE_TEST("Rainbow flinch chance does not stack with Serene Grace")
 {
     PASSES_RANDOMLY(60, 100, RNG_SECONDARY_EFFECT);
     GIVEN {
-        ASSUME(MoveHasMoveEffect(MOVE_BITE, MOVE_EFFECT_FLINCH) == TRUE);
+        ASSUME(MoveHasAdditionalEffect(MOVE_BITE, MOVE_EFFECT_FLINCH) == TRUE);
         PLAYER(SPECIES_TOGEPI) { Speed(8); Ability(ABILITY_SERENE_GRACE); }
         PLAYER(SPECIES_WOBBUFFET) { Speed(5); }
         OPPONENT(SPECIES_WOBBUFFET) { Speed(4); }
@@ -189,7 +189,7 @@ DOUBLE_BATTLE_TEST("The base power of a combined pledge move effect is 150")
     s16 combinedPledgeDamage;
 
     GIVEN {
-        ASSUME(gBattleMoves[MOVE_HYPER_BEAM].power == 150);
+        ASSUME(gMovesInfo[MOVE_HYPER_BEAM].power == 150);
         PLAYER(SPECIES_WOBBUFFET) { Speed(4); }
         PLAYER(SPECIES_WYNAUT) { Speed(3); }
         OPPONENT(SPECIES_WOBBUFFET) { Speed(8); }
@@ -313,6 +313,7 @@ DOUBLE_BATTLE_TEST("Damage calculation: Combined pledge move")
     PARAMETRIZE { expectedDamage = 136; }
     PARAMETRIZE { expectedDamage = 135; }
     GIVEN {
+        ASSUME(gMovesInfo[MOVE_GRASS_PLEDGE].category == DAMAGE_CATEGORY_SPECIAL);
         PLAYER(SPECIES_WOBBUFFET) { Speed(4); }
         PLAYER(SPECIES_WOBBUFFET) { HP(521); SpDefense(152); Speed(3); }
         OPPONENT(SPECIES_CHARIZARD) { Speed(8); }

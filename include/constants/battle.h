@@ -129,7 +129,7 @@
 #define STATUS2_FLINCHED              (1 << 3)
 #define STATUS2_UPROAR                (1 << 4 | 1 << 5 | 1 << 6)
 #define STATUS2_UPROAR_TURN(num)      ((num) << 4)
-#define STATUS2_UNUSED                (1 << 7)
+#define STATUS2_TORMENT               (1 << 7)
 #define STATUS2_BIDE                  (1 << 8 | 1 << 9)
 #define STATUS2_BIDE_TURN(num)        (((num) << 8) & STATUS2_BIDE)
 #define STATUS2_LOCK_CONFUSE          (1 << 10 | 1 << 11) // e.g. Thrash
@@ -139,7 +139,7 @@
 #define STATUS2_POWDER                (1 << 14)
 #define STATUS2_INFATUATION           (1 << 16 | 1 << 17 | 1 << 18 | 1 << 19)  // 4 bits, one for every battler
 #define STATUS2_INFATUATED_WITH(battler) (gBitTable[battler] << 16)
-#define STATUS2_FOCUS_ENERGY          (1 << 20)
+#define STATUS2_DEFENSE_CURL          (1 << 20)
 #define STATUS2_TRANSFORMED           (1 << 21)
 #define STATUS2_RECHARGE              (1 << 22)
 #define STATUS2_RAGE                  (1 << 23)
@@ -149,8 +149,9 @@
 #define STATUS2_NIGHTMARE             (1 << 27)
 #define STATUS2_CURSED                (1 << 28)
 #define STATUS2_FORESIGHT             (1 << 29)
-#define STATUS2_DEFENSE_CURL          (1 << 30)
-#define STATUS2_TORMENT               (1 << 31)
+#define STATUS2_DRAGON_CHEER          (1 << 30)
+#define STATUS2_FOCUS_ENERGY          (1 << 31)
+#define STATUS2_FOCUS_ENERGY_ANY      (STATUS2_DRAGON_CHEER | STATUS2_FOCUS_ENERGY)
 
 #define STATUS3_LEECHSEED_BATTLER       (1 << 0 | 1 << 1) // The battler to receive HP from Leech Seed
 #define STATUS3_LEECHSEED               (1 << 2)
@@ -166,7 +167,7 @@
 #define STATUS3_YAWN_TURN(num)          (((num) << 11) & STATUS3_YAWN)
 #define STATUS3_IMPRISONED_OTHERS       (1 << 13)
 #define STATUS3_GRUDGE                  (1 << 14)
-#define STATUS3_CANT_SCORE_A_CRIT       (1 << 15)
+#define STATUS3___UNUSED                (1 << 15)
 #define STATUS3_GASTRO_ACID             (1 << 16)
 #define STATUS3_EMBARGO                 (1 << 17)
 #define STATUS3_UNDERWATER              (1 << 18)
@@ -303,6 +304,9 @@
 #define B_WEATHER_SNOW_TEMPORARY      (1 << 12)
 #define B_WEATHER_SNOW_PERMANENT      (1 << 13)
 #define B_WEATHER_SNOW                (B_WEATHER_SNOW_TEMPORARY | B_WEATHER_SNOW_PERMANENT)
+#define B_WEATHER_FOG_TEMPORARY       (1 << 14)
+#define B_WEATHER_FOG_PERMANENT       (1 << 15)
+#define B_WEATHER_FOG                 (B_WEATHER_FOG_TEMPORARY | B_WEATHER_FOG_PERMANENT)
 
 // Battle Weather as enum
 #define ENUM_WEATHER_NONE                 0
@@ -314,6 +318,7 @@
 #define ENUM_WEATHER_RAIN_PRIMAL          6
 #define ENUM_WEATHER_STRONG_WINDS         7
 #define ENUM_WEATHER_SNOW                 8
+#define ENUM_WEATHER_FOG                  9
 
 // Move Effects
 #define MOVE_EFFECT_SLEEP               1
@@ -353,7 +358,7 @@
 #define MOVE_EFFECT_PREVENT_ESCAPE      33
 #define MOVE_EFFECT_NIGHTMARE           34
 #define MOVE_EFFECT_ALL_STATS_UP        35
-#define MOVE_EFFECT_RAPIDSPIN           36
+#define MOVE_EFFECT_RAPID_SPIN          36
 #define MOVE_EFFECT_REMOVE_STATUS       37
 #define MOVE_EFFECT_ATK_DEF_DOWN        38
 #define MOVE_EFFECT_ATK_PLUS_2          39
@@ -397,8 +402,9 @@
 #define MOVE_EFFECT_FLORAL_HEALING      77
 #define MOVE_EFFECT_SECRET_POWER        78
 #define MOVE_EFFECT_PSYCHIC_NOISE       79
+#define MOVE_EFFECT_TERA_BLAST          80
 
-#define NUM_MOVE_EFFECTS                80
+#define NUM_MOVE_EFFECTS                81
 
 #define MOVE_EFFECT_AFFECTS_USER        0x2000
 #define MOVE_EFFECT_CERTAIN             0x4000
@@ -515,5 +521,18 @@
 
 // Constants for Torment
 #define PERMANENT_TORMENT   0xF
+
+// Constants for B_VAR_STARTING_STATUS
+// Timer value controlled by B_VAR_STARTING_STATUS_TIMER
+#define STARTING_STATUS_NONE                0
+#define STARTING_STATUS_ELECTRIC_TERRAIN    1
+#define STARTING_STATUS_MISTY_TERRAIN       2
+#define STARTING_STATUS_GRASSY_TERRAIN      3
+#define STARTING_STATUS_PSYCHIC_TERRAIN     4
+#define STARTING_STATUS_TRICK_ROOM          5
+#define STARTING_STATUS_MAGIC_ROOM          6
+#define STARTING_STATUS_WONDER_ROOM         7
+#define STARTING_STATUS_TAILWIND_PLAYER     8
+#define STARTING_STATUS_TAILWIND_OPPONENT   9
 
 #endif // GUARD_CONSTANTS_BATTLE_H

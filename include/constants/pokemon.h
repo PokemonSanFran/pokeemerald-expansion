@@ -22,7 +22,8 @@
 #define TYPE_DRAGON           16
 #define TYPE_DARK             17
 #define TYPE_FAIRY            18
-#define NUMBER_OF_MON_TYPES   19
+#define TYPE_STELLAR          19
+#define NUMBER_OF_MON_TYPES   20
 
 // Pokémon egg groups
 #define EGG_GROUP_NONE                0
@@ -202,11 +203,7 @@
 #define AFFECTION_FIVE_HEARTS   5 // Max friendship
 
 // Friendship value that the majority of species use.
-#if P_UPDATED_FRIENDSHIP >= GEN_8
-#define STANDARD_FRIENDSHIP 50
-#else
-#define STANDARD_FRIENDSHIP 70
-#endif
+#define STANDARD_FRIENDSHIP ((P_UPDATED_FRIENDSHIP >= GEN_8) ? 50 : 70)
 
 #define MAX_FRIENDSHIP  255
 #define MAX_SHEEN       255
@@ -215,22 +212,14 @@
 #define MAX_PER_STAT_IVS 31
 #define MAX_IV_MASK 31
 #define USE_RANDOM_IVS (MAX_PER_STAT_IVS + 1)
-#if P_EV_CAP >= GEN_6
-#define MAX_PER_STAT_EVS 252
-#else
-#define MAX_PER_STAT_EVS 255
-#endif
+#define MAX_PER_STAT_EVS ((P_EV_CAP >= GEN_6) ? 252 : 255)
 #define MAX_TOTAL_EVS 510
-#if I_VITAMIN_EV_CAP >= GEN_8
-#define EV_ITEM_RAISE_LIMIT MAX_PER_STAT_EVS
-#else
-#define EV_ITEM_RAISE_LIMIT 100
-#endif
+#define EV_ITEM_RAISE_LIMIT ((I_VITAMIN_EV_CAP >= GEN_8) ? MAX_PER_STAT_EVS : 100)
 
 // Move category defines.
-#define BATTLE_CATEGORY_PHYSICAL    0
-#define BATTLE_CATEGORY_SPECIAL     1
-#define BATTLE_CATEGORY_STATUS      2
+#define DAMAGE_CATEGORY_PHYSICAL    0
+#define DAMAGE_CATEGORY_SPECIAL     1
+#define DAMAGE_CATEGORY_STATUS      2
 
 // Growth rates
 #define GROWTH_MEDIUM_FAST  0
@@ -303,14 +292,19 @@
 #define EVO_MOVE_THREE_SEGMENT            44     // Pokémon levels up, knows specified move, has a personality value with a modulus of 1-99
 #define EVO_LEVEL_FAMILY_OF_THREE         45     // Pokémon reaches the specified level with a personality value with a modulus of 0
 #define EVO_LEVEL_FAMILY_OF_FOUR          46     // Pokémon reaches the specified level with a personality value with a modulus of 1-99
+#define EVO_LEVEL_MOVE_TWENTY_TIMES       47     // Pokémon levels up after having used a move for at least 20 times
+#define EVO_LEVEL_RECOIL_DAMAGE_MALE      48     // Pokémon levels up after having suffered specified amount of non-fainting recoil damage as a male
+#define EVO_LEVEL_RECOIL_DAMAGE_FEMALE    49     // Pokémon levels up after having suffered specified amount of non-fainting recoil damage as a female
+#define EVO_LEVEL_ITEM_COUNT_999          50     // Pokémon levels up after trainer has collected 999 of a specific item
 
 // Evolution 'modes,' for GetEvolutionTargetSpecies
 #define EVO_MODE_NORMAL            0
-#define EVO_MODE_TRADE             1
-#define EVO_MODE_ITEM_USE          2
-#define EVO_MODE_ITEM_CHECK        3 // If an Everstone is being held, still want to show that the stone *could* be used on that Pokémon to evolve
-#define EVO_MODE_BATTLE_SPECIAL    4
-#define EVO_MODE_OVERWORLD_SPECIAL 5
+#define EVO_MODE_CANT_STOP         1
+#define EVO_MODE_TRADE             2
+#define EVO_MODE_ITEM_USE          3
+#define EVO_MODE_ITEM_CHECK        4 // If an Everstone is being held, still want to show that the stone *could* be used on that Pokémon to evolve
+#define EVO_MODE_BATTLE_SPECIAL    5
+#define EVO_MODE_OVERWORLD_SPECIAL 6
 
 #define MON_PIC_WIDTH 64
 #define MON_PIC_HEIGHT 64
@@ -331,6 +325,9 @@
 #define NUM_ABILITY_SLOTS (NUM_NORMAL_ABILITY_SLOTS + NUM_HIDDEN_ABILITY_SLOTS)
 #define NUM_NORMAL_ABILITY_SLOTS 2
 #define NUM_HIDDEN_ABILITY_SLOTS 1
+
+// Used as a signal for givemon to generate a default ability by personality.
+#define NUM_ABILITY_PERSONALITY 0xFF
 
 #define LEGENDARY_PERFECT_IV_COUNT 3
 

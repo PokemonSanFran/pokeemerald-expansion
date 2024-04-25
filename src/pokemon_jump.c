@@ -415,7 +415,7 @@ static void DoPokeJumpCountdown(void);
 static void Msg_CommunicationStandby(void);
 static void Task_ShowPokemonJumpRecords(u8);
 static void PrintRecordsText(u16, int);
-static void TruncateToFirstWordOnly(u8 *);
+static inline void TruncateToFirstWordOnly(u8 *);
 
 EWRAM_DATA static struct PokemonJump *sPokemonJump = NULL;
 EWRAM_DATA static struct PokemonJumpGfx *sPokemonJumpGfx = NULL;
@@ -453,6 +453,7 @@ static const struct PokemonJumpMons sPokeJumpMons[] =
     { .species = SPECIES_PIKACHU_ALOLA_CAP,                 .jumpType = JUMP_TYPE_NORMAL, },
     { .species = SPECIES_PIKACHU_PARTNER_CAP,               .jumpType = JUMP_TYPE_NORMAL, },
     { .species = SPECIES_PIKACHU_WORLD_CAP,                 .jumpType = JUMP_TYPE_NORMAL, },
+    { .species = SPECIES_PIKACHU_PARTNER,                   .jumpType = JUMP_TYPE_NORMAL, },
     { .species = SPECIES_SANDSHREW,                         .jumpType = JUMP_TYPE_NORMAL, },
     { .species = SPECIES_SANDSHREW_ALOLAN,                  .jumpType = JUMP_TYPE_SLOW, },
     { .species = SPECIES_NIDORAN_F,                         .jumpType = JUMP_TYPE_NORMAL, },
@@ -477,6 +478,7 @@ static const struct PokemonJumpMons sPokeJumpMons[] =
     { .species = SPECIES_CUBONE,                            .jumpType = JUMP_TYPE_NORMAL, },
     { .species = SPECIES_DITTO,                             .jumpType = JUMP_TYPE_SLOW, },
     { .species = SPECIES_EEVEE,                             .jumpType = JUMP_TYPE_NORMAL, },
+    { .species = SPECIES_EEVEE_PARTNER,                     .jumpType = JUMP_TYPE_NORMAL, },
     { .species = SPECIES_OMANYTE,                           .jumpType = JUMP_TYPE_FAST, },
     { .species = SPECIES_KABUTO,                            .jumpType = JUMP_TYPE_FAST, },
     { .species = SPECIES_CHIKORITA,                         .jumpType = JUMP_TYPE_SLOW, },
@@ -629,8 +631,44 @@ static const struct PokemonJumpMons sPokeJumpMons[] =
     { .species = SPECIES_FROAKIE,                           .jumpType = JUMP_TYPE_FAST, },
     { .species = SPECIES_FROGADIER,                         .jumpType = JUMP_TYPE_FAST, },
     { .species = SPECIES_BUNNELBY,                          .jumpType = JUMP_TYPE_FAST, },
-    { .species = SPECIES_SCATTERBUG,                        .jumpType = JUMP_TYPE_FAST, },
-    { .species = SPECIES_SPEWPA,                            .jumpType = JUMP_TYPE_NORMAL, },
+    { .species = SPECIES_SCATTERBUG_POLAR,                  .jumpType = JUMP_TYPE_FAST, },
+    { .species = SPECIES_SCATTERBUG_TUNDRA,                 .jumpType = JUMP_TYPE_FAST, },
+    { .species = SPECIES_SCATTERBUG_CONTINENTAL,            .jumpType = JUMP_TYPE_FAST, },
+    { .species = SPECIES_SCATTERBUG_GARDEN,                 .jumpType = JUMP_TYPE_FAST, },
+    { .species = SPECIES_SCATTERBUG_ELEGANT,                .jumpType = JUMP_TYPE_FAST, },
+    { .species = SPECIES_SCATTERBUG_MEADOW,                 .jumpType = JUMP_TYPE_FAST, },
+    { .species = SPECIES_SCATTERBUG_MODERN,                 .jumpType = JUMP_TYPE_FAST, },
+    { .species = SPECIES_SCATTERBUG_MARINE,                 .jumpType = JUMP_TYPE_FAST, },
+    { .species = SPECIES_SCATTERBUG_ARCHIPELAGO,            .jumpType = JUMP_TYPE_FAST, },
+    { .species = SPECIES_SCATTERBUG_HIGH_PLAINS,            .jumpType = JUMP_TYPE_FAST, },
+    { .species = SPECIES_SCATTERBUG_SANDSTORM,              .jumpType = JUMP_TYPE_FAST, },
+    { .species = SPECIES_SCATTERBUG_RIVER,                  .jumpType = JUMP_TYPE_FAST, },
+    { .species = SPECIES_SCATTERBUG_MONSOON,                .jumpType = JUMP_TYPE_FAST, },
+    { .species = SPECIES_SCATTERBUG_SAVANNA,                .jumpType = JUMP_TYPE_FAST, },
+    { .species = SPECIES_SCATTERBUG_SUN,                    .jumpType = JUMP_TYPE_FAST, },
+    { .species = SPECIES_SCATTERBUG_OCEAN,                  .jumpType = JUMP_TYPE_FAST, },
+    { .species = SPECIES_SCATTERBUG_JUNGLE,                 .jumpType = JUMP_TYPE_FAST, },
+    { .species = SPECIES_SCATTERBUG_FANCY,                  .jumpType = JUMP_TYPE_FAST, },
+    { .species = SPECIES_SCATTERBUG_POKE_BALL,              .jumpType = JUMP_TYPE_FAST, },
+    { .species = SPECIES_SPEWPA_POLAR,                      .jumpType = JUMP_TYPE_NORMAL, },
+    { .species = SPECIES_SPEWPA_TUNDRA,                     .jumpType = JUMP_TYPE_NORMAL, },
+    { .species = SPECIES_SPEWPA_CONTINENTAL,                .jumpType = JUMP_TYPE_NORMAL, },
+    { .species = SPECIES_SPEWPA_GARDEN,                     .jumpType = JUMP_TYPE_NORMAL, },
+    { .species = SPECIES_SPEWPA_ELEGANT,                    .jumpType = JUMP_TYPE_NORMAL, },
+    { .species = SPECIES_SPEWPA_MEADOW,                     .jumpType = JUMP_TYPE_NORMAL, },
+    { .species = SPECIES_SPEWPA_MODERN,                     .jumpType = JUMP_TYPE_NORMAL, },
+    { .species = SPECIES_SPEWPA_MARINE,                     .jumpType = JUMP_TYPE_NORMAL, },
+    { .species = SPECIES_SPEWPA_ARCHIPELAGO,                .jumpType = JUMP_TYPE_NORMAL, },
+    { .species = SPECIES_SPEWPA_HIGH_PLAINS,                .jumpType = JUMP_TYPE_NORMAL, },
+    { .species = SPECIES_SPEWPA_SANDSTORM,                  .jumpType = JUMP_TYPE_NORMAL, },
+    { .species = SPECIES_SPEWPA_RIVER,                      .jumpType = JUMP_TYPE_NORMAL, },
+    { .species = SPECIES_SPEWPA_MONSOON,                    .jumpType = JUMP_TYPE_NORMAL, },
+    { .species = SPECIES_SPEWPA_SAVANNA,                    .jumpType = JUMP_TYPE_NORMAL, },
+    { .species = SPECIES_SPEWPA_SUN,                        .jumpType = JUMP_TYPE_NORMAL, },
+    { .species = SPECIES_SPEWPA_OCEAN,                      .jumpType = JUMP_TYPE_NORMAL, },
+    { .species = SPECIES_SPEWPA_JUNGLE,                     .jumpType = JUMP_TYPE_NORMAL, },
+    { .species = SPECIES_SPEWPA_FANCY,                      .jumpType = JUMP_TYPE_NORMAL, },
+    { .species = SPECIES_SPEWPA_POKE_BALL,                  .jumpType = JUMP_TYPE_NORMAL, },
     { .species = SPECIES_LITLEO,                            .jumpType = JUMP_TYPE_FAST, },
     { .species = SPECIES_PANCHAM,                           .jumpType = JUMP_TYPE_FAST, },
     { .species = SPECIES_ESPURR,                            .jumpType = JUMP_TYPE_NORMAL, },
@@ -4332,13 +4370,16 @@ static bool32 RecvPacket_MemberStateToMember(struct PokemonJump_Player *player, 
     return TRUE;
 }
 
+#if FREE_POKEMON_JUMP == FALSE
 static struct PokemonJumpRecords *GetPokeJumpRecords(void)
 {
     return &gSaveBlock2Ptr->pokeJump;
 }
+#endif //FREE_POKEMON_JUMP
 
 void ResetPokemonJumpRecords(void)
 {
+#if FREE_POKEMON_JUMP == FALSE
     struct PokemonJumpRecords *records = GetPokeJumpRecords();
     records->jumpsInRow = 0;
     records->bestJumpScore = 0;
@@ -4346,10 +4387,12 @@ void ResetPokemonJumpRecords(void)
     records->gamesWithMaxPlayers = 0;
     records->unused2 = 0;
     records->unused1 = 0;
+#endif //FREE_POKEMON_JUMP
 }
 
 static bool32 TryUpdateRecords(u32 jumpScore, u16 jumpsInRow, u16 excellentsInRow)
 {
+#if FREE_POKEMON_JUMP == FALSE
     struct PokemonJumpRecords *records = GetPokeJumpRecords();
     bool32 newRecord = FALSE;
 
@@ -4361,13 +4404,18 @@ static bool32 TryUpdateRecords(u32 jumpScore, u16 jumpsInRow, u16 excellentsInRo
         records->excellentsInRow = excellentsInRow, newRecord = TRUE;
 
     return newRecord;
+#else
+    return FALSE;
+#endif //FREE_POKEMON_JUMP
 }
 
 static void IncrementGamesWithMaxPlayers(void)
 {
+#if FREE_POKEMON_JUMP == FALSE
     struct PokemonJumpRecords *records = GetPokeJumpRecords();
     if (records->gamesWithMaxPlayers < 9999)
         records->gamesWithMaxPlayers++;
+#endif //FREE_POKEMON_JUMP
 }
 
 void ShowPokemonJumpRecords(void)
@@ -4447,6 +4495,7 @@ static void Task_ShowPokemonJumpRecords(u8 taskId)
 
 static void PrintRecordsText(u16 windowId, int width)
 {
+#if FREE_POKEMON_JUMP == FALSE
     int i, x;
     int recordNums[3];
     struct PokemonJumpRecords *records = GetPokeJumpRecords();
@@ -4467,9 +4516,10 @@ static void PrintRecordsText(u16 windowId, int width)
         AddTextPrinterParameterized(windowId, FONT_NORMAL, gStringVar1, x, 25 + (i * 16), TEXT_SKIP_DRAW, NULL);
     }
     PutWindowTilemap(windowId);
+#endif //FREE_POKEMON_JUMP
 }
 
-static void TruncateToFirstWordOnly(u8 *str)
+static inline void TruncateToFirstWordOnly(u8 *str)
 {
     for (;*str != EOS; str++)
     {
