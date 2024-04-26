@@ -138,6 +138,7 @@ Debug_EventScript_Text_DefensiveIVs:
 	.string "HP IVs: {STR_VAR_1}, DEF IVs: {STR_VAR_2}, SPDEF IVs: {STR_VAR_3}$"
 
 Debug_EventScript_Script_1::
+setflag FLAG_UNUSED_0x264
 givemon species=SPECIES_SMEARGLE,level=100,item=ITEM_AGUAV_BERRY,ball=ITEM_LOVE_BALL,nature=0,abilityNum=1,gender=MALE,hpEv=0,atkEv=0,defEv=0,speedEv=0,spAtkEv=0,spDefEv=0,hpIv=31,atkIv=0,defIv=31,speedIv=31,spAtkIv=31,spDefIv=31,move1=MOVE_DOODLE,move2=MOVE_ATTRACT,move3=MOVE_STICKY_WEB,move4=MOVE_TOXIC_SPIKES,isShiny=TRUE,ggMaxFactor=FALSE,teraType =TYPE_ROCK
 givemon species=SPECIES_SMEARGLE,level=100,item=ITEM_AGUAV_BERRY,ball=ITEM_PREMIER_BALL,nature=0,abilityNum=1,gender=MALE,hpEv=0,atkEv=0,defEv=0,speedEv=0,spAtkEv=0,spDefEv=0,hpIv=31,atkIv=31,defIv=31,speedIv=31,spAtkIv=31,spDefIv=31,move1=MOVE_DOODLE,move2=MOVE_ATTRACT,move3=MOVE_REFLECT,move4=MOVE_POPULATION_BOMB,isShiny=TRUE,ggMaxFactor=FALSE,teraType =TYPE_ROCK
 givemon species=SPECIES_DEOXYS_SPEED,level=100,item=ITEM_EJECT_PACK,ball=ITEM_QUICK_BALL,nature=0,abilityNum=0,gender=MALE,hpEv=0,atkEv=0,defEv=0,speedEv=0,spAtkEv=0,spDefEv=0,hpIv=31,atkIv=0,defIv=31,speedIv=31,spAtkIv=31,spDefIv=31,move1=MOVE_SPIKES,move2=MOVE_STEALTH_ROCK,move3=MOVE_NONE,move4=MOVE_NONE,isShiny=TRUE,ggMaxFactor=FALSE,teraType =TYPE_ROCK
@@ -149,6 +150,7 @@ additem ITEM_TERA_ORB, 1
 	end
 
 Debug_EventScript_Script_2::
+setflag FLAG_UNUSED_0x264
 givemon species=SPECIES_SMEARGLE,level=100,item=ITEM_ROCKY_HELMET,ball=ITEM_DUSK_BALL,nature=0,abilityNum=1,gender=FEMALE,hpEv=0,atkEv=0,defEv=0,speedEv=0,spAtkEv=0,spDefEv=0,hpIv=31,atkIv=31,defIv=31,speedIv=31,spAtkIv=31,spDefIv=31,move1=MOVE_DOODLE,move2=MOVE_ATTRACT,move3=MOVE_GRAVITY,move4=MOVE_POPULATION_BOMB,isShiny=TRUE,ggMaxFactor=FALSE,teraType =TYPE_ROCK
 givemon species=SPECIES_SMEARGLE,level=100,item=ITEM_AGUAV_BERRY,ball=ITEM_ULTRA_BALL,nature=0,abilityNum=0,gender=FEMALE,hpEv=0,atkEv=0,defEv=0,speedEv=0,spAtkEv=0,spDefEv=0,hpIv=31,atkIv=0,defIv=31,speedIv=31,spAtkIv=31,spDefIv=31,move1=MOVE_DOODLE,move2=MOVE_ATTRACT,move3=MOVE_STICKY_WEB,move4=MOVE_TOXIC_SPIKES,isShiny=TRUE,ggMaxFactor=FALSE,teraType =TYPE_ROCK
 givemon species=SPECIES_DEOXYS_SPEED,level=100,item=ITEM_EJECT_PACK,ball=ITEM_REPEAT_BALL,nature=0,abilityNum=0,gender=FEMALE,hpEv=0,atkEv=0,defEv=0,speedEv=0,spAtkEv=0,spDefEv=0,hpIv=31,atkIv=0,defIv=31,speedIv=31,spAtkIv=31,spDefIv=31,move1=MOVE_SPIKES,move2=MOVE_STEALTH_ROCK,move3=MOVE_NONE,move4=MOVE_NONE,isShiny=TRUE,ggMaxFactor=FALSE,teraType =TYPE_ROCK
