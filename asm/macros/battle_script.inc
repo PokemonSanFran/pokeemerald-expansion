@@ -856,8 +856,9 @@
 	.byte 0x99
 	.endm
 
-	.macro setfocusenergy
+	.macro setfocusenergy battler:req
 	.byte 0x9a
+	.byte \battler
 	.endm
 
 	.macro transformdataexecution
@@ -1351,6 +1352,22 @@
 	.endm
 
 @ callnative macros
+	.macro savetarget
+	callnative BS_SaveTarget
+	.endm
+
+	.macro restoretarget
+	callnative BS_RestoreTarget
+	.endm
+	
+	.macro saveattacker
+	callnative BS_SaveAttacker
+	.endm
+	
+	.macro restoreattacker
+	callnative BS_RestoreAttacker
+	.endm
+	
 	.macro metalburstdamagecalculator failInstr:req
 	callnative BS_CalcMetalBurstDmg
 	.4byte \failInstr
@@ -1388,9 +1405,10 @@
 	.4byte \jumpInstr
 	.endm
 
-	.macro itemrestorehp jumpInstr:req
+	.macro itemrestorehp jumpInstr:req, restoreBattlerInstr:req
 	callnative BS_ItemRestoreHP
 	.4byte \jumpInstr
+	.4byte \restoreBattlerInstr
 	.endm
 
 	.macro itemcurestatus jumpInstr:req
@@ -1623,6 +1641,10 @@
 	callnative BS_TryUpdateRecoilTracker
 	.endm
 
+	.macro tryupdateleaderscresttracker
+	callnative BS_TryUpdateLeadersCrestTracker
+	.endm
+
 	.macro trytidyup clear:req, jumpInstr:req
 	callnative BS_TryTidyUp
 	.byte \clear
@@ -1633,9 +1655,25 @@
 	callnative BS_TryGulpMissile
 	.endm
 
+	.macro tryactivategulpmissile
+	callnative BS_TryActivateGulpMissile
+	.endm
+
 	.macro tryquash failInstr:req
 	callnative BS_TryQuash
 	.4byte \failInstr
+	.endm
+
+	.macro removeweather
+	callnative BS_RemoveWeather
+	.endm
+	
+	.macro applyterastallization
+	callnative BS_ApplyTerastallization
+	.endm
+
+	.macro damagetoquartertargethp
+	callnative BS_DamageToQuarterTargetHP
 	.endm
 
 @ various command changed to more readable macros
@@ -1758,14 +1796,6 @@
 
 	.macro switchinabilities battler:req
 	various \battler, VARIOUS_SWITCHIN_ABILITIES
-	.endm
-
-	.macro savetarget
-	various BS_TARGET, VARIOUS_SAVE_TARGET
-	.endm
-
-	.macro restoretarget
-	various BS_TARGET, VARIOUS_RESTORE_TARGET
 	.endm
 
 	.macro instanthpdrop battler:req
@@ -2202,10 +2232,6 @@
 	.4byte \failInstr
 	.endm
 
-	.macro shellsidearmcheck
-	various BS_ATTACKER, VARIOUS_SHELL_SIDE_ARM_CHECK
-	.endm
-
 	.macro jumpifteanoberry jumpInstr:req
 	various BS_ATTACKER, VARIOUS_TEATIME_TARGETS
 	.4byte \jumpInstr
@@ -2370,10 +2396,6 @@
 
 	.macro dmgtocurrattackerhp
 	manipulatedamage DMG_CURR_ATTACKER_HP
-	.endm
-
-	.macro dmg_1_2_attackerhp
-	manipulatedamage DMG_1_2_ATTACKER_HP
 	.endm
 
 	.macro jumpifflowerveil jumpInstr:req

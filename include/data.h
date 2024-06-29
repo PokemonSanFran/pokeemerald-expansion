@@ -70,11 +70,11 @@ struct TrainerMon
     u8 nature:5;
     bool8 gender:2;
     bool8 isShiny:1;
+    u8 useGimmick:4;
     u8 dynamaxLevel:4;
     u8 teraType:5;
     bool8 gigantamaxFactor:1;
-    bool8 shouldDynamax:1;
-    bool8 shouldTerastal:1;
+    u8 padding:2;
 };
 
 #define TRAINER_PARTY(partyArray) partyArray, .partySize = ARRAY_COUNT(partyArray)
@@ -109,6 +109,10 @@ struct TypeInfo
     u8 palette;
     u16 zMove;
     u16 maxMove;
+    u16 teraTypeRGBValue;    // Most values pulled from the Tera type icon palette.
+    u16 damageCategory:2;    // Used for B_PHYSICAL_SPECIAL_SPLIT <= GEN_3
+    u16 padding:14;
+    const u32 *const paletteTMHM;
     //u16 enhanceItem;
     //u16 berry;
     //u16 gem;
@@ -117,6 +121,19 @@ struct TypeInfo
     //u16 zCrystal;
     //u16 teraShard;
     //u16 arceusForm;
+};
+
+struct FollowerMsgInfo
+{
+    const u8 *text;
+    const u8 *script;
+};
+
+struct FollowerMessagePool
+{
+    const struct FollowerMsgInfo *messages;
+    const u8 *script;
+    u16 length;
 };
 
 extern const u16 gMinigameDigits_Pal[];
@@ -150,6 +167,19 @@ extern const struct Trainer gTrainers[];
 extern const struct Trainer gBattlePartners[];
 
 extern const struct TrainerClass gTrainerClasses[TRAINER_CLASS_COUNT];
+
+// Follower text messages
+extern const struct FollowerMsgInfo gFollowerHappyMessages[];
+extern const struct FollowerMsgInfo gFollowerNeutralMessages[];
+extern const struct FollowerMsgInfo gFollowerSadMessages[];
+extern const struct FollowerMsgInfo gFollowerUpsetMessages[];
+extern const struct FollowerMsgInfo gFollowerAngryMessages[];
+extern const struct FollowerMsgInfo gFollowerPensiveMessages[];
+extern const struct FollowerMsgInfo gFollowerLoveMessages[];
+extern const struct FollowerMsgInfo gFollowerSurpriseMessages[];
+extern const struct FollowerMsgInfo gFollowerCuriousMessages[];
+extern const struct FollowerMsgInfo gFollowerMusicMessages[];
+extern const struct FollowerMsgInfo gFollowerPoisonedMessages[];
 
 static inline u16 SanitizeTrainerId(u16 trainerId)
 {

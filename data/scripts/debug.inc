@@ -154,7 +154,7 @@ setflag FLAG_UNUSED_0x264
 givemon species=SPECIES_SMEARGLE,level=100,item=ITEM_ROCKY_HELMET,ball=ITEM_DUSK_BALL,nature=0,abilityNum=1,gender=FEMALE,hpEv=0,atkEv=0,defEv=0,speedEv=0,spAtkEv=0,spDefEv=0,hpIv=31,atkIv=31,defIv=31,speedIv=31,spAtkIv=31,spDefIv=31,move1=MOVE_DOODLE,move2=MOVE_ATTRACT,move3=MOVE_GRAVITY,move4=MOVE_POPULATION_BOMB,isShiny=TRUE,ggMaxFactor=FALSE,teraType =TYPE_ROCK
 givemon species=SPECIES_SMEARGLE,level=100,item=ITEM_AGUAV_BERRY,ball=ITEM_ULTRA_BALL,nature=0,abilityNum=0,gender=FEMALE,hpEv=0,atkEv=0,defEv=0,speedEv=0,spAtkEv=0,spDefEv=0,hpIv=31,atkIv=0,defIv=31,speedIv=31,spAtkIv=31,spDefIv=31,move1=MOVE_DOODLE,move2=MOVE_ATTRACT,move3=MOVE_STICKY_WEB,move4=MOVE_TOXIC_SPIKES,isShiny=TRUE,ggMaxFactor=FALSE,teraType =TYPE_ROCK
 givemon species=SPECIES_DEOXYS_SPEED,level=100,item=ITEM_EJECT_PACK,ball=ITEM_REPEAT_BALL,nature=0,abilityNum=0,gender=FEMALE,hpEv=0,atkEv=0,defEv=0,speedEv=0,spAtkEv=0,spDefEv=0,hpIv=31,atkIv=0,defIv=31,speedIv=31,spAtkIv=31,spDefIv=31,move1=MOVE_SPIKES,move2=MOVE_STEALTH_ROCK,move3=MOVE_NONE,move4=MOVE_NONE,isShiny=TRUE,ggMaxFactor=FALSE,teraType =TYPE_ROCK
-givemon species=SPECIES_GARDEVOIR,level=100,item=ITEM_EJECT_PACK,ball=ITEM_BEAST_BALL,nature=0,abilityNum=1,gender=FEMALE,hpEv=0,atkEv=0,defEv=0,speedEv=0,spAtkEv=0,spDefEv=0,hpIv=31,atkIv=0,defIv=31,speedIv=31,spAtkIv=31,spDefIv=31,move1=MOVE_HYPER_VOICE,move2=MOVE_HEAL_PULSE,move3=MOVE_NONE,move4=MOVE_NONE,isShiny=TRUE,ggMaxFactor=FALSE,teraType =TYPE_ROCK
+givemon species=SPECIES_GARDEVOIR,level=100,item=ITEM_EJECT_PACK,ball=ITEM_BEAST_BALL,nature=0,abilityNum=1,gender=MALE,hpEv=0,atkEv=0,defEv=0,speedEv=0,spAtkEv=0,spDefEv=0,hpIv=31,atkIv=0,defIv=31,speedIv=31,spAtkIv=31,spDefIv=31,move1=MOVE_HYPER_VOICE,move2=MOVE_HEAL_PULSE,move3=MOVE_NONE,move4=MOVE_NONE,isShiny=TRUE,ggMaxFactor=FALSE,teraType =TYPE_ROCK
 givemon species=SPECIES_GOODRA,level=100,item=ITEM_EJECT_PACK,ball=ITEM_FRIEND_BALL,nature=0,abilityNum=2,gender=FEMALE,hpEv=0,atkEv=0,defEv=0,speedEv=0,spAtkEv=0,spDefEv=0,hpIv=31,atkIv=0,defIv=31,speedIv=31,spAtkIv=31,spDefIv=31,move1=MOVE_COUNTER,move2=MOVE_NONE,move3=MOVE_NONE,move4=MOVE_NONE,isShiny=TRUE,ggMaxFactor=FALSE,teraType =TYPE_ROCK
 givemon species=SPECIES_EEVEE,level=100,item=ITEM_EJECT_PACK,ball=ITEM_PARK_BALL,nature=0,abilityNum=2,gender=FEMALE,hpEv=0,atkEv=0,defEv=0,speedEv=0,spAtkEv=0,spDefEv=0,hpIv=31,atkIv=0,defIv=31,speedIv=31,spAtkIv=31,spDefIv=31,move1=MOVE_SPLASH,move2=MOVE_NONE,move3=MOVE_NONE,move4=MOVE_NONE,isShiny=TRUE,ggMaxFactor=FALSE,teraType =TYPE_ROCK
 additem ITEM_TERA_ORB, 1
@@ -196,15 +196,19 @@ additem ITEM_TERA_ORB, 1
 	end
 
 Debug_EventScript_Script_5::
+	release
 	end
 
 Debug_EventScript_Script_6::
+	release
 	end
 
 Debug_EventScript_Script_7::
+	release
 	end
 
 Debug_EventScript_Script_8::
+	release
 	end
 
 Debug_CheckSaveBlock::

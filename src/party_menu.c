@@ -14,6 +14,7 @@
 #include "decompress.h"
 #include "easy_chat.h"
 #include "event_data.h"
+#include "event_object_movement.h"
 #include "evolution_scene.h"
 #include "field_control_avatar.h"
 #include "field_effect.h"
@@ -74,12 +75,6 @@
 #include "constants/party_menu.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
-
-#if (DECAP_ENABLED) && (DECAP_MIRRORING) && !(DECAP_PARTY_MENU)
-#define gStringVar4 (MirrorPtr(gStringVar4))
-#define AddTextPrinterParameterized4(a, b, c, d, e, f, g, h, str) (AddTextPrinterParameterized4(a, b, c, d, e, f, g, h, MirrorPtr(str)))
-#define AddTextPrinterParameterized3(a, b, c, d, e, f, str) AddTextPrinterParameterized3(a, b, c, d, e, f, MirrorPtr(str))
-#endif
 
 enum {
     MENU_SUMMARY,
@@ -2757,10 +2752,7 @@ static void PrintMessage(const u8 *text)
 {
     DrawStdFrameWithCustomTileAndPalette(WIN_MSG, FALSE, 0x4F, 13);
     gTextFlags.canABSpeedUpPrint = TRUE;
-    if (DECAP_ENABLED && DECAP_MIRRORING && !DECAP_PARTY_MENU)
-        AddTextPrinterParameterized2(WIN_MSG, FONT_NORMAL, MirrorPtr(text), GetPlayerTextSpeedDelay(), 0, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
-    else
-        AddTextPrinterParameterized2(WIN_MSG, FONT_NORMAL, text, GetPlayerTextSpeedDelay(), 0, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
+    AddTextPrinterParameterized2(WIN_MSG, FONT_NORMAL, text, GetPlayerTextSpeedDelay(), 0, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
 }
 
 static void PartyMenuDisplayYesNoMenu(void)
@@ -4022,6 +4014,13 @@ bool8 FieldCallback_PrepareFadeInFromMenu(void)
     return TRUE;
 }
 
+// Same as above, but removes follower pokemon
+bool8 FieldCallback_PrepareFadeInForTeleport(void)
+{ 
+    RemoveFollowingPokemon();
+    return FieldCallback_PrepareFadeInFromMenu();
+}
+
 static void Task_FieldMoveWaitForFade(u8 taskId)
 {
     if (IsWeatherNotFadingIn() == TRUE)
@@ -4600,7 +4599,8 @@ void ItemUseCB_BattleScript(u8 taskId, TaskFunc task)
         gBattleStruct->itemPartyIndex[gBattlerInMenuId] = GetPartyIdFromBattleSlot(gPartyMenu.slotId);
         gPartyMenuUseExitCallback = TRUE;
         PlaySE(SE_SELECT);
-        RemoveBagItem(gSpecialVar_ItemId, 1);
+        if (!IsItemFlute(gSpecialVar_ItemId))
+            RemoveBagItem(gSpecialVar_ItemId, 1);
         ScheduleBgCopyTilemapToVram(2);
         gTasks[taskId].func = task;
     }
@@ -6361,6 +6361,7 @@ static void Task_TryItemUseFormChange(u8 taskId)
     case 0:
         targetSpecies = gTasks[taskId].tTargetSpecies;
         SetMonData(mon, MON_DATA_SPECIES, &targetSpecies);
+        TrySetDayLimitToFormChange(mon);
         CalculateMonStats(mon);
         gTasks[taskId].tState++;
         break;
@@ -6926,8 +6927,7 @@ static u8 GetPartySlotEntryStatus(s8 slot)
 
 static bool8 GetBattleEntryEligibility(struct Pokemon *mon)
 {
-    u16 i = 0;
-    u16 species;
+    u32 species;
 
     if (GetMonData(mon, MON_DATA_IS_EGG)
         || GetMonData(mon, MON_DATA_LEVEL) > GetBattleEntryLevelCap()
@@ -6948,11 +6948,8 @@ static bool8 GetBattleEntryEligibility(struct Pokemon *mon)
         return TRUE;
     default: // Battle Frontier
         species = GetMonData(mon, MON_DATA_SPECIES);
-        for (; gFrontierBannedSpecies[i] != 0xFFFF; i++)
-        {
-            if (gFrontierBannedSpecies[i] == GET_BASE_SPECIES_ID(species))
-                return FALSE;
-        }
+        if (gSpeciesInfo[species].isFrontierBanned)
+            return FALSE;
         return TRUE;
     }
 }

@@ -3,7 +3,7 @@
 
 #include <string.h>
 #include <limits.h>
-#include "config.h" // we need to define config before gba headers as print stuff needs the functions nulled before defines.
+#include "config/general.h" // we need to define config before gba headers as print stuff needs the functions nulled before defines.
 #include "gba/gba.h"
 #include "fpmath.h"
 #include "metaprogram.h"
@@ -32,9 +32,6 @@
 // We define these when using certain IDEs to fool preproc
 #define _(x)        {x}
 #define __(x)       {x}
-// Like the above, but prepends a fixed-case character
-#define _C(x)       {x}
-#define __C(x)      {x}
 #define INCBIN(...) {0}
 #define INCBIN_U8   INCBIN
 #define INCBIN_U16  INCBIN
@@ -42,6 +39,7 @@
 #define INCBIN_S8   INCBIN
 #define INCBIN_S16  INCBIN
 #define INCBIN_S32  INCBIN
+#define INCBIN_COMP INCBIN
 #endif // IDE support
 
 #define ARRAY_COUNT(array) (size_t)(sizeof(array) / sizeof((array)[0]))
@@ -71,6 +69,8 @@
 #else
 #define SAFE_DIV(a, b) ((a) / (b))
 #endif
+
+#define IS_POW_OF_TWO(n) (((n) & ((n)-1)) == 0)
 
 // The below macro does a%n, but (to match) will switch to a&(n-1) if n is a power of 2.
 // There are cases where GF does a&(n-1) where we would really like to have a%n, because
@@ -600,14 +600,15 @@ struct Roamer
     /*0x08*/ u16 species;
     /*0x0A*/ u16 hp;
     /*0x0C*/ u8 level;
-    /*0x0D*/ u8 status;
+    /*0x0D*/ u8 statusA;
     /*0x0E*/ u8 cool;
     /*0x0F*/ u8 beauty;
     /*0x10*/ u8 cute;
     /*0x11*/ u8 smart;
     /*0x12*/ u8 tough;
     /*0x13*/ bool8 active;
-    /*0x14*/ u8 filler[0x8];
+    /*0x14*/ u8 statusB; // Stores frostbite
+    /*0x14*/ u8 filler[0x7];
 };
 
 struct RamScriptData
@@ -1057,7 +1058,7 @@ struct SaveBlock1
     /*0x31A8*/ u8 giftRibbons[GIFT_RIBBONS_COUNT];
     /*0x31B3*/ struct ExternalEventData externalEventData;
     /*0x31C7*/ struct ExternalEventFlags externalEventFlags;
-    /*0x31DC*/ struct Roamer roamer;
+    /*0x31DC*/ struct Roamer roamer[ROAMER_COUNT];
 #if FREE_ENIGMA_BERRY == FALSE
     /*0x31F8*/ struct EnigmaBerry enigmaBerry;
 #endif //FREE_ENIGMA_BERRY
@@ -1093,7 +1094,5 @@ struct MapPosition
     s16 y;
     s8 elevation;
 };
-
-extern u8 gStackBase[]; // Start of stack-allocated IWRAM
 
 #endif // GUARD_GLOBAL_H
