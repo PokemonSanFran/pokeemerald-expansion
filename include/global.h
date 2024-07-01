@@ -167,12 +167,6 @@ struct UCoords32
     u32 y;
 };
 
-struct SaveBlock3
-{
-};
-
-extern struct SaveBlock3 *gSaveBlock3Ptr;
-
 struct Time
 {
     /*0x00*/ s16 days;
@@ -180,6 +174,14 @@ struct Time
     /*0x03*/ s8 minutes;
     /*0x04*/ s8 seconds;
 };
+
+
+struct SaveBlock3
+{
+	struct Time fakeRTC;
+};
+
+extern struct SaveBlock3 *gSaveBlock3Ptr;
 
 struct Pokedex
 {

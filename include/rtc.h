@@ -119,5 +119,9 @@ void CalcTimeDifference(struct Time *result, struct Time *t1, struct Time *t2);
 u32 RtcGetMinuteCount(void);
 u32 RtcGetLocalDayCount(void);
 void FormatDecimalTimeWithoutSeconds(u8 *dest, s8 hour, s8 minute, bool32 is24Hour);
-
+struct Time* GetFakeRtc(void);
+void RtcAdvanceTime(u32 hours, u32 minutes, u32 seconds);
+void RtcAdvanceTimeTo(u32 hour, u32 minute, u32 second);
+void AdvanceFakeRtcTimeIfEnabled(void);
+void DebugPrintRtcInfo(struct SiiRtcInfo *rtc);
 #endif // GUARD_RTC_UTIL_H

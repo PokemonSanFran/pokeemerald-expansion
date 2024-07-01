@@ -5,8 +5,8 @@
 #include "text.h"
 
 // iwram bss
-static u16 sErrorStatus;
 static struct SiiRtcInfo sRtc;
+static u16 sErrorStatus;
 static u8 sProbeResult;
 static u16 sSavedIme;
 
@@ -89,14 +89,19 @@ u16 ConvertDateToDayCount(u8 year, u8 month, u8 day)
 
 u16 RtcGetDayCount(struct SiiRtcInfo *rtc)
 {
-    u8 year = ConvertBcdToBinary(rtc->year);
-    u8 month = ConvertBcdToBinary(rtc->month);
-    u8 day = ConvertBcdToBinary(rtc->day);
-    return ConvertDateToDayCount(year, month, day);
+#if OW_USE_FAKE_TIME == FALSE
+	u8 year = ConvertBcdToBinary(rtc->year);
+	u8 month = ConvertBcdToBinary(rtc->month);
+	u8 day = ConvertBcdToBinary(rtc->day);
+	return ConvertDateToDayCount(year, month, day);
+#else
+	return rtc->day;
+#endif
 }
 
 void RtcInit(void)
 {
+#if OW_USE_FAKE_TIME == FALSE
     sErrorStatus = 0;
 
     RtcDisableInterrupts();
@@ -117,19 +122,31 @@ void RtcInit(void)
 
     RtcGetRawInfo(&sRtc);
     sErrorStatus = RtcCheckInfo(&sRtc);
+#else
+	return;
+#endif
 }
 
 u16 RtcGetErrorStatus(void)
 {
-    return sErrorStatus;
+    return (OW_USE_FAKE_TIME) ? 0 : sErrorStatus;
 }
 
 void RtcGetInfo(struct SiiRtcInfo *rtc)
 {
-    if (sErrorStatus & RTC_ERR_FLAG_MASK)
-        *rtc = sRtcDummy;
-    else
-        RtcGetRawInfo(rtc);
+#if OW_USE_FAKE_TIME == TRUE
+	struct Time* time = GetFakeRtc();
+	rtc->second = time->seconds;
+	rtc->minute = time->minutes;
+	rtc->hour = time->hours;
+	rtc->day = time->days;
+#else
+	if (sErrorStatus & RTC_ERR_FLAG_MASK)
+		*rtc = sRtcDummy;
+	else
+		RtcGetRawInfo(rtc);
+#endif
+	DebugPrintRtcInfo(rtc);
 }
 
 void RtcGetDateTime(struct SiiRtcInfo *rtc)
@@ -158,6 +175,9 @@ u16 RtcCheckInfo(struct SiiRtcInfo *rtc)
     s32 year;
     s32 month;
     s32 value;
+
+	if (OW_USE_FAKE_TIME)
+		return 0;
 
     if (rtc->status & SIIRTCINFO_POWER)
         errorFlags |= RTC_ERR_POWER_FAILURE;
@@ -211,9 +231,14 @@ u16 RtcCheckInfo(struct SiiRtcInfo *rtc)
 
 void RtcReset(void)
 {
-    RtcDisableInterrupts();
-    SiiRtcReset();
-    RtcRestoreInterrupts();
+	if (OW_USE_FAKE_TIME)
+	{
+		memset(GetFakeRtc(), 0, sizeof(struct Time));
+		return;
+	}
+	RtcDisableInterrupts();
+	SiiRtcReset();
+	RtcRestoreInterrupts();
 }
 
 void FormatDecimalTime(u8 *dest, s32 hour, s32 minute, s32 second)
@@ -264,9 +289,18 @@ void FormatHexDate(u8 *dest, s32 year, s32 month, s32 day)
 void RtcCalcTimeDifference(struct SiiRtcInfo *rtc, struct Time *result, struct Time *t)
 {
     u16 days = RtcGetDayCount(rtc);
-    result->seconds = ConvertBcdToBinary(rtc->second) - t->seconds;
-    result->minutes = ConvertBcdToBinary(rtc->minute) - t->minutes;
-    result->hours = ConvertBcdToBinary(rtc->hour) - t->hours;
+	if (OW_USE_FAKE_TIME)
+	{
+		result->seconds = rtc->second - t->seconds;
+		result->minutes = rtc->minute - t->minutes;
+		result->hours = rtc->hour - t->hours;
+	}
+	else
+	{
+		result->seconds = ConvertBcdToBinary(rtc->second) - t->seconds;
+		result->minutes = ConvertBcdToBinary(rtc->minute) - t->minutes;
+		result->hours = ConvertBcdToBinary(rtc->hour) - t->hours;
+	}
     result->days = days - t->days;
 
     if (result->seconds < 0)
@@ -394,4 +428,66 @@ void FormatDecimalTimeWithoutSeconds(u8 *txtPtr, s8 hour, s8 minute, bool32 is24
 
     *txtPtr++ = EOS;
     *txtPtr = EOS;
+}
+
+struct Time *GetFakeRtc(void)
+{
+	return &gSaveBlock3Ptr->fakeRTC;
+}
+
+void AdvanceFakeRtcTimeIfEnabled(void)
+{
+	if (!OW_USE_FAKE_TIME)
+		return;
+
+	RtcAdvanceTime(0, 0, 1); //Advance "rtc" by 0 hours, 0 minutes, 1 seconds
+}
+
+void RtcAdvanceTime(u32 hours, u32 minutes, u32 seconds)
+{
+	struct Time* time = GetFakeRtc();
+	seconds += time->seconds;
+	minutes += time->minutes;
+	hours += time->hours;
+
+	while(seconds >= SECONDS_PER_MINUTE)
+	{
+		minutes++;
+		seconds -= SECONDS_PER_MINUTE;
+	}
+
+	while(minutes >= MINUTES_PER_HOUR)
+	{
+		hours++;
+		minutes -= MINUTES_PER_HOUR;
+	}
+
+	while(hours >= HOURS_PER_DAY)
+	{
+		time->days++;
+		hours -= HOURS_PER_DAY;
+	}
+
+	time->seconds = seconds;
+	time->minutes = minutes;
+	time->hours = hours;
+}
+
+void RtcAdvanceTimeTo(u32 hour, u32 minute, u32 second)
+{
+	struct Time diff, target;
+	RtcCalcLocalTime();
+
+	target.hours = hour;
+	target.minutes = minute;
+	target.seconds = second;
+	target.days = gLocalTime.days;
+
+	CalcTimeDifference(&diff, &gLocalTime, &target);
+	RtcAdvanceTime(diff.hours, diff.minutes, diff.seconds);
+}
+
+void DebugPrintRtcInfo(struct SiiRtcInfo *rtc)
+{
+	DebugPrintf("day %d | %d:%d:%d",rtc->day,rtc->hour,rtc->minute,rtc->second);
 }
