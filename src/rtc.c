@@ -46,6 +46,9 @@ void RtcRestoreInterrupts(void)
 
 u32 ConvertBcdToBinary(u8 bcd)
 {
+	if (OW_USE_FAKE_TIME)
+		return bcd;
+
     if (bcd > 0x9F)
         return 0xFF;
 
@@ -292,38 +295,29 @@ void FormatHexDate(u8 *dest, s32 year, s32 month, s32 day)
 
 void RtcCalcTimeDifference(struct SiiRtcInfo *rtc, struct Time *result, struct Time *t)
 {
-    u16 days = RtcGetDayCount(rtc);
-	if (OW_USE_FAKE_TIME)
+	u16 days = RtcGetDayCount(rtc);
+	result->seconds = ConvertBcdToBinary(rtc->second) - t->seconds;
+	result->minutes = ConvertBcdToBinary(rtc->minute) - t->minutes;
+	result->hours = ConvertBcdToBinary(rtc->hour) - t->hours;
+	result->days = days - t->days;
+
+	if (result->seconds < 0)
 	{
-		result->seconds = rtc->second - t->seconds;
-		result->minutes = rtc->minute - t->minutes;
-		result->hours = rtc->hour - t->hours;
+		result->seconds += SECONDS_PER_MINUTE;
+		--result->minutes;
 	}
-	else
+
+	if (result->minutes < 0)
 	{
-		result->seconds = ConvertBcdToBinary(rtc->second) - t->seconds;
-		result->minutes = ConvertBcdToBinary(rtc->minute) - t->minutes;
-		result->hours = ConvertBcdToBinary(rtc->hour) - t->hours;
+		result->minutes += MINUTES_PER_HOUR;
+		--result->hours;
 	}
-    result->days = days - t->days;
 
-    if (result->seconds < 0)
-    {
-        result->seconds += SECONDS_PER_MINUTE;
-        --result->minutes;
-    }
-
-    if (result->minutes < 0)
-    {
-        result->minutes += MINUTES_PER_HOUR;
-        --result->hours;
-    }
-
-    if (result->hours < 0)
-    {
-        result->hours += HOURS_PER_DAY;
-        --result->days;
-    }
+	if (result->hours < 0)
+	{
+		result->hours += HOURS_PER_DAY;
+		--result->days;
+	}
 }
 
 void RtcCalcLocalTime(void)

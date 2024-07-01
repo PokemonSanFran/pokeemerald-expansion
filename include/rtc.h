@@ -102,7 +102,6 @@ void RtcGetInfo(struct SiiRtcInfo *rtc);
 void RtcGetDateTime(struct SiiRtcInfo *rtc);
 void RtcGetStatus(struct SiiRtcInfo *rtc);
 void RtcGetRawInfo(struct SiiRtcInfo *rtc);
-void FakeRtcGetRawInfo(struct SiiRtcInfo *rtc);
 u16 RtcCheckInfo(struct SiiRtcInfo *rtc);
 void RtcReset(void);
 void FormatDecimalTime(u8 *dest, s32 hour, s32 minute, s32 second);
@@ -121,8 +120,10 @@ u32 RtcGetMinuteCount(void);
 u32 RtcGetLocalDayCount(void);
 void FormatDecimalTimeWithoutSeconds(u8 *dest, s8 hour, s8 minute, bool32 is24Hour);
 struct Time* GetFakeRtc(void);
+void FakeRtcGetRawInfo(struct SiiRtcInfo *rtc);
 void RtcAdvanceTime(u32 hours, u32 minutes, u32 seconds);
 void RtcAdvanceTimeTo(u32 hour, u32 minute, u32 second);
 void AdvanceFakeRtcTimeIfEnabled(void);
 void DebugPrintRtcInfo(struct SiiRtcInfo *rtc);
+
 #endif // GUARD_RTC_UTIL_H
