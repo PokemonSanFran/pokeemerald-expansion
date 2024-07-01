@@ -102,6 +102,7 @@ void RtcGetInfo(struct SiiRtcInfo *rtc);
 void RtcGetDateTime(struct SiiRtcInfo *rtc);
 void RtcGetStatus(struct SiiRtcInfo *rtc);
 void RtcGetRawInfo(struct SiiRtcInfo *rtc);
+void FakeRtcGetRawInfo(struct SiiRtcInfo *rtc);
 u16 RtcCheckInfo(struct SiiRtcInfo *rtc);
 void RtcReset(void);
 void FormatDecimalTime(u8 *dest, s32 hour, s32 minute, s32 second);

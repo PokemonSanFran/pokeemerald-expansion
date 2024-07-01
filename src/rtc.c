@@ -89,42 +89,42 @@ u16 ConvertDateToDayCount(u8 year, u8 month, u8 day)
 
 u16 RtcGetDayCount(struct SiiRtcInfo *rtc)
 {
-#if OW_USE_FAKE_TIME == FALSE
-	u8 year = ConvertBcdToBinary(rtc->year);
-	u8 month = ConvertBcdToBinary(rtc->month);
-	u8 day = ConvertBcdToBinary(rtc->day);
+	u8 year, month, day;
+
+	if (OW_USE_FAKE_TIME)
+		return rtc->day;
+
+	year = ConvertBcdToBinary(rtc->year);
+	month = ConvertBcdToBinary(rtc->month);
+	day = ConvertBcdToBinary(rtc->day);
 	return ConvertDateToDayCount(year, month, day);
-#else
-	return rtc->day;
-#endif
 }
 
 void RtcInit(void)
 {
-#if OW_USE_FAKE_TIME == FALSE
-    sErrorStatus = 0;
+	if (OW_USE_FAKE_TIME)
+		return;
 
-    RtcDisableInterrupts();
-    SiiRtcUnprotect();
-    sProbeResult = SiiRtcProbe();
-    RtcRestoreInterrupts();
+	sErrorStatus = 0;
 
-    if ((sProbeResult & 0xF) != 1)
-    {
-        sErrorStatus = RTC_INIT_ERROR;
-        return;
-    }
+	RtcDisableInterrupts();
+	SiiRtcUnprotect();
+	sProbeResult = SiiRtcProbe();
+	RtcRestoreInterrupts();
 
-    if (sProbeResult & 0xF0)
-        sErrorStatus = RTC_INIT_WARNING;
-    else
-        sErrorStatus = 0;
+	if ((sProbeResult & 0xF) != 1)
+	{
+		sErrorStatus = RTC_INIT_ERROR;
+		return;
+	}
 
-    RtcGetRawInfo(&sRtc);
-    sErrorStatus = RtcCheckInfo(&sRtc);
-#else
-	return;
-#endif
+	if (sProbeResult & 0xF0)
+		sErrorStatus = RTC_INIT_WARNING;
+	else
+		sErrorStatus = 0;
+
+	RtcGetRawInfo(&sRtc);
+	sErrorStatus = RtcCheckInfo(&sRtc);
 }
 
 u16 RtcGetErrorStatus(void)
@@ -134,19 +134,23 @@ u16 RtcGetErrorStatus(void)
 
 void RtcGetInfo(struct SiiRtcInfo *rtc)
 {
-#if OW_USE_FAKE_TIME == TRUE
+	if (OW_USE_FAKE_TIME)
+		FakeRtcGetRawInfo(rtc);
+	else if (sErrorStatus & RTC_ERR_FLAG_MASK)
+		*rtc = sRtcDummy;
+	else
+		RtcGetRawInfo(rtc);
+
+	DebugPrintRtcInfo(rtc);
+}
+
+void FakeRtcGetRawInfo(struct SiiRtcInfo *rtc)
+{
 	struct Time* time = GetFakeRtc();
 	rtc->second = time->seconds;
 	rtc->minute = time->minutes;
 	rtc->hour = time->hours;
 	rtc->day = time->days;
-#else
-	if (sErrorStatus & RTC_ERR_FLAG_MASK)
-		*rtc = sRtcDummy;
-	else
-		RtcGetRawInfo(rtc);
-#endif
-	DebugPrintRtcInfo(rtc);
 }
 
 void RtcGetDateTime(struct SiiRtcInfo *rtc)
