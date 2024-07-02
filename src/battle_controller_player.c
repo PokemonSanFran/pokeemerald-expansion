@@ -1434,8 +1434,8 @@ static void Task_GiveExpToMon(u8 taskId)
 
         if (expAfterGain >= nextLvlExp)
         {
-            bool32 skipLevelsUp = SkipMultipleLevelsAtOnce();
-            if (skipLevelsUp)
+            bool32 combineLevelUpMessages = ShouldCombineLevelUpMessages();
+            if (combineLevelUpMessages)
                 SetMonData(mon, MON_DATA_EXP, &expAfterGain);
             else
                 SetMonData(mon, MON_DATA_EXP, &nextLvlExp);
@@ -1453,7 +1453,7 @@ static void Task_GiveExpToMon(u8 taskId)
             }
 
             gainedExp -= nextLvlExp - currExp;
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, RET_VALUE_LEVELED_UP, skipLevelsUp ? 0 : gainedExp);
+            BtlController_EmitTwoReturnValues(battler, BUFFER_B, RET_VALUE_LEVELED_UP, combineLevelUpMessages ? 0 : gainedExp);
 
             if (IsDoubleBattle() == TRUE
              && (monId == gBattlerPartyIndexes[battler] || monId == gBattlerPartyIndexes[BATTLE_PARTNER(battler)]))
@@ -1524,8 +1524,8 @@ static void Task_GiveExpWithExpBar(u8 taskId)
             expAfterGain = currExp + gainedExp;
             if (expAfterGain >= expOnNextLvl)
             {
-                bool32 skipLevelsUp = SkipMultipleLevelsAtOnce();
-                if (skipLevelsUp)
+                bool32 combineLevelUpMessages = ShouldCombineLevelUpMessages();
+                if (combineLevelUpMessages)
                     SetMonData(&gPlayerParty[monId], MON_DATA_EXP, &expAfterGain);
                 else
                     SetMonData(&gPlayerParty[monId], MON_DATA_EXP, &expOnNextLvl);
@@ -1543,7 +1543,7 @@ static void Task_GiveExpWithExpBar(u8 taskId)
                 }
 
                 gainedExp -= expOnNextLvl - currExp;
-                BtlController_EmitTwoReturnValues(battler, BUFFER_B, RET_VALUE_LEVELED_UP, skipLevelsUp ? 0 : gainedExp);
+                BtlController_EmitTwoReturnValues(battler, BUFFER_B, RET_VALUE_LEVELED_UP, combineLevelUpMessages ? 0 : gainedExp);
                 gTasks[taskId].func = Task_LaunchLvlUpAnim;
             }
             else
