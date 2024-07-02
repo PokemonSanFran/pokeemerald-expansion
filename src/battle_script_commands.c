@@ -7394,6 +7394,26 @@ static void Cmd_returntoball(void)
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
+static void LearnCombinedNewMoves(u32 monId, u16 *learnMove)
+{
+    CMD_ARGS(const u8 *learnedMovePtr, const u8 *nothingToLearnPtr, bool8 isFirstMove);
+
+    bool32 isFirst = cmd->isFirstMove;
+    u32 currLvl = GetMonData(&gPlayerParty[monId], MON_DATA_LEVEL);
+
+    while (currLvl > gBattleResources->beforeLvlUp->level)
+    {
+        *learnMove = MonTryLearningNewMoveAtLevel(&gPlayerParty[monId], isFirst, gBattleResources->beforeLvlUp->level);
+        isFirst = FALSE;
+        while (*learnMove == MON_ALREADY_KNOWS_MOVE)
+            *learnMove = MonTryLearningNewMoveAtLevel(&gPlayerParty[monId], isFirst, gBattleResources->beforeLvlUp->level);
+        if (*learnMove == MOVE_NONE)
+            gBattleResources->beforeLvlUp->level++;
+        else
+            break;
+    }
+}
+
 static void Cmd_handlelearnnewmove(void)
 {
     CMD_ARGS(const u8 *learnedMovePtr, const u8 *nothingToLearnPtr, bool8 isFirstMove);
@@ -7401,22 +7421,8 @@ static void Cmd_handlelearnnewmove(void)
     u16 learnMove;
     u32 monId = gBattleStruct->expGetterMonId;
 
-        if (ShouldCombineLevelUpMessages())
-    {
-        bool32 isFirst = cmd->isFirstMove;
-        u32 currLvl = GetMonData(&gPlayerParty[monId], MON_DATA_LEVEL);
-        while (currLvl > gBattleResources->beforeLvlUp->level)
-        {
-            learnMove = MonTryLearningNewMoveAtLevel(&gPlayerParty[monId], isFirst, gBattleResources->beforeLvlUp->level);
-            isFirst = FALSE;
-            while (learnMove == MON_ALREADY_KNOWS_MOVE)
-                learnMove = MonTryLearningNewMoveAtLevel(&gPlayerParty[monId], isFirst, gBattleResources->beforeLvlUp->level);
-            if (learnMove == MOVE_NONE)
-                gBattleResources->beforeLvlUp->level++;
-            else
-                break;
-        }
-    }
+    if (ShouldCombineLevelUpMessages())
+        LearnCombinedNewMoves(monId, &learnMove);
     else
     {
         learnMove = MonTryLearningNewMove(&gPlayerParty[monId], cmd->isFirstMove);
@@ -7437,7 +7443,7 @@ static void Cmd_handlelearnnewmove(void)
         u32 battler = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
 
         if (gBattlerPartyIndexes[battler] == monId
-            && !(gBattleMons[battler].status2 & STATUS2_TRANSFORMED))
+                && !(gBattleMons[battler].status2 & STATUS2_TRANSFORMED))
         {
             GiveMoveToBattleMon(&gBattleMons[battler], learnMove);
         }
@@ -7445,7 +7451,7 @@ static void Cmd_handlelearnnewmove(void)
         {
             battler = GetBattlerAtPosition(B_POSITION_PLAYER_RIGHT);
             if (gBattlerPartyIndexes[battler] == monId
-                && !(gBattleMons[battler].status2 & STATUS2_TRANSFORMED))
+                    && !(gBattleMons[battler].status2 & STATUS2_TRANSFORMED))
             {
                 GiveMoveToBattleMon(&gBattleMons[battler], learnMove);
             }
