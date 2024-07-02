@@ -1435,10 +1435,7 @@ static void Task_GiveExpToMon(u8 taskId)
         if (expAfterGain >= nextLvlExp)
         {
             bool32 combineLevelUpMessages = ShouldCombineLevelUpMessages();
-            if (combineLevelUpMessages)
-                SetMonData(mon, MON_DATA_EXP, &expAfterGain);
-            else
-                SetMonData(mon, MON_DATA_EXP, &nextLvlExp);
+            SetMonData(mon, MON_DATA_EXP, (combineLevelUpMessages) ? &expAfterGain : &nextLvlExp);
 
             gBattleStruct->dynamax.levelUpHP = GetMonData(mon, MON_DATA_HP) \
                 + UQ_4_12_TO_INT((gBattleScripting.levelUpHP * UQ_4_12(1.5)) + UQ_4_12_ROUND);
@@ -1531,7 +1528,7 @@ static void Task_GiveExpWithExpBar(u8 taskId)
                     SetMonData(&gPlayerParty[monId], MON_DATA_EXP, &expOnNextLvl);
 
                 gBattleStruct->dynamax.levelUpHP = GetMonData(&gPlayerParty[monId], MON_DATA_HP) \
-                    + UQ_4_12_TO_INT((gBattleScripting.levelUpHP * UQ_4_12(1.5)) + UQ_4_12_ROUND);
+                                                   + UQ_4_12_TO_INT((gBattleScripting.levelUpHP * UQ_4_12(1.5)) + UQ_4_12_ROUND);
                 CalculateMonStats(&gPlayerParty[monId]);
 
                 // Reapply Dynamax HP multiplier after stats are recalculated.
