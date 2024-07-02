@@ -4232,6 +4232,11 @@ static u32 GetMonHoldEffect(struct Pokemon *mon)
     return holdEffect;
 }
 
+bool32 SkipMultipleLevelsAtOnce(void)
+{
+    return (B_LEVEL_UP_NOTIFICATION >= GEN_9);
+}
+
 static void Cmd_getexp(void)
 {
     CMD_ARGS(u8 battler);
@@ -4456,7 +4461,8 @@ static void Cmd_getexp(void)
         if (gBattleControllerExecFlags == 0)
         {
             gBattleResources->bufferB[gBattleStruct->expGetterBattlerId][0] = 0;
-            if (GetMonData(&gPlayerParty[*expMonId], MON_DATA_HP) && GetMonData(&gPlayerParty[*expMonId], MON_DATA_LEVEL) != MAX_LEVEL)
+            u32 currLvl = GetMonData(&gPlayerParty[*expMonId], MON_DATA_LEVEL);
+            if (GetMonData(&gPlayerParty[*expMonId], MON_DATA_HP) && currLvl != MAX_LEVEL)
             {
                 gBattleResources->beforeLvlUp->stats[STAT_HP]    = GetMonData(&gPlayerParty[*expMonId], MON_DATA_MAX_HP);
                 gBattleResources->beforeLvlUp->stats[STAT_ATK]   = GetMonData(&gPlayerParty[*expMonId], MON_DATA_ATK);
@@ -4464,6 +4470,8 @@ static void Cmd_getexp(void)
                 gBattleResources->beforeLvlUp->stats[STAT_SPEED] = GetMonData(&gPlayerParty[*expMonId], MON_DATA_SPEED);
                 gBattleResources->beforeLvlUp->stats[STAT_SPATK] = GetMonData(&gPlayerParty[*expMonId], MON_DATA_SPATK);
                 gBattleResources->beforeLvlUp->stats[STAT_SPDEF] = GetMonData(&gPlayerParty[*expMonId], MON_DATA_SPDEF);
+                gBattleResources->beforeLvlUp->level             = currLvl;
+
 
                 BtlController_EmitExpUpdate(gBattleStruct->expGetterBattlerId, BUFFER_A, *expMonId, gBattleMoveDamage);
                 MarkBattlerForControllerExec(gBattleStruct->expGetterBattlerId);
@@ -7390,10 +7398,31 @@ static void Cmd_handlelearnnewmove(void)
 {
     CMD_ARGS(const u8 *learnedMovePtr, const u8 *nothingToLearnPtr, bool8 isFirstMove);
 
+    u16 learnMove;
     u32 monId = gBattleStruct->expGetterMonId;
-    u16 learnMove = MonTryLearningNewMove(&gPlayerParty[monId], cmd->isFirstMove);
-    while (learnMove == MON_ALREADY_KNOWS_MOVE)
-        learnMove = MonTryLearningNewMove(&gPlayerParty[monId], FALSE);
+
+        if (SkipMultipleLevelsAtOnce())
+    {
+        bool32 isFirst = cmd->isFirstMove;
+        u32 currLvl = GetMonData(&gPlayerParty[monId], MON_DATA_LEVEL);
+        while (currLvl > gBattleResources->beforeLvlUp->level)
+        {
+            learnMove = MonTryLearningNewMoveAtLevel(&gPlayerParty[monId], isFirst, gBattleResources->beforeLvlUp->level);
+            isFirst = FALSE;
+            while (learnMove == MON_ALREADY_KNOWS_MOVE)
+                learnMove = MonTryLearningNewMoveAtLevel(&gPlayerParty[monId], isFirst, gBattleResources->beforeLvlUp->level);
+            if (learnMove == MOVE_NONE)
+                gBattleResources->beforeLvlUp->level++;
+            else
+                break;
+        }
+    }
+    else
+    {
+        learnMove = MonTryLearningNewMove(&gPlayerParty[monId], cmd->isFirstMove);
+        while (learnMove == MON_ALREADY_KNOWS_MOVE)
+            learnMove = MonTryLearningNewMove(&gPlayerParty[monId], FALSE);
+    }
 
     if (learnMove == MOVE_NONE || RECORDED_WILD_BATTLE)
     {
@@ -13979,7 +14008,7 @@ u32 GetNaturePowerMove(u32 battler)
         move = MOVE_PSYCHIC;
     else if (sNaturePowerMoves[gBattleTerrain] == MOVE_NONE)
         move = MOVE_TRI_ATTACK;
-    
+
     if (GetActiveGimmick(battler) == GIMMICK_Z_MOVE)
     {
         gBattleStruct->zmove.baseMoves[gBattlerAttacker] = move;
