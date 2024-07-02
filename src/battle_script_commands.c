@@ -7399,16 +7399,20 @@ static void LearnCombinedNewMoves(u32 monId, u16 *learnMove)
     CMD_ARGS(const u8 *learnedMovePtr, const u8 *nothingToLearnPtr, bool8 isFirstMove);
 
     bool32 isFirst = cmd->isFirstMove;
+    u32 targetLvl = gBattleResources->beforeLvlUp->level;
     u32 currLvl = GetMonData(&gPlayerParty[monId], MON_DATA_LEVEL);
 
-    while (currLvl > gBattleResources->beforeLvlUp->level)
+    while (currLvl > targetLvl)
     {
-        *learnMove = MonTryLearningNewMoveAtLevel(&gPlayerParty[monId], isFirst, gBattleResources->beforeLvlUp->level);
+        *learnMove = MonTryLearningNewMoveAtLevel(&gPlayerParty[monId], isFirst, targetLvl);
+
         isFirst = FALSE;
+
         while (*learnMove == MON_ALREADY_KNOWS_MOVE)
-            *learnMove = MonTryLearningNewMoveAtLevel(&gPlayerParty[monId], isFirst, gBattleResources->beforeLvlUp->level);
+            *learnMove = MonTryLearningNewMoveAtLevel(&gPlayerParty[monId], isFirst, targetLvl);
+
         if (*learnMove == MOVE_NONE)
-            gBattleResources->beforeLvlUp->level++;
+            targetLvl++;
         else
             break;
     }
