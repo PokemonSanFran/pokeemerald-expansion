@@ -4232,7 +4232,7 @@ static u32 GetMonHoldEffect(struct Pokemon *mon)
     return holdEffect;
 }
 
-bool32 SkipMultipleLevelsAtOnce(void)
+bool32 ShouldCombineLevelUpMessages(void)
 {
     return (B_LEVEL_UP_NOTIFICATION >= GEN_9);
 }
@@ -7401,7 +7401,7 @@ static void Cmd_handlelearnnewmove(void)
     u16 learnMove;
     u32 monId = gBattleStruct->expGetterMonId;
 
-        if (SkipMultipleLevelsAtOnce())
+        if (ShouldCombineLevelUpMessages())
     {
         bool32 isFirst = cmd->isFirstMove;
         u32 currLvl = GetMonData(&gPlayerParty[monId], MON_DATA_LEVEL);
