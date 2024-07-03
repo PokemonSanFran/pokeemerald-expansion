@@ -4232,11 +4232,6 @@ static u32 GetMonHoldEffect(struct Pokemon *mon)
     return holdEffect;
 }
 
-bool32 ShouldCombineLevelUpMessages(void)
-{
-    return (B_LEVEL_UP_NOTIFICATION >= GEN_9);
-}
-
 static void Cmd_getexp(void)
 {
     CMD_ARGS(u8 battler);
@@ -7426,7 +7421,7 @@ static void Cmd_handlelearnnewmove(void)
     u16 learnMove;
     u32 monId = gBattleStruct->expGetterMonId;
 
-    if (ShouldCombineLevelUpMessages())
+    if (B_LEVEL_UP_NOTIFICATION >= GEN_9)
         LearnCombinedNewMoves(monId, &learnMove);
     else
     {
