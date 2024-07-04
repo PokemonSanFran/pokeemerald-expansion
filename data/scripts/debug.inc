@@ -138,10 +138,30 @@ Debug_EventScript_Text_DefensiveIVs:
 	.string "HP IVs: {STR_VAR_1}, DEF IVs: {STR_VAR_2}, SPDEF IVs: {STR_VAR_3}$"
 
 Debug_EventScript_Script_1::
+	special StartWallClock
+	waitstate
+	setflag FLAG_BADGE01_GET
+	setflag FLAG_BADGE02_GET
+	setflag FLAG_BADGE03_GET
+	setflag FLAG_BADGE04_GET
+	setflag FLAG_BADGE05_GET
+	setflag FLAG_BADGE06_GET
+	setflag FLAG_BADGE07_GET
+	setflag FLAG_BADGE08_GET
+    givemon SPECIES_MACHAMP, 100, ITEM_NONE, move1=MOVE_HORN_DRILL, abilityNum = 2
+    trainerbattle_single TRAINER_RONALD, Debug_BoxFilledMessage_Text,Debug_BoxFilledMessage_Text, Debug_EventScript_Script_2
 	release
 	end
 
+TestString:
+	.string "Current time (HH:MM:SS) is: {STR_VAR_1}:{STR_VAR_2}:{STR_VAR_3}.$"
+
 Debug_EventScript_Script_2::
+    gettime
+    buffernumberstring STR_VAR_1,VAR_0x8000
+    buffernumberstring STR_VAR_2,VAR_0x8001
+    buffernumberstring STR_VAR_3,VAR_0x8002
+    msgbox TestString
 	release
 	end
 
