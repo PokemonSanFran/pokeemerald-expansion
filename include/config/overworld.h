@@ -96,6 +96,6 @@
 // Pokémon Center
 #define OW_IGNORE_EGGS_ON_HEAL     GEN_LATEST               // In Gen 4+, the nurse in the Pokémon Center does not heal Eggs on healing machine.
 
-#define OW_BETTER_REFLECTIONS      TRUE
+#define OW_BETTER_REFLECTIONS     FALSE
 
 #endif // GUARD_CONFIG_OVERWORLD_H

@@ -138,6 +138,9 @@ Debug_EventScript_Text_DefensiveIVs:
 	.string "HP IVs: {STR_VAR_1}, DEF IVs: {STR_VAR_2}, SPDEF IVs: {STR_VAR_3}$"
 
 Debug_EventScript_Script_1::
+	additem ITEM_MAX_REPEL,20
+	givemon SPECIES_STUNKY,100
+	warp MAP_ROUTE119,6,61
 	release
 	end
 
