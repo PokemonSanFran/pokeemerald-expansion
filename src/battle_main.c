@@ -2047,13 +2047,6 @@ u8 CreateNPCTrainerPartyFromTrainer(struct Pokemon *party, const struct Trainer 
 static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 firstTrainer)
 {
     u8 retVal;
-    trainerNum = Random() % TRAINERS_COUNT;
-
-    while (FlagGet(TRAINER_FLAGS_START + trainerNum) || gTrainers[trainerNum].partySize != 2 || gTrainers[trainerNum].doubleBattle == FALSE)
-    {
-        trainerNum = Random() % TRAINERS_COUNT;
-    }
-
     if (trainerNum == TRAINER_SECRET_BASE)
         return 0;
     retVal = CreateNPCTrainerPartyFromTrainer(party, GetTrainerStructFromId(trainerNum), firstTrainer, gBattleTypeFlags);
