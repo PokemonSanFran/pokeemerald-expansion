@@ -165,8 +165,8 @@ Debug_EventScript_Script_2::
 	compare VAR_UNUSED_0x404E, 49
 	goto_if_gt ScriptStop_1
     special HealPlayerParty
-    trainerbattle_double TRAINER_GEORGE, DebugScript_Text_EmptyParty, DebugScript_Text_EmptyParty,DebugScript_Text_EmptyParty, Debug_EventScript_Script_2, FALSE
-    clearflag TRAINER_FLAGS_START + TRAINER_GEORGE
+    trainerbattle_double TRAINER_TATE_AND_LIZA_1, DebugScript_Text_EmptyParty, DebugScript_Text_EmptyParty,DebugScript_Text_EmptyParty, Debug_EventScript_Script_2, FALSE
+    clearflag TRAINER_FLAGS_START + TRAINER_TATE_AND_LIZA_1
 	release
     return
 
