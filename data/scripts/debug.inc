@@ -146,8 +146,8 @@ Debug_EventScript_Script_1::
 	setflag FLAG_BADGE06_GET
 	setflag FLAG_BADGE07_GET
 	setflag FLAG_BADGE08_GET
-    givemon SPECIES_KANGASKHAN_MEGA,100,0,move1=MOVE_IRON_HEAD
-    givemon SPECIES_KANGASKHAN_MEGA,100,0,move1=MOVE_IRON_HEAD
+    givemon SPECIES_KANGASKHAN_MEGA,100,0,move1=MOVE_IRON_HEAD,atkEv=252,speedEv=252,atkIv=31,speedIv=31
+    givemon SPECIES_KANGASKHAN_MEGA,100,0,move1=MOVE_IRON_HEAD,atkEv=252,speedEv=252,atkIv=31,speedIv=31
     setvar VAR_UNUSED_0x404E, 0
 	release
 	end
