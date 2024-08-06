@@ -138,12 +138,37 @@ Debug_EventScript_Text_DefensiveIVs:
 	.string "HP IVs: {STR_VAR_1}, DEF IVs: {STR_VAR_2}, SPDEF IVs: {STR_VAR_3}$"
 
 Debug_EventScript_Script_1::
+	setflag FLAG_BADGE01_GET
+	setflag FLAG_BADGE02_GET
+	setflag FLAG_BADGE03_GET
+	setflag FLAG_BADGE04_GET
+	setflag FLAG_BADGE05_GET
+	setflag FLAG_BADGE06_GET
+	setflag FLAG_BADGE07_GET
+	setflag FLAG_BADGE08_GET
+    givemon SPECIES_KANGASKHAN_MEGA,100,0,move1=MOVE_IRON_HEAD
+    givemon SPECIES_KANGASKHAN_MEGA,100,0,move1=MOVE_IRON_HEAD
+    setvar VAR_UNUSED_0x404E, 0
 	release
 	end
 
+ScriptStop_1:
+    msgbox ScriptStop_Text_0
+    end
+
+
+ScriptStop_Text_0:
+	.string "DONE!$"
+
 Debug_EventScript_Script_2::
+    addvar VAR_UNUSED_0x404E,1
+	compare VAR_UNUSED_0x404E, 49
+	goto_if_gt ScriptStop_1
+    special HealPlayerParty
+    trainerbattle_double TRAINER_GEORGE, DebugScript_Text_EmptyParty, DebugScript_Text_EmptyParty,DebugScript_Text_EmptyParty, Debug_EventScript_Script_2, FALSE
+    clearflag TRAINER_FLAGS_START + TRAINER_GEORGE
 	release
-	end
+    return
 
 Debug_EventScript_Script_3::
 	release
