@@ -20,4 +20,7 @@
 
                                             // Grand Total: 3790
 
+#define FREE_BACKUP_SAVE                   TRUE // Removes the backup save and creates a new Saveblock4
+
+
 #endif // GUARD_CONFIG_SAVE_H

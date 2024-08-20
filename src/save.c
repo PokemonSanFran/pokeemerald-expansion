@@ -496,6 +496,9 @@ static u8 CopySaveSlotData(u16 sectorId, struct SaveSectorLocation *locations)
     u16 slotOffset = NUM_SECTORS_PER_SLOT * (gSaveCounter % NUM_SAVE_SLOTS);
     u16 id;
 
+    if (FREE_BACKUP_SAVE)
+        slotOffset = 0;
+
     for (i = 0; i < NUM_SECTORS_PER_SLOT; i++)
     {
         ReadFlashSector(i + slotOffset, gReadWriteSector);
@@ -546,34 +549,37 @@ static u8 GetSaveValidStatus(const struct SaveSectorLocation *locations)
         }
     }
 
-    if (signatureValid)
+    if (FREE_BACKUP_SAVE == FALSE)
     {
-        if (validSectorFlags == (1 << NUM_SECTORS_PER_SLOT) - 1)
-            saveSlot1Status = SAVE_STATUS_OK;
-        else
-            saveSlot1Status = SAVE_STATUS_ERROR;
-    }
-    else
-    {
-        // No sectors in slot 1 have the correct signature, treat it as empty
-        saveSlot1Status = SAVE_STATUS_EMPTY;
-    }
-
-    validSectorFlags = 0;
-    signatureValid = FALSE;
-
-    // Check save slot 2
-    for (i = 0; i < NUM_SECTORS_PER_SLOT; i++)
-    {
-        ReadFlashSector(i + NUM_SECTORS_PER_SLOT, gReadWriteSector);
-        if (gReadWriteSector->signature == SECTOR_SIGNATURE)
+        if (signatureValid)
         {
-            signatureValid = TRUE;
-            checksum = CalculateChecksum(gReadWriteSector->data, locations[gReadWriteSector->id].size);
-            if (gReadWriteSector->checksum == checksum)
+            if (validSectorFlags == (1 << NUM_SECTORS_PER_SLOT) - 1)
+                saveSlot1Status = SAVE_STATUS_OK;
+            else
+                saveSlot1Status = SAVE_STATUS_ERROR;
+        }
+        else
+        {
+            // No sectors in slot 1 have the correct signature, treat it as empty
+            saveSlot1Status = SAVE_STATUS_EMPTY;
+        }
+
+        validSectorFlags = 0;
+        signatureValid = FALSE;
+
+        // Check save slot 2
+        for (i = 0; i < NUM_SECTORS_PER_SLOT; i++)
+        {
+            ReadFlashSector(i + NUM_SECTORS_PER_SLOT, gReadWriteSector);
+            if (gReadWriteSector->signature == SECTOR_SIGNATURE)
             {
-                saveSlot2Counter = gReadWriteSector->counter;
-                validSectorFlags |= 1 << gReadWriteSector->id;
+                signatureValid = TRUE;
+                checksum = CalculateChecksum(gReadWriteSector->data, locations[gReadWriteSector->id].size);
+                if (gReadWriteSector->checksum == checksum)
+                {
+                    saveSlot2Counter = gReadWriteSector->counter;
+                    validSectorFlags |= 1 << gReadWriteSector->id;
+                }
             }
         }
     }
@@ -581,14 +587,27 @@ static u8 GetSaveValidStatus(const struct SaveSectorLocation *locations)
     if (signatureValid)
     {
         if (validSectorFlags == (1 << NUM_SECTORS_PER_SLOT) - 1)
-            saveSlot2Status = SAVE_STATUS_OK;
+        {
+            if (FREE_BACKUP_SAVE)
+                return SAVE_STATUS_OK;
+            else
+                saveSlot2Status = SAVE_STATUS_OK;
+        }
         else
-            saveSlot2Status = SAVE_STATUS_ERROR;
+        {
+            if (FREE_BACKUP_SAVE)
+                return SAVE_STATUS_ERROR;
+            else
+                saveSlot2Status = SAVE_STATUS_ERROR;
+        }
     }
     else
     {
         // No sectors in slot 2 have the correct signature, treat it as empty.
-        saveSlot2Status = SAVE_STATUS_EMPTY;
+        if (FREE_BACKUP_SAVE)
+            return SAVE_STATUS_EMPTY;
+        else
+            saveSlot2Status = SAVE_STATUS_EMPTY;
     }
 
     if (saveSlot1Status == SAVE_STATUS_OK && saveSlot2Status == SAVE_STATUS_OK)

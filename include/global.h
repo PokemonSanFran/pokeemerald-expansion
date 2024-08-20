@@ -167,6 +167,14 @@ struct UCoords32
     u32 y;
 };
 
+#if FREE_BACKUP_SAVE == TRUE
+struct SaveBlock4
+{
+};
+
+extern struct SaveBlock4 *gSaveBlock4Ptr;
+#endif
+
 struct Time
 {
     /*0x00*/ s16 days;
