@@ -2476,3 +2476,15 @@ static void AddTreeBonus(struct BerryTree *tree, u8 bonus)
         tree->berryYield = bonus;
     }
 }
+
+void WaterBerriesIfRaining(void)
+{
+    if ((gWeatherPtr->currWeather != WEATHER_RAIN)
+        && (gWeatherPtr->currWeather != WEATHER_RAIN_THUNDERSTORM)
+        && (gWeatherPtr->currWeather != WEATHER_DOWNPOUR))
+        return;
+
+        return ObjectEventInteractionWaterBerryTree();
+    // loop through all berries on the map
+    // water em
+}
