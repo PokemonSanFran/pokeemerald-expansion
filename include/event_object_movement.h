@@ -123,6 +123,7 @@ extern const u8 *const gBerryTreePaletteSlotTablePointers[];
 void ResetObjectEvents(void);
 u8 GetMoveDirectionAnimNum(u8 direction);
 u8 GetObjectEventIdByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroupId);
+u8 GetObjectTrainerTypeByObjectEventId(u8 objectEventId);
 bool8 TryGetObjectEventIdByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroupId, u8 *objectEventId);
 u8 GetObjectEventIdByXY(s16 x, s16 y);
 void SetObjectEventDirection(struct ObjectEvent *objectEvent, u8 direction);

@@ -13,6 +13,7 @@
 #include "task.h"
 #include "trig.h"
 #include "gpu_regs.h"
+#include "berry.h"
 
 EWRAM_DATA static u8 sCurrentAbnormalWeather = 0;
 EWRAM_DATA static u16 sUnusedWeatherRelated = 0;
@@ -2503,6 +2504,7 @@ void SetWeather(u32 weather)
 {
     SetSavedWeather(weather);
     SetNextWeather(GetSavedWeather());
+    WaterBerriesIfRaining();
 }
 
 void SetWeather_Unused(u32 weather)

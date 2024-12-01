@@ -3274,7 +3274,7 @@ static u8 UNUSED GetObjectTrainerTypeByLocalIdAndMap(u8 localId, u8 mapNum, u8 m
     return gObjectEvents[objectEventId].trainerType;
 }
 
-static u8 UNUSED GetObjectTrainerTypeByObjectEventId(u8 objectEventId)
+u8 GetObjectTrainerTypeByObjectEventId(u8 objectEventId)
 {
     return gObjectEvents[objectEventId].trainerType;
 }

@@ -17,6 +17,7 @@
 #include "trig.h"
 #include "gpu_regs.h"
 #include "field_camera.h"
+#include "berry.h"
 
 #define DROUGHT_COLOR_INDEX(color) ((((color) >> 1) & 0xF) | (((color) >> 2) & 0xF0) | (((color) >> 3) & 0xF00))
 
@@ -186,6 +187,10 @@ void SetNextWeather(u8 weather)
     if (weather != WEATHER_RAIN && weather != WEATHER_RAIN_THUNDERSTORM && weather != WEATHER_DOWNPOUR)
     {
         PlayRainStoppingSoundEffect();
+    }
+    else
+    {
+        WaterBerriesIfRaining();
     }
 
     if (gWeatherPtr->nextWeather != weather && gWeatherPtr->currWeather == weather)

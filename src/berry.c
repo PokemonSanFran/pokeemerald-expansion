@@ -13,7 +13,10 @@
 #include "string_util.h"
 #include "text.h"
 #include "constants/event_object_movement.h"
+#include "constants/event_objects.h"
 #include "constants/items.h"
+#include "constants/weather.h"
+#include "field_weather.h"
 
 static u16 BerryTypeToItemId(u16 berry);
 static u8 BerryTreeGetNumStagesWatered(struct BerryTree *tree);
@@ -1845,6 +1848,8 @@ void BerryTreeTimeUpdate(s32 minutes)
     u8 drainVal;
     struct BerryTree *tree;
 
+    WaterBerriesIfRaining();
+
     for (i = 0; i < BERRY_TREES_COUNT; i++)
     {
         tree = &gSaveBlock1Ptr->berryTrees[i];
@@ -2476,3 +2481,39 @@ static void AddTreeBonus(struct BerryTree *tree, u8 bonus)
         tree->berryYield = bonus;
     }
 }
+
+static bool32 IsSelectedObjectBerryTree(u32 object)
+{
+    if (!GetObjectEventBerryTreeId(object))
+        return FALSE;
+
+    if (GetObjectTrainerTypeByObjectEventId(object))
+        return FALSE;
+
+    return (gObjectEvents[object].graphicsId == OBJ_EVENT_GFX_BERRY_TREE
+            || (gObjectEvents[object].graphicsId == OBJ_EVENT_GFX_BERRY_TREE_EARLY_STAGES)
+            || (gObjectEvents[object].graphicsId == OBJ_EVENT_GFX_BERRY_TREE_LATE_STAGES));
+}
+
+void WaterBerriesIfRaining(void)
+{
+    u32 originalObject = gSelectedObjectEvent;
+    u32 currWeather = gWeatherPtr->currWeather;
+
+    if (currWeather != WEATHER_RAIN
+            && currWeather != WEATHER_RAIN_THUNDERSTORM
+            && currWeather != WEATHER_DOWNPOUR
+       )
+        return;
+
+    for (u32 object = 0; object < OBJECT_EVENTS_COUNT; object++)
+    {
+        if (!IsSelectedObjectBerryTree(object))
+            continue;
+
+        gSelectedObjectEvent = object;
+        ObjectEventInteractionWaterBerryTree();
+    }
+    gSelectedObjectEvent = originalObject;
+}
+

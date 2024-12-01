@@ -834,6 +834,7 @@ if (I_VS_SEEKER_CHARGING != 0)
 
     DoTimeBasedEvents();
     SetSavedWeatherFromCurrMapHeader();
+    WaterBerriesIfRaining();
     ChooseAmbientCrySpecies();
     SetDefaultFlashLevel();
     Overworld_ClearSavedMusic();
@@ -849,6 +850,7 @@ if (I_VS_SEEKER_CHARGING != 0)
     UpdateLocationHistoryForRoamer();
     MoveAllRoamers();
     DoCurrentWeather();
+    WaterBerriesIfRaining();
     ResetFieldTasksArgs();
     RunOnResumeMapScript();
 
@@ -899,6 +901,7 @@ if (I_VS_SEEKER_CHARGING != 0)
     if (a1 != TRUE)
         DoTimeBasedEvents();
     SetSavedWeatherFromCurrMapHeader();
+    WaterBerriesIfRaining();
     ChooseAmbientCrySpecies();
     if (isOutdoors)
         FlagClear(FLAG_SYS_USE_FLASH);
@@ -2199,6 +2202,7 @@ static void ResumeMap(bool32 a1)
     ResumePausedWeather();
     if (!a1)
         SetUpFieldTasks();
+    WaterBerriesIfRaining();
     RunOnResumeMapScript();
     TryStartMirageTowerPulseBlendEffect();
 }
