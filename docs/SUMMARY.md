@@ -5,6 +5,8 @@
     - [Setting up WSL1 (Legacy Portion)](./legacy_WSL1_INSTALL.md)
 - [Run documentation site locally](local_mdbook/index.md)
     - [Ubuntu WSL1/WSL2](local_mdbook/ubuntu_WSL.md)
+- [Development Guidelines]()
+  - [Expansion's Scope](development/scope.md)
 - [Tutorials]()
   - [What are AI Flags?](tutorials/ai_flags.md)
     - [How to add new AI Flags](tutorials/ai_logic.md)
