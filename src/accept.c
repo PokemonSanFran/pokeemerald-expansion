@@ -102,6 +102,11 @@ static const u8 windowAnim1[] = INCBIN_U8("graphics/accept/frame1.4bpp");
 static const u8 windowAnim2[] = INCBIN_U8("graphics/accept/frame2.4bpp");
 static const u8 windowAnim3[] = INCBIN_U8("graphics/accept/frame3.4bpp");
 
+static const u16 windowAnim0Tiled[] = INCBIN_U16("graphics/accept/frame0Tiled.4bpp");
+static const u16 windowAnim1Tiled[] = INCBIN_U16("graphics/accept/frame1Tiled.4bpp");
+static const u16 windowAnim2Tiled[] = INCBIN_U16("graphics/accept/frame2Tiled.4bpp");
+static const u16 windowAnim3Tiled[] = INCBIN_U16("graphics/accept/frame3Tiled.4bpp");
+
 static const u8 emailSelector[] = INCBIN_U8("graphics/accept/selector.4bpp");
 
 static const u32 desktopMouseSprite[] = INCBIN_U32("graphics/accept/mouse.4bpp.lz");
@@ -185,6 +190,14 @@ static const u8* const sEmailOpenAnimationLUT[] =
     [ACCEPT_EMAIL_OPEN_1_FRAME_COUNT]   = windowAnim1,
     [ACCEPT_EMAIL_OPEN_2_FRAME_COUNT]   = windowAnim2,
     [ACCEPT_EMAIL_OPEN_3_FRAME_COUNT]   = windowAnim3,
+};
+
+static const u16* const sEmailOpenAnimationTiledLUT[] =
+{
+    [ACCEPT_EMAIL_OPEN_0_FRAME_COUNT]   = windowAnim0Tiled,
+    [ACCEPT_EMAIL_OPEN_1_FRAME_COUNT]   = windowAnim1Tiled,
+    [ACCEPT_EMAIL_OPEN_2_FRAME_COUNT]   = windowAnim2Tiled,
+    [ACCEPT_EMAIL_OPEN_3_FRAME_COUNT]   = windowAnim3Tiled,
 };
 
 static const u32* const sAcceptTilesLUT[] =
@@ -336,6 +349,7 @@ static void Accept_VBlankCB(void)
     LoadOam();
     ProcessSpriteCopyRequests();
     TransferPlttBuffer();
+    PlayOpenEmailAnimation(GetAcceptTimer());
 }
 
 static void Accept_MainCB(void)
@@ -517,17 +531,17 @@ static void Task_ExecuteAcceptAnimations(u8 taskId)
             break;
         case ACCEPT_MOUSE_FIRST_APPEAR_FRAME_COUNT:
             PrintMouse();
-            HideBg(BG1_ACCEPT_DESKTOP);
+            //HideBg(BG1_ACCEPT_DESKTOP);
             break;
         case ACCEPT_EMAIL_OPEN_0_FRAME_COUNT:
-            ClearWindowCopyToVram(ACCEPT_WINDOW_ANIMATION);
-            ShowBg(BG1_ACCEPT_DESKTOP);
+            //ClearWindowCopyToVram(ACCEPT_WINDOW_ANIMATION);
+            //ShowBg(BG1_ACCEPT_DESKTOP);
         case ACCEPT_EMAIL_OPEN_1_FRAME_COUNT:
         case ACCEPT_EMAIL_OPEN_2_FRAME_COUNT:
-            PlayOpenEmailAnimation(timer);
+            //PlayOpenEmailAnimation(timer);
             break;
         case ACCEPT_EMAIL_OPEN_3_FRAME_COUNT:
-            PlayOpenEmailAnimation(timer);
+            //PlayOpenEmailAnimation(timer);
             Accept_PrintScrollbar();
             break;
         case ACCEPT_EMAIL_CURSOR_WHITE_0_FRAME_COUNT:
@@ -694,10 +708,15 @@ static void PlayOpenEmailAnimation(u32 timer)
      * https://gist.github.com/pkmnsnfrn/ea74c90de205f1446e9a2b56ab4b80be
      * https://files.catbox.moe/ox6m9f.zip
      *
-     * */
     enum AcceptWindows windowId = ACCEPT_WINDOW_ANIMATION;
     BlitBitmapToWindow(windowId, sEmailOpenAnimationLUT[timer], 0, 0, 240, 160);
     CopyWindowToVram(windowId, COPYWIN_GFX);
+     * */
+    if (timer > ACCEPT_EMAIL_OPEN_3_FRAME_COUNT || timer < ACCEPT_EMAIL_OPEN_0_FRAME_COUNT)
+        return;
+
+    u32 size = TILE_SIZE_4BPP * DISPLAY_TILE_WIDTH * DISPLAY_TILE_HEIGHT;
+    DmaCopy16(3, sEmailOpenAnimationTiledLUT[timer],(void *)(BG_CHAR_ADDR(0) + TILE_OFFSET_4BPP(1)), size);
 }
 
 static void FlashEmailCursor(u32 timer)
