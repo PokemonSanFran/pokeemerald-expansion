@@ -27,6 +27,7 @@ void ObjectEventInteractionApplyMulch(void);
 bool8 PlayerHasBerries(void);
 void SetBerryTreesSeen(void);
 bool32 BerryTreeGrow(struct BerryTree *tree);
+void WaterBerriesIfRaining(void);
 
 extern const struct Berry gBerries[];
 

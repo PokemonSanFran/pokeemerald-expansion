@@ -14,6 +14,8 @@
 #include "text.h"
 #include "constants/event_object_movement.h"
 #include "constants/items.h"
+#include "constants/weather.h"
+#include "field_weather.h"
 
 static u16 BerryTypeToItemId(u16 berry);
 static u8 BerryTreeGetNumStagesWatered(struct BerryTree *tree);
@@ -2477,14 +2479,49 @@ static void AddTreeBonus(struct BerryTree *tree, u8 bonus)
     }
 }
 
+bool32 WasTreeWateredAtStage(struct BerryTree *tree, u8 stage)
+{
+    switch (stage)
+    {
+        case BERRY_STAGE_PLANTED:
+            return (tree->watered & (1 << 0)) != 0;
+        case BERRY_STAGE_SPROUTED:
+            return (tree->watered & (1 << 1)) != 0;
+        case BERRY_STAGE_TALLER:
+        case BERRY_STAGE_TRUNK:
+        case BERRY_STAGE_BUDDING:
+            return (tree->watered & (1 << 2)) != 0;
+        case BERRY_STAGE_FLOWERING:
+            return (tree->watered & (1 << 3)) != 0;
+        default:
+            return FALSE;
+    }
+}
+
 void WaterBerriesIfRaining(void)
 {
-    if ((gWeatherPtr->currWeather != WEATHER_RAIN)
-        && (gWeatherPtr->currWeather != WEATHER_RAIN_THUNDERSTORM)
-        && (gWeatherPtr->currWeather != WEATHER_DOWNPOUR))
-        return;
+    u32 originalObject = gSelectedObjectEvent;
 
-        return ObjectEventInteractionWaterBerryTree();
-    // loop through all berries on the map
-    // water em
+    u32 const precipitationWeatherList[] =
+    {
+        WEATHER_RAIN,
+        WEATHER_RAIN_THUNDERSTORM,
+        WEATHER_DOWNPOUR,
+    };
+
+    for (u32 weatherIndex = 0; weatherIndex < ARRAY_COUNT(precipitationWeatherList); weatherIndex++)
+    {
+        if (precipitationWeatherList[weatherIndex] == gWeatherPtr->currWeather)
+            break;
+
+        return;
+    }
+
+    for (u32 object = 0; object < OBJECT_EVENTS_COUNT; object++)
+    {
+        gSelectedObjectEvent = object;
+        ObjectEventInteractionWaterBerryTree();
+    }
+    gSelectedObjectEvent = originalObject;
 }
+
