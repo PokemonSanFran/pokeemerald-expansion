@@ -849,6 +849,7 @@ if (I_VS_SEEKER_CHARGING != 0)
     UpdateLocationHistoryForRoamer();
     MoveAllRoamers();
     DoCurrentWeather();
+    WaterBerriesIfRaining();
     ResetFieldTasksArgs();
     RunOnResumeMapScript();
 
@@ -899,6 +900,7 @@ if (I_VS_SEEKER_CHARGING != 0)
     if (a1 != TRUE)
         DoTimeBasedEvents();
     SetSavedWeatherFromCurrMapHeader();
+    WaterBerriesIfRaining();
     ChooseAmbientCrySpecies();
     if (isOutdoors)
         FlagClear(FLAG_SYS_USE_FLASH);
