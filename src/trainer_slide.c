@@ -388,4 +388,3 @@ void MarkTrainerSlideAsPlayed(enum TrainerSlideType slideId)
 {
     gBattleStruct->slideMessageStatus.messagePlayed |= (1u << slideId);
 }
-
