@@ -5,8 +5,8 @@
 
 struct MessageStatus
 {
-    u64 messageInitalized;
-    u64 messagePlayed;
+    u32 messageInitalized;
+    u32 messagePlayed;
 };
 
 enum TrainerSlideTargets ShouldDoTrainerSlide(u32, enum TrainerSlideType);

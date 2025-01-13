@@ -371,20 +371,32 @@ void TryInitalizeTrainerSlideEnemyMonUnaffected(u32 target)
 
 bool32 IsTrainerSlideInitialized(enum TrainerSlideType slideId)
 {
-    return (gBattleStruct->slideMessageStatus.messageInitalized & (1u << slideId)) != 0;
+    if (slideId >= sizeof(gBattleStruct->slideMessageStatus.messageInitalized))
+        return (gBattleStruct->slideMessageStatus.messageInitalized2 & (1u << slideId)) != 0;
+    else
+        return (gBattleStruct->slideMessageStatus.messageInitalized & (1u << slideId)) != 0;
 }
 
 bool32 IsTrainerSlidePlayed(enum TrainerSlideType slideId)
 {
-    return (gBattleStruct->slideMessageStatus.messagePlayed & (1u << slideId)) != 0;
+    if (slideId >= sizeof(gBattleStruct->slideMessageStatus.messageInitalized))
+        return (gBattleStruct->slideMessageStatus.messagePlayed2 & (1u << slideId)) != 0;
+    else
+        return (gBattleStruct->slideMessageStatus.messagePlayed & (1u << slideId)) != 0;
 }
 
 void InitalizeTrainerSlide(enum TrainerSlideType slideId)
 {
-    gBattleStruct->slideMessageStatus.messageInitalized |= (1u << slideId);
+    if (slideId >= sizeof(gBattleStruct->slideMessageStatus.messageInitalized))
+        gBattleStruct->slideMessageStatus.messageInitalized2 |= (1u << slideId);
+    else
+        gBattleStruct->slideMessageStatus.messageInitalized |= (1u << slideId);
 }
 
 void MarkTrainerSlideAsPlayed(enum TrainerSlideType slideId)
 {
-    gBattleStruct->slideMessageStatus.messagePlayed |= (1u << slideId);
+    if (slideId >= sizeof(gBattleStruct->slideMessageStatus.messageInitalized))
+        gBattleStruct->slideMessageStatus.messagePlayed2 |= (1u << slideId);
+    else
+        gBattleStruct->slideMessageStatus.messagePlayed |= (1u << slideId);
 }
