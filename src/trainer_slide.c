@@ -371,32 +371,33 @@ void TryInitalizeTrainerSlideEnemyMonUnaffected(u32 target)
 
 bool32 IsTrainerSlideInitialized(enum TrainerSlideType slideId)
 {
-    if (slideId >= sizeof(gBattleStruct->slideMessageStatus.messageInitalized))
-        return (gBattleStruct->slideMessageStatus.messageInitalized2 & (1 << slideId)) != 0;
+    DebugPrintf("slideId %d and bits %d",slideId, TRAINER_SLIDE_BITS);
+    if (slideId>= TRAINER_SLIDE_BITS)
+        return (gBattleStruct->slideMessageStatus.messageInitalized2 & (1 << (slideId - TRAINER_SLIDE_BITS))) != 0;
     else
         return (gBattleStruct->slideMessageStatus.messageInitalized & (1 << slideId)) != 0;
 }
 
 bool32 IsTrainerSlidePlayed(enum TrainerSlideType slideId)
 {
-    if (slideId >= sizeof(gBattleStruct->slideMessageStatus.messageInitalized))
-        return (gBattleStruct->slideMessageStatus.messagePlayed2 & (1 << slideId)) != 0;
+    if (slideId>= TRAINER_SLIDE_BITS)
+        return (gBattleStruct->slideMessageStatus.messagePlayed2 & (1 << (slideId - TRAINER_SLIDE_BITS))) != 0;
     else
         return (gBattleStruct->slideMessageStatus.messagePlayed & (1 << slideId)) != 0;
 }
 
 void InitalizeTrainerSlide(enum TrainerSlideType slideId)
 {
-    if (slideId >= sizeof(gBattleStruct->slideMessageStatus.messageInitalized))
-        gBattleStruct->slideMessageStatus.messageInitalized2 |= (1 << slideId);
+    if (slideId >= TRAINER_SLIDE_BITS)
+        gBattleStruct->slideMessageStatus.messageInitalized2 |= (1 << (slideId - TRAINER_SLIDE_BITS));
     else
         gBattleStruct->slideMessageStatus.messageInitalized |= (1 << slideId);
 }
 
 void MarkTrainerSlideAsPlayed(enum TrainerSlideType slideId)
 {
-    if (slideId >= sizeof(gBattleStruct->slideMessageStatus.messageInitalized))
-        gBattleStruct->slideMessageStatus.messagePlayed2 |= (1 << slideId);
+    if (slideId >= TRAINER_SLIDE_BITS)
+        gBattleStruct->slideMessageStatus.messagePlayed2 |= (1 << (slideId - TRAINER_SLIDE_BITS));
     else
         gBattleStruct->slideMessageStatus.messagePlayed |= (1 << slideId);
 }
