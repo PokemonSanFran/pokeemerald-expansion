@@ -1,4 +1,7 @@
 # pokeemerald-expansion
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 pokeemerald-expansion is ***a romhack base*** based off pret's [pokeemerald](https://github.com/pret/pokeemerald) decompilation project. ***It is NOT a playable romhack,*** but it has multiple features available to romhackers so that they can create their own games, so it's not meant to be played on its own.
 
@@ -198,3 +201,25 @@ Also, *please follow the Pull Request template and feel free to discuss how the 
     - Fixed overworld snow effect.
 
 There are some mechanics, moves and abilities that are missing and being developed. Check [the project's milestones](https://github.com/rh-hideout/pokeemerald-expansion/milestones) and our [issues page](https://github.com/rh-hideout/pokeemerald-expansion/issues) to see which ones.
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/cbt6"><img src="https://avatars.githubusercontent.com/u/91667135?v=4?s=100" width="100px;" alt="cbt6"/><br /><sub><b>cbt6</b></sub></a><br /><a href="https://github.com/PokemonSanFran/pokeemerald-expansion/commits?author=cbt6" title="Code">💻</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
