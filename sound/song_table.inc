@@ -560,10 +560,6 @@ gSongTable::
 	song mus_rg_trainer_tower, 0, 0
 	song mus_rg_slow_pallet, 0, 0
 	song mus_rg_teachy_tv_menu, 0, 0
-    song mus_pascal_center, 0, 0
-    song mus_pascal_ecruteak, 0, 0
-    song mus_pascal_opelucid, 0, 0
-    song mus_pascal_masterdojo, 0, 0
     song mus_pascal_accept_letter, 0, 0
     song mus_pascal_alameda, 0, 0
     song mus_pascal_alameda_post_earthquake, 0, 0
