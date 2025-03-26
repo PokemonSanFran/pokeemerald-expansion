@@ -615,6 +615,51 @@ gSongTable::
     song mus_pascal_ecruteak, 0, 0
     song mus_pascal_opelucid, 0, 0
     song mus_pascal_masterdojo, 0, 0
+    song mus_pascal_accept_letter, 0, 0
+    song mus_pascal_alameda, 0, 0
+    song mus_pascal_alameda_post_earthquake, 0, 0
+    song mus_pascal_battle_arcade, 0, 0
+    song mus_pascal_battle_archer, 0, 0
+    song mus_pascal_battle_factory, 0, 0
+    song mus_pascal_battle_finals, 0, 0
+    song mus_pascal_battle_tower, 0, 0
+    song mus_pascal_berkeley, 0, 0
+    song mus_pascal_bernalhill1, 0, 0
+    song mus_pascal_bernalhill, 0, 0
+    song mus_pascal_chasecenter, 0, 0
+    song mus_pascal_chinatown, 0, 0
+    song mus_pascal_dogpatch, 0, 0
+    song mus_pascal_encounter_solicitor, 0, 0
+    song mus_pascal_fort_point_gym, 0, 0
+    song mus_pascal_gldgtewilds, 0, 0
+    song mus_pascal_goldengate_park, 0, 0
+    song mus_pascal_haightahbury_gym, 0, 0
+    song mus_pascal_hall_of_fame, 0, 0
+    song mus_pascal_how_dissapointing, 0, 0
+    song mus_pascal_japantown, 0, 0
+    song mus_pascal_marin, 0, 0
+    song mus_pascal_master_dojo, 0, 0
+    song mus_pascal_mission, 0, 0
+    song mus_pascal_pacifica, 0, 0
+    song mus_pascal_pokemon_center, 0, 0
+    song mus_pascal_rose_raid, 0, 0
+    song mus_pascal_route_13, 0, 0
+    song mus_pascal_route_14, 0, 0
+    song mus_pascal_route_17, 0, 0
+    song mus_pascal_route_5, 0, 0
+    song mus_pascal_route_62, 0, 0
+    song mus_pascal_route_8, 0, 0
+    song mus_pascal_route_9, 0, 0
+    song mus_pascal_salesforcetowerpark, 0, 0
+    song mus_pascal_salesforcetower_raid, 0, 0
+    song mus_pascal_save, 0, 0
+    song mus_pascal_soma, 0, 0
+    song mus_pascal_sunset, 0, 0
+    song mus_pascal_treasure_island, 0, 0
+    song mus_pascal_twin_peaks, 0, 0
+    song mus_pascal_vs_elite_four, 0, 0
+    song mus_pascal_vs_ultra_beasts, 0, 0
+    song mus_pascal_why_didnt_you_rat_me_out, 0, 0
 
 	.align 2
 dummy_song_header:
