@@ -17,6 +17,7 @@
 #include "main.h"
 #include "mystery_gift.h"
 #include "menu.h"
+#include "move.h"
 #include "overworld.h"
 #include "palette.h"
 #include "pokedex.h"
@@ -1478,10 +1479,10 @@ void ShowEasyChatScreen(void)
         break;
     case EASY_CHAT_TYPE_BARD_SONG:
         bard = &gSaveBlock1Ptr->oldMan.bard;
-        for (i = 0; i < BARD_SONG_LENGTH; i ++)
-            bard->temporaryLyrics[i] = bard->songLyrics[i];
+        for (i = 0; i < NUM_BARD_SONG_WORDS; i ++)
+            bard->newSongLyrics[i] = bard->songLyrics[i];
 
-        words = bard->temporaryLyrics;
+        words = bard->newSongLyrics;
         break;
     case EASY_CHAT_TYPE_INTERVIEW:
         words = gSaveBlock1Ptr->tvShows[gSpecialVar_0x8005].bravoTrainer.words;
@@ -5207,7 +5208,7 @@ static const u8 *GetEasyChatWord(u8 groupId, u16 index)
         return GetSpeciesName(index);
     case EC_GROUP_MOVE_1:
     case EC_GROUP_MOVE_2:
-        return gMoveNames[index];
+        return GetMoveName(index);
     default:
         return gEasyChatGroups[groupId].wordData.words[index].text;
     }

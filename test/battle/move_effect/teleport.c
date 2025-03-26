@@ -3,7 +3,7 @@
 
 ASSUMPTIONS
 {
-    ASSUME(gBattleMoves[MOVE_TELEPORT].effect == EFFECT_TELEPORT);
+    ASSUME(GetMoveEffect(MOVE_TELEPORT) == EFFECT_TELEPORT);
 }
 
 SINGLE_BATTLE_TEST("Teleport fails when there is no pokemon to switch in")

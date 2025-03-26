@@ -10,6 +10,7 @@
 
 extern const struct SpriteTemplate gFlashingHitSplatSpriteTemplate;
 
+static void AnimEllipticalGustCentered(struct Sprite *sprite);
 static void AnimEllipticalGust_Step(struct Sprite *);
 static void AnimGustToTarget(struct Sprite *);
 static void AnimGustToTarget_Step(struct Sprite *);
@@ -31,6 +32,17 @@ static void AnimSkyAttackBird(struct Sprite *);
 static void AnimSkyAttackBird_Step(struct Sprite *);
 static void AnimTask_AnimateGustTornadoPalette_Step(u8);
 static void AnimTask_LoadWindstormBackground_Step(u8 taskId);
+
+const struct SpriteTemplate gEllipticalGustCenteredSpriteTemplate =
+{
+    .tileTag = ANIM_TAG_GUST,
+    .paletteTag = ANIM_TAG_GUST,
+    .oam = &gOamData_AffineOff_ObjNormal_32x64,
+    .anims = gDummySpriteAnimTable,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = AnimEllipticalGustCentered,
+};
 
 const struct SpriteTemplate gEllipticalGustSpriteTemplate =
 {
@@ -344,6 +356,18 @@ const struct SpriteTemplate gSkyAttackBirdSpriteTemplate =
     .callback = AnimSkyAttackBird,
 };
 
+// same as AnimEllipticalGust but centered on targets in a double battle
+static void AnimEllipticalGustCentered(struct Sprite *sprite)
+{
+    if (IsDoubleBattle())
+        InitSpritePosToAnimTargetsCentre(sprite, FALSE);
+    else
+        InitSpritePosToAnimTarget(sprite, FALSE);
+    sprite->y += 20;
+    sprite->data[1] = 191;
+    sprite->callback = AnimEllipticalGust_Step;
+    sprite->callback(sprite);
+}
 
 void AnimEllipticalGust(struct Sprite *sprite)
 {
@@ -506,7 +530,7 @@ void AnimFlyBallAttack(struct Sprite *sprite)
     sprite->data[2] = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_X_2);
     sprite->data[3] = sprite->y;
     sprite->data[4] = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_Y_PIC_OFFSET);
-	sprite->data[5] = gBattleAnimArgs[1]; // if sprite is to remain invisible
+    sprite->data[5] = gBattleAnimArgs[1]; // if sprite is to remain invisible
 
     InitAnimLinearTranslation(sprite);
     sprite->callback = AnimFlyBallAttack_Step;

@@ -3,8 +3,8 @@
 
 ASSUMPTIONS
 {
-    ASSUME(gBattleMoves[MOVE_RAGE_FIST].effect == EFFECT_RAGE_FIST);
-    ASSUME(gBattleMoves[MOVE_RAGE_FIST].power == 50);
+    ASSUME(GetMoveEffect(MOVE_RAGE_FIST) == EFFECT_RAGE_FIST);
+    ASSUME(GetMovePower(MOVE_RAGE_FIST) == 50);
 }
 
 SINGLE_BATTLE_TEST("Rage Fist base power is increased by 50 if the user takes damage")
@@ -37,7 +37,7 @@ SINGLE_BATTLE_TEST("Rage Fist base power is increased by each multi hit")
     s16 timesGotHit[2];
 
     GIVEN {
-        ASSUME(gBattleMoves[MOVE_BULLET_SEED].effect == EFFECT_MULTI_HIT);
+        ASSUME(GetMoveEffect(MOVE_BULLET_SEED) == EFFECT_MULTI_HIT);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_REGIROCK);
     } WHEN {
@@ -130,6 +130,7 @@ SINGLE_BATTLE_TEST("Rage Fist base power is not increased if a substitute was hi
     s16 timesGotHit[2];
 
     GIVEN {
+        ASSUME(GetMoveCategory(MOVE_CRUNCH) == DAMAGE_CATEGORY_PHYSICAL); // Substitute doesn't fade otherwise
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_REGIROCK);
     } WHEN {
@@ -141,8 +142,8 @@ SINGLE_BATTLE_TEST("Rage Fist base power is not increased if a substitute was hi
         HP_BAR(opponent, captureDamage: &timesGotHit[0]);
         ANIMATION(ANIM_TYPE_MOVE, MOVE_SUBSTITUTE, player);
         ANIMATION(ANIM_TYPE_MOVE, MOVE_CRUNCH, opponent);
-        MESSAGE("The SUBSTITUTE took damage for Wobbuffet!");
-        MESSAGE("Wobbuffet's SUBSTITUTE faded!");
+        MESSAGE("The substitute took damage for Wobbuffet!");
+        MESSAGE("Wobbuffet's substitute faded!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_RAGE_FIST, player);
         HP_BAR(opponent, captureDamage: &timesGotHit[1]);
     } THEN {
@@ -166,9 +167,9 @@ SINGLE_BATTLE_TEST("Rage Fist base power is not lost if user switches out")
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_RAGE_FIST, player);
         HP_BAR(opponent, captureDamage: &timesGotHit[0]);
-        MESSAGE("Wobbuffet, that's enough! Come back!");
+        SWITCH_OUT_MESSAGE("Wobbuffet");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_TACKLE, opponent);
-        MESSAGE("Wynaut, that's enough! Come back!");
+        SWITCH_OUT_MESSAGE("Wynaut");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_RAGE_FIST, player);
         HP_BAR(opponent, captureDamage: &timesGotHit[1]);
     } THEN {
@@ -240,7 +241,7 @@ SINGLE_BATTLE_TEST("Rage Fist base power is not increased if move had no affect"
         for (turns = 0; turns < 2; turns++) {
             ANIMATION(ANIM_TYPE_MOVE, MOVE_RAGE_FIST, player);
             HP_BAR(opponent, captureDamage: &timesGotHit[turns]);
-            MESSAGE("Foe Regirock used Tackle!");
+            MESSAGE("The opposing Regirock used Tackle!");
             MESSAGE("It doesn't affect Gastly…");
         }
     } THEN {
@@ -251,9 +252,13 @@ SINGLE_BATTLE_TEST("Rage Fist base power is not increased if move had no affect"
 SINGLE_BATTLE_TEST("Rage Fist base power is increased if Disguise breaks")
 {
     s16 timesGotHit[2];
+    u16 species = SPECIES_NONE;
+
+    PARAMETRIZE { species = SPECIES_MIMIKYU_DISGUISED; }
+    PARAMETRIZE { species = SPECIES_MIMIKYU_TOTEM_DISGUISED; }
 
     GIVEN {
-        PLAYER(SPECIES_MIMIKYU_DISGUISED) { Ability(ABILITY_DISGUISE); }
+        PLAYER(species) { Ability(ABILITY_DISGUISE); }
         OPPONENT(SPECIES_REGIROCK);
     } WHEN {
         TURN { MOVE(player, MOVE_RAGE_FIST); MOVE(opponent, MOVE_ROCK_THROW); }
@@ -274,7 +279,6 @@ SINGLE_BATTLE_TEST("Rage Fist number of hits is copied by Transform")
 {
     s16 timesGotHit[2];
 
-    // KNOWN_FAILING; // After Transform , wrong move is used by transformed mon
     GIVEN {
         PLAYER(SPECIES_REGIROCK);
         OPPONENT(SPECIES_REGIROCK) { Moves(MOVE_RAGE_FIST, MOVE_CELEBRATE); }

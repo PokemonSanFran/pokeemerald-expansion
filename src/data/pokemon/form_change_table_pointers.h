@@ -1,5 +1,6 @@
 const struct Fusion *const gFusionTablePointers[NUM_SPECIES] =
 {
+#if P_FUSION_FORMS
 #if P_FAMILY_KYUREM
     [SPECIES_KYUREM] = sKyuremFusionTable,
 #if P_FAMILY_RESHIRAM
@@ -23,12 +24,13 @@ const struct Fusion *const gFusionTablePointers[NUM_SPECIES] =
 #if P_FAMILY_CALYREX
     [SPECIES_CALYREX] = sCalyrexFusionTable,
 #if P_FAMILY_SPECTRIER
-    [SPECIES_CALYREX_SHADOW_RIDER] = sCalyrexFusionTable,
+    [SPECIES_CALYREX_SHADOW] = sCalyrexFusionTable,
     [SPECIES_SPECTRIER] = sCalyrexFusionTable,
 #endif //P_FAMILY_SPECTRIER
 #if P_FAMILY_GLASTRIER
-    [SPECIES_CALYREX_ICE_RIDER] = sCalyrexFusionTable,
+    [SPECIES_CALYREX_ICE] = sCalyrexFusionTable,
     [SPECIES_GLASTRIER] = sCalyrexFusionTable,
 #endif //P_FAMILY_GLASTRIER
 #endif //P_FAMILY_CALYREX
+#endif //P_FUSION_FORMS
 };

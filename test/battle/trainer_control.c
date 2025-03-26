@@ -6,58 +6,50 @@
 #include "malloc.h"
 #include "random.h"
 #include "string_util.h"
+#include "trainer_pools.h"
 #include "constants/item.h"
 #include "constants/abilities.h"
 #include "constants/trainers.h"
 #include "constants/battle.h"
 
+#define NUM_TEST_TRAINERS 9
 
-static const struct TrainerMon sTestParty1[] =
+static const struct Trainer sTestTrainers[DIFFICULTY_COUNT][NUM_TEST_TRAINERS] =
 {
-    {
-        .species = SPECIES_WOBBUFFET,
-        .ball = ITEM_MASTER_BALL,
-        .ability = ABILITY_TELEPATHY,
-        .friendship = 42,
-        .gender = TRAINER_MON_FEMALE,
-        .heldItem = ITEM_ASSAULT_VEST,
-        .isShiny = TRUE,
-        .iv = TRAINER_PARTY_IVS(25,26,27,28,29,30),
-        .ev = TRAINER_PARTY_EVS(252, 0, 0, 252, 4, 0),
-        .lvl = 67,
-        .moves = {MOVE_AIR_SLASH, MOVE_BARRIER, MOVE_SOLAR_BEAM, MOVE_EXPLOSION},
-        .nature = TRAINER_PARTY_NATURE(NATURE_HASTY),
-        .nickname = COMPOUND_STRING("Bubbles")
-    },
-    {
-        .species = SPECIES_WOBBUFFET,
-        .ability = ABILITY_SHADOW_TAG,
-        .lvl = 5,
-    },
+#include "trainer_control.h"
 };
 
-static const struct Trainer sTestTrainer1 =
+enum DifficultyLevel GetTrainerDifficultyLevelTest(u16 trainerId)
 {
-    .trainerName = _("Test1"),
-    .party = TRAINER_PARTY(sTestParty1),
-};
+    enum DifficultyLevel difficulty = GetCurrentDifficultyLevel();
+
+    if (difficulty == DIFFICULTY_NORMAL)
+        return DIFFICULTY_NORMAL;
+
+    if (sTestTrainers[difficulty][trainerId].party == NULL)
+        return DIFFICULTY_NORMAL;
+
+    return difficulty;
+}
 
 TEST("CreateNPCTrainerPartyForTrainer generates customized Pokémon")
 {
     struct Pokemon *testParty = Alloc(6 * sizeof(struct Pokemon));
+    u32 currTrainer = 0;
     u8 nickBuffer[20];
-    CreateNPCTrainerPartyFromTrainer(testParty, &sTestTrainer1, TRUE, BATTLE_TYPE_TRAINER);
+    CreateNPCTrainerPartyFromTrainer(testParty, &sTestTrainers[GetTrainerDifficultyLevelTest(currTrainer)][currTrainer], TRUE, BATTLE_TYPE_TRAINER);
     EXPECT(IsMonShiny(&testParty[0]));
     EXPECT(!IsMonShiny(&testParty[1]));
 
-    EXPECT(GetMonData(&testParty[0], MON_DATA_POKEBALL, 0) == ITEM_MASTER_BALL);
-    EXPECT(GetMonData(&testParty[1], MON_DATA_POKEBALL, 0) == ITEM_POKE_BALL);
+    EXPECT(GetMonData(&testParty[0], MON_DATA_POKEBALL, 0) == BALL_MASTER);
+    EXPECT(GetMonData(&testParty[1], MON_DATA_POKEBALL, 0) == BALL_POKE);
 
     EXPECT(GetMonData(&testParty[0], MON_DATA_SPECIES, 0) == SPECIES_WOBBUFFET);
     EXPECT(GetMonData(&testParty[1], MON_DATA_SPECIES, 0) == SPECIES_WOBBUFFET);
 
     EXPECT(GetMonAbility(&testParty[0]) == ABILITY_TELEPATHY);
     EXPECT(GetMonAbility(&testParty[1]) == ABILITY_SHADOW_TAG);
+    EXPECT(GetMonAbility(&testParty[2]) == ABILITY_SHADOW_TAG);
 
     EXPECT(GetMonData(&testParty[0], MON_DATA_FRIENDSHIP, 0) == 42);
     EXPECT(GetMonData(&testParty[1], MON_DATA_FRIENDSHIP, 0) == 0);
@@ -109,14 +101,19 @@ TEST("CreateNPCTrainerPartyForTrainer generates customized Pokémon")
 
     EXPECT(GetMonGender(&testParty[0]) == MON_FEMALE);
     EXPECT(GetNature(&testParty[0]) == NATURE_HASTY);
+    EXPECT(GetNature(&testParty[1]) == NATURE_HARDY);
+
+    EXPECT_EQ(GetMonData(&testParty[0], MON_DATA_DYNAMAX_LEVEL), 5);
+    EXPECT_EQ(GetMonData(&testParty[1], MON_DATA_DYNAMAX_LEVEL), 10);
 
     Free(testParty);
 }
 
 TEST("CreateNPCTrainerPartyForTrainer generates different personalities for different mons")
 {
+    enum DifficultyLevel difficulty = GetTrainerDifficultyLevelTest(0);
     struct Pokemon *testParty = Alloc(6 * sizeof(struct Pokemon));
-    CreateNPCTrainerPartyFromTrainer(testParty, &sTestTrainer1, TRUE, BATTLE_TYPE_TRAINER);
+    CreateNPCTrainerPartyFromTrainer(testParty, &sTestTrainers[difficulty][0], TRUE, BATTLE_TYPE_TRAINER);
     EXPECT(testParty[0].box.personality != testParty[1].box.personality);
     Free(testParty);
 }
@@ -133,4 +130,155 @@ TEST("ModifyPersonalityForNature can set any nature")
     }
     ModifyPersonalityForNature(&personality, nature);
     EXPECT_EQ(GetNatureFromPersonality(personality), nature);
+}
+
+static const struct TrainerMon sTestParty2[] =
+{
+    {
+        .species = SPECIES_WYNAUT,
+        .lvl = 5,
+    },
+    {
+        .species = SPECIES_WYNAUT,
+        .lvl = 5,
+    },
+    {
+        .species = SPECIES_WYNAUT,
+        .lvl = 5,
+    },
+    {
+        .species = SPECIES_WYNAUT,
+        .lvl = 5,
+    },
+    {
+        .species = SPECIES_WYNAUT,
+        .lvl = 5,
+    },
+    {
+        .species = SPECIES_WYNAUT,
+        .lvl = 5,
+    },
+};
+
+static const struct Trainer sTestTrainer2 =
+{
+    .trainerName = _("Test2"),
+    .trainerClass = TRAINER_CLASS_BLACK_BELT,
+    .party = TRAINER_PARTY(sTestParty2),
+};
+
+TEST("Trainer Class Balls apply to the entire party")
+{
+    u32 j;
+    struct Pokemon *testParty = Alloc(6 * sizeof(struct Pokemon));
+    CreateNPCTrainerPartyFromTrainer(testParty, &sTestTrainer2, TRUE, BATTLE_TYPE_TRAINER);
+    for(j = 0; j < 6; j++)
+    {
+        EXPECT(GetMonData(&testParty[j], MON_DATA_POKEBALL, 0) == gTrainerClasses[sTestTrainer2.trainerClass].ball);
+    }
+    Free(testParty);
+}
+
+TEST("Difficulty default to Normal is the trainer doesn't have a member for the current diffuculty")
+{
+    SetCurrentDifficultyLevel(DIFFICULTY_EASY);
+    struct Pokemon *testParty = Alloc(6 * sizeof(struct Pokemon));
+    u32 currTrainer = 1;
+    CreateNPCTrainerPartyFromTrainer(testParty, &sTestTrainers[GetTrainerDifficultyLevelTest(currTrainer)][currTrainer], TRUE, BATTLE_TYPE_TRAINER);
+    EXPECT(GetMonData(&testParty[0], MON_DATA_SPECIES) == SPECIES_MEWTWO);
+    Free(testParty);
+}
+
+TEST("Difficulty changes which party if used for NPCs if defined for the difficulty (EASY)")
+{
+    SetCurrentDifficultyLevel(DIFFICULTY_EASY);
+    struct Pokemon *testParty = Alloc(6 * sizeof(struct Pokemon));
+    u32 currTrainer = 2;
+    CreateNPCTrainerPartyFromTrainer(testParty, &sTestTrainers[GetTrainerDifficultyLevelTest(currTrainer)][currTrainer], TRUE, BATTLE_TYPE_TRAINER);
+    EXPECT(GetMonData(&testParty[0], MON_DATA_SPECIES) == SPECIES_METAPOD);
+    EXPECT(GetMonData(&testParty[0], MON_DATA_LEVEL) == 1);
+    Free(testParty);
+}
+
+TEST("Difficulty changes which party if used for NPCs if defined for the difficulty (HARD)")
+{
+    SetCurrentDifficultyLevel(DIFFICULTY_HARD);
+    struct Pokemon *testParty = Alloc(6 * sizeof(struct Pokemon));
+    u32 currTrainer = 2;
+    CreateNPCTrainerPartyFromTrainer(testParty, &sTestTrainers[GetTrainerDifficultyLevelTest(currTrainer)][currTrainer], TRUE, BATTLE_TYPE_TRAINER);
+    EXPECT(GetMonData(&testParty[0], MON_DATA_SPECIES) == SPECIES_ARCEUS);
+    EXPECT(GetMonData(&testParty[0], MON_DATA_LEVEL) == 99);
+    Free(testParty);
+}
+
+TEST("Difficulty changes which party if used for NPCs if defined for the difficulty (NORMAL)")
+{
+    SetCurrentDifficultyLevel(DIFFICULTY_NORMAL);
+    struct Pokemon *testParty = Alloc(6 * sizeof(struct Pokemon));
+    u32 currTrainer = 2;
+    CreateNPCTrainerPartyFromTrainer(testParty, &sTestTrainers[GetTrainerDifficultyLevelTest(currTrainer)][currTrainer], TRUE, BATTLE_TYPE_TRAINER);
+    EXPECT(GetMonData(&testParty[0], MON_DATA_SPECIES) == SPECIES_MEWTWO);
+    EXPECT(GetMonData(&testParty[0], MON_DATA_LEVEL) == 50);
+    Free(testParty);
+}
+
+TEST("Trainer Party Pool generates a party from the trainer pool")
+{
+    struct Pokemon *testParty = Alloc(6 * sizeof(struct Pokemon));
+    u32 currTrainer = 3;
+    CreateNPCTrainerPartyFromTrainer(testParty, &sTestTrainers[GetTrainerDifficultyLevelTest(currTrainer)][currTrainer], TRUE, BATTLE_TYPE_TRAINER);
+    EXPECT(GetMonData(&testParty[0], MON_DATA_SPECIES) == SPECIES_EEVEE);
+    Free(testParty);
+}
+
+TEST("Trainer Party Pool picks a random lead and a random ace if tags exist in the pool")
+{
+    struct Pokemon *testParty = Alloc(6 * sizeof(struct Pokemon));
+    u32 currTrainer = 4;
+    CreateNPCTrainerPartyFromTrainer(testParty, &sTestTrainers[GetTrainerDifficultyLevelTest(currTrainer)][currTrainer], TRUE, BATTLE_TYPE_TRAINER);
+    EXPECT(GetMonData(&testParty[0], MON_DATA_SPECIES) == SPECIES_ARON);    //  Lead
+    EXPECT(GetMonData(&testParty[1], MON_DATA_SPECIES) == SPECIES_WYNAUT);  //  Not Lead or Ace
+    EXPECT(GetMonData(&testParty[2], MON_DATA_SPECIES) == SPECIES_EEVEE);   //  Ace
+    Free(testParty);
+}
+
+TEST("Trainer Party Pool picks according to custom rules")
+{
+    struct Pokemon *testParty = Alloc(6 * sizeof(struct Pokemon));
+    u32 currTrainer = 5;
+    CreateNPCTrainerPartyFromTrainer(testParty, &sTestTrainers[GetTrainerDifficultyLevelTest(currTrainer)][currTrainer], TRUE, BATTLE_TYPE_TRAINER | BATTLE_TYPE_DOUBLE);
+    EXPECT(GetMonData(&testParty[0], MON_DATA_SPECIES) == SPECIES_TORKOAL);    //  Lead + Weather Setter
+    EXPECT(GetMonData(&testParty[1], MON_DATA_SPECIES) == SPECIES_BULBASAUR);  //  Lead + Weather Abuser
+    EXPECT(GetMonData(&testParty[2], MON_DATA_SPECIES) == SPECIES_EEVEE);      //  Anything else
+    Free(testParty);
+}
+
+TEST("Trainer Party Pool uses standard party creation if pool is illegal")
+{
+    struct Pokemon *testParty = Alloc(6 * sizeof(struct Pokemon));
+    u32 currTrainer = 6;
+    CreateNPCTrainerPartyFromTrainer(testParty, &sTestTrainers[GetTrainerDifficultyLevelTest(currTrainer)][currTrainer], TRUE, BATTLE_TYPE_TRAINER);
+    EXPECT(GetMonData(&testParty[0], MON_DATA_SPECIES) == SPECIES_WYNAUT);
+    EXPECT(GetMonData(&testParty[1], MON_DATA_SPECIES) == SPECIES_WOBBUFFET);
+    Free(testParty);
+}
+
+TEST("Trainer Party Pool can be pruned before picking")
+{
+    struct Pokemon *testParty = Alloc(6 * sizeof(struct Pokemon));
+    u32 currTrainer = 7;
+    CreateNPCTrainerPartyFromTrainer(testParty, &sTestTrainers[GetTrainerDifficultyLevelTest(currTrainer)][currTrainer], TRUE, BATTLE_TYPE_TRAINER);
+    EXPECT(GetMonData(&testParty[0], MON_DATA_SPECIES) == SPECIES_EEVEE);
+    EXPECT(GetMonData(&testParty[1], MON_DATA_SPECIES) == SPECIES_WYNAUT);
+    Free(testParty);
+}
+
+TEST("Trainer Party Pool can choose which functions to use for picking mons")
+{
+    struct Pokemon *testParty = Alloc(6 * sizeof(struct Pokemon));
+    u32 currTrainer = 8;
+    CreateNPCTrainerPartyFromTrainer(testParty, &sTestTrainers[GetTrainerDifficultyLevelTest(currTrainer)][currTrainer], TRUE, BATTLE_TYPE_TRAINER);
+    EXPECT(GetMonData(&testParty[0], MON_DATA_SPECIES) == SPECIES_WYNAUT);
+    EXPECT(GetMonData(&testParty[1], MON_DATA_SPECIES) == SPECIES_WOBBUFFET);
+    Free(testParty);
 }

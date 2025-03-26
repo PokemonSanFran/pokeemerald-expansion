@@ -3,7 +3,7 @@
 
 ASSUMPTIONS
 {
-    ASSUME(gItems[ITEM_NORMAL_GEM].holdEffect == HOLD_EFFECT_GEMS);
+    ASSUME(gItemsInfo[ITEM_NORMAL_GEM].holdEffect == HOLD_EFFECT_GEMS);
 }
 
 SINGLE_BATTLE_TEST("Gem is consumed when it corresponds to the type of a move")
@@ -17,11 +17,11 @@ SINGLE_BATTLE_TEST("Gem is consumed when it corresponds to the type of a move")
     } SCENE {
         NONE_OF {
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
-            MESSAGE("Fire Gem strengthened Wobbuffet's power!");
+            MESSAGE("The Fire Gem strengthened Wobbuffet's power!");
         }
         ANIMATION(ANIM_TYPE_MOVE, MOVE_EMBER, player);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
-        MESSAGE("Normal Gem strengthened Wobbuffet's power!");
+        MESSAGE("The Normal Gem strengthened Wobbuffet's power!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_TACKLE, player);
     }
 }
@@ -32,7 +32,7 @@ SINGLE_BATTLE_TEST("Gem boost is only applied once")
     s16 normalHit;
 
     GIVEN {
-        ASSUME(I_GEM_BOOST_POWER >= GEN_5);
+        ASSUME(I_GEM_BOOST_POWER >= GEN_6);
         PLAYER(SPECIES_WOBBUFFET) { Item(ITEM_NORMAL_GEM); };
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -40,7 +40,7 @@ SINGLE_BATTLE_TEST("Gem boost is only applied once")
         TURN { MOVE(player, MOVE_TACKLE); }
     } SCENE {
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
-        MESSAGE("Normal Gem strengthened Wobbuffet's power!");
+        MESSAGE("The Normal Gem strengthened Wobbuffet's power!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_TACKLE, player);
         HP_BAR(opponent, captureDamage: &boostedHit);
         ANIMATION(ANIM_TYPE_MOVE, MOVE_TACKLE, player);
@@ -83,7 +83,7 @@ SINGLE_BATTLE_TEST("Gem is consumed if the move type is changed")
         }
     } SCENE {
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
-        MESSAGE("Normal Gem strengthened Delcatty's power!");
+        MESSAGE("The Normal Gem strengthened Delcatty's power!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_FEINT_ATTACK, player);
     }
 }

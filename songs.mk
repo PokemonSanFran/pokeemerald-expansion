@@ -1274,3 +1274,94 @@ $(MID_SUBDIR)/mus_pascal_opelucid.s: %.s: %.mid
 
 $(MID_SUBDIR)/mus_pascal_masterdojo.s: %.s: %.mid
 	$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092
+
+$(MID_SUBDIR)/mus_pascal_accept_letter.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_alameda.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_alameda_post_earthquake.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_battle_arcade.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_battle_archer.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_battle_factory.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_battle_finals.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_battle_tower.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_berkeley.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_bernalhill1.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_bernalhill.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_chasecenter.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_chinatown.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_dogpatch.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_encounter_solicitor.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_fort_point_gym.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_gldgtewilds.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_goldengate_park.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_haightahbury_gym.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_hall_of_fame.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_how_dissapointing.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_japantown.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_marin.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_master_dojo.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_mission.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_pacifica.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_pokemon_center.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_rose_raid.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_route_13.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_route_14.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_route_17.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_route_5.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_route_62.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_route_8.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_route_9.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_salesforcetowerpark.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_salesforcetower_raid.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_save.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_soma.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_sunset.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_treasure_island.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_twin_peaks.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_vs_elite_four.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_vs_ultra_beasts.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1
+$(MID_SUBDIR)/mus_pascal_why_didnt_you_rat_me_out.s %.s: %.mid
+		$(MID) $< $@ -E -R$(STD_REVERB) -G191 -V092 -P1

@@ -3,12 +3,12 @@
 
 ASSUMPTIONS
 {
-    ASSUME(gBattleMoves[MOVE_ELECTRIC_TERRAIN].effect == EFFECT_ELECTRIC_TERRAIN);
-    ASSUME(gBattleMoves[MOVE_PSYCHIC_TERRAIN].effect == EFFECT_PSYCHIC_TERRAIN);
-    ASSUME(gBattleMoves[MOVE_GRASSY_TERRAIN].effect == EFFECT_GRASSY_TERRAIN);
-    ASSUME(gBattleMoves[MOVE_MISTY_TERRAIN].effect == EFFECT_MISTY_TERRAIN);
-    ASSUME(gBattleMoves[MOVE_STEEL_ROLLER].effect == EFFECT_HIT_SET_REMOVE_TERRAIN);
-    ASSUME(gBattleMoves[MOVE_ICE_SPINNER].effect == EFFECT_HIT_SET_REMOVE_TERRAIN);
+    ASSUME(GetMoveEffect(MOVE_ELECTRIC_TERRAIN) == EFFECT_ELECTRIC_TERRAIN);
+    ASSUME(GetMoveEffect(MOVE_PSYCHIC_TERRAIN) == EFFECT_PSYCHIC_TERRAIN);
+    ASSUME(GetMoveEffect(MOVE_GRASSY_TERRAIN) == EFFECT_GRASSY_TERRAIN);
+    ASSUME(GetMoveEffect(MOVE_MISTY_TERRAIN) == EFFECT_MISTY_TERRAIN);
+    ASSUME(GetMoveEffect(MOVE_STEEL_ROLLER) == EFFECT_HIT_SET_REMOVE_TERRAIN);
+    ASSUME(GetMoveEffect(MOVE_ICE_SPINNER) == EFFECT_HIT_SET_REMOVE_TERRAIN);
 }
 
 SINGLE_BATTLE_TEST("Steel Roller and Ice Spinner can remove a terrain from the field")
@@ -45,7 +45,7 @@ SINGLE_BATTLE_TEST("Steel Roller and Ice Spinner can remove a terrain from the f
             MESSAGE("The electricity disappeared from the battlefield.");
             break;
         case MOVE_PSYCHIC_TERRAIN:
-            MESSAGE("The weirdness disappeared from the battlefield.");
+            MESSAGE("The weirdness disappeared from the battlefield!");
             break;
         case MOVE_GRASSY_TERRAIN:
             MESSAGE("The grass disappeared from the battlefield.");
@@ -80,5 +80,47 @@ SINGLE_BATTLE_TEST("Ice Spinner doesn't fail if there is no terrain on the field
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_ICE_SPINNER, player);
         NOT MESSAGE("But it failed!");
+    }
+}
+
+AI_SINGLE_BATTLE_TEST("AI will not choose Steel Roller if it might fail")
+{
+    u32 move;
+
+    PARAMETRIZE { move = MOVE_ELECTRIC_TERRAIN; }
+    PARAMETRIZE { move = MOVE_NONE; }
+
+    GIVEN {
+        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT);
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET) { Moves(MOVE_STEEL_ROLLER, MOVE_ICE_SHARD); }
+    } WHEN {
+        if (move == MOVE_ELECTRIC_TERRAIN) {
+            TURN { MOVE(player, MOVE_ELECTRIC_TERRAIN); EXPECT_MOVE(opponent, MOVE_ICE_SHARD); }
+            TURN { EXPECT_MOVE(opponent, MOVE_STEEL_ROLLER); }
+        } else {
+            TURN { EXPECT_MOVE(opponent, MOVE_ICE_SHARD); }
+        }
+    }
+}
+
+AI_SINGLE_BATTLE_TEST("AI will can choose Ice Spinner regardless if there is a terrain or not")
+{
+    u32 move;
+
+    PARAMETRIZE { move = MOVE_ELECTRIC_TERRAIN; }
+    PARAMETRIZE { move = MOVE_NONE; }
+
+    GIVEN {
+        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT);
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET) { Moves(MOVE_ICE_SPINNER, MOVE_ICE_SHARD); }
+    } WHEN {
+        if (move == MOVE_ELECTRIC_TERRAIN) {
+            TURN { MOVE(player, MOVE_ELECTRIC_TERRAIN); EXPECT_MOVE(opponent, MOVE_ICE_SPINNER); }
+            TURN { EXPECT_MOVE(opponent, MOVE_ICE_SPINNER); }
+        } else {
+            TURN { EXPECT_MOVE(opponent, MOVE_ICE_SPINNER); }
+        }
     }
 }

@@ -21,14 +21,14 @@ DOUBLE_BATTLE_TEST("Defiant sharply raises player's Attack after Intimidate")
         //1st mon Intimidate
         ABILITY_POPUP(opponentLeft, ABILITY_INTIMIDATE);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, playerLeft);
-        MESSAGE("Foe Gyarados's Intimidate cuts Mankey's attack!");
+        MESSAGE("The opposing Gyarados's Intimidate cuts Mankey's Attack!");
         if (abilityLeft == ABILITY_DEFIANT) {
             ABILITY_POPUP(playerLeft, ABILITY_DEFIANT);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, playerLeft);
             MESSAGE("Mankey's Attack sharply rose!");
         }
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, playerRight);
-        MESSAGE("Foe Gyarados's Intimidate cuts Primeape's attack!");
+        MESSAGE("The opposing Gyarados's Intimidate cuts Primeape's Attack!");
         if (abilityRight == ABILITY_DEFIANT) {
             ABILITY_POPUP(playerRight, ABILITY_DEFIANT);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, playerRight);
@@ -38,14 +38,14 @@ DOUBLE_BATTLE_TEST("Defiant sharply raises player's Attack after Intimidate")
         //2nd mon Intimidate
         ABILITY_POPUP(opponentRight, ABILITY_INTIMIDATE);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, playerLeft);
-        MESSAGE("Foe Arbok's Intimidate cuts Mankey's attack!");
+        MESSAGE("The opposing Arbok's Intimidate cuts Mankey's Attack!");
         if (abilityLeft == ABILITY_DEFIANT) {
             ABILITY_POPUP(playerLeft, ABILITY_DEFIANT);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, playerLeft);
             MESSAGE("Mankey's Attack sharply rose!");
         }
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, playerRight);
-        MESSAGE("Foe Arbok's Intimidate cuts Primeape's attack!");
+        MESSAGE("The opposing Arbok's Intimidate cuts Primeape's Attack!");
         if (abilityRight == ABILITY_DEFIANT) {
             ABILITY_POPUP(playerRight, ABILITY_DEFIANT);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, playerRight);
@@ -79,35 +79,35 @@ DOUBLE_BATTLE_TEST("Defiant sharply raises opponent's Attack after Intimidate")
         //1st mon Intimidate
         ABILITY_POPUP(playerLeft, ABILITY_INTIMIDATE);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentLeft);
-        MESSAGE("Gyarados's Intimidate cuts Foe Mankey's attack!");
+        MESSAGE("Gyarados's Intimidate cuts the opposing Mankey's Attack!");
         if (abilityLeft == ABILITY_DEFIANT) {
             ABILITY_POPUP(opponentLeft, ABILITY_DEFIANT);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentLeft);
-            MESSAGE("Foe Mankey's Attack sharply rose!");
+            MESSAGE("The opposing Mankey's Attack sharply rose!");
         }
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentRight);
-        MESSAGE("Gyarados's Intimidate cuts Foe Primeape's attack!");
+        MESSAGE("Gyarados's Intimidate cuts the opposing Primeape's Attack!");
         if (abilityRight == ABILITY_DEFIANT) {
             ABILITY_POPUP(opponentRight, ABILITY_DEFIANT);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentRight);
-            MESSAGE("Foe Primeape's Attack sharply rose!");
+            MESSAGE("The opposing Primeape's Attack sharply rose!");
         }
 
         //2nd mon Intimidate
         ABILITY_POPUP(playerRight, ABILITY_INTIMIDATE);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentLeft);
-        MESSAGE("Arbok's Intimidate cuts Foe Mankey's attack!");
+        MESSAGE("Arbok's Intimidate cuts the opposing Mankey's Attack!");
         if (abilityLeft == ABILITY_DEFIANT) {
             ABILITY_POPUP(opponentLeft, ABILITY_DEFIANT);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentLeft);
-            MESSAGE("Foe Mankey's Attack sharply rose!");
+            MESSAGE("The opposing Mankey's Attack sharply rose!");
         }
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentRight);
-        MESSAGE("Arbok's Intimidate cuts Foe Primeape's attack!");
+        MESSAGE("Arbok's Intimidate cuts the opposing Primeape's Attack!");
         if (abilityRight == ABILITY_DEFIANT) {
             ABILITY_POPUP(opponentRight, ABILITY_DEFIANT);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentRight);
-            MESSAGE("Foe Primeape's Attack sharply rose!");
+            MESSAGE("The opposing Primeape's Attack sharply rose!");
         }
     } FINALLY {
         // -2 from Intimidates and +4 from Defiants gets +2 total
@@ -128,8 +128,8 @@ SINGLE_BATTLE_TEST("Defiant activates after Sticky Web lowers Speed")
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_STICKY_WEB, opponent);
         // Switch-in - Sticky Web activates
-        MESSAGE("Go! Mankey!");
-        MESSAGE("Mankey was caught in a Sticky Web!");
+        SEND_IN_MESSAGE("Mankey");
+        MESSAGE("Mankey was caught in a sticky web!");
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
         MESSAGE("Mankey's Speed fell!");
         // Defiant activates
@@ -139,6 +139,65 @@ SINGLE_BATTLE_TEST("Defiant activates after Sticky Web lowers Speed")
     }
 }
 
+SINGLE_BATTLE_TEST("Defiant doesn't activate after Sticky Web lowers Speed if Court Changed")
+{
+    GIVEN {
+        PLAYER(SPECIES_WOBBUFFET);
+        PLAYER(SPECIES_MANKEY) { Ability(ABILITY_DEFIANT); }
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(player, MOVE_STICKY_WEB); MOVE(opponent, MOVE_COURT_CHANGE); }
+        TURN { SWITCH(player, 1); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_STICKY_WEB, player);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_COURT_CHANGE, opponent);
+        // Switch-in - Sticky Web activates
+        SEND_IN_MESSAGE("Mankey");
+        MESSAGE("Mankey was caught in a sticky web!");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
+        MESSAGE("Mankey's Speed fell!");
+        // Defiant doesn't activate
+        NONE_OF {
+            ABILITY_POPUP(player, ABILITY_DEFIANT);
+            ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
+            MESSAGE("Mankey's Attack sharply rose!");
+        }
+    }
+}
+
+SINGLE_BATTLE_TEST("Defiant correctly activates after Sticky Web lowers Speed if Court Changed")
+{
+    GIVEN {
+        PLAYER(SPECIES_WOBBUFFET);
+        PLAYER(SPECIES_MANKEY) { Ability(ABILITY_DEFIANT); }
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(player, MOVE_STICKY_WEB); MOVE(opponent, MOVE_COURT_CHANGE); }
+        TURN { SWITCH(player, 1); }
+        TURN { MOVE(opponent, MOVE_GROWL);}
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_STICKY_WEB, player);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_COURT_CHANGE, opponent);
+        // Switch-in - Sticky Web activates
+        SEND_IN_MESSAGE("Mankey");
+        MESSAGE("Mankey was caught in a sticky web!");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
+        MESSAGE("Mankey's Speed fell!");
+        // Defiant doesn't activate
+        NONE_OF {
+            ABILITY_POPUP(player, ABILITY_DEFIANT);
+            ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
+            MESSAGE("Mankey's Attack sharply rose!");
+        }
+        // Defiant triggers correctly after Sticky Web
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_GROWL, opponent);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
+        MESSAGE("Mankey's Attack fell!");
+        ABILITY_POPUP(player, ABILITY_DEFIANT);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
+        MESSAGE("Mankey's Attack sharply rose!");
+    }
+}
 
 DOUBLE_BATTLE_TEST("Defiant is activated by Cotton Down for non-ally pokemon")
 {
@@ -166,12 +225,113 @@ DOUBLE_BATTLE_TEST("Defiant is activated by Cotton Down for non-ally pokemon")
         MESSAGE("Mankey's Attack sharply rose!");
 
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentRight);
-        MESSAGE("Foe Mankey's Speed fell!");
+        MESSAGE("The opposing Mankey's Speed fell!");
     } THEN {
         EXPECT_EQ(playerLeft->statStages[STAT_SPEED], DEFAULT_STAT_STAGE - 1);
         EXPECT_EQ(playerRight->statStages[STAT_SPEED], DEFAULT_STAT_STAGE - 1);
         EXPECT_EQ(opponentRight->statStages[STAT_SPEED], DEFAULT_STAT_STAGE - 1);
         EXPECT_EQ(playerLeft->statStages[STAT_ATK], DEFAULT_STAT_STAGE + 2);
         EXPECT_EQ(playerRight->statStages[STAT_ATK], DEFAULT_STAT_STAGE + 2);
+    }
+}
+
+SINGLE_BATTLE_TEST("Defiant activates before White Herb")
+{
+    u32 move;
+
+    PARAMETRIZE { move = MOVE_LEER; }
+    PARAMETRIZE { move = MOVE_GROWL; }
+
+    GIVEN {
+        PLAYER(SPECIES_MANKEY) { Ability(ABILITY_DEFIANT); Item(ITEM_WHITE_HERB); }
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(opponent, move); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, move, opponent);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
+
+        ABILITY_POPUP(player, ABILITY_DEFIANT);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
+        MESSAGE("Mankey's Attack sharply rose!");
+
+        if (move == MOVE_LEER) {
+            ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
+            MESSAGE("Mankey returned its stats to normal using its White Herb!");
+        } else {
+            NONE_OF {
+                ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
+                MESSAGE("Mankey returned its stats to normal using its White Herb!");
+            }
+        }
+    } THEN {
+        if (move == MOVE_LEER) {
+            EXPECT_EQ(player->statStages[STAT_DEF], DEFAULT_STAT_STAGE);
+            EXPECT_EQ(player->statStages[STAT_ATK], DEFAULT_STAT_STAGE + 2);
+        } else {
+            EXPECT_EQ(player->statStages[STAT_ATK], DEFAULT_STAT_STAGE + 1);
+        }
+    }
+}
+
+SINGLE_BATTLE_TEST("Defiant activates for each stat that is lowered")
+{
+    GIVEN {
+        ASSUME(GetMoveEffect(MOVE_TICKLE) == EFFECT_TICKLE);
+        PLAYER(SPECIES_MANKEY) { Ability(ABILITY_DEFIANT); }
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(opponent, MOVE_TICKLE); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_TICKLE, opponent);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
+
+        MESSAGE("Mankey's Attack fell!");
+        ABILITY_POPUP(player, ABILITY_DEFIANT);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
+        MESSAGE("Mankey's Attack sharply rose!");
+
+        MESSAGE("Mankey's Defense fell!");
+        ABILITY_POPUP(player, ABILITY_DEFIANT);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
+        MESSAGE("Mankey's Attack sharply rose!");
+
+    } THEN {
+        EXPECT_EQ(player->statStages[STAT_ATK], DEFAULT_STAT_STAGE + 3);
+    }
+}
+
+SINGLE_BATTLE_TEST("Defiant doesn't activate if the pokemon lowers it's own stats")
+{
+    u32 move;
+
+    PARAMETRIZE { move = MOVE_SUPERPOWER; }
+    PARAMETRIZE { move = MOVE_CLOSE_COMBAT; }
+    PARAMETRIZE { move = MOVE_MAKE_IT_RAIN; }
+    PARAMETRIZE { move = MOVE_SPIN_OUT; }
+
+    GIVEN {
+        ASSUME(MoveHasAdditionalEffectSelf(MOVE_SUPERPOWER, MOVE_EFFECT_ATK_DEF_DOWN));
+        ASSUME(MoveHasAdditionalEffectSelf(MOVE_CLOSE_COMBAT, MOVE_EFFECT_DEF_SPDEF_DOWN));
+        ASSUME(MoveHasAdditionalEffectSelf(MOVE_MAKE_IT_RAIN, MOVE_EFFECT_SP_ATK_MINUS_1));
+        ASSUME(MoveHasAdditionalEffectSelf(MOVE_SPIN_OUT, MOVE_EFFECT_SPD_MINUS_2));
+        PLAYER(SPECIES_MANKEY) { Ability(ABILITY_DEFIANT); }
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(player, move); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, move, player);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
+
+        NONE_OF {
+            ABILITY_POPUP(player, ABILITY_DEFIANT);
+            ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
+            MESSAGE("Mankey's Attack sharply rose!");
+        }
+    } THEN {
+        if (move == MOVE_SUPERPOWER)
+            EXPECT_EQ(player->statStages[STAT_ATK], DEFAULT_STAT_STAGE - 1);
+        else
+            EXPECT_EQ(player->statStages[STAT_ATK], DEFAULT_STAT_STAGE);
     }
 }

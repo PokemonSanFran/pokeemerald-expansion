@@ -64,7 +64,7 @@ static const struct PartyMenuBoxInfoRects sPartyBoxInfoRects[] =
 
 // Each layout array has an array for each of the 6 party slots
 // The array for each slot has the sprite coords of its various sprites in the following order
-// Pokemon icon (x, y), held item (x, y), status condition (x, y), menu pokeball (x, y)
+// Pokémon icon (x, y), held item (x, y), status condition (x, y), menu Poké Ball (x, y)
 static const u8 sPartyMenuSpriteCoords[PARTY_LAYOUT_COUNT][PARTY_SIZE][4 * 2] =
 {
     [PARTY_LAYOUT_SINGLE] =
@@ -659,6 +659,8 @@ static const u8 *const sActionStringTable[] =
     [PARTY_MSG_ALREADY_HOLDING_ONE]    = gText_AlreadyHoldingOne,
     [PARTY_MSG_WHICH_APPLIANCE]        = gText_WhichAppliance,
     [PARTY_MSG_CHOOSE_SECOND_FUSION]   = gText_NextFusionMon,
+    [PARTY_MSG_NO_POKEMON]             = COMPOUND_STRING("You have no POKéMON."),
+    [PARTY_MSG_CHOOSE_MON_FOR_BOX]     = gText_SendWhichMonToPC,
 };
 
 static const u8 *const sDescriptionStringTable[] =
@@ -686,53 +688,41 @@ static const u16 sUnusedData[] =
     0x0121, 0x013b, 0x000f, 0x0013, 0x0039, 0x0046, 0x0094, 0x00f9, 0x007f, 0x0123,
 };
 
+static const u8 sText_Trade4[] = _("TRADE");
+
 struct
 {
     const u8 *text;
     TaskFunc func;
-} static const sCursorOptions[] =
+} static const sCursorOptions[MENU_FIELD_MOVES] =
 {
-    [MENU_SUMMARY] = {gText_Summary5, CursorCb_Summary},
-    [MENU_SWITCH] = {gText_Switch2, CursorCb_Switch},
+    [MENU_SUMMARY] = {COMPOUND_STRING("SUMMARY"), CursorCb_Summary},
+    [MENU_SWITCH] = {COMPOUND_STRING("SWITCH"), CursorCb_Switch},
     [MENU_CANCEL1] = {gText_Cancel2, CursorCb_Cancel1},
-    [MENU_ITEM] = {gText_Item, CursorCb_Item},
+    [MENU_ITEM] = {COMPOUND_STRING("ITEM"), CursorCb_Item},
     [MENU_GIVE] = {gMenuText_Give, CursorCb_Give},
-    [MENU_TAKE_ITEM] = {gText_Take, CursorCb_TakeItem},
-    [MENU_MAIL] = {gText_Mail, CursorCb_Mail},
-    [MENU_TAKE_MAIL] = {gText_Take2, CursorCb_TakeMail},
-    [MENU_READ] = {gText_Read2, CursorCb_Read},
+    [MENU_TAKE_ITEM] = {COMPOUND_STRING("TAKE"), CursorCb_TakeItem},
+    [MENU_MAIL] = {COMPOUND_STRING("MAIL"), CursorCb_Mail},
+    [MENU_TAKE_MAIL] = {COMPOUND_STRING("TAKE"), CursorCb_TakeMail},
+    [MENU_READ] = {COMPOUND_STRING("READ"), CursorCb_Read},
     [MENU_CANCEL2] = {gText_Cancel2, CursorCb_Cancel2},
-    [MENU_SHIFT] = {gText_Shift, CursorCb_SendMon},
-    [MENU_SEND_OUT] = {gText_SendOut, CursorCb_SendMon},
-    [MENU_ENTER] = {gText_Enter, CursorCb_Enter},
-    [MENU_NO_ENTRY] = {gText_NoEntry, CursorCb_NoEntry},
-    [MENU_STORE] = {gText_Store, CursorCb_Store},
+    [MENU_SHIFT] = {COMPOUND_STRING("SHIFT"), CursorCb_SendMon},
+    [MENU_SEND_OUT] = {COMPOUND_STRING("SEND OUT"), CursorCb_SendMon},
+    [MENU_ENTER] = {COMPOUND_STRING("ENTER"), CursorCb_Enter},
+    [MENU_NO_ENTRY] = {COMPOUND_STRING("NO ENTRY"), CursorCb_NoEntry},
+    [MENU_STORE] = {COMPOUND_STRING("STORE"), CursorCb_Store},
     [MENU_REGISTER] = {gText_Register, CursorCb_Register},
-    [MENU_TRADE1] = {gText_Trade4, CursorCb_Trade1},
-    [MENU_TRADE2] = {gText_Trade4, CursorCb_Trade2},
+    [MENU_TRADE1] = {sText_Trade4, CursorCb_Trade1},
+    [MENU_TRADE2] = {sText_Trade4, CursorCb_Trade2},
     [MENU_TOSS] = {gMenuText_Toss, CursorCb_Toss},
-    [MENU_CATALOG_BULB] = {gText_LightBulb, CursorCb_CatalogBulb},
-    [MENU_CATALOG_OVEN] = {gText_MicrowaveOven, CursorCb_CatalogOven},
-    [MENU_CATALOG_WASHING] = {gText_WashingMachine, CursorCb_CatalogWashing},
-    [MENU_CATALOG_FRIDGE] = {gText_Refrigerator, CursorCb_CatalogFridge},
-    [MENU_CATALOG_FAN] = {gText_ElectricFan, CursorCb_CatalogFan},
-    [MENU_CATALOG_MOWER] = {gText_LawnMower, CursorCb_CatalogMower},
-    [MENU_CHANGE_FORM] = {gText_ChangeForm, CursorCb_ChangeForm},
-    [MENU_CHANGE_ABILITY] = {gText_ChangeAbility, CursorCb_ChangeAbility},
-    [MENU_FIELD_MOVES + FIELD_MOVE_CUT] = {gMoveNames[MOVE_CUT], CursorCb_FieldMove},
-    [MENU_FIELD_MOVES + FIELD_MOVE_FLASH] = {gMoveNames[MOVE_FLASH], CursorCb_FieldMove},
-    [MENU_FIELD_MOVES + FIELD_MOVE_ROCK_SMASH] = {gMoveNames[MOVE_ROCK_SMASH], CursorCb_FieldMove},
-    [MENU_FIELD_MOVES + FIELD_MOVE_STRENGTH] = {gMoveNames[MOVE_STRENGTH], CursorCb_FieldMove},
-    [MENU_FIELD_MOVES + FIELD_MOVE_SURF] = {gMoveNames[MOVE_SURF], CursorCb_FieldMove},
-    [MENU_FIELD_MOVES + FIELD_MOVE_FLY] = {gMoveNames[MOVE_FLY], CursorCb_FieldMove},
-    [MENU_FIELD_MOVES + FIELD_MOVE_DIVE] = {gMoveNames[MOVE_DIVE], CursorCb_FieldMove},
-    [MENU_FIELD_MOVES + FIELD_MOVE_WATERFALL] = {gMoveNames[MOVE_WATERFALL], CursorCb_FieldMove},
-    [MENU_FIELD_MOVES + FIELD_MOVE_TELEPORT] = {gMoveNames[MOVE_TELEPORT], CursorCb_FieldMove},
-    [MENU_FIELD_MOVES + FIELD_MOVE_DIG] = {gMoveNames[MOVE_DIG], CursorCb_FieldMove},
-    [MENU_FIELD_MOVES + FIELD_MOVE_SECRET_POWER] = {gMoveNames[MOVE_SECRET_POWER], CursorCb_FieldMove},
-    [MENU_FIELD_MOVES + FIELD_MOVE_MILK_DRINK] = {gMoveNames[MOVE_MILK_DRINK], CursorCb_FieldMove},
-    [MENU_FIELD_MOVES + FIELD_MOVE_SOFT_BOILED] = {gMoveNames[MOVE_SOFT_BOILED], CursorCb_FieldMove},
-    [MENU_FIELD_MOVES + FIELD_MOVE_SWEET_SCENT] = {gMoveNames[MOVE_SWEET_SCENT], CursorCb_FieldMove},
+    [MENU_CATALOG_BULB] = {COMPOUND_STRING("Light bulb"), CursorCb_CatalogBulb},
+    [MENU_CATALOG_OVEN] = {COMPOUND_STRING("Microwave oven"), CursorCb_CatalogOven},
+    [MENU_CATALOG_WASHING] = {COMPOUND_STRING("Washing machine"), CursorCb_CatalogWashing},
+    [MENU_CATALOG_FRIDGE] = {COMPOUND_STRING("Refrigerator"), CursorCb_CatalogFridge},
+    [MENU_CATALOG_FAN] = {COMPOUND_STRING("Electric fan"), CursorCb_CatalogFan},
+    [MENU_CATALOG_MOWER] = {COMPOUND_STRING("Lawn mower"), CursorCb_CatalogMower},
+    [MENU_CHANGE_FORM] = {COMPOUND_STRING("Change form"), CursorCb_ChangeForm},
+    [MENU_CHANGE_ABILITY] = {COMPOUND_STRING("Change Ability"), CursorCb_ChangeAbility},
 };
 
 static const u8 sPartyMenuAction_SummarySwitchCancel[] = {MENU_SUMMARY, MENU_SWITCH, MENU_CANCEL1};
@@ -850,7 +840,7 @@ static const u8 *const sUnionRoomTradeMessages[] =
 };
 
 static const u32 sHeldItemGfx[] = INCBIN_U32("graphics/party_menu/hold_icons.4bpp");
-static const u16 sHeldItemPalette[] = INCBIN_U16("graphics/party_menu/hold_icons.gbapal");
+const u16 gHeldItemPalette[] = INCBIN_U16("graphics/party_menu/hold_icons.gbapal");
 
 static const struct OamData sOamData_HeldItem =
 {
@@ -887,14 +877,14 @@ static const union AnimCmd *const sSpriteAnimTable_HeldItem[] =
     sSpriteAnim_HeldMail,
 };
 
-static const struct SpriteSheet sSpriteSheet_HeldItem =
+const struct SpriteSheet gSpriteSheet_HeldItem =
 {
     .data = sHeldItemGfx, .size = sizeof(sHeldItemGfx), .tag = TAG_HELD_ITEM
 };
 
 static const struct SpritePalette sSpritePalette_HeldItem =
 {
-    .data = sHeldItemPalette, .tag = TAG_HELD_ITEM
+    .data = gHeldItemPalette, .tag = TAG_HELD_ITEM
 };
 
 static const struct SpriteTemplate sSpriteTemplate_HeldItem =
@@ -953,7 +943,7 @@ static const struct CompressedSpritePalette sSpritePalette_MenuPokeball =
     gPartyMenuPokeball_Pal, TAG_POKEBALL
 };
 
-// Used for the pokeball sprite on each party slot / Cancel button
+// Used for the Poké Ball sprite on each party slot / Cancel button
 static const struct SpriteTemplate sSpriteTemplate_MenuPokeball =
 {
     .tileTag = TAG_POKEBALL,
@@ -1154,11 +1144,18 @@ static const u8 *const sUnused_StatStrings[] =
     gText_Speed2
 };
 
+#define ROTOM_BASE_MOVE  MOVE_THUNDER_SHOCK
+#define ROTOM_HEAT_MOVE  MOVE_OVERHEAT
+#define ROTOM_WASH_MOVE  MOVE_HYDRO_PUMP
+#define ROTOM_FROST_MOVE MOVE_BLIZZARD
+#define ROTOM_FAN_MOVE   MOVE_AIR_SLASH
+#define ROTOM_MOW_MOVE   MOVE_LEAF_STORM
+
 static const u16 sRotomFormChangeMoves[5] =
 {
-    MOVE_HYDRO_PUMP,
-    MOVE_BLIZZARD,
-    MOVE_OVERHEAT,
-    MOVE_AIR_SLASH,
-    MOVE_LEAF_STORM,
+    ROTOM_HEAT_MOVE,
+    ROTOM_WASH_MOVE,
+    ROTOM_FROST_MOVE,
+    ROTOM_FAN_MOVE,
+    ROTOM_MOW_MOVE,
 };

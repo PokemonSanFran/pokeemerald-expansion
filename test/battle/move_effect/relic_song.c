@@ -3,7 +3,8 @@
 
 ASSUMPTIONS
 {
-    ASSUME(gBattleMoves[MOVE_RELIC_SONG].effect == EFFECT_RELIC_SONG);
+    ASSUME(GetMoveEffect(MOVE_RELIC_SONG) == EFFECT_RELIC_SONG);
+    ASSUME(MoveHasAdditionalEffect(MOVE_RELIC_SONG, MOVE_EFFECT_SLEEP) == TRUE);
 }
 
 SINGLE_BATTLE_TEST("Relic Song has a 10% chance to put the target to sleep")
@@ -31,7 +32,7 @@ SINGLE_BATTLE_TEST("Relic Song is prevented by Soundproof")
         TURN { MOVE(player, MOVE_RELIC_SONG); }
     } SCENE {
         ABILITY_POPUP(opponent, ABILITY_SOUNDPROOF);
-        MESSAGE("Foe Voltorb's Soundproof blocks Relic Song!");
+        MESSAGE("The opposing Voltorb's Soundproof blocks Relic Song!");
         NONE_OF {
             ANIMATION(ANIM_TYPE_MOVE, MOVE_RELIC_SONG, player);
             HP_BAR(opponent);
@@ -63,7 +64,7 @@ SINGLE_BATTLE_TEST("Relic Song is blocked by Throat Chop")
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_THROAT_CHOP, opponent);
         HP_BAR(player);
-        MESSAGE("Wobbuffet can't use Relic Song due to Throat Chop!");
+        MESSAGE("The effects of Throat Chop prevent Wobbuffet from using certain moves!");
         NOT ANIMATION(ANIM_TYPE_MOVE, MOVE_RELIC_SONG, player);
     }
 }
@@ -81,6 +82,25 @@ SINGLE_BATTLE_TEST("Relic Song transforms Meloetta if used successfully")
         MESSAGE("Meloetta transformed!");
     } THEN {
         EXPECT_EQ(player->species, SPECIES_MELOETTA_PIROUETTE);
+    }
+}
+
+SINGLE_BATTLE_TEST("Relic Song does not transform Pokemon other than Meloetta")
+{
+    GIVEN {
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(player, MOVE_RELIC_SONG); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_RELIC_SONG, player);
+        HP_BAR(opponent);
+        NONE_OF {
+            ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_FORM_CHANGE, player);
+            MESSAGE("Wobbuffet transformed!");
+        }
+    } THEN {
+        EXPECT_EQ(player->species, SPECIES_WOBBUFFET);
     }
 }
 
@@ -114,7 +134,7 @@ SINGLE_BATTLE_TEST("Relic Song transformation is the last thing that happens aft
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_RELIC_SONG, player);
         HP_BAR(opponent);
-        MESSAGE("Foe Gossifleur fainted!");
+        MESSAGE("The opposing Gossifleur fainted!");
         ABILITY_POPUP(opponent, ABILITY_COTTON_DOWN);
         MESSAGE("Meloetta's Speed fell!");
         MESSAGE("Meloetta transformed!");
@@ -171,7 +191,7 @@ SINGLE_BATTLE_TEST("Relic Song transforms Meloetta after Magician was activated"
         ANIMATION(ANIM_TYPE_MOVE, MOVE_RELIC_SONG, player);
         HP_BAR(opponent);
         ABILITY_POPUP(player, ABILITY_MAGICIAN);
-        MESSAGE("Meloetta stole Foe Delphox's Potion!");
+        MESSAGE("Meloetta stole the opposing Delphox's Potion!");
         MESSAGE("Meloetta transformed!");
     } THEN {
         EXPECT_EQ(player->species, SPECIES_MELOETTA_PIROUETTE);

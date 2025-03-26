@@ -98,7 +98,7 @@ static void PrintContestantMonName(u8);
 static void PrintContestantMonNameWithColor(u8, u8);
 static u8 CreateJudgeSprite(void);
 static u8 CreateJudgeSpeechBubbleSprite(void);
-static u8 CreateContestantSprite(u16, u32, u32, u32);
+static u8 CreateContestantSprite(u16, bool8, u32, u32);
 static void PrintContestMoveDescription(u16);
 static u16 SanitizeSpecies(u16);
 static void ContestClearGeneralTextWindow(void);
@@ -194,7 +194,7 @@ static void SwapMoveDescAndContestTilemaps(void);
 #define CONTESTANT_TEXT_COLOR_START 10
 
 enum {
-// The "{Pokemon Name} / {Trainer Name}" windows.
+// The "{Pokémon Name} / {Trainer Name}" windows.
     WIN_CONTESTANT0_NAME,
     WIN_CONTESTANT1_NAME,
     WIN_CONTESTANT2_NAME,
@@ -358,7 +358,7 @@ EWRAM_DATA bool8 gCurContestWinnerIsForArtist = 0;
 EWRAM_DATA u8 gCurContestWinnerSaveIdx = 0;
 
 // IWRAM common vars.
-u32 gContestRngValue;
+COMMON_DATA rng_value_t gContestRngValue = {0};
 
 extern const u8 gText_LinkStandby4[];
 extern const u8 gText_BDot[];
@@ -688,6 +688,97 @@ static const u16 sText_Pal[] = INCBIN_U16("graphics/contest/text.gbapal");
 
 #include "data/contest_text_tables.h"
 
+const u8 *const gContestEffectDescriptionPointers[] =
+{
+    [CONTEST_EFFECT_HIGHLY_APPEALING]                      = COMPOUND_STRING("A highly appealing move."),
+    [CONTEST_EFFECT_USER_MORE_EASILY_STARTLED]             = COMPOUND_STRING("After this move, the user is\nmore easily startled."),
+    [CONTEST_EFFECT_GREAT_APPEAL_BUT_NO_MORE_MOVES]        = COMPOUND_STRING("Makes a great appeal, but\nallows no more to the end."),
+    [CONTEST_EFFECT_REPETITION_NOT_BORING]                 = COMPOUND_STRING("Can be repeatedly used\nwithout boring the JUDGE."),
+    [CONTEST_EFFECT_AVOID_STARTLE_ONCE]                    = COMPOUND_STRING("Can avoid being startled\nby others once."),
+    [CONTEST_EFFECT_AVOID_STARTLE]                         = COMPOUND_STRING("Can avoid being startled\nby others."),
+    [CONTEST_EFFECT_AVOID_STARTLE_SLIGHTLY]                = COMPOUND_STRING("Can avoid being startled\nby others a little."),
+    [CONTEST_EFFECT_USER_LESS_EASILY_STARTLED]             = COMPOUND_STRING("After this move, the user is\nless likely to be startled."),
+    [CONTEST_EFFECT_STARTLE_FRONT_MON]                     = COMPOUND_STRING("Slightly startles the\nPOKéMON in front."),
+    [CONTEST_EFFECT_SLIGHTLY_STARTLE_PREV_MONS]            = COMPOUND_STRING("Slightly startles those\nthat have made appeals."),
+    [CONTEST_EFFECT_STARTLE_PREV_MON]                      = COMPOUND_STRING("Startles the POKéMON that\nappealed before the user."),
+    [CONTEST_EFFECT_STARTLE_PREV_MONS]                     = COMPOUND_STRING("Startles all POKéMON that\nhave done their appeals."),
+    [CONTEST_EFFECT_BADLY_STARTLE_FRONT_MON]               = COMPOUND_STRING("Badly startles the\nPOKéMON in front."),
+    [CONTEST_EFFECT_BADLY_STARTLE_PREV_MONS]               = COMPOUND_STRING("Badly startles those that\nhave made appeals."),
+    [CONTEST_EFFECT_STARTLE_PREV_MON_2]                    = COMPOUND_STRING("Startles the POKéMON that\nappealed before the user."),
+    [CONTEST_EFFECT_STARTLE_PREV_MONS_2]                   = COMPOUND_STRING("Startles all POKéMON that\nhave done their appeals."),
+    [CONTEST_EFFECT_SHIFT_JUDGE_ATTENTION]                 = COMPOUND_STRING("Shifts the JUDGE's\nattention from others."),
+    [CONTEST_EFFECT_STARTLE_MON_WITH_JUDGES_ATTENTION]     = COMPOUND_STRING("Startles the POKéMON that\nhas the JUDGE's attention."),
+    [CONTEST_EFFECT_JAMS_OTHERS_BUT_MISS_ONE_TURN]         = COMPOUND_STRING("Jams the others, and misses\none turn of appeals."),
+    [CONTEST_EFFECT_STARTLE_MONS_SAME_TYPE_APPEAL]         = COMPOUND_STRING("Startles POKéMON that\nmade a same-type appeal."),
+    [CONTEST_EFFECT_STARTLE_MONS_COOL_APPEAL]              = COMPOUND_STRING("Badly startles POKéMON\nthat made COOL appeals."),
+    [CONTEST_EFFECT_STARTLE_MONS_BEAUTY_APPEAL]            = COMPOUND_STRING("Badly startles POKéMON\nthat made BEAUTY appeals."),
+    [CONTEST_EFFECT_STARTLE_MONS_CUTE_APPEAL]              = COMPOUND_STRING("Badly startles POKéMON\nthat made CUTE appeals."),
+    [CONTEST_EFFECT_STARTLE_MONS_SMART_APPEAL]             = COMPOUND_STRING("Badly startles POKéMON\nthat made SMART appeals."),
+    [CONTEST_EFFECT_STARTLE_MONS_TOUGH_APPEAL]             = COMPOUND_STRING("Badly startles POKéMON\nthat made TOUGH appeals."),
+    [CONTEST_EFFECT_MAKE_FOLLOWING_MON_NERVOUS]            = COMPOUND_STRING("Makes one POKéMON after\nthe user nervous."),
+    [CONTEST_EFFECT_MAKE_FOLLOWING_MONS_NERVOUS]           = COMPOUND_STRING("Makes all POKéMON after\nthe user nervous."),
+    [CONTEST_EFFECT_WORSEN_CONDITION_OF_PREV_MONS]         = COMPOUND_STRING("Worsens the condition of\nthose that made appeals."),
+    [CONTEST_EFFECT_BADLY_STARTLES_MONS_IN_GOOD_CONDITION] = COMPOUND_STRING("Badly startles POKéMON in\ngood condition."),
+    [CONTEST_EFFECT_BETTER_IF_FIRST]                       = COMPOUND_STRING("The appeal works great if\nperformed first."),
+    [CONTEST_EFFECT_BETTER_IF_LAST]                        = COMPOUND_STRING("The appeal works great if\nperformed last."),
+    [CONTEST_EFFECT_APPEAL_AS_GOOD_AS_PREV_ONES]           = COMPOUND_STRING("Makes the appeal as good\nas those before it."),
+    [CONTEST_EFFECT_APPEAL_AS_GOOD_AS_PREV_ONE]            = COMPOUND_STRING("Makes the appeal as good\nas the one before it."),
+    [CONTEST_EFFECT_BETTER_WHEN_LATER]                     = COMPOUND_STRING("The appeal works better\nthe later it is performed."),
+    [CONTEST_EFFECT_QUALITY_DEPENDS_ON_TIMING]             = COMPOUND_STRING("The appeal's quality varies\ndepending on its timing."),
+    [CONTEST_EFFECT_BETTER_IF_SAME_TYPE]                   = COMPOUND_STRING("Works well if it's the same\ntype as the one before."),
+    [CONTEST_EFFECT_BETTER_IF_DIFF_TYPE]                   = COMPOUND_STRING("Works well if different in\ntype than the one before."),
+    [CONTEST_EFFECT_AFFECTED_BY_PREV_APPEAL]               = COMPOUND_STRING("Affected by how well the\nappeal in front goes."),
+    [CONTEST_EFFECT_IMPROVE_CONDITION_PREVENT_NERVOUSNESS] = COMPOUND_STRING("Ups the user's condition.\nHelps prevent nervousness."),
+    [CONTEST_EFFECT_BETTER_WITH_GOOD_CONDITION]            = COMPOUND_STRING("The appeal works well if the\nuser's condition is good."),
+    [CONTEST_EFFECT_NEXT_APPEAL_EARLIER]                   = COMPOUND_STRING("The next appeal can be\nmade earlier next turn."),
+    [CONTEST_EFFECT_NEXT_APPEAL_LATER]                     = COMPOUND_STRING("The next appeal can be\nmade later next turn."),
+    [CONTEST_EFFECT_MAKE_SCRAMBLING_TURN_ORDER_EASIER]     = COMPOUND_STRING("Makes the next turn's order\nmore easily scrambled."),
+    [CONTEST_EFFECT_SCRAMBLE_NEXT_TURN_ORDER]              = COMPOUND_STRING("Scrambles the order of\nappeals on the next turn."),
+    [CONTEST_EFFECT_EXCITE_AUDIENCE_IN_ANY_CONTEST]        = COMPOUND_STRING("An appeal that excites the\naudience in any CONTEST."),
+    [CONTEST_EFFECT_BADLY_STARTLE_MONS_WITH_GOOD_APPEALS]  = COMPOUND_STRING("Badly startles all POKéMON\nthat made good appeals."),
+    [CONTEST_EFFECT_BETTER_WHEN_AUDIENCE_EXCITED]          = COMPOUND_STRING("The appeal works best the\nmore the crowd is excited."),
+    [CONTEST_EFFECT_DONT_EXCITE_AUDIENCE]                  = COMPOUND_STRING("Temporarily stops the\ncrowd from growing excited."),
+};
+
+const u8 *const gContestMoveTypeTextPointers[] =
+{
+    [CONTEST_CATEGORY_COOL]   = COMPOUND_STRING("COOL"),
+    [CONTEST_CATEGORY_BEAUTY] = COMPOUND_STRING("BEAUTY"),
+    [CONTEST_CATEGORY_CUTE]   = COMPOUND_STRING("CUTE"),
+    [CONTEST_CATEGORY_SMART]  = COMPOUND_STRING("SMART"),
+    [CONTEST_CATEGORY_TOUGH]  = COMPOUND_STRING("TOUGH"),
+};
+
+static const u8 *const sContestConditions[] =
+{
+    [CONTEST_CATEGORY_COOL]   = COMPOUND_STRING("coolness"),
+    [CONTEST_CATEGORY_BEAUTY] = COMPOUND_STRING("beauty"),
+    [CONTEST_CATEGORY_CUTE]   = COMPOUND_STRING("cuteness"),
+    [CONTEST_CATEGORY_SMART]  = COMPOUND_STRING("smartness"),
+    [CONTEST_CATEGORY_TOUGH]  = COMPOUND_STRING("toughness"),
+};
+
+static const u8 *const sInvalidContestMoveNames[] =
+{
+    [CONTEST_CATEGORY_COOL]    = COMPOUND_STRING("COOL Move"),
+    [CONTEST_CATEGORY_BEAUTY]  = COMPOUND_STRING("BEAUTY Move"),
+    [CONTEST_CATEGORY_CUTE]    = COMPOUND_STRING("CUTE Move"),
+    [CONTEST_CATEGORY_SMART]   = COMPOUND_STRING("SMART Move"),
+    [CONTEST_CATEGORY_TOUGH]   = COMPOUND_STRING("TOUGH Move"),
+    [CONTEST_CATEGORIES_COUNT] = COMPOUND_STRING("???"),
+};
+
+// Takes the .attentionLevel of a contestant as an index.
+static const u8 *const sRoundResultTexts[] =
+{
+    COMPOUND_STRING("{STR_VAR_1} failed to\nstand out at all…{PAUSE_UNTIL_PRESS}"),
+    COMPOUND_STRING("{STR_VAR_1} didn't stand\nout very much…{PAUSE_UNTIL_PRESS}"),
+    COMPOUND_STRING("{STR_VAR_1} caught a\nlittle attention.{PAUSE_UNTIL_PRESS}"),
+    COMPOUND_STRING("{STR_VAR_1} attracted a\nlot of attention.{PAUSE_UNTIL_PRESS}"),
+    COMPOUND_STRING("{STR_VAR_1} commanded\ntotal attention.{PAUSE_UNTIL_PRESS}"),
+    COMPOUND_STRING("{STR_VAR_1} hasn't made\nits appeal.{PAUSE_UNTIL_PRESS}"),
+};
+
 static const struct BgTemplate sContestBgTemplates[] =
 {
     {
@@ -858,23 +949,22 @@ static const struct CompressedSpriteSheet sSpriteSheets_ContestantsTurnBlinkEffe
     }
 };
 
-// Yup this is super dangerous but that's how it is here
 static const struct SpritePalette sSpritePalettes_ContestantsTurnBlinkEffect[CONTESTANT_COUNT] =
 {
     {
-        .data = (u16 *)(gHeap + 0x1A0A4),
+        .data = eContestTempSave.cachedWindowPalettes[5],
         .tag = TAG_BLINK_EFFECT_CONTESTANT0
     },
     {
-        .data = (u16 *)(gHeap + 0x1A0C4),
+        .data = eContestTempSave.cachedWindowPalettes[6],
         .tag = TAG_BLINK_EFFECT_CONTESTANT1
     },
     {
-        .data = (u16 *)(gHeap + 0x1A0E4),
+        .data = eContestTempSave.cachedWindowPalettes[7],
         .tag = TAG_BLINK_EFFECT_CONTESTANT2
     },
     {
-        .data = (u16 *)(gHeap + 0x1A104),
+        .data = eContestTempSave.cachedWindowPalettes[8],
         .tag = TAG_BLINK_EFFECT_CONTESTANT3
     }
 };
@@ -993,6 +1083,18 @@ static const s8 sContestExcitementTable[CONTEST_CATEGORIES_COUNT][CONTEST_CATEGO
         [CONTEST_CATEGORY_TOUGH]  = +1
     }
 };
+
+static void CopyNicknameToFit(u8 *dest, u32 contestant)
+{
+    u8 *end = StringCopy(dest, gContestMons[contestant].nickname);
+    WrapFontIdToFit(dest, end, FONT_NORMAL, 60);
+}
+
+static void CopyMoveNameToFit(u8 *dest, u32 move)
+{
+    u8 *end = StringCopy(dest, GetMoveName(move));
+    WrapFontIdToFit(dest, end, FONT_NORMAL, 84);
+}
 
 static void TaskDummy1(u8 taskId)
 {
@@ -1537,15 +1639,15 @@ static void Task_ShowMoveSelectScreen(u8 taskId)
         }
         else if (move != MOVE_NONE
                  && eContestantStatus[gContestPlayerMonIndex].prevMove == move
-                 && gContestMoves[move].effect != CONTEST_EFFECT_REPETITION_NOT_BORING)
+                 && GetMoveContestEffect(move) != CONTEST_EFFECT_REPETITION_NOT_BORING)
         {
             // Gray the text because it's a repeated move
             moveNameBuffer = StringCopy(moveName, gText_ColorBlue);
         }
-        moveNameBuffer = StringCopy(moveNameBuffer, gMoveNames[move]);
+        moveNameBuffer = StringCopy(moveNameBuffer, GetMoveName(move));
 
         FillWindowPixelBuffer(i + MOVE_WINDOWS_START, PIXEL_FILL(0));
-        Contest_PrintTextToBg0WindowAt(i + MOVE_WINDOWS_START, moveName, 5, 1, FONT_NARROW);
+        Contest_PrintTextToBg0WindowAt(i + MOVE_WINDOWS_START, moveName, 5, 1, GetFontIdToFit(moveName, FONT_NARROW, 0, WindowWidthPx(i + MOVE_WINDOWS_START) - 11));
     }
 
     DrawMoveSelectArrow(eContest.playerMoveChoice);
@@ -1709,7 +1811,7 @@ static void Task_AppealSetup(u8 taskId)
     if (++gTasks[taskId].data[0] > 19)
     {
         eContest.turnNumber = 0;
-        eContest.unusedRng = gRngValue;
+        eContest.unusedRng = 0;
         if ((gLinkContestFlags & LINK_CONTEST_FLAG_IS_LINK) && IsPlayerLinkLeader())
         {
             s32 i;
@@ -1781,7 +1883,7 @@ static void Task_DoAppeals(u8 taskId)
         SetMoveAnimAttackerData(eContest.currentContestant);
         spriteId = CreateContestantSprite(
             gContestMons[eContest.currentContestant].species,
-            gContestMons[eContest.currentContestant].otId,
+            gContestMons[eContest.currentContestant].isShiny,
             gContestMons[eContest.currentContestant].personality,
             eContest.currentContestant);
         gSprites[spriteId].x2 = 120;
@@ -1808,9 +1910,9 @@ static void Task_DoAppeals(u8 taskId)
         else
         {
             ContestClearGeneralTextWindow();
-            StringCopy(gStringVar1, gContestMons[contestant].nickname);
+            CopyNicknameToFit(gStringVar1, contestant);
             if (eContestantStatus[contestant].currMove < MOVES_COUNT)
-                StringCopy(gStringVar2, gMoveNames[eContestantStatus[contestant].currMove]);
+                StringCopy(gStringVar2, GetMoveName(eContestantStatus[contestant].currMove));
             else
                 StringCopy(gStringVar2, sInvalidContestMoveNames[eContestantStatus[contestant].moveCategory]);
             StringExpandPlaceholders(gStringVar4, gText_MonAppealedWithMove);
@@ -2074,7 +2176,7 @@ static void Task_DoAppeals(u8 taskId)
                 || eContestantStatus[contestant].turnSkipped)
             {
                 ContestClearGeneralTextWindow();
-                StringCopy(gStringVar1, gContestMons[contestant].nickname);
+                CopyNicknameToFit(gStringVar1, contestant);
                 StringExpandPlaceholders(gStringVar4, gText_MonCantAppealNextTurn);
                 Contest_StartTextPrinter(gStringVar4, TRUE);
             }
@@ -2116,7 +2218,7 @@ static void Task_DoAppeals(u8 taskId)
         {
             // Started combo
             ContestClearGeneralTextWindow();
-            StringCopy(gStringVar1, gContestMons[contestant].nickname);
+            CopyNicknameToFit(gStringVar1, contestant);
             StringExpandPlaceholders(gStringVar4, gText_JudgeLookedAtMonExpectantly);
             Contest_StartTextPrinter(gStringVar4, TRUE);
             DoJudgeSpeechBubble(JUDGE_SYMBOL_ONE_EXCLAMATION);
@@ -2160,7 +2262,7 @@ static void Task_DoAppeals(u8 taskId)
         if (eContestantStatus[contestant].repeatedMove)
         {
             ContestClearGeneralTextWindow();
-            StringCopy(gStringVar1, gContestMons[contestant].nickname);
+            CopyNicknameToFit(gStringVar1, contestant);
             StringExpandPlaceholders(gStringVar4, gText_RepeatedAppeal);
             Contest_StartTextPrinter(gStringVar4, TRUE);
             gTasks[taskId].tCounter = 0;
@@ -2204,18 +2306,18 @@ static void Task_DoAppeals(u8 taskId)
             if (eContestantStatus[contestant].overrideCategoryExcitementMod)
             {
                 r3 = 1;
-                StringCopy(gStringVar3, gMoveNames[eContestantStatus[contestant].currMove]);
+                CopyMoveNameToFit(gStringVar3, eContestantStatus[contestant].currMove);
             }
             else
             {
-                StringCopy(gStringVar3, sContestConditions[gContestMoves[eContestantStatus[contestant].currMove].contestCategory]);
+                StringCopy(gStringVar3, sContestConditions[GetMoveContestCategory(eContestantStatus[contestant].currMove)]);
             }
 
             if (r3 > 0 && eContestantStatus[contestant].repeatedMove)
                 r3 = 0;
 
             ContestClearGeneralTextWindow();
-            StringCopy(gStringVar1, gContestMons[contestant].nickname);
+            CopyNicknameToFit(gStringVar1, contestant);
             eContest.applauseLevel += r3;
             if (eContest.applauseLevel < 0)
                 eContest.applauseLevel = 0;
@@ -2337,9 +2439,9 @@ static void Task_DoAppeals(u8 taskId)
         return;
     case APPEALSTATE_PRINT_CROWD_WATCHES_MSG:
         ContestClearGeneralTextWindow();
-        StringCopy(gStringVar3, gContestMons[eContestExcitement.freezer].nickname);
-        StringCopy(gStringVar1, gContestMons[contestant].nickname);
-        StringCopy(gStringVar2, gMoveNames[eContestantStatus[contestant].currMove]);
+        CopyNicknameToFit(gStringVar3, eContestExcitement.freezer);
+        CopyNicknameToFit(gStringVar1, contestant);
+        CopyMoveNameToFit(gStringVar2, eContestantStatus[contestant].currMove);
         StringExpandPlaceholders(gStringVar4, gText_CrowdContinuesToWatchMon);
         Contest_StartTextPrinter(gStringVar4, TRUE);
         gTasks[taskId].tState = APPEALSTATE_PRINT_MON_MOVE_IGNORED_MSG;
@@ -2364,8 +2466,8 @@ static void Task_DoAppeals(u8 taskId)
         if (eContestantStatus[contestant].hasJudgesAttention)
             eContestantStatus[contestant].hasJudgesAttention = FALSE;
         StartStopFlashJudgeAttentionEye(contestant);
-        StringCopy(gStringVar1, gContestMons[contestant].nickname);
-        StringCopy(gStringVar2, gMoveNames[eContestantStatus[contestant].currMove]);
+        CopyNicknameToFit(gStringVar1, contestant);
+        CopyMoveNameToFit(gStringVar2, eContestantStatus[contestant].currMove);
         StringExpandPlaceholders(gStringVar4, gText_MonWasTooNervousToMove);
         Contest_StartTextPrinter(gStringVar4, TRUE);
         gTasks[taskId].tState = APPEALSTATE_WAIT_TOO_NERVOUS_MSG;
@@ -2409,7 +2511,7 @@ static void Task_DoAppeals(u8 taskId)
         return;
     case APPEALSTATE_PRINT_SKIP_TURN_MSG:
         ContestClearGeneralTextWindow();
-        StringCopy(gStringVar1, gContestMons[contestant].nickname);
+        CopyNicknameToFit(gStringVar1, contestant);
         StringExpandPlaceholders(gStringVar4, gText_MonWasWatchingOthers);
         Contest_StartTextPrinter(gStringVar4, TRUE);
         gTasks[taskId].tState = APPEALSTATE_WAIT_SKIP_TURN_MSG;
@@ -2665,7 +2767,9 @@ static void Task_EndAppeals(u8 taskId)
     CalculateFinalScores();
     ContestClearGeneralTextWindow();
     if (!(gLinkContestFlags & LINK_CONTEST_FLAG_IS_LINK))
+    {
         BravoTrainerPokemonProfile_BeforeInterview1(eContestantStatus[gContestPlayerMonIndex].prevMove);
+    }
     else
     {
         CalculateContestLiveUpdateData();
@@ -2811,6 +2915,7 @@ void CreateContestMonFromParty(u8 partyIndex)
     gContestMons[gContestPlayerMonIndex].moves[3] = GetMonData(&gPlayerParty[partyIndex], MON_DATA_MOVE4);
     gContestMons[gContestPlayerMonIndex].personality = GetMonData(&gPlayerParty[partyIndex], MON_DATA_PERSONALITY);
     gContestMons[gContestPlayerMonIndex].otId = GetMonData(&gPlayerParty[partyIndex], MON_DATA_OT_ID);
+    gContestMons[gContestPlayerMonIndex].isShiny = GetMonData(&gPlayerParty[partyIndex], MON_DATA_IS_SHINY);
 
     heldItem = GetMonData(&gPlayerParty[partyIndex], MON_DATA_HELD_ITEM);
     cool   = gContestMons[gContestPlayerMonIndex].cool;
@@ -2851,7 +2956,6 @@ void SetContestants(u8 contestType, u8 rank)
     u8 opponentsCount = 0;
     u8 opponents[100];
     bool8 allowPostgameContestants = FALSE;
-    const u8 *filter;
 
     TryPutPlayerLast();
 
@@ -2859,19 +2963,18 @@ void SetContestants(u8 contestType, u8 rank)
         allowPostgameContestants = TRUE;
 
     // Find all suitable opponents
-    filter = gPostgameContestOpponentFilter;
     for (i = 0; i < ARRAY_COUNT(gContestOpponents); i++)
     {
         if (rank == gContestOpponents[i].whichRank)
         {
             if (allowPostgameContestants == TRUE)
             {
-                if (filter[i] == CONTEST_FILTER_NO_POSTGAME)
+                if (gContestOpponents[i].filter == CONTEST_FILTER_NO_POSTGAME)
                     continue;
             }
             else
             {
-                if (filter[i] == CONTEST_FILTER_ONLY_POSTGAME)
+                if (gContestOpponents[i].filter == CONTEST_FILTER_ONLY_POSTGAME)
                     continue;
             }
             if      (contestType == CONTEST_CATEGORY_COOL && gContestOpponents[i].aiPool_Cool)
@@ -2920,12 +3023,12 @@ void SetLinkAIContestants(u8 contestType, u8 rank, bool32 isPostgame)
 
         if (isPostgame == TRUE)
         {
-            if (gPostgameContestOpponentFilter[i] == CONTEST_FILTER_NO_POSTGAME)
+            if (gContestOpponents[i].filter == CONTEST_FILTER_NO_POSTGAME)
                 continue;
         }
         else
         {
-            if (gPostgameContestOpponentFilter[i] == CONTEST_FILTER_ONLY_POSTGAME)
+            if (gContestOpponents[i].filter == CONTEST_FILTER_ONLY_POSTGAME)
                 continue;
         }
         if ((contestType == CONTEST_CATEGORY_COOL && gContestOpponents[i].aiPool_Cool)
@@ -3041,7 +3144,7 @@ static void PrintContestantMonName(u8 contestant)
 static void PrintContestantMonNameWithColor(u8 contestant, u8 color)
 {
     Contest_CopyStringWithColor(gContestMons[contestant].nickname, color);
-    Contest_PrintTextToBg0WindowAt(gContestantTurnOrder[contestant], gDisplayedStringBattle, 5, 1, FONT_NARROW);
+    Contest_PrintTextToBg0WindowAt(gContestantTurnOrder[contestant], gDisplayedStringBattle, 5, 1, GetFontIdToFit(gContestMons[contestant].nickname, FONT_NARROW, 0, 50));
 }
 
 static u16 CalculateContestantRound1Points(u8 who, u8 contestCategory)
@@ -3114,14 +3217,14 @@ static u8 CreateJudgeSpeechBubbleSprite(void)
     return spriteId;
 }
 
-static u8 CreateContestantSprite(u16 species, u32 otId, u32 personality, u32 index)
+static u8 CreateContestantSprite(u16 species, bool8 isShiny, u32 personality, u32 index)
 {
     u8 spriteId;
     species = SanitizeSpecies(species);
 
-    HandleLoadSpecialPokePic(FALSE, gMonSpritesGfxPtr->sprites.ptr[B_POSITION_PLAYER_LEFT], species, personality);
+    HandleLoadSpecialPokePic(FALSE, gMonSpritesGfxPtr->spritesGfx[B_POSITION_PLAYER_LEFT], species, personality);
 
-    LoadCompressedPalette(GetMonSpritePalFromSpeciesAndPersonality(species, otId, personality), OBJ_PLTT_ID(2), PLTT_SIZE_4BPP);
+    LoadCompressedPalette(GetMonSpritePalFromSpeciesAndPersonality(species, isShiny, personality), OBJ_PLTT_ID(2), PLTT_SIZE_4BPP);
     SetMultiuseSpriteTemplateToPokemon(species, B_POSITION_PLAYER_LEFT);
 
     spriteId = CreateSprite(&gMultiuseSpriteTemplate, 0x70, GetBattlerSpriteFinal_Y(2, species, FALSE), 30);
@@ -3162,18 +3265,21 @@ static u16 GetMoveEffectSymbolTileOffset(u16 move, u8 contestant)
 {
     u16 offset;
 
-    switch (gContestEffects[gContestMoves[move].effect].effectType)
+    switch (gContestEffects[GetMoveContestEffect(move)].effectType)
     {
-    case 0:
-    case 1:
-    case 8:
+    case CONTEST_EFFECT_TYPE_APPEAL:
+    case CONTEST_EFFECT_TYPE_AVOID_STARTLE:
+    case CONTEST_EFFECT_TYPE_UNKNOWN:
         offset = 0x9082;
         break;
-    case 2:
-    case 3:
+    case CONTEST_EFFECT_TYPE_STARTLE_MON:
+    case CONTEST_EFFECT_TYPE_STARTLE_MONS:
         offset = 0x9088;
         break;
     default:
+    //case CONTEST_EFFECT_TYPE_WORSEN:
+    //case CONTEST_EFFECT_TYPE_SPECIAL_APPEAL:
+    //case CONTEST_EFFECT_TYPE_TURN_ORDER:
         offset = 0x9086;
         break;
     }
@@ -3188,7 +3294,7 @@ static void PrintContestMoveDescription(u16 move)
     u8 numHearts;
 
     // The contest category icon is implemented as a 5x2 group of tiles.
-    category = gContestMoves[move].contestCategory;
+    category = GetMoveContestCategory(move);
     if      (category == CONTEST_CATEGORY_COOL)
         categoryTile = 0x4040;
     else if (category == CONTEST_CATEGORY_BEAUTY)
@@ -3204,27 +3310,27 @@ static void PrintContestMoveDescription(u16 move)
     ContestBG_FillBoxWithIncrementingTile(0, categoryTile + 0x10, 0x0b, 0x20, 0x05, 0x01, 0x11, 0x01);
 
     // Appeal hearts
-    if (gContestEffects[gContestMoves[move].effect].appeal == 0xFF)
+    if (gContestEffects[GetMoveContestEffect(move)].appeal == 0xFF)
         numHearts = 0;
     else
-        numHearts = gContestEffects[gContestMoves[move].effect].appeal / 10;
+        numHearts = gContestEffects[GetMoveContestEffect(move)].appeal / 10;
     if (numHearts > MAX_CONTEST_MOVE_HEARTS)
         numHearts = MAX_CONTEST_MOVE_HEARTS;
     ContestBG_FillBoxWithTile(0, TILE_EMPTY_APPEAL_HEART, 0x15, 0x1f, MAX_CONTEST_MOVE_HEARTS, 0x01, 0x11);
     ContestBG_FillBoxWithTile(0, TILE_FILLED_APPEAL_HEART, 0x15, 0x1f, numHearts, 0x01, 0x11);
 
     // Jam hearts
-    if (gContestEffects[gContestMoves[move].effect].jam == 0xFF)
+    if (gContestEffects[GetMoveContestEffect(move)].jam == 0xFF)
         numHearts = 0;
     else
-        numHearts = gContestEffects[gContestMoves[move].effect].jam / 10;
+        numHearts = gContestEffects[GetMoveContestEffect(move)].jam / 10;
     if (numHearts > MAX_CONTEST_MOVE_HEARTS)
         numHearts = MAX_CONTEST_MOVE_HEARTS;
     ContestBG_FillBoxWithTile(0, TILE_EMPTY_JAM_HEART, 0x15, 0x20, MAX_CONTEST_MOVE_HEARTS, 0x01, 0x11);
     ContestBG_FillBoxWithTile(0, TILE_FILLED_JAM_HEART, 0x15, 0x20, numHearts, 0x01, 0x11);
 
     FillWindowPixelBuffer(WIN_MOVE_DESCRIPTION, PIXEL_FILL(0));
-    Contest_PrintTextToBg0WindowStd(WIN_MOVE_DESCRIPTION, gContestEffectDescriptionPointers[gContestMoves[move].effect]);
+    Contest_PrintTextToBg0WindowStd(WIN_MOVE_DESCRIPTION, gContestEffectDescriptionPointers[GetMoveContestEffect(move)]);
     Contest_PrintTextToBg0WindowStd(WIN_SLASH, gText_Slash);
 }
 
@@ -3428,11 +3534,11 @@ static void RankContestants(void)
 
     // For each contestant, find the best rank with their point total.
     // Normally, each point total is different, and this will output the
-    // rankings as expected. However, if two pokemon are tied, then they
+    // rankings as expected. However, if two Pokémon are tied, then they
     // both get the best rank for that point total.
     //
     // For example if the point totals are [100, 80, 80, 50], the ranks will
-    // be [1, 2, 2, 4]. The pokemon with a point total of 80 stop looking
+    // be [1, 2, 2, 4]. The Pokémon with a point total of 80 stop looking
     // when they see the first 80 in the array, so they both share the '2'
     // rank.
     for (i = 0; i < CONTESTANT_COUNT; i++)
@@ -4425,9 +4531,9 @@ static void CalculateAppealMoveImpact(u8 contestant)
         return;
 
     move = eContestantStatus[contestant].currMove;
-    effect = gContestMoves[move].effect;
+    effect = GetMoveContestEffect(move);
 
-    eContestantStatus[contestant].moveCategory = gContestMoves[eContestantStatus[contestant].currMove].contestCategory;
+    eContestantStatus[contestant].moveCategory = GetMoveContestCategory(eContestantStatus[contestant].currMove);
     if (eContestantStatus[contestant].currMove == eContestantStatus[contestant].prevMove && eContestantStatus[contestant].currMove != MOVE_NONE)
     {
         eContestantStatus[contestant].repeatedMove = TRUE;
@@ -4478,7 +4584,7 @@ static void CalculateAppealMoveImpact(u8 contestant)
         }
         else
         {
-            if (gContestMoves[eContestantStatus[contestant].currMove].comboStarterId != 0)
+            if (GetMoveContestComboStarter(eContestantStatus[contestant].currMove) != 0)
             {
                 eContestantStatus[contestant].hasJudgesAttention = TRUE;
                 eContestantStatus[contestant].usedComboMove = TRUE;
@@ -4557,14 +4663,14 @@ void SetStartledString(u8 contestant, u8 jam)
 static void PrintAppealMoveResultText(u8 contestant, u8 stringId)
 {
     StringCopy(gStringVar1, gContestMons[contestant].nickname);
-    StringCopy(gStringVar2, gMoveNames[eContestantStatus[contestant].currMove]);
-    if      (gContestMoves[eContestantStatus[eContestAppealResults.contestant].currMove].contestCategory == CONTEST_CATEGORY_COOL)
+    StringCopy(gStringVar2, GetMoveName(eContestantStatus[contestant].currMove));
+    if      (GetMoveContestCategory(eContestantStatus[eContestAppealResults.contestant].currMove) == CONTEST_CATEGORY_COOL)
         StringCopy(gStringVar3, gText_Contest_Shyness);
-    else if (gContestMoves[eContestantStatus[eContestAppealResults.contestant].currMove].contestCategory == CONTEST_CATEGORY_BEAUTY)
+    else if (GetMoveContestCategory(eContestantStatus[eContestAppealResults.contestant].currMove) == CONTEST_CATEGORY_BEAUTY)
         StringCopy(gStringVar3, gText_Contest_Anxiety);
-    else if (gContestMoves[eContestantStatus[eContestAppealResults.contestant].currMove].contestCategory == CONTEST_CATEGORY_CUTE)
+    else if (GetMoveContestCategory(eContestantStatus[eContestAppealResults.contestant].currMove) == CONTEST_CATEGORY_CUTE)
         StringCopy(gStringVar3, gText_Contest_Laziness);
-    else if (gContestMoves[eContestantStatus[eContestAppealResults.contestant].currMove].contestCategory == CONTEST_CATEGORY_SMART)
+    else if (GetMoveContestCategory(eContestantStatus[eContestAppealResults.contestant].currMove) == CONTEST_CATEGORY_SMART)
         StringCopy(gStringVar3, gText_Contest_Hesitancy);
     else
         StringCopy(gStringVar3, gText_Contest_Fear);
@@ -4584,10 +4690,10 @@ void MakeContestantNervous(u8 p)
 // ContestantStatus::nextTurnOrder field of each contestant. The remaining
 // turns are assigned such that the turn order will reverse.
 //
-// For example, if no pokemon have a defined nextTurnOrder, then the 4th
+// For example, if no Pokémon have a defined nextTurnOrder, then the 4th
 // will become 1st, the 3rd will become 2nd, etc.
 //
-// Note: This function assumes that multiple pokemon cannot have the same
+// Note: This function assumes that multiple Pokémon cannot have the same
 // nextTurnOrder value.
 static void ApplyNextTurnOrder(void)
 {
@@ -4737,7 +4843,7 @@ static void UpdateApplauseMeter(void)
 
 s8 Contest_GetMoveExcitement(u16 move)
 {
-    return sContestExcitementTable[gSpecialVar_ContestCategory][gContestMoves[move].contestCategory];
+    return sContestExcitementTable[gSpecialVar_ContestCategory][GetMoveContestCategory(move)];
 }
 
 static u8 StartApplauseOverflowAnimation(void)
@@ -5354,6 +5460,7 @@ static void SetMoveAnimAttackerData(u8 contestant)
     gContestResources->moveAnim->species = SanitizeSpecies(gContestMons[contestant].species);
     gContestResources->moveAnim->personality = gContestMons[contestant].personality;
     gContestResources->moveAnim->otId = gContestMons[contestant].otId;
+    gContestResources->moveAnim->isShiny = gContestMons[contestant].isShiny;
 }
 
 static void CreateInvisibleBattleTargetSprite(void)
@@ -5378,10 +5485,10 @@ static void SetMoveTargetPosition(u16 move)
 {
     switch (GetBattlerMoveTargetType(gBattlerAttacker, move))
     {
-    case MOVE_TARGET_USER_OR_SELECTED:
     case MOVE_TARGET_USER:
         gBattlerTarget = B_POSITION_PLAYER_RIGHT;
         break;
+    case MOVE_TARGET_OPPONENT:
     case MOVE_TARGET_SELECTED:
     case MOVE_TARGET_RANDOM:
     case MOVE_TARGET_BOTH:
@@ -5549,7 +5656,7 @@ bool8 SaveContestWinner(u8 rank)
         gSaveBlock1Ptr->contestWinners[id].personality = gContestMons[i].personality;
         gSaveBlock1Ptr->contestWinners[id].species = gContestMons[i].species;
         gSaveBlock1Ptr->contestWinners[id].trainerId = gContestMons[i].otId;
-        StringCopy(gSaveBlock1Ptr->contestWinners[id].monName, gContestMons[i].nickname);
+        StringCopyN(gSaveBlock1Ptr->contestWinners[id].monName, gContestMons[i].nickname, VANILLA_POKEMON_NAME_LENGTH);
         StringCopy(gSaveBlock1Ptr->contestWinners[id].trainerName, gContestMons[i].trainerName);
         if(gLinkContestFlags & LINK_CONTEST_FLAG_IS_LINK)
             gSaveBlock1Ptr->contestWinners[id].contestRank = CONTEST_RANK_LINK;
@@ -5565,9 +5672,10 @@ bool8 SaveContestWinner(u8 rank)
     {
         // Set the most recent winner so the artist can show the player their painting
         gCurContestWinner.personality = gContestMons[i].personality;
+        gCurContestWinner.isShiny = gContestMons[i].isShiny;
         gCurContestWinner.trainerId = gContestMons[i].otId;
         gCurContestWinner.species = gContestMons[i].species;
-        StringCopy(gCurContestWinner.monName, gContestMons[i].nickname);
+        StringCopyN(gCurContestWinner.monName, gContestMons[i].nickname, VANILLA_POKEMON_NAME_LENGTH);
         StringCopy(gCurContestWinner.trainerName, gContestMons[i].trainerName);
         gCurContestWinner.contestCategory = captionId;
     }
@@ -6109,4 +6217,3 @@ void StripPlayerAndMonNamesForLinkContest(struct ContestPokemon *mon, s32 langua
         name[PLAYER_NAME_LENGTH] = EOS;
     }
 }
-

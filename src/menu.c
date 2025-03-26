@@ -4,8 +4,10 @@
 #include "blit.h"
 #include "dma3.h"
 #include "event_data.h"
+#include "field_weather.h"
 #include "graphics.h"
 #include "main.h"
+#include "map_name_popup.h"
 #include "menu.h"
 #include "menu_helpers.h"
 #include "palette.h"
@@ -15,16 +17,12 @@
 #include "sound.h"
 #include "string_util.h"
 #include "strings.h"
+#include "script.h"
 #include "task.h"
 #include "text_window.h"
 #include "window.h"
+#include "config/overworld.h"
 #include "constants/songs.h"
-
-#define DLG_WINDOW_PALETTE_NUM 15
-#define DLG_WINDOW_BASE_TILE_NUM 0x200
-#define STD_WINDOW_PALETTE_NUM 14
-#define STD_WINDOW_PALETTE_SIZE PLTT_SIZEOF(10)
-#define STD_WINDOW_BASE_TILE_NUM 0x214
 
 struct MenuInfoIcon
 {
@@ -51,6 +49,8 @@ struct Menu
 
 static u16 AddWindowParameterized(u8, u8, u8, u8, u8, u8, u16);
 static void WindowFunc_DrawStandardFrame(u8, u8, u8, u8, u8, u8);
+static void WindowFunc_DrawSignFrame(u8, u8, u8, u8, u8, u8);
+static inline void *GetWindowFunc_DialogueFrame(void);
 static void WindowFunc_DrawDialogueFrame(u8, u8, u8, u8, u8, u8);
 static void WindowFunc_ClearStdWindowAndFrame(u8, u8, u8, u8, u8, u8);
 static void WindowFunc_ClearDialogWindowAndFrame(u8, u8, u8, u8, u8, u8);
@@ -62,6 +62,7 @@ static void task_free_buf_after_copying_tile_data_to_vram(u8 taskId);
 
 static EWRAM_DATA u8 sStartMenuWindowId = 0;
 static EWRAM_DATA u8 sMapNamePopupWindowId = 0;
+static EWRAM_DATA u8 sSecondaryPopupWindowId = 0;
 static EWRAM_DATA struct Menu sMenu = {0};
 static EWRAM_DATA u16 sTileNum = 0;
 static EWRAM_DATA u8 sPaletteNum = 0;
@@ -112,6 +113,7 @@ static const u8 sTextColors[] = { TEXT_DYNAMIC_COLOR_6, TEXT_COLOR_WHITE, TEXT_C
 static const struct MenuInfoIcon sMenuInfoIcons[] =
 {   // { width, height, offset }
     { 12, 12, 0x00 },  // Unused
+    [TYPE_NONE + 1]     = { 32, 12, 0xA4 }, // Copy of TYPE_MYSTERY's
     [TYPE_NORMAL + 1]   = { 32, 12, 0x20 },
     [TYPE_FIGHTING + 1] = { 32, 12, 0x64 },
     [TYPE_FLYING + 1]   = { 32, 12, 0x60 },
@@ -145,6 +147,8 @@ void InitStandardTextBoxWindows(void)
     InitWindows(sStandardTextBox_WindowTemplates);
     sStartMenuWindowId = WINDOW_NONE;
     sMapNamePopupWindowId = WINDOW_NONE;
+    if (OW_POPUP_GENERATION == GEN_5)
+        sSecondaryPopupWindowId = WINDOW_NONE;
 }
 
 void FreeAllOverworldWindowBuffers(void)
@@ -213,9 +217,123 @@ void LoadMessageBoxAndBorderGfx(void)
     LoadUserWindowBorderGfx(0, STD_WINDOW_BASE_TILE_NUM, BG_PLTT_ID(STD_WINDOW_PALETTE_NUM));
 }
 
+void LoadSignPostWindowFrameGfx(void)
+{
+    Menu_LoadStdPal();
+    LoadSignBoxGfx(0, DLG_WINDOW_BASE_TILE_NUM, BG_PLTT_ID(DLG_WINDOW_PALETTE_NUM));
+    LoadUserWindowBorderGfx(0, STD_WINDOW_BASE_TILE_NUM, BG_PLTT_ID(STD_WINDOW_PALETTE_NUM));
+}
+
+static void WindowFunc_DrawSignFrame(u8 bg, u8 tilemapLeft, u8 tilemapTop, u8 width, u8 height, u8 paletteNum)
+{
+    FillBgTilemapBufferRect(bg,
+            DLG_WINDOW_BASE_TILE_NUM + 0,
+            tilemapLeft - 2,
+            tilemapTop - 1,
+            1,
+            1,
+            DLG_WINDOW_PALETTE_NUM);
+    FillBgTilemapBufferRect(bg,
+            DLG_WINDOW_BASE_TILE_NUM + 1,
+            tilemapLeft - 1,
+            tilemapTop - 1,
+            1,
+            1,
+            DLG_WINDOW_PALETTE_NUM);
+    FillBgTilemapBufferRect(bg,
+            DLG_WINDOW_BASE_TILE_NUM + 2,
+            tilemapLeft - 2,
+            tilemapTop,
+            1,
+            4,
+            DLG_WINDOW_PALETTE_NUM);
+    FillBgTilemapBufferRect(bg,
+            DLG_WINDOW_BASE_TILE_NUM + 3,
+            tilemapLeft - 1,
+            tilemapTop,
+            1,
+            4,
+            DLG_WINDOW_PALETTE_NUM);
+    FillBgTilemapBufferRect(bg,
+            BG_TILE_V_FLIP(DLG_WINDOW_BASE_TILE_NUM + 0),
+            tilemapLeft - 2,
+            tilemapTop + 4,
+            1,
+            1,
+            DLG_WINDOW_PALETTE_NUM);
+    FillBgTilemapBufferRect(bg,
+            BG_TILE_V_FLIP(DLG_WINDOW_BASE_TILE_NUM + 1),
+            tilemapLeft - 1,
+            tilemapTop + 4,
+            1,
+            1,
+            DLG_WINDOW_PALETTE_NUM);
+    FillBgTilemapBufferRect(bg,
+            DLG_WINDOW_BASE_TILE_NUM + 4,
+            tilemapLeft,
+            tilemapTop - 1,
+            26,
+            1,
+            DLG_WINDOW_PALETTE_NUM);
+    FillBgTilemapBufferRect(bg,
+            BG_TILE_H_FLIP(DLG_WINDOW_BASE_TILE_NUM + 0),
+            tilemapLeft + 27,
+            tilemapTop - 1,
+            1,
+            1,
+            DLG_WINDOW_PALETTE_NUM);
+    FillBgTilemapBufferRect(bg,
+            BG_TILE_H_FLIP(DLG_WINDOW_BASE_TILE_NUM + 1),
+            tilemapLeft + 26,
+            tilemapTop - 1,
+            1,
+            1,
+            DLG_WINDOW_PALETTE_NUM);
+    FillBgTilemapBufferRect(bg,
+            BG_TILE_H_FLIP(DLG_WINDOW_BASE_TILE_NUM + 2),
+            tilemapLeft + 27,
+            tilemapTop,
+            1,
+            4,
+            DLG_WINDOW_PALETTE_NUM);
+    FillBgTilemapBufferRect(bg,
+            BG_TILE_H_FLIP(DLG_WINDOW_BASE_TILE_NUM + 3),
+            tilemapLeft + 26,
+            tilemapTop,
+            1,
+            4,
+            DLG_WINDOW_PALETTE_NUM);
+    FillBgTilemapBufferRect(bg,
+            BG_TILE_V_FLIP(BG_TILE_H_FLIP(DLG_WINDOW_BASE_TILE_NUM + 0)),
+            tilemapLeft + 27,
+            tilemapTop + 4,
+            1,
+            1,
+            DLG_WINDOW_PALETTE_NUM);
+    FillBgTilemapBufferRect(bg,
+            BG_TILE_V_FLIP(BG_TILE_H_FLIP(DLG_WINDOW_BASE_TILE_NUM + 1)),
+            tilemapLeft + 26,
+            tilemapTop + 4,
+            1,
+            1,
+            DLG_WINDOW_PALETTE_NUM);
+    FillBgTilemapBufferRect(bg,
+            BG_TILE_V_FLIP(DLG_WINDOW_BASE_TILE_NUM + 4),
+            tilemapLeft,
+            tilemapTop + 4,
+            26,
+            1,
+            DLG_WINDOW_PALETTE_NUM);
+}
+
+static inline void *GetWindowFunc_DialogueFrame(void)
+{
+    return (gMsgIsSignPost ? WindowFunc_DrawSignFrame : WindowFunc_DrawDialogueFrame);
+}
+
 void DrawDialogueFrame(u8 windowId, bool8 copyToVram)
 {
-    CallWindowFunction(windowId, WindowFunc_DrawDialogueFrame);
+    CallWindowFunction(windowId, GetWindowFunc_DialogueFrame());
     FillWindowPixelBuffer(windowId, PIXEL_FILL(1));
     PutWindowTilemap(windowId);
     if (copyToVram == TRUE)
@@ -521,7 +639,12 @@ static u16 UNUSED GetStandardFrameBaseTileNum(void)
 u8 AddMapNamePopUpWindow(void)
 {
     if (sMapNamePopupWindowId == WINDOW_NONE)
-        sMapNamePopupWindowId = AddWindowParameterized(0, 1, 1, 10, 3, 14, 0x107);
+    {
+        if (OW_POPUP_GENERATION == GEN_5)
+            sMapNamePopupWindowId = AddWindowParameterized(0, 0, 0, 30, 3, 14, 0x107);
+        else
+            sMapNamePopupWindowId = AddWindowParameterized(0, 1, 1, 10, 3, 14, 0x107);
+    }
     return sMapNamePopupWindowId;
 }
 
@@ -1820,7 +1943,12 @@ void task_free_buf_after_copying_tile_data_to_vram(u8 taskId)
 
 void *malloc_and_decompress(const void *src, u32 *size)
 {
+    u32 sizeLocal; // If size is passed as NULL, because we don't care about knowing the size
     void *ptr;
+
+    if (size == NULL)
+        size = &sizeLocal;
+
     u8 *sizeAsBytes = (u8 *)size;
     u8 *srcAsBytes = (u8 *)src;
 
@@ -2143,5 +2271,44 @@ void BufferSaveMenuText(u8 textId, u8 *dest, u8 color)
             *string = flagCount + CHAR_0;
             *endOfString = EOS;
             break;
+    }
+}
+
+// BW map pop-ups
+u8 AddSecondaryPopUpWindow(void)
+{
+    if (sSecondaryPopupWindowId == WINDOW_NONE)
+        sSecondaryPopupWindowId = AddWindowParameterized(0, 0, 17, 30, 3, 14, 0x161);
+    return sSecondaryPopupWindowId;
+}
+
+u8 GetSecondaryPopUpWindowId(void)
+{
+    return sSecondaryPopupWindowId;
+}
+
+void RemoveSecondaryPopUpWindow(void)
+{
+    if (sSecondaryPopupWindowId != WINDOW_NONE)
+    {
+        RemoveWindow(sSecondaryPopupWindowId);
+        sSecondaryPopupWindowId = WINDOW_NONE;
+    }
+}
+
+void HBlankCB_DoublePopupWindow(void)
+{
+    u16 offset = gTasks[gPopupTaskId].data[2];
+    u16 scanline = REG_VCOUNT;
+
+    if (scanline < 80 || scanline > 160)
+    {
+        REG_BG0VOFS = offset;
+        if(OW_POPUP_BW_ALPHA_BLEND && !IsWeatherAlphaBlend())
+            REG_BLDALPHA = BLDALPHA_BLEND(15, 5);
+    }
+    else
+    {
+        REG_BG0VOFS = 512 - offset;
     }
 }

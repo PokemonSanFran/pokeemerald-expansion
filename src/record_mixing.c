@@ -97,7 +97,9 @@ static void *sApprenticesSave;
 static void *sBattleTowerSave_Duplicate;
 static u32 sRecordStructSize;
 static u8 sDaycareMailRandSum;
+#if FREE_RECORD_MIXING_HALL_RECORDS == FALSE
 static struct PlayerHallRecords *sPartnerHallRecords[HALL_RECORDS_COUNT];
+#endif //FREE_RECORD_MIXING_HALL_RECORDS
 
 static EWRAM_DATA struct RecordMixingDaycareMail sRecordMixMail = {0};
 static EWRAM_DATA union PlayerRecord *sReceivedRecords = NULL;
@@ -768,14 +770,12 @@ static void ReceiveDaycareMailData(struct RecordMixingDaycareMail *records, size
     bool8 canHoldItem[MAX_LINK_PLAYERS][DAYCARE_MON_COUNT];
     u8 idxs[MAX_LINK_PLAYERS][2];
     u8 numDaycareCanHold;
-    u16 oldSeed;
     bool32 anyRS;
+    rng_value_t localRngState = LocalRandomSeed(gLinkPlayers[0].trainerId);
 
     // Seed RNG to the first player's trainer id so that
     // every player has the same random swap occur
     // (see the other use of Random2 in this function)
-    oldSeed = Random2();
-    SeedRng2(gLinkPlayers[0].trainerId);
     linkPlayerCount = GetLinkPlayerCount();
     for (i = 0; i < MAX_LINK_PLAYERS; i++)
     {
@@ -905,7 +905,7 @@ static void ReceiveDaycareMailData(struct RecordMixingDaycareMail *records, size
             itemId2 = GetDaycareMailItemId(&mixMail->mail[1]);
 
             if ((!itemId1 && !itemId2) || (itemId1 && itemId2))
-                idxs[j][DAYCARE_SLOT] = Random2() % 2;
+                idxs[j][DAYCARE_SLOT] = LocalRandom32(&localRngState) % 2;
             else if (itemId1 && !itemId2)
                 idxs[j][DAYCARE_SLOT] = 0;
             else if (!itemId1 && itemId2)
@@ -956,7 +956,6 @@ static void ReceiveDaycareMailData(struct RecordMixingDaycareMail *records, size
     mixMail = (void *)records + multiplayerId * recordSize;
     memcpy(&gSaveBlock1Ptr->daycare.mons[0].mail, &mixMail->mail[0], sizeof(struct DaycareMail));
     memcpy(&gSaveBlock1Ptr->daycare.mons[1].mail, &mixMail->mail[1], sizeof(struct DaycareMail));
-    SeedRng(oldSeed);
 }
 
 
@@ -1198,6 +1197,7 @@ static void ReceiveApprenticeData(struct Apprentice *records, size_t recordSize,
     }
 }
 
+#if FREE_RECORD_MIXING_HALL_RECORDS == FALSE
 static void GetNewHallRecords(struct RecordMixingHallRecords *dst, void *records, size_t recordSize, u32 multiplayerId, s32 linkPlayerCount)
 {
     s32 i, j, k, l;
@@ -1342,12 +1342,15 @@ static void SaveHighestWinStreakRecords(struct RecordMixingHallRecords *mixHallR
         for (j = 0; j < FRONTIER_LVL_MODE_COUNT; j++)
             FillWinStreakRecords1P(gSaveBlock2Ptr->hallRecords1P[i][j], mixHallRecords->hallRecords1P[i][j]);
     }
+
     for (j = 0; j < FRONTIER_LVL_MODE_COUNT; j++)
         FillWinStreakRecords2P(gSaveBlock2Ptr->hallRecords2P[j], mixHallRecords->hallRecords2P[j]);
 }
+#endif //FREE_RECORD_MIXING_HALL_RECORDS
 
 static void ReceiveRankingHallRecords(struct PlayerHallRecords *records, size_t recordSize, u32 multiplayerId)
 {
+#if FREE_RECORD_MIXING_HALL_RECORDS == FALSE
     u8 linkPlayerCount = GetLinkPlayerCount();
     struct RecordMixingHallRecords *mixHallRecords = AllocZeroed(sizeof(*mixHallRecords));
 
@@ -1355,6 +1358,7 @@ static void ReceiveRankingHallRecords(struct PlayerHallRecords *records, size_t 
     SaveHighestWinStreakRecords(mixHallRecords);
 
     Free(mixHallRecords);
+#endif //FREE_RECORD_MIXING_HALL_RECORDS
 }
 
 static void GetRecordMixingDaycareMail(struct RecordMixingDaycareMail *dst)

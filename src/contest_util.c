@@ -130,6 +130,7 @@ static void LoadContestResultsTitleBarTilemaps(void);
 static u8 GetNumPreliminaryPoints(u8, bool8);
 static s8 GetNumRound2Points(u8, bool8);
 static void AddContestTextPrinter(int, u8 *, int);
+static void AddContestTextPrinterFitWidth(int, u8 *, int, int);
 static void AllocContestResults(void);
 static void FreeContestResults(void);
 static void LoadAllContestMonIcons(u8, u8);
@@ -504,7 +505,7 @@ static void LoadContestMonName(u8 monIndex)
         str = StringCopy(gDisplayedStringBattle, gText_ColorDarkGray);
 
     StringCopy(str, mon->nickname);
-    AddContestTextPrinter(monIndex, gDisplayedStringBattle, 0);
+    AddContestTextPrinterFitWidth(monIndex, gDisplayedStringBattle, 0, 49);
     StringCopy(str, gText_Slash);
     StringAppend(str, mon->trainerName);
     AddContestTextPrinter(monIndex, gDisplayedStringBattle, 50);
@@ -879,7 +880,7 @@ static void Task_ShowWinnerMonBanner(u8 taskId)
     int i;
     u8 spriteId;
     u16 species;
-    u32 otId;
+    bool8 isShiny;
     u32 personality;
 
     switch (gTasks[taskId].tState)
@@ -891,13 +892,13 @@ static void Task_ShowWinnerMonBanner(u8 taskId)
         GET_CONTEST_WINNER_ID(i);
         species = gContestMons[i].species;
         personality = gContestMons[i].personality;
-        otId = gContestMons[i].otId;
+        isShiny = gContestMons[i].isShiny;
         HandleLoadSpecialPokePic(TRUE,
-                                gMonSpritesGfxPtr->sprites.ptr[B_POSITION_OPPONENT_LEFT],
+                                gMonSpritesGfxPtr->spritesGfx[B_POSITION_OPPONENT_LEFT],
                                 species,
                                 personality);
 
-        LoadCompressedSpritePaletteWithTag(GetMonSpritePalFromSpeciesAndPersonality(species, otId, personality), species);
+        LoadCompressedSpritePaletteWithTag(GetMonSpritePalFromSpeciesAndPersonality(species, isShiny, personality), species);
         SetMultiuseSpriteTemplateToPokemon(species, B_POSITION_OPPONENT_LEFT);
         gMultiuseSpriteTemplate.paletteTag = species;
         spriteId = CreateSprite(&gMultiuseSpriteTemplate, DISPLAY_WIDTH + 32, DISPLAY_HEIGHT / 2, 10);
@@ -1916,12 +1917,12 @@ static void FreeContestResults(void)
     FreeMonSpritesGfx();
 }
 
-static void AddContestTextPrinter(int windowId, u8 *str, int x)
+static void AddContestTextPrinterFitWidth(int windowId, u8 *str, int x, int widthPx)
 {
     struct TextPrinterTemplate textPrinter;
     textPrinter.currentChar = str;
     textPrinter.windowId = windowId;
-    textPrinter.fontId = FONT_NARROW;
+    textPrinter.fontId = GetFontIdToFit(str, FONT_NARROW, 0, widthPx);
     textPrinter.x = x;
     textPrinter.y = 2;
     textPrinter.currentX = x;
@@ -1934,6 +1935,11 @@ static void AddContestTextPrinter(int windowId, u8 *str, int x)
     textPrinter.shadowColor = 8;
     AddTextPrinter(&textPrinter, 0, NULL);
     PutWindowTilemap(windowId);
+}
+
+static void AddContestTextPrinter(int windowId, u8 *str, int x)
+{
+    AddContestTextPrinterFitWidth(windowId, str, x, DISPLAY_WIDTH);
 }
 
 void TryEnterContestMon(void)
@@ -2495,28 +2501,28 @@ void LoadLinkContestPlayerPalettes(void)
     struct Sprite *sprite;
     static const u8 sContestantLocalIds[CONTESTANT_COUNT] = { 3, 4, 5, 14 };
 
-    gReservedSpritePaletteCount = 12;
+    // gReservedSpritePaletteCount = 12;
+    // TODO: Does dynamically allocating link player palettes break link contests?
     if (gLinkContestFlags & LINK_CONTEST_FLAG_IS_LINK)
     {
         for (i = 0; i < gNumLinkContestPlayers; i++)
         {
             objectEventId = GetObjectEventIdByLocalIdAndMap(sContestantLocalIds[i], gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
             sprite = &gSprites[gObjectEvents[objectEventId].spriteId];
-            sprite->oam.paletteNum = 6 + i;
             version = (u8)gLinkPlayers[i].version;
             if (version == VERSION_RUBY || version == VERSION_SAPPHIRE)
             {
                 if (gLinkPlayers[i].gender == MALE)
-                    LoadPalette(gObjectEventPal_RubySapphireBrendan, OBJ_PLTT_ID(6 + i), PLTT_SIZE_4BPP);
+                    sprite->oam.paletteNum = LoadObjectEventPalette(OBJ_EVENT_PAL_TAG_RS_BRENDAN);
                 else
-                    LoadPalette(gObjectEventPal_RubySapphireMay, OBJ_PLTT_ID(6 + i), PLTT_SIZE_4BPP);
+                    sprite->oam.paletteNum = LoadObjectEventPalette(OBJ_EVENT_PAL_TAG_RS_MAY);
             }
             else
             {
                 if (gLinkPlayers[i].gender == MALE)
-                    LoadPalette(gObjectEventPal_Brendan, OBJ_PLTT_ID(6 + i), PLTT_SIZE_4BPP);
+                    sprite->oam.paletteNum = LoadObjectEventPalette(OBJ_EVENT_PAL_TAG_BRENDAN);
                 else
-                    LoadPalette(gObjectEventPal_May, OBJ_PLTT_ID(6 + i), PLTT_SIZE_4BPP);
+                    sprite->oam.paletteNum = LoadObjectEventPalette(OBJ_EVENT_PAL_TAG_MAY);
             }
         }
     }
@@ -2552,11 +2558,12 @@ bool8 IsContestDebugActive(void)
 
 void ShowContestEntryMonPic(void)
 {
-    u32 personality, otId;
+    u32 personality;
     u16 species;
     u8 spriteId;
     u8 taskId;
     u8 left, top;
+    bool32 isShiny;
 
     if (FindTaskIdByFunc(Task_ShowContestEntryMonPic) == TASK_NONE)
     {
@@ -2565,13 +2572,13 @@ void ShowContestEntryMonPic(void)
         top = 3;
         species = gContestMons[gSpecialVar_0x8006].species;
         personality = gContestMons[gSpecialVar_0x8006].personality;
-        otId = gContestMons[gSpecialVar_0x8006].otId;
+        isShiny = gContestMons[gSpecialVar_0x8006].isShiny;
         taskId = CreateTask(Task_ShowContestEntryMonPic, 0x50);
         gTasks[taskId].data[0] = 0;
         gTasks[taskId].data[1] = species;
-        HandleLoadSpecialPokePic(TRUE, gMonSpritesGfxPtr->sprites.ptr[B_POSITION_OPPONENT_LEFT], species, personality);
+        HandleLoadSpecialPokePic(TRUE, gMonSpritesGfxPtr->spritesGfx[B_POSITION_OPPONENT_LEFT], species, personality);
 
-        LoadCompressedSpritePaletteWithTag(GetMonSpritePalFromSpeciesAndPersonality(species, otId, personality), species);
+        LoadCompressedSpritePaletteWithTag(GetMonSpritePalFromSpeciesAndPersonality(species, isShiny, personality), species);
         SetMultiuseSpriteTemplateToPokemon(species, B_POSITION_OPPONENT_LEFT);
         gMultiuseSpriteTemplate.paletteTag = species;
         spriteId = CreateSprite(&gMultiuseSpriteTemplate, (left + 1) * 8 + 32, (top * 8) + 40, 0);
@@ -2655,8 +2662,7 @@ void GenerateContestRand(void)
 
     if (gLinkContestFlags & LINK_CONTEST_FLAG_IS_LINK)
     {
-        gContestRngValue = ISO_RANDOMIZE1(gContestRngValue);
-        random = gContestRngValue >> 16;
+        random = LocalRandom(&gContestRngValue);
         result = &gSpecialVar_Result;
     }
     else
@@ -2669,8 +2675,7 @@ void GenerateContestRand(void)
 
 u16 GetContestRand(void)
 {
-    gContestRngValue = ISO_RANDOMIZE1(gContestRngValue);
-    return gContestRngValue >> 16;
+    return LocalRandom(&gContestRngValue);
 }
 
 bool8 LinkContestWaitForConnection(void)

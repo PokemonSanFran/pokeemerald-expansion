@@ -1,5 +1,6 @@
 	.align 2
 gCryTable::
+.if P_CRIES_ENABLED == TRUE
 .if P_FAMILY_BULBASAUR == TRUE
 	cry Cry_Bulbasaur
 	cry Cry_Ivysaur
@@ -193,7 +194,7 @@ gCryTable::
 	cry Cry_SlowbroMega
 .endif @ P_MEGA_EVOLUTIONS
 .if P_GALARIAN_FORMS == TRUE
-	cry Cry_SlowpokeGalarian
+	cry Cry_SlowpokeGalar
 .endif @ P_GALARIAN_FORMS
 .endif @ P_FAMILY_SLOWPOKE
 .if P_FAMILY_MAGNEMITE == TRUE
@@ -623,9 +624,9 @@ gCryTable::
 .if P_FAMILY_TEDDIURSA == TRUE
 	cry Cry_Teddiursa
 	cry Cry_Ursaring
-.if P_GEN_9_CROSS_EVOS == TRUE
+.if P_GEN_8_CROSS_EVOS == TRUE
 	cry Cry_Ursaluna
-.endif @ P_GEN_9_CROSS_EVOS
+.endif @ P_GEN_8_CROSS_EVOS
 .endif @ P_FAMILY_TEDDIURSA
 .if P_FAMILY_SLUGMA == TRUE
 	cry Cry_Slugma
@@ -1633,7 +1634,7 @@ gCryTable::
 .if P_FAMILY_FLABEBE == TRUE
 	cry Cry_Flabebe
 	cry Cry_Floette
-	cry Cry_FloetteEternalFlower
+	cry Cry_FloetteEternal
 	cry Cry_Florges
 .endif @ P_FAMILY_FLABEBE
 .if P_FAMILY_SKIDDO == TRUE
@@ -1707,7 +1708,7 @@ gCryTable::
 	cry Cry_Goodra
 .endif @ P_FAMILY_GOOMY
 .if P_FAMILY_KLEFKI == TRUE
-	cry Cry_Klefki
+	cry_uncomp Cry_Klefki @ Cannot be heard unless we use cry_uncomp here.
 .endif @ P_FAMILY_KLEFKI
 .if P_FAMILY_PHANTUMP == TRUE
 	cry Cry_Phantump
@@ -1786,7 +1787,7 @@ gCryTable::
 .endif @ P_FAMILY_CRABRAWLER
 .if P_FAMILY_ORICORIO == TRUE
 	cry Cry_OricorioBaile
-	cry Cry_OricorioPomPom
+	cry_uncomp Cry_OricorioPomPom @ Cannot be heard unless we use cry_uncomp here.
 	cry Cry_OricorioPau
 	cry Cry_OricorioSensu
 .endif @ P_FAMILY_ORICORIO
@@ -2022,6 +2023,7 @@ gCryTable::
 	cry Cry_Appletun
 .if P_GEN_9_CROSS_EVOS == TRUE
 	cry Cry_Dipplin
+	cry Cry_Hydrapple
 .endif @ P_GEN_9_CROSS_EVOS
 .endif @ P_FAMILY_APPLIN
 .if P_FAMILY_SILICOBRA == TRUE
@@ -2080,12 +2082,12 @@ gCryTable::
 	cry Cry_Stonjourner
 .endif @ P_FAMILY_STONJOURNER
 .if P_FAMILY_EISCUE == TRUE
-	cry Cry_EiscueIceFace
-	cry Cry_EiscueNoiceFace
+	cry Cry_EiscueIce
+	cry Cry_EiscueNoice
 .endif @ P_FAMILY_EISCUE
 .if P_FAMILY_INDEEDEE == TRUE
-	cry Cry_IndeedeeMale
-	cry Cry_IndeedeeFemale
+	cry Cry_IndeedeeM
+	cry Cry_IndeedeeF
 .endif @ P_FAMILY_INDEEDEE
 .if P_FAMILY_MORPEKO == TRUE
 	cry Cry_MorpekoFullBelly
@@ -2109,6 +2111,9 @@ gCryTable::
 .endif @ P_FAMILY_ARCTOVISH
 .if P_FAMILY_DURALUDON == TRUE
 	cry Cry_Duraludon
+.if P_GEN_9_CROSS_EVOS == TRUE
+	cry Cry_Archaludon
+.endif @ P_GEN_9_CROSS_EVOS
 .endif @ P_FAMILY_DURALUDON
 .if P_FAMILY_DREEPY == TRUE
 	cry Cry_Dreepy
@@ -2116,12 +2121,12 @@ gCryTable::
 	cry Cry_Dragapult
 .endif @ P_FAMILY_DREEPY
 .if P_FAMILY_ZACIAN == TRUE
-	cry Cry_ZacianHeroOfManyBattles
-	cry Cry_ZacianCrownedSword
+	cry Cry_ZacianHero
+	cry Cry_ZacianCrowned
 .endif @ P_FAMILY_ZACIAN
 .if P_FAMILY_ZAMAZENTA == TRUE
-	cry Cry_ZamazentaHeroOfManyBattles
-	cry Cry_ZamazentaCrownedShield
+	cry Cry_ZamazentaHero
+	cry Cry_ZamazentaCrowned
 .endif @ P_FAMILY_ZAMAZENTA
 .if P_FAMILY_ETERNATUS == TRUE
 	cry Cry_Eternatus
@@ -2129,8 +2134,8 @@ gCryTable::
 .endif @ P_FAMILY_ETERNATUS
 .if P_FAMILY_KUBFU == TRUE
 	cry Cry_Kubfu
-	cry Cry_UrshifuSingleStrikeStyle
-	cry Cry_UrshifuRapidStrikeStyle
+	cry Cry_UrshifuSingleStrike
+	cry Cry_UrshifuRapidStrike
 .endif @ P_FAMILY_KUBFU
 .if P_FAMILY_ZARUDE == TRUE
 	cry Cry_Zarude
@@ -2150,8 +2155,8 @@ gCryTable::
 .if P_FAMILY_CALYREX == TRUE
 	cry Cry_Calyrex
 .if P_FUSION_FORMS == TRUE
-	cry Cry_CalyrexIceRider
-	cry Cry_CalyrexShadowRider
+	cry Cry_CalyrexIce
+	cry Cry_CalyrexShadow
 .endif @ P_FUSION_FORMS
 .endif @ P_FAMILY_CALYREX
 .if P_FAMILY_ENAMORUS == TRUE
@@ -2175,8 +2180,8 @@ gCryTable::
 .endif @ P_FAMILY_QUAXLY
 .if P_FAMILY_LECHONK == TRUE
 	cry Cry_Lechonk
-	cry Cry_OinkologneMale
-	cry Cry_OinkologneFemale
+	cry Cry_OinkologneM
+	cry Cry_OinkologneF
 .endif @ P_FAMILY_LECHONK
 .if P_FAMILY_TAROUNTULA == TRUE
 	cry Cry_Tarountula
@@ -2193,8 +2198,8 @@ gCryTable::
 .endif @ P_FAMILY_PAWMI
 .if P_FAMILY_TANDEMAUS == TRUE
 	cry Cry_Tandemaus
-	cry Cry_MausholdFamilyOfThree
-	cry Cry_MausholdFamilyOfFour
+	cry Cry_MausholdThree
+	cry Cry_MausholdFour
 .endif @ P_FAMILY_TANDEMAUS
 .if P_FAMILY_FIDOUGH == TRUE
 	cry Cry_Fidough
@@ -2401,9 +2406,29 @@ gCryTable::
 .if P_FAMILY_OGERPON == TRUE
 	cry Cry_Ogerpon
 .endif @ P_FAMILY_OGERPON
+.if P_FAMILY_GOUGING_FIRE == TRUE
+	cry Cry_GougingFire
+.endif @ P_FAMILY_GOUGING_FIRE
+.if P_FAMILY_RAGING_BOLT == TRUE
+	cry Cry_RagingBolt
+.endif @ P_FAMILY_RAGING_BOLT
+.if P_FAMILY_IRON_BOULDER == TRUE
+	cry Cry_IronBoulder
+.endif @ P_FAMILY_IRON_BOULDER
+.if P_FAMILY_IRON_CROWN == TRUE
+	cry Cry_IronCrown
+.endif @ P_FAMILY_IRON_CROWN
+.if P_FAMILY_TERAPAGOS == TRUE
+	cry Cry_Terapagos
+.endif @ P_FAMILY_TERAPAGOS
+.if P_FAMILY_PECHARUNT == TRUE
+	cry Cry_Pecharunt
+.endif @ P_FAMILY_PECHARUNT
+.endif @ P_CRIES_ENABLED
 
 	.align 2
 gCryTable_Reverse::
+.if P_CRIES_ENABLED == TRUE
 .if P_FAMILY_BULBASAUR == TRUE
 	cry_reverse Cry_Bulbasaur
 	cry_reverse Cry_Ivysaur
@@ -2597,7 +2622,7 @@ gCryTable_Reverse::
 	cry_reverse Cry_SlowbroMega
 .endif @ P_MEGA_EVOLUTIONS
 .if P_GALARIAN_FORMS == TRUE
-	cry_reverse Cry_SlowpokeGalarian
+	cry_reverse Cry_SlowpokeGalar
 .endif @ P_GALARIAN_FORMS
 .endif @ P_FAMILY_SLOWPOKE
 .if P_FAMILY_MAGNEMITE == TRUE
@@ -3027,9 +3052,9 @@ gCryTable_Reverse::
 .if P_FAMILY_TEDDIURSA == TRUE
 	cry_reverse Cry_Teddiursa
 	cry_reverse Cry_Ursaring
-.if P_GEN_9_CROSS_EVOS == TRUE
+.if P_GEN_8_CROSS_EVOS == TRUE
 	cry_reverse Cry_Ursaluna
-.endif @ P_GEN_9_CROSS_EVOS
+.endif @ P_GEN_8_CROSS_EVOS
 .endif @ P_FAMILY_TEDDIURSA
 .if P_FAMILY_SLUGMA == TRUE
 	cry_reverse Cry_Slugma
@@ -4037,7 +4062,7 @@ gCryTable_Reverse::
 .if P_FAMILY_FLABEBE == TRUE
 	cry_reverse Cry_Flabebe
 	cry_reverse Cry_Floette
-	cry_reverse Cry_FloetteEternalFlower
+	cry_reverse Cry_FloetteEternal
 	cry_reverse Cry_Florges
 .endif @ P_FAMILY_FLABEBE
 .if P_FAMILY_SKIDDO == TRUE
@@ -4111,7 +4136,7 @@ gCryTable_Reverse::
 	cry_reverse Cry_Goodra
 .endif @ P_FAMILY_GOOMY
 .if P_FAMILY_KLEFKI == TRUE
-	cry_reverse Cry_Klefki
+	cry_reverse_uncomp Cry_Klefki @ Cannot be heard unless we use cry_reverse_uncomp here.
 .endif @ P_FAMILY_KLEFKI
 .if P_FAMILY_PHANTUMP == TRUE
 	cry_reverse Cry_Phantump
@@ -4190,7 +4215,7 @@ gCryTable_Reverse::
 .endif @ P_FAMILY_CRABRAWLER
 .if P_FAMILY_ORICORIO == TRUE
 	cry_reverse Cry_OricorioBaile
-	cry_reverse Cry_OricorioPomPom
+	cry_reverse_uncomp Cry_OricorioPomPom @ Cannot be heard unless we use cry_reverse_uncomp here.
 	cry_reverse Cry_OricorioPau
 	cry_reverse Cry_OricorioSensu
 .endif @ P_FAMILY_ORICORIO
@@ -4426,6 +4451,7 @@ gCryTable_Reverse::
 	cry_reverse Cry_Appletun
 .if P_GEN_9_CROSS_EVOS == TRUE
 	cry_reverse Cry_Dipplin
+	cry_reverse Cry_Hydrapple
 .endif @ P_GEN_9_CROSS_EVOS
 .endif @ P_FAMILY_APPLIN
 .if P_FAMILY_SILICOBRA == TRUE
@@ -4484,12 +4510,12 @@ gCryTable_Reverse::
 	cry_reverse Cry_Stonjourner
 .endif @ P_FAMILY_STONJOURNER
 .if P_FAMILY_EISCUE == TRUE
-	cry_reverse Cry_EiscueIceFace
-	cry_reverse Cry_EiscueNoiceFace
+	cry_reverse Cry_EiscueIce
+	cry_reverse Cry_EiscueNoice
 .endif @ P_FAMILY_EISCUE
 .if P_FAMILY_INDEEDEE == TRUE
-	cry_reverse Cry_IndeedeeMale
-	cry_reverse Cry_IndeedeeFemale
+	cry_reverse Cry_IndeedeeM
+	cry_reverse Cry_IndeedeeF
 .endif @ P_FAMILY_INDEEDEE
 .if P_FAMILY_MORPEKO == TRUE
 	cry_reverse Cry_MorpekoFullBelly
@@ -4513,6 +4539,9 @@ gCryTable_Reverse::
 .endif @ P_FAMILY_ARCTOVISH
 .if P_FAMILY_DURALUDON == TRUE
 	cry_reverse Cry_Duraludon
+.if P_GEN_9_CROSS_EVOS == TRUE
+	cry_reverse Cry_Archaludon
+.endif @ P_GEN_9_CROSS_EVOS
 .endif @ P_FAMILY_DURALUDON
 .if P_FAMILY_DREEPY == TRUE
 	cry_reverse Cry_Dreepy
@@ -4520,12 +4549,12 @@ gCryTable_Reverse::
 	cry_reverse Cry_Dragapult
 .endif @ P_FAMILY_DREEPY
 .if P_FAMILY_ZACIAN == TRUE
-	cry_reverse Cry_ZacianHeroOfManyBattles
-	cry_reverse Cry_ZacianCrownedSword
+	cry_reverse Cry_ZacianHero
+	cry_reverse Cry_ZacianCrowned
 .endif @ P_FAMILY_ZACIAN
 .if P_FAMILY_ZAMAZENTA == TRUE
-	cry_reverse Cry_ZamazentaHeroOfManyBattles
-	cry_reverse Cry_ZamazentaCrownedShield
+	cry_reverse Cry_ZamazentaHero
+	cry_reverse Cry_ZamazentaCrowned
 .endif @ P_FAMILY_ZAMAZENTA
 .if P_FAMILY_ETERNATUS == TRUE
 	cry_reverse Cry_Eternatus
@@ -4533,8 +4562,8 @@ gCryTable_Reverse::
 .endif @ P_FAMILY_ETERNATUS
 .if P_FAMILY_KUBFU == TRUE
 	cry_reverse Cry_Kubfu
-	cry_reverse Cry_UrshifuSingleStrikeStyle
-	cry_reverse Cry_UrshifuRapidStrikeStyle
+	cry_reverse Cry_UrshifuSingleStrike
+	cry_reverse Cry_UrshifuRapidStrike
 .endif @ P_FAMILY_KUBFU
 .if P_FAMILY_ZARUDE == TRUE
 	cry_reverse Cry_Zarude
@@ -4554,8 +4583,8 @@ gCryTable_Reverse::
 .if P_FAMILY_CALYREX == TRUE
 	cry_reverse Cry_Calyrex
 .if P_FUSION_FORMS == TRUE
-	cry_reverse Cry_CalyrexIceRider
-	cry_reverse Cry_CalyrexShadowRider
+	cry_reverse Cry_CalyrexIce
+	cry_reverse Cry_CalyrexShadow
 .endif @ P_FUSION_FORMS
 .endif @ P_FAMILY_CALYREX
 .if P_FAMILY_ENAMORUS == TRUE
@@ -4579,8 +4608,8 @@ gCryTable_Reverse::
 .endif @ P_FAMILY_QUAXLY
 .if P_FAMILY_LECHONK == TRUE
 	cry_reverse Cry_Lechonk
-	cry_reverse Cry_OinkologneMale
-	cry_reverse Cry_OinkologneFemale
+	cry_reverse Cry_OinkologneM
+	cry_reverse Cry_OinkologneF
 .endif @ P_FAMILY_LECHONK
 .if P_FAMILY_TAROUNTULA == TRUE
 	cry_reverse Cry_Tarountula
@@ -4597,8 +4626,8 @@ gCryTable_Reverse::
 .endif @ P_FAMILY_PAWMI
 .if P_FAMILY_TANDEMAUS == TRUE
 	cry_reverse Cry_Tandemaus
-	cry_reverse Cry_MausholdFamilyOfThree
-	cry_reverse Cry_MausholdFamilyOfFour
+	cry_reverse Cry_MausholdThree
+	cry_reverse Cry_MausholdFour
 .endif @ P_FAMILY_TANDEMAUS
 .if P_FAMILY_FIDOUGH == TRUE
 	cry_reverse Cry_Fidough
@@ -4805,3 +4834,22 @@ gCryTable_Reverse::
 .if P_FAMILY_OGERPON == TRUE
 	cry_reverse Cry_Ogerpon
 .endif @ P_FAMILY_OGERPON
+.if P_FAMILY_GOUGING_FIRE == TRUE
+	cry_reverse Cry_GougingFire
+.endif @ P_FAMILY_GOUGING_FIRE
+.if P_FAMILY_RAGING_BOLT == TRUE
+	cry_reverse Cry_RagingBolt
+.endif @ P_FAMILY_RAGING_BOLT
+.if P_FAMILY_IRON_BOULDER == TRUE
+	cry_reverse Cry_IronBoulder
+.endif @ P_FAMILY_IRON_BOULDER
+.if P_FAMILY_IRON_CROWN == TRUE
+	cry_reverse Cry_IronCrown
+.endif @ P_FAMILY_IRON_CROWN
+.if P_FAMILY_TERAPAGOS == TRUE
+	cry_reverse Cry_Terapagos
+.endif @ P_FAMILY_TERAPAGOS
+.if P_FAMILY_PECHARUNT == TRUE
+	cry_reverse Cry_Pecharunt
+.endif @ P_FAMILY_PECHARUNT
+.endif @ P_CRIES_ENABLED

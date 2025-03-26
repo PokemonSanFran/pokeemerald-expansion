@@ -707,6 +707,7 @@ static void ClearInWildMonRoom(void)
 
 static void SavePikeChallenge(void)
 {
+    ClearEnemyPartyAfterChallenge();
     gSaveBlock2Ptr->frontier.challengeStatus = gSpecialVar_0x8005;
     VarSet(VAR_TEMP_CHALLENGE_STATUS, 0);
     gSaveBlock2Ptr->frontier.challengePaused = TRUE;
@@ -886,14 +887,8 @@ static bool8 TryInflictRandomStatus(void)
 
     for (i = 0; i < FRONTIER_PARTY_SIZE; i++)
         indices[i] = i;
-    for (j = 0; j < 10; j++)
-    {
-        u8 temp, id;
 
-        i = Random() % FRONTIER_PARTY_SIZE;
-        id = Random() % FRONTIER_PARTY_SIZE;
-        SWAP(indices[i], indices[id], temp);
-    }
+    Shuffle(indices, FRONTIER_PARTY_SIZE, sizeof(indices[0]));
 
     if (gSaveBlock2Ptr->frontier.curChallengeBattleNum <= 4)
         count = 1;
@@ -1265,7 +1260,7 @@ static void Task_DoStatusInflictionScreenFlash(u8 taskId)
 
 static void TryHealMons(u8 healCount)
 {
-    u8 j, i, k;
+    u8 j, i;
     u8 indices[FRONTIER_PARTY_SIZE];
 
     if (healCount == 0)
@@ -1274,17 +1269,9 @@ static void TryHealMons(u8 healCount)
     for (i = 0; i < FRONTIER_PARTY_SIZE; i++)
         indices[i] = i;
 
-    // Only 'healCount' number of pokemon will be healed.
+    // Only 'healCount' number of Pokémon will be healed.
     // The order in which they're (attempted to be) healed is random,
-    // and determined by performing 10 random swaps to this index array.
-    for (k = 0; k < 10; k++)
-    {
-        u8 temp;
-
-        i = Random() % FRONTIER_PARTY_SIZE;
-        j = Random() % FRONTIER_PARTY_SIZE;
-        SWAP(indices[i], indices[j], temp);
-    }
+    Shuffle(indices, FRONTIER_PARTY_SIZE, sizeof(indices[0]));
 
     for (i = 0; i < FRONTIER_PARTY_SIZE; i++)
     {
@@ -1416,11 +1403,11 @@ static void PrepareOneTrainer(bool8 difficult)
         }
     } while (i != gSaveBlock2Ptr->frontier.curChallengeBattleNum - 1);
 
-    gTrainerBattleOpponent_A = trainerId;
+    TRAINER_BATTLE_PARAM.opponentA = trainerId;
     gFacilityTrainers = gBattleFrontierTrainers;
-    SetBattleFacilityTrainerGfxId(gTrainerBattleOpponent_A, 0);
+    SetBattleFacilityTrainerGfxId(TRAINER_BATTLE_PARAM.opponentA, 0);
     if (gSaveBlock2Ptr->frontier.curChallengeBattleNum < NUM_PIKE_ROOMS)
-        gSaveBlock2Ptr->frontier.trainerIds[gSaveBlock2Ptr->frontier.curChallengeBattleNum - 1] = gTrainerBattleOpponent_A;
+        gSaveBlock2Ptr->frontier.trainerIds[gSaveBlock2Ptr->frontier.curChallengeBattleNum - 1] = TRAINER_BATTLE_PARAM.opponentA;
 }
 
 static void PrepareTwoTrainers(void)
@@ -1442,10 +1429,10 @@ static void PrepareTwoTrainers(void)
         }
     } while (i != gSaveBlock2Ptr->frontier.curChallengeBattleNum - 1);
 
-    gTrainerBattleOpponent_A = trainerId;
-    SetBattleFacilityTrainerGfxId(gTrainerBattleOpponent_A, 0);
+    TRAINER_BATTLE_PARAM.opponentA = trainerId;
+    SetBattleFacilityTrainerGfxId(TRAINER_BATTLE_PARAM.opponentA, 0);
     if (gSaveBlock2Ptr->frontier.curChallengeBattleNum <= NUM_PIKE_ROOMS)
-        gSaveBlock2Ptr->frontier.trainerIds[gSaveBlock2Ptr->frontier.curChallengeBattleNum - 1] = gTrainerBattleOpponent_A;
+        gSaveBlock2Ptr->frontier.trainerIds[gSaveBlock2Ptr->frontier.curChallengeBattleNum - 1] = TRAINER_BATTLE_PARAM.opponentA;
 
     do
     {
@@ -1458,10 +1445,10 @@ static void PrepareTwoTrainers(void)
         }
     } while (i != gSaveBlock2Ptr->frontier.curChallengeBattleNum);
 
-    gTrainerBattleOpponent_B = trainerId;
-    SetBattleFacilityTrainerGfxId(gTrainerBattleOpponent_B, 1);
+    TRAINER_BATTLE_PARAM.opponentB = trainerId;
+    SetBattleFacilityTrainerGfxId(TRAINER_BATTLE_PARAM.opponentB, 1);
     if (gSaveBlock2Ptr->frontier.curChallengeBattleNum < NUM_PIKE_ROOMS)
-        gSaveBlock2Ptr->frontier.trainerIds[gSaveBlock2Ptr->frontier.curChallengeBattleNum - 2] = gTrainerBattleOpponent_B;
+        gSaveBlock2Ptr->frontier.trainerIds[gSaveBlock2Ptr->frontier.curChallengeBattleNum - 2] = TRAINER_BATTLE_PARAM.opponentB;
 }
 
 static void ClearPikeTrainerIds(void)
@@ -1476,13 +1463,13 @@ static void BufferTrainerIntro(void)
 {
     if (gSpecialVar_0x8005 == 0)
     {
-        if (gTrainerBattleOpponent_A < FRONTIER_TRAINERS_COUNT)
-            FrontierSpeechToString(gFacilityTrainers[gTrainerBattleOpponent_A].speechBefore);
+        if (TRAINER_BATTLE_PARAM.opponentA < FRONTIER_TRAINERS_COUNT)
+            FrontierSpeechToString(gFacilityTrainers[TRAINER_BATTLE_PARAM.opponentA].speechBefore);
     }
     else if (gSpecialVar_0x8005 == 1)
     {
-        if (gTrainerBattleOpponent_B < FRONTIER_TRAINERS_COUNT)
-            FrontierSpeechToString(gFacilityTrainers[gTrainerBattleOpponent_B].speechBefore);
+        if (TRAINER_BATTLE_PARAM.opponentB < FRONTIER_TRAINERS_COUNT)
+            FrontierSpeechToString(gFacilityTrainers[TRAINER_BATTLE_PARAM.opponentB].speechBefore);
     }
 }
 
@@ -1628,7 +1615,7 @@ static void InitPikeChallenge(void)
     if (!(gSaveBlock2Ptr->frontier.winStreakActiveFlags & sWinStreakFlags[lvlMode]))
         gSaveBlock2Ptr->frontier.pikeWinStreaks[lvlMode] = 0;
 
-    gTrainerBattleOpponent_A = 0;
+    TRAINER_BATTLE_PARAM.opponentA = 0;
     gBattleOutcome = 0;
 }
 

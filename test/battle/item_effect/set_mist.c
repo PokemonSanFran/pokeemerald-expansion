@@ -4,7 +4,7 @@
 SINGLE_BATTLE_TEST("Guard Spec. sets Mist effect on the battlers side")
 {
     GIVEN {
-        ASSUME(gItems[ITEM_GUARD_SPEC].battleUsage == EFFECT_ITEM_SET_MIST);
+        ASSUME(gItemsInfo[ITEM_GUARD_SPEC].battleUsage == EFFECT_ITEM_SET_MIST);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -12,8 +12,8 @@ SINGLE_BATTLE_TEST("Guard Spec. sets Mist effect on the battlers side")
         TURN { MOVE(opponent, MOVE_GROWL); }
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_MIST, player);
-        MESSAGE("Ally became shrouded in MIST!");
-        MESSAGE("Foe Wobbuffet used Growl!");
-        MESSAGE("Wobbuffet is protected by MIST!");
+        MESSAGE("Your team became shrouded in mist!");
+        MESSAGE("The opposing Wobbuffet used Growl!");
+        MESSAGE("Wobbuffet is protected by the mist!");
     }
 }

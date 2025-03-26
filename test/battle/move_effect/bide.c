@@ -3,7 +3,7 @@
 
 ASSUMPTIONS
 {
-    ASSUME(gBattleMoves[MOVE_BIDE].effect == EFFECT_BIDE);
+    ASSUME(GetMoveEffect(MOVE_BIDE) == EFFECT_BIDE);
 }
 
 SINGLE_BATTLE_TEST("Bide deals twice the taken damage over two turns")
@@ -25,10 +25,13 @@ SINGLE_BATTLE_TEST("Bide deals twice the taken damage over two turns")
         MESSAGE("Wobbuffet is storing energy!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_TACKLE, opponent);
         HP_BAR(player, captureDamage: &damage2);
-        MESSAGE("Wobbuffet unleashed energy!");
+        MESSAGE("Wobbuffet unleashed its energy!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_BIDE, player);
         HP_BAR(opponent, captureDamage: &bideDamage);
     } THEN {
         EXPECT_EQ(bideDamage, 2 * (damage1 + damage2));
     }
 }
+
+TO_DO_BATTLE_TEST("Bide hits the last Pokémon that attacked the user, even allies");
+TO_DO_BATTLE_TEST("Bide has +1 priority if called via a different move"); // Gen 5 onwards
