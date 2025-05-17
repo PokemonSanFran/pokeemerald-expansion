@@ -5,6 +5,7 @@ on:
     branches:
       - master
       - upcoming
+    if: "!github.actor == 'allcontributors'"
   pull_request:
 
 jobs:
