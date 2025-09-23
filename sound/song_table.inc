@@ -605,6 +605,7 @@ gSongTable::
     song mus_pascal_vs_elite_four, 0, 0
     song mus_pascal_vs_ultra_beasts, 0, 0
     song mus_pascal_why_didnt_you_rat_me_out, 0, 0
+    song mus_launchpad_cucuno_town, 0, 0
 	song ph_trap_blend, 2, 2
 	song ph_trap_held, 2, 2
 	song ph_trap_solo, 2, 2

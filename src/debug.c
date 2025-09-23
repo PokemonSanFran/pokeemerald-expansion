@@ -4079,6 +4079,7 @@ static void DebugAction_Sound_MUS_SelectId(u8 taskId)
     X(MUS_PASCAL_VS_ELITE_FOUR) \
     X(MUS_PASCAL_VS_ULTRA_BEASTS) \
     X(MUS_PASCAL_WHY_DIDNT_YOU_RAT_ME_OUT) \
+    X(MUS_LAUNCHPAD_CUCUNO_TOWN) \
     X(PH_TRAP_BLEND) \
     X(PH_TRAP_HELD) \
     X(PH_TRAP_SOLO) \
