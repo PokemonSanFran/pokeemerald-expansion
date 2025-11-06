@@ -11,5 +11,6 @@ u16 GetRematchTrainerIdVSSeeker(u16 trainerId);
 bool32 IsVsSeekerEnabled(void);
 
 #define VSSEEKER_RECHARGE_STEPS 100
+#define REMATCH_BADGE_COUNT 5
 
 #endif //GUARD_VS_SEEKER_H
