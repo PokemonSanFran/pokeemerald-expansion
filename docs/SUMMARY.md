@@ -18,6 +18,7 @@
   - [How to use the Testing System](tutorials/how_to_testing_system.md)
   - [How to add new Trainer Slides](tutorials/how_to_new_trainer_slide.md)
   - [Day/Night System FAQ](tutorials/dns.md)
+  - [Vs. Seeker](tutorials/vs_seeker.md)
 - [Changelog](./CHANGELOG.md)
     - [1.13.x]()
         - [Version 1.13.2](changelogs/1.13.x/1.13.2.md)
