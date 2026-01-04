@@ -1164,6 +1164,17 @@ static bool16 IsInflitratedSpaceCenter(struct WarpData *warp)
     return FALSE;
 }
 
+static bool8 ShouldPlayNightMusic(void)
+{
+    if (OW_MUSIC_NIGHT == FALSE)
+        return FALSE;
+
+    RtcCalcLocalTime();
+    s32 hours = sHoursOverride ? sHoursOverride : gLocalTime.hours;
+
+    return (IsBetweenHours(hours, OW_MUSIC_NIGHT_START, OW_MUSIC_NIGHT_END));
+}
+
 u16 GetLocationMusic(struct WarpData *warp)
 {
     if (NoMusicInSotopolisWithLegendaries(warp) == TRUE)
@@ -1174,6 +1185,8 @@ u16 GetLocationMusic(struct WarpData *warp)
         return MUS_ENCOUNTER_MAGMA;
     else if (IsInfiltratedWeatherInstitute(warp) == TRUE)
         return MUS_MT_CHIMNEY;
+    else if (ShouldPlayNightMusic())
+        return Overworld_GetMapHeaderByGroupAndId(warp->mapGroup, warp->mapNum)->nightMusic;
     else
         return Overworld_GetMapHeaderByGroupAndId(warp->mapGroup, warp->mapNum)->music;
 }

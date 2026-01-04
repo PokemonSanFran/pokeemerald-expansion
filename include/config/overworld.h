@@ -146,4 +146,9 @@
 // Trainer Rematches
 #define OW_REMATCH_BADGE_COUNT      5 // Number of badges necessary before the match call or vs seeker features allow rematches
 
+// Night Music
+#define OW_MUSIC_NIGHT              TRUE                 // When this is TRUE, maps have the ability to play different music at night.
+#define OW_MUSIC_NIGHT_START        EVENING_HOUR_BEGIN   // This is when night music should stop playing.
+#define OW_MUSIC_NIGHT_END          NIGHT_HOUR_END       // This is when night music should stop playing.
+
 #endif // GUARD_CONFIG_OVERWORLD_H
