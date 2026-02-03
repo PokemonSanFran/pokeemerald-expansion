@@ -2861,7 +2861,7 @@
     @ to battle against a trainer(s) that will also pick the same number of Pokemon to battle.
     @ This mimics Battle Stadium behavior in official titles (Scarlet/Violet, Sword/Shield, etc.)
     @ which is also used for tournament settings like VGC.
-    .macro bringxpicky battleType:req, bringSize:req, pickSize:req, trainerId1: req, trainerId2 = TRAINER_NONE, lossText1:req, lossText2=NULL, partnerId=PARTNER_NONE
+    .macro bringxpicky battleType:req, bringSize:req, pickSize:req, trainer_a: req, lose_text_a:req, trainer_b = TRAINER_NONE, lose_text_b=NULL, partnerId=PARTNER_NONE
     .if \bringSize < \pickSize
         .error "bringxpicky bringSize (\bringSize) is less than pickSize (\pickSize)"
     .endif
@@ -2871,24 +2871,25 @@
     .if \pickSize > PARTY_SIZE
         .error "bringxpicky BXPY pickSize (\pickSize) is greater than \partySize"
     .endif
-    .if \trainerId1 == TRAINER_NONE
-        .error "bringxpicky BXPY trainerId1 (\trainerId1) must be a valid trainer Id"
+    .if \trainer_a == TRAINER_NONE
+        .error "bringxpicky BXPY trainer_a (\trainer_a) must be a valid trainer Id"
 	.endif
-    .if \trainerId1 > TRAINERS_COUNT
-        .error "bringxpicky BXPY trainerId1 (\trainerId1) must be a valid trainer Id"
+    .if \trainer_a > TRAINERS_COUNT
+        .error "bringxpicky BXPY trainer_a (\trainer_a) must be a valid trainer Id"
 	.endif
     setvar VAR_BXPY_PICK_SIZE, \pickSize
     setvar VAR_BXPY_BRING_SIZE, \bringSize
+    setvar VAR_BXPY_PARTNER, \partnerId
     callnative BXPY_TryHealBeforeBattle
     call BXPY_Script_CheckErrors
 	callnative ScrCmd_bringxpicky, requests_effects=1
     .2byte \battleType
     .2byte \bringSize
     .2byte \pickSize
-	.2byte \trainerId1
-	.2byte \trainerId2
-	.4byte \lossText1
-	.4byte \lossText2
+	.2byte \trainer_a
+	.4byte \lose_text_a
+	.2byte \trainer_b
+	.4byte \lose_text_b
 	.2byte \partnerId
 	.endm
     @ End bxpy
