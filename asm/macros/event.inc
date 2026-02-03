@@ -2863,22 +2863,32 @@
     @ which is also used for tournament settings like VGC.
     .macro bringxpicky battleType:req, bringSize:req, pickSize:req, trainerId1: req, trainerId2 = TRAINER_NONE, lossText1:req, lossText2=NULL, partnerId=PARTNER_NONE
     .if \bringSize < \pickSize
-        .warning "bringxpicky bringSize (\bringSize) is less than pickSize (\pickSize)"
+        .error "bringxpicky bringSize (\bringSize) is less than pickSize (\pickSize)"
     .endif
     .if \pickSize < 1
-        .warning "bringxpicky BXPY pickSize (\pickSize) is less than 1"
+        .error "bringxpicky BXPY pickSize (\pickSize) is less than 1"
     .endif
     .if \pickSize > PARTY_SIZE
-        .warning "bringxpicky BXPY pickSize (\pickSize) is greater than \partySize"
+        .error "bringxpicky BXPY pickSize (\pickSize) is greater than \partySize"
     .endif
     .if \trainerId1 == TRAINER_NONE
-        .warning "bringxpicky BXPY trainerId1 (\trainerId1) must be a valid trainer Id"
+        .error "bringxpicky BXPY trainerId1 (\trainerId1) must be a valid trainer Id"
 	.endif
     .if \trainerId1 > TRAINERS_COUNT
-        .warning "bringxpicky BXPY trainerId1 (\trainerId1) must be a valid trainer Id"
+        .error "bringxpicky BXPY trainerId1 (\trainerId1) must be a valid trainer Id"
 	.endif
-    //setvar VAR_BXPY_PICK_SIZE, pickSize
-    //setvar VAR_BXPY_BRING_SIZE, bringSize
+    setvar VAR_BXPY_PICK_SIZE, \pickSize
+    setvar VAR_BXPY_BRING_SIZE, \bringSize
+    callnative BXPY_TryHealBeforeBattle
     call BXPY_Script_CheckErrors
+	callnative ScrCmd_bringxpicky, requests_effects=1
+    .2byte \battleType
+    .2byte \bringSize
+    .2byte \pickSize
+	.2byte \trainerId1
+	.2byte \trainerId2
+	.4byte \lossText1
+	.4byte \lossText2
+	.2byte \partnerId
 	.endm
     @ End bxpy
