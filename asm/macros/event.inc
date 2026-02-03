@@ -2649,7 +2649,7 @@
 	callnative DoFacilityTrainerBattle
 	.byte \facility
 	.endm
-	
+
 	.macro ingame_trade tradeId:req wantTradeMsg:req, declineTradeJump:req, wrongMonJump:req, tradeCompleteMsg:req
 	setvar VAR_0x8005, \tradeId
 	specialvar VAR_0x8009, GetInGameTradeSpeciesInfo
@@ -2854,3 +2854,30 @@
 	getbraillestringwidth \text
 	call EventScript_BrailleCursorWaitButton
 	.endm
+
+    @ Start bxpy
+    @ Opens a UI that has the player choose a number of Pokemon (bringSize) in their party
+    @ to battle against a trainer(s) that will also pick the same number of Pokemon to battle.
+    @ This mimics Battle Stadium behavior in official titles (Scarlet/Violet, Sword/Shield, etc.)
+    @ which is also used for tournament settings like VGC.
+    .macro bringxpicky battleType:req, bringSize:req, pickSize:req, trainerId1: req, trainerId2 = TRAINER_NONE, lossText1:req, lossText2=NULL, partnerId=PARTNER_NONE
+    .if \bringSize < \pickSize
+        .warning "bringxpicky bringSize (\bringSize) is less than pickSize (\pickSize)"
+    .endif
+    .if \pickSize < 1
+        .warning "bringxpicky BXPY pickSize (\pickSize) is less than 1"
+    .endif
+    .if \pickSize > PARTY_SIZE
+        .warning "bringxpicky BXPY pickSize (\pickSize) is greater than \partySize"
+    .endif
+    .if \trainerId1 == TRAINER_NONE
+        .warning "bringxpicky BXPY trainerId1 (\trainerId1) must be a valid trainer Id"
+	.endif
+    .if \trainerId1 > TRAINERS_COUNT
+        .warning "bringxpicky BXPY trainerId1 (\trainerId1) must be a valid trainer Id"
+	.endif
+    //setvar VAR_BXPY_PICK_SIZE, pickSize
+    //setvar VAR_BXPY_BRING_SIZE, bringSize
+    call BXPY_Script_CheckErrors
+	.endm
+    @ End bxpy

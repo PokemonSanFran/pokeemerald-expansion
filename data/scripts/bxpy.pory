@@ -1,0 +1,54 @@
+script DebugBXPY
+{
+    givemon(SPECIES_BULBASAUR,0,0)
+    givemon(SPECIES_PIKACHU,0,0)
+    givemon(SPECIES_CHARIZARD,0,0)
+    givemon(SPECIES_BULBASAUR,0,0)
+    givemon(SPECIES_BULBASAUR,0,0)
+    givemon(SPECIES_BULBASAUR,0,0)
+    bringxpicky(0,6,4,TRAINER_WALLACE,,format("yes"))
+}
+
+script BXPY_Script_CheckErrors
+{
+    callnative(BXPY_OverworldRun_ErrorCheck_BringSizeTooLarge)
+    if (var(VAR_RESULT))
+    {
+        msgbox(format("You have too many Pokemon in your party. You cannot have more than {STR_VAR_1}."),MSGBOX_AUTOCLOSE)
+        closemessage
+    }
+
+    callnative(BXPY_OverworldRun_ErrorCheck_BringSizeNotEnough)
+    if (var(VAR_RESULT))
+    {
+        msgbox(format("You must have {STR_VAR_1} healthy Pokemon in your party to battle!"),MSGBOX_AUTOCLOSE)
+        closemessage
+    }
+
+    callnative(BXPY_OverworldRun_ErrorCheck_ClauseSpecies)
+    if (var(VAR_RESULT))
+    {
+        msgbox(format("All of the Pokemon in your party must be of unique species. \l {STR_VAR_1}\lappear more than once."),MSGBOX_AUTOCLOSE)
+        closemessage
+    }
+
+    callnative(BXPY_OverworldRun_ErrorCheck_ClauseItem)
+    if (var(VAR_RESULT))
+    {
+        msgbox(format("All of the held items in your party must be unique.\n{STR_VAR_1} appear more than once."),MSGBOX_AUTOCLOSE)
+        closemessage
+    }
+
+    callnative(BXPY_OverworldRun_ErrorCheck_ClauseUbers)
+    if (var(VAR_RESULT))
+    {
+        msgbox(format("Some Pokemon are restricted from entering. You cannot bring\n{STR_VAR_1}."),MSGBOX_AUTOCLOSE)
+        closemessage
+    }
+
+    if (var(VAR_RESULT))
+    {
+        release
+        end
+    }
+}
