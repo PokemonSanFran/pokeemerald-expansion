@@ -2854,3 +2854,24 @@
 	getbraillestringwidth \text
 	call EventScript_BrailleCursorWaitButton
 	.endm
+	
+@ Bring X Pick Y
+@ Credits: psf, Pawkkie, Linathan
+
+	@ TO DO: Check Mon
+
+	@ Opens a UI that has the player choose a number of Pokemon (bringSize) in their party
+	@ to battle against a trainer(s) that will also pick the same number of Pokemon to battle.
+	@ This mimics Battle Stadium behavior in official titles (Scarlet/Violet, Sword/Shield, etc.)
+	@ which is also used for tournament settings like VGC.
+	.macro bringxpicky battleType:req, bringSize:req, pickSize:req, trainerId1:req, trainerId2 = TRAINER_NONE, lossText1 = "", lossText2 = "", partnerId = PARTNER_NONE
+	callnative ScrCmd_bringxpicky, requests_effects=1
+	.2byte \battleType
+	.2byte \bringSize
+	.2byte \pickSize
+	.2byte \trainerId1
+	.2byte \trainerId2
+	.2byte \lossText1
+	.2byte \lossText2
+	.2byte \partnerId
+	.endm
