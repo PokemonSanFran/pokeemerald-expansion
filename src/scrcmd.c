@@ -3350,3 +3350,8 @@ bool8 ScrCmd_getbraillestringwidth(struct ScriptContext * ctx)
     gSpecialVar_0x8004 = GetStringWidth(FONT_BRAILLE, msg, -1);
     return FALSE;
 }
+
+bool8 ScrCmd_bringxpicky(struct ScriptContext *ctx)
+{
+    // TO DO
+}

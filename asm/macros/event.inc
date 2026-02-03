@@ -2856,6 +2856,7 @@
 	.endm
 
     @ Start bxpy
+    @ Credits: psf, Pawkkie, Linathan
     @ Opens a UI that has the player choose a number of Pokemon (bringSize) in their party
     @ to battle against a trainer(s) that will also pick the same number of Pokemon to battle.
     @ This mimics Battle Stadium behavior in official titles (Scarlet/Violet, Sword/Shield, etc.)
