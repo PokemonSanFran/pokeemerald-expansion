@@ -3,6 +3,7 @@
 #include "bxpy.h"
 #include "event_data.h"
 #include "pokemon_storage_system.h"
+#include "load_save.h"
 #include "string_util.h"
 #include "tv.h"
 #include "item.h"
@@ -283,4 +284,39 @@ static void BXPY_ErrorCheck_ClauseUbers(void)
 
     gSpecialVar_Result = TRUE;
     BXPY_FormatProblemListList(bannedMons, bannedCount, GetSpeciesName);
+}
+
+void BXPY_Init(enum BXPYBattleTypes battleType, u32 bringSize, u32 pickSize, u32 trainerA, const u8 *loseTextA, u32 trainerB, const u8* loseTextB, u32 partner)
+{
+    DebugPrintf("battleType %d",battleType);
+    DebugPrintf("bringSize %d",bringSize);
+    DebugPrintf("pickSize %d",pickSize);
+    DebugPrintf("trainerA %d",trainerA);
+    DebugPrintf("loseTextA %S",loseTextA);
+    DebugPrintf("trainerB %d",trainerB);
+    if (loseTextB != NULL)
+        DebugPrintf("loseTextB %S",loseTextB);
+    DebugPrintf("partner %d",partner);
+
+    BXPY_PrepareParty();
+    return;
+}
+
+void BXPY_PrepareParty(void)
+{
+    SavePlayerParty();
+    BXPY_ZeroFaintedMons();
+}
+
+void BXPY_ZeroFaintedMons(void)
+{
+    for (u32 i = 0; i < PARTY_SIZE; i++)
+    {
+        u32 hp = GetMonData(&gPlayerParty[i], MON_DATA_HP);
+        u32 species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG);
+
+        if (species == SPECIES_NONE || species == SPECIES_EGG || hp == 0)
+            ZeroMonData(&gPlayerParty[i]);
+    }
+    CompactPartySlots();
 }

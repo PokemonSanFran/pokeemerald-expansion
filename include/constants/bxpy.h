@@ -1,6 +1,12 @@
 #ifndef GUARD_CONSTANTS_BXPY_H
 #define GUARD_CONSTANTS_BXPY_H
 
+enum BXPYBattleTypes
+{
+    BXPY_SINGLE_BATTLE,
+    BXPY_DOUBLE_BATTLE,
+};
+
 enum BXPYErrorCodes
 {
     BXPY_ERROR_BRING_SIZE_TOO_LARGE,

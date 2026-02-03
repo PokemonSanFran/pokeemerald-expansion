@@ -1,10 +1,10 @@
 #ifndef GUARD_CONFIG_BXPY_H
 #define GUARD_CONFIG_BXPY_H
 
-#define BXPY_FORCE_MINIMUM_MONS            FALSE // Text
-#define BXPY_CLAUSE_ITEMS                  FALSE // Text
-#define BXPY_CLAUSE_SPECIES                FALSE // Text
-#define BXPY_CLAUSE_UBERS                  FALSE // Text
+#define BXPY_FORCE_MINIMUM_MONS            TRUE // Text
+#define BXPY_CLAUSE_ITEMS                  TRUE  // Text
+#define BXPY_CLAUSE_SPECIES                TRUE  // Text
+#define BXPY_CLAUSE_UBERS                  TRUE  // Text
 
 #define BXPY_HEAL                          FALSE // Text
 
