@@ -93,7 +93,6 @@
 #define B_MINIMIZE_EVASION          GEN_LATEST // In Gen5+, Minimize raises evasion by 2 stages instead of 1.
 #define B_GROWTH_STAT_RAISE         GEN_LATEST // In Gen5+, Growth raises Attack in addition to Special Attack by 1 stage each. Under the effects of the sun, it raises them by 2 stages each instead.
 #define B_FOCUS_ENERGY_CRIT_RATIO   GEN_LATEST // In Gen3+, Focus Energy increases critical hit ratio by 2 instead of 1.
-#define B_PSYCH_UP_CRIT_RATIO       GEN_LATEST // In Gen6+, Psych Up also copies the target's critical hit ratio.
 
 // Other move settings
 #define B_INCINERATE_GEMS           GEN_LATEST // In Gen6+, Incinerate can destroy Gems.
@@ -146,6 +145,7 @@
                                                // In Gens 5-6, check if the selected move is Focus Punch.
                                                // In Gen7+, check if the current move and the selected move are Focus Punch.
                                                // Also in Gen4-, the check for Focus Punch fail will occur after effects like pp consumption and flinching while it happens before in Gen5+
+#define B_PSYCH_UP_CRIT_RATIO GEN_LATEST // In Gen5+, an ally's attack does not count for uses of Counter/Mirror Coat/Metal Burst. In Gen4-, if the last attack taken was from an ally, Counter/Mirror Coat/Metal Burst would fail.
 #define B_COUNTER_MIRROR_COAT_ALLY  GEN_LATEST // In Gen5+, an ally's attack does not count for uses of Counter/Mirror Coat/Metal Burst. In Gen4-, if the last attack taken was from an ally, Counter/Mirror Coat/Metal Burst would fail.
 #define B_COUNTER_TRY_HIT_PARTNER   GEN_LATEST // In Gen5+, if the user of the last attack is not on the field, it will be redirected to the partner. In Gen4-, Counter/Mirror Coat/Metal Burst would fail.
 #define B_RAGE_BUILDS               GEN_LATEST // In Gen4+, Rage's effect only sets in when it successfully hits. In Gen3, Rage's effect sets in regardless of whether it hits, misses or fails.
@@ -270,7 +270,7 @@
 
 // Sky Battles
 #define B_FLAG_SKY_BATTLE                 0     // If this flag has a value, the player will be able to engage in scripted Sky Battles.
-#define B_VAR_SKY_BATTLE                  VAR_UNUSED_0x404E     // If this var has a value, the game will remember the positions of Pokémon used in Sky Battles.
+#define B_VAR_SKY_BATTLE                  0     // If this var has a value, the game will remember the positions of Pokémon used in Sky Battles.
 #define B_SKY_BATTLE_STRICT_ELIGIBILITY   FALSE // If TRUE, Sky Battles will use the eligibility from Pokémon XY. If FALSE, all Flying-types or Pokémon with Levitate are allowed.
 
 // Flag and Var settings

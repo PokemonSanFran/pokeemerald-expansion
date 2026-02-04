@@ -71,7 +71,7 @@
 #include "constants/vars.h"
 #include "constants/weather.h"
 #include "constants/speaker_names.h"
-#include "constants/bxpy.h"
+#include "constants/bxpy.h" @ bringXpickY
 	.include "asm/macros.inc"
 	.include "asm/macros/event.inc"
 	.include "constants/constants.inc"
@@ -1742,4 +1742,4 @@ EventScript_PalletTown_PlayersHouse_2F_TurnOnPC::
 	.include "data/scripts/dexnav.inc"
 	.include "data/scripts/battle_frontier.inc"
 	.include "data/scripts/apricorn_tree.inc"
-	.include "data/scripts/bxpy.inc"
+	.include "data/scripts/bxpy.inc" @ bringXpickY
