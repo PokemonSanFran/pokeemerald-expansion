@@ -1698,7 +1698,10 @@ void PrepareForFollowerNPCBattle(void)
         VarSet(VAR_0x8005, FRONTIER_DATA_SELECTED_MON_ORDER);
         CallFrontierUtilFunc();
         gPartnerTrainerId = TRAINER_PARTNER(GetFollowerNPCData(FNPC_DATA_BATTLE_PARTNER));
-        FillPartnerParty(gPartnerTrainerId,(PARTY_SIZE/2));
+        // Start bringXpickY
+        //FillPartnerParty(gPartnerTrainerId);
+        FillPartnerParty(gPartnerTrainerId,PARTY_SIZE/2);
+        // End bringXpickY
     }
 }
 

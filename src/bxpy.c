@@ -361,7 +361,7 @@ static void BXPY_PrepareParty(u32 partnerId, u32 pickSize)
     if (partnerId == PARTNER_NONE)
         return;
 
-    FillPartnerParty(partnerId, (pickSize/2));
+    FillPartnerParty(partnerId, pickSize/2);
 }
 
 static void BXPY_ZeroFaintedMons(void)
@@ -432,7 +432,9 @@ static u32 BXPY_ConvertBattleTypeToFlags(enum BXPYBattleTypes battleType)
         case BXPY_BATTLE_DOUBLE:
             return (BATTLE_TYPE_DOUBLE | BATTLE_TYPE_TRAINER);
         case BXPY_BATTLE_MULTI_2v2:
+            return (BATTLE_TYPE_MORE_THAN_TWO_BATTLERS);
         case BXPY_BATTLE_MULTI_1v2:
+            return (BATTLE_TYPE_MULTI | BATTLE_TYPE_TRAINER | BATTLE_TYPE_TWO_OPPONENTS);
         case BXPY_BATTLE_MULTI_2v1:
             return (BATTLE_TYPE_MULTI | BATTLE_TYPE_TRAINER);
     }

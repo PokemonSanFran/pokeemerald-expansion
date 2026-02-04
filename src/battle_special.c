@@ -110,7 +110,10 @@ void DoSpecialTrainerBattle(void)
             gBattleTypeFlags = BATTLE_TYPE_TRAINER | BATTLE_TYPE_DOUBLE | BATTLE_TYPE_TWO_OPPONENTS | BATTLE_TYPE_MULTI | BATTLE_TYPE_INGAME_PARTNER;
         }
 
+        // Start bringXpickY
+        //FillPartnerParty(gPartnerTrainerId);
         FillPartnerParty(gPartnerTrainerId,PARTY_SIZE/2);
+        // End bringXpickY
         CreateTask(Task_StartBattleAfterTransition, 1);
         PlayMapChosenOrBattleBGM(0);
         if (gSpecialVar_0x8005 & MULTI_BATTLE_2_VS_WILD)
