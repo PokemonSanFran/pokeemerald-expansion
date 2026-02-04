@@ -23,15 +23,15 @@ static void BXPY_ErrorCheck_BringSizeNotEnough(void);
 static void BXPY_ErrorCheck_ClauseSpecies(void);
 static void BXPY_ErrorCheck_ClauseItem(void);
 static void BXPY_ErrorCheck_ClauseUbers(void);
-static void BXPY_PrepareEnemyParty(u32 trainerA, u32 trainerB, u32 bringSize, u32 battleFlags);
-static void BXPY_PrepareParty(u32 partnerId, u32 pickSize);
+static void BXPY_InitTrainerBattleParams(u32 trainerA, const u8 *loseTextA, u32 trainerB, const u8* loseTextB, u32 partnerId);
+static void BXPY_PrepareEnemyParty(u32 bringSize, u32 battleFlags);
+static void BXPY_PrepareParty(u32 pickSize);
 static void BXPY_GetPlayerEnterMons(u32* enteredMons, u32 pickSize);
 static void BXPY_GetEnemyEnterMons(u32* enteredMons, u32 pickSize);
 static void BXPY_SelectPartyMembers(struct Pokemon *party, u32* enteredMons);
 static void BXPY_ZeroFaintedMons(void);
-static enum BXPYBattleTypes BXPY_UpdateBattleType(enum BXPYBattleTypes battleType, u32 trainerB, u32 partnerId);
+static enum BXPYBattleTypes BXPY_UpdateBattleType(enum BXPYBattleTypes battleType);
 static u32 BXPY_ConvertBattleTypeToFlags(enum BXPYBattleTypes battleType);
-static void BXPY_InitTrainerBattleParams(u32 trainerA, const u8 *loseTextA, u32 trainerB, const u8* loseTextB, u32 partnerId);
 
 static void (*const sBXPYErrorCheckFuncs[])(void) =
 {
@@ -120,13 +120,16 @@ static void BXPY_ErrorCheck_BringSizeTooLarge(void)
 static void BXPY_ErrorCheck_BringSizeNotEnough(void)
 {
     gSpecialVar_Result = FALSE;
+
     if (BXPY_FORCE_MINIMUM_MONS == FALSE)
         return;
 
     u32 bringSize = VarGet(VAR_BXPY_BRING_SIZE);
+    u32 maxSize = (VarGet(VAR_BXPY_PARTNER) == PARTNER_NONE) ? bringSize : (bringSize / 2);
+
     u32 partyCount = CountPartyAliveNonEggMonsExcept(PARTY_SIZE);
 
-    if (partyCount >= bringSize)
+    if (partyCount >= maxSize)
         return;
 
     gSpecialVar_Result = TRUE;
@@ -282,12 +285,12 @@ void Debug_BXPY_PrintArguments(enum BXPYBattleTypes battleType, u32 bringSize, u
 void BXPY_Init(enum BXPYBattleTypes battleType, u32 bringSize, u32 pickSize, u32 trainerA, const u8 *loseTextA, u32 trainerB, const u8* loseTextB, u32 partnerId)
 {
     //Debug_BXPY_PrintArguments(battleType,bringSize,pickSize,trainerA,loseTextA,trainerB,loseTextB,partnerId);
-    battleType = BXPY_UpdateBattleType(battleType, trainerB, partnerId);
+    BXPY_InitTrainerBattleParams(trainerA,loseTextA,trainerB,loseTextB,partnerId);
+    battleType = BXPY_UpdateBattleType(battleType);
     u32 battleFlags = BXPY_ConvertBattleTypeToFlags(battleType);
 
-    BXPY_InitTrainerBattleParams(trainerA,loseTextA,trainerB,loseTextB,partnerId);
-    BXPY_PrepareEnemyParty(trainerA, trainerB, bringSize,battleFlags);
-    BXPY_PrepareParty(partnerId, pickSize);
+    BXPY_PrepareEnemyParty(bringSize,battleFlags);
+    BXPY_PrepareParty(pickSize);
 
     u32 playerEnteredMons[PARTY_SIZE] = {PARTY_SIZE};
     u32 enemyEnteredMons[PARTY_SIZE] = {PARTY_SIZE};
@@ -308,7 +311,10 @@ static void BXPY_InitTrainerBattleParams(u32 trainerA, const u8 *loseTextA, u32 
     TRAINER_BATTLE_PARAM.defeatTextA = (u8*)loseTextA;
 
     if (trainerB == TRAINER_NONE)
+    {
+        TRAINER_BATTLE_PARAM.opponentB = 0xFFFF;
         return;
+    }
 
     TRAINER_BATTLE_PARAM.opponentB = trainerB;
     TRAINER_BATTLE_PARAM.defeatTextB = (u8*)loseTextB;
@@ -319,21 +325,15 @@ static void BXPY_InitTrainerBattleParams(u32 trainerA, const u8 *loseTextA, u32 
     gPartnerTrainerId = TRAINER_PARTNER(partnerId);
 }
 
-static void BXPY_PrepareEnemyParty(u32 trainerA, u32 trainerB, u32 bringSize, u32 battleFlags)
+static void BXPY_PrepareEnemyParty(u32 bringSize, u32 battleFlags)
 {
     ZeroEnemyPartyMons();
     CreateNPCTrainerPartyFromTrainer(&gEnemyParty[0], &gTrainers[GetCurrentDifficultyLevel()][TRAINER_BATTLE_PARAM.opponentA], TRUE, battleFlags);
 
-    for (u32 i = 0; i < PARTY_SIZE; i++)
-        DebugPrintf("%S",GetSpeciesName(GetMonData(&gEnemyParty[i],MON_DATA_SPECIES_OR_EGG)));
-
-    if (trainerB == TRAINER_NONE)
+    if (TRAINER_BATTLE_PARAM.opponentB == TRAINER_NONE)
         return;
 
     CreateNPCTrainerPartyFromTrainer(&gEnemyParty[PARTY_SIZE/2], &gTrainers[GetCurrentDifficultyLevel()][TRAINER_BATTLE_PARAM.opponentB], FALSE, battleFlags);
-
-    for (u32 i = 0; i < PARTY_SIZE; i++)
-        DebugPrintf("%S",GetSpeciesName(GetMonData(&gEnemyParty[i],MON_DATA_SPECIES_OR_EGG)));
 }
 
 static void BXPY_GetPlayerEnterMons(u32* enteredMons, u32 pickSize)
@@ -361,15 +361,15 @@ static void BXPY_GetEnemyEnterMons(u32* enteredMons, u32 pickSize)
     BXPY_GetPlayerEnterMons(enteredMons, pickSize);
 }
 
-static void BXPY_PrepareParty(u32 partnerId, u32 pickSize)
+static void BXPY_PrepareParty(u32 pickSize)
 {
     SavePlayerParty();
     BXPY_ZeroFaintedMons();
 
-    if (partnerId == PARTNER_NONE)
+    if (gPartnerTrainerId == PARTNER_NONE)
         return;
 
-    FillPartnerParty(partnerId, pickSize/2);
+    FillPartnerParty(gPartnerTrainerId, pickSize/2);
 }
 
 static void BXPY_ZeroFaintedMons(void)
@@ -412,16 +412,13 @@ static void BXPY_SelectPartyMembers(struct Pokemon *party, u32* enteredMons)
         ZeroMonData(&party[i]);
 
     for (u32 i = 0; i < PARTY_SIZE; i++)
-    {
         CopyMon(&party[i],&tempParty[i],sizeof(struct Pokemon));
-        DebugPrintf("%S",GetSpeciesName(GetMonData(&party[i],MON_DATA_SPECIES_OR_EGG)));
-    }
 }
 
-static enum BXPYBattleTypes BXPY_UpdateBattleType(enum BXPYBattleTypes battleType, u32 trainerB, u32 partnerId)
+static enum BXPYBattleTypes BXPY_UpdateBattleType(enum BXPYBattleTypes battleType)
 {
-    bool32 hasSecondEnemy = (trainerB != TRAINER_NONE);
-    bool32 hasPartner = (partnerId != PARTNER_NONE);
+    bool32 hasSecondEnemy = (TRAINER_BATTLE_PARAM.opponentB != TRAINER_NONE);
+    bool32 hasPartner = (gPartnerTrainerId != PARTNER_NONE);
 
     if (hasSecondEnemy && hasPartner)
         return BXPY_BATTLE_MULTI_2v2;
@@ -446,12 +443,12 @@ static u32 BXPY_ConvertBattleTypeToFlags(enum BXPYBattleTypes battleType)
             return (BATTLE_TYPE_DOUBLE | BATTLE_TYPE_TRAINER);
         case BXPY_BATTLE_MULTI_2v2:
             DebugPrintf("BXPY_BATTLE_MULTI_2v2");
-            return (BATTLE_TYPE_MORE_THAN_TWO_BATTLERS | BATTLE_TYPE_TRAINER | BATTLE_TYPE_INGAME_PARTNER);
+            return (BATTLE_TYPE_MULTI | BATTLE_TYPE_DOUBLE | BATTLE_TYPE_INGAME_PARTNER | BATTLE_TYPE_TWO_OPPONENTS | BATTLE_TYPE_TRAINER); // from battle_setup.c
         case BXPY_BATTLE_MULTI_1v2:
             DebugPrintf("BXPY_BATTLE_MULTI_1v2");
-            return (BATTLE_TYPE_MULTI | BATTLE_TYPE_TRAINER | BATTLE_TYPE_TWO_OPPONENTS);
+            return (BATTLE_TYPE_DOUBLE | BATTLE_TYPE_TWO_OPPONENTS | BATTLE_TYPE_TRAINER); // from battle_setup.c
         case BXPY_BATTLE_MULTI_2v1:
             DebugPrintf("BXPY_BATTLE_MULTI_2v2");
-            return (BATTLE_TYPE_MULTI | BATTLE_TYPE_TRAINER);
+            return (BATTLE_TYPE_MULTI | BATTLE_TYPE_INGAME_PARTNER | BATTLE_TYPE_DOUBLE | BATTLE_TYPE_TRAINER); // from battle_setup.c
     }
 }
