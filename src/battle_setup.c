@@ -55,6 +55,7 @@
 #include "constants/trainer_hill.h"
 #include "constants/weather.h"
 #include "fishing.h"
+#include "bxpy.h" // bringXpickY
 
 enum TransitionType
 {
@@ -1435,6 +1436,7 @@ static void HandleBattleVariantEndParty(void)
 
     SaveChangesToPlayerParty();
     LoadPlayerParty();
+    BXPY_TryHealAfterBattle();
     FlagClear(B_FLAG_SKY_BATTLE);
     FlagClear(B_FLAG_BXPY); // bringXpickY
 }
