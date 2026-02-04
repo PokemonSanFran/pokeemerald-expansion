@@ -6,6 +6,6 @@
 
 extern const struct Trainer gBattlePartners[DIFFICULTY_COUNT][PARTNER_COUNT];
 
-void FillPartnerParty(u16 trainerId);
+void FillPartnerParty(u16 trainerId, u32 partnerPartyStart);
 
 #endif // BATTLE_PARTNER_H

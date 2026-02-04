@@ -2171,7 +2171,7 @@ static void DebugAction_Trainers_TryBattle(u8 taskId)
             gSelectedOrderFromParty[i] = i + 1;
             gSaveBlock2Ptr->frontier.selectedPartyMons[i] = gSelectedOrderFromParty[i];
         }
-        FillPartnerParty(gPartnerTrainerId);
+        FillPartnerParty(gPartnerTrainerId,PARTY_SIZE/2);
     }
 
     gBattleEnvironment = BattleSetup_GetEnvironmentId();

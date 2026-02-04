@@ -32,4 +32,7 @@
 #define BXPY_ENEMY_CAN_SEE_ABILITY         FALSE // Text
 #define BXPY_ENEMY_CAN_SEE_ITEM            FALSE // Text
 
+#define B_FLAG_BXPY                        FLAG_UNUSED_0x264
+#define B_VAR_BXPY                         B_VAR_SKY_BATTLE
+
 #endif // GUARD_CONFIG_BXPY_H

@@ -20,7 +20,6 @@
 #include "constants/battle_frontier.h"
 #include "constants/battle_frontier_mons.h"
 
-static void FillTrainerParty(u16 trainerId, u8 firstMonId, u8 monCount);
 
 // EWRAM vars.
 EWRAM_DATA const struct BattleFrontierTrainer *gFacilityTrainers = NULL;
@@ -32,7 +31,7 @@ COMMON_DATA u16 gFrontierTempParty[MAX_FRONTIER_PARTY_SIZE] = {0};
 static void HandleFacilityTrainerBattleEnd(void)
 {
     u8 facility = gBattleScripting.specialTrainerBattleType;
-    switch (facility) 
+    switch (facility)
     {
     case FACILITY_BATTLE_TOWER:
     case FACILITY_BATTLE_DOME:
@@ -74,7 +73,7 @@ static void Task_StartBattleAfterTransition(u8 taskId)
 static void DoFacilityTrainerBattleInternal(u8 facility)
 {
     gBattleScripting.specialTrainerBattleType = facility;
-    
+
     switch (facility)
     {
     case FACILITY_BATTLE_TOWER:
@@ -91,7 +90,7 @@ static void DoFacilityTrainerBattleInternal(u8 facility)
             case FRONTIER_MODE_MULTIS:
             FillFrontierTrainersParties(FRONTIER_MULTI_PARTY_SIZE);
             gPartnerTrainerId = gSaveBlock2Ptr->frontier.trainerIds[17];
-            FillPartnerParty(gPartnerTrainerId);
+            FillPartnerParty(gPartnerTrainerId,PARTY_SIZE/2);
             gBattleTypeFlags |= BATTLE_TYPE_DOUBLE | BATTLE_TYPE_INGAME_PARTNER | BATTLE_TYPE_MULTI | BATTLE_TYPE_TWO_OPPONENTS;
             break;
         case FRONTIER_MODE_LINK_MULTIS:
@@ -199,7 +198,7 @@ void FillFrontierTrainersParties(u8 monsCount)
     FillTrainerParty(TRAINER_BATTLE_PARAM.opponentB, 3, monsCount);
 }
 
-static void FillTrainerParty(u16 trainerId, u8 firstMonId, u8 monCount)
+void FillTrainerParty(u16 trainerId, u8 firstMonId, u8 monCount)
 {
     s32 i, j;
     u16 chosenMonIndices[MAX_FRONTIER_PARTY_SIZE];

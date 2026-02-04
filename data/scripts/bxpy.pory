@@ -1,54 +1,71 @@
 script DebugBXPY
 {
-    givemon(SPECIES_BULBASAUR,0,0)
-    givemon(SPECIES_PIKACHU,0,0)
-    givemon(SPECIES_CHARIZARD,0,0)
-    givemon(SPECIES_BULBASAUR,0,0)
-    givemon(SPECIES_BULBASAUR,0,0)
-    givemon(SPECIES_BULBASAUR,0,0)
-    bringxpicky(0,6,4,TRAINER_WALLACE,,format("yes"))
+    setflag(FLAG_BADGE01_GET)
+    setflag(FLAG_BADGE02_GET)
+    setflag(FLAG_BADGE03_GET)
+    setflag(FLAG_BADGE04_GET)
+    setflag(FLAG_BADGE05_GET)
+    setflag(FLAG_BADGE06_GET)
+    setflag(FLAG_BADGE07_GET)
+    setflag(FLAG_BADGE08_GET)
+    givemon(SPECIES_EXEGGUTOR,100,1)
+    givemon(SPECIES_CLEFABLE,100,2)
+    givemon(SPECIES_SLOWBRO,100,3)
+    givemon(SPECIES_ELECTIVIRE,100,4)
+    givemon(SPECIES_NINETALES,100,5)
+    givemon(SPECIES_PINSIR,100,ITEM_PINSIRITE)
+    setflag(FLAG_SYS_POKEMON_GET)
+    bringxpicky(0,6,3,TRAINER_WALLACE,format("yes"),TRAINER_STEVEN,format("yes"))
 }
 
 script BXPY_Script_CheckErrors
 {
-    callnative(BXPY_OverworldRun_ErrorCheck_BringSizeTooLarge)
-    if (var(VAR_RESULT))
-    {
-        msgbox(format("You have too many Pokemon in your party. You cannot have more than {STR_VAR_1}."),MSGBOX_AUTOCLOSE)
-        closemessage
-    }
+    setvar(VAR_TEMP_0,0)
+
+        callnative(BXPY_OverworldRun_ErrorCheck_BringSizeTooLarge)
+        if (var(VAR_RESULT))
+        {
+            addvar(VAR_TEMP_0,1)
+                msgbox(format("You have too many Pokemon in your party. You cannot have more than {STR_VAR_1}."),MSGBOX_AUTOCLOSE)
+                closemessage
+        }
 
     callnative(BXPY_OverworldRun_ErrorCheck_BringSizeNotEnough)
-    if (var(VAR_RESULT))
-    {
-        msgbox(format("You must have {STR_VAR_1} healthy Pokemon in your party to battle!"),MSGBOX_AUTOCLOSE)
-        closemessage
-    }
+        if (var(VAR_RESULT))
+        {
+            addvar(VAR_TEMP_0,1)
+                msgbox(format("You must have {STR_VAR_1} healthy Pokemon in your party to battle!"),MSGBOX_AUTOCLOSE)
+                closemessage
+        }
 
     callnative(BXPY_OverworldRun_ErrorCheck_ClauseSpecies)
-    if (var(VAR_RESULT))
-    {
-        msgbox(format("All of the Pokemon in your party must be of unique species. \l {STR_VAR_1}\lappear more than once."),MSGBOX_AUTOCLOSE)
-        closemessage
-    }
+        if (var(VAR_RESULT))
+        {
+            addvar(VAR_TEMP_0,1)
+                msgbox(format("All of the Pokemon in your party must be of unique species. \l {STR_VAR_1}\lappear more than once."),MSGBOX_AUTOCLOSE)
+                closemessage
+        }
 
     callnative(BXPY_OverworldRun_ErrorCheck_ClauseItem)
-    if (var(VAR_RESULT))
-    {
-        msgbox(format("All of the held items in your party must be unique.\n{STR_VAR_1} appear more than once."),MSGBOX_AUTOCLOSE)
-        closemessage
-    }
+        if (var(VAR_RESULT))
+        {
+            addvar(VAR_TEMP_0,1)
+                msgbox(format("All of the held items in your party must be unique. \l {STR_VAR_1}\lappear more than once."),MSGBOX_AUTOCLOSE)
+                closemessage
+        }
 
     callnative(BXPY_OverworldRun_ErrorCheck_ClauseUbers)
-    if (var(VAR_RESULT))
+        if (var(VAR_RESULT))
+        {
+            addvar(VAR_TEMP_0,1)
+                msgbox(format("Some Pokemon are restricted from entering. You cannot bring\l {STR_VAR_1}."),MSGBOX_AUTOCLOSE)
+                closemessage
+        }
+
+    if (var(VAR_TEMP_0) > 0)
     {
-        msgbox(format("Some Pokemon are restricted from entering. You cannot bring\n{STR_VAR_1}."),MSGBOX_AUTOCLOSE)
-        closemessage
+    release
+    end
     }
 
-    if (var(VAR_RESULT))
-    {
-        release
-        end
-    }
 }

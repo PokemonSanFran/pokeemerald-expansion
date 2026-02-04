@@ -1417,11 +1417,18 @@ static void SaveChangesToPlayerParty(void)
 
 static void HandleBattleVariantEndParty(void)
 {
-    if (B_FLAG_SKY_BATTLE == 0 || !FlagGet(B_FLAG_SKY_BATTLE))
+    DebugPrintf("HandleBattleVariantEndParty");
+    bool32 isSkyBattle = (B_FLAG_SKY_BATTLE != 0 && FlagGet(B_FLAG_SKY_BATTLE));
+    bool32 isBXPY = FlagGet(B_FLAG_BXPY);
+
+    if (!isSkyBattle && !isBXPY)
         return;
+
+    DebugPrintf("test");
     SaveChangesToPlayerParty();
     LoadPlayerParty();
     FlagClear(B_FLAG_SKY_BATTLE);
+    FlagClear(B_FLAG_BXPY);
 }
 
 static void CB2_EndTrainerBattle(void)
@@ -2127,3 +2134,11 @@ void SetMultiTrainerBattle(struct ScriptContext *ctx)
     gPartnerTrainerId = TRAINER_PARTNER(ScriptReadHalfword(ctx));
 };
 
+void BattleSetup_StartBXPYBattle(u32 battleFlags)
+{
+    FlagSet(B_FLAG_BXPY);
+    gBattleTypeFlags = battleFlags;
+    gMain.savedCallback = CB2_EndTrainerBattle;
+    DoTrainerBattle();
+    ScriptContext_Stop();
+}
