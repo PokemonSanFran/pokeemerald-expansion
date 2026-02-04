@@ -2861,26 +2861,35 @@
 	@ to battle against a trainer(s) that will also pick the same number of Pokemon to battle.
 	@ This mimics Battle Stadium behavior in official titles (Scarlet/Violet, Sword/Shield, etc.)
 	@ which is also used for tournament settings like VGC.
-	.macro bringxpicky battleType:req, bringSize:req, pickSize:req, trainer_a: req, lose_text_a:req, trainer_b = TRAINER_NONE, lose_text_b=NULL, partnerId=PARTNER_NONE
+	.macro bringxpicky battleType:req, bringSize:req, pickSize:req, trainer_a: req, lose_text_a:req, trainer_b = 0xFFFF, lose_text_b=NULL, partnerId=PARTNER_NONE
+	.if \battleType > BXPY_BATTLE_DOUBLE
+		.error "bringxpicky battleType (\battleType) must be either BXPY_BATTLE_SINGLE (\BXPY_BATTLE_SINGLE) or BXPY_BATTLE_DOUBLE (\BXPY_BATTLE_DOUBLE)"
+	.endif
+	.if \bringSize > PARTY_SIZE
+		.error "bringxbringy bringSize (\bringSize) is greater than \PARTY_SIZE"
+	.endif
 	.if \bringSize < \pickSize
 		.error "bringxpicky bringSize (\bringSize) is less than pickSize (\pickSize)"
 	.endif
 	.if \pickSize < 1
-		.error "bringxpicky BXPY pickSize (\pickSize) is less than 1"
+		.error "bringxpicky pickSize (\pickSize) is less than 1"
 	.endif
 	.if \pickSize > PARTY_SIZE
-		.error "bringxpicky BXPY pickSize (\pickSize) is greater than \partySize"
+		.error "bringxpicky pickSize (\pickSize) is greater than \PARTY_SIZE"
 	.endif
-	.if \trainer_a == TRAINER_NONE
-		.error "bringxpicky BXPY trainer_a (\trainer_a) must be a valid trainer Id"
+	.if \trainer_a == TRAINER_NONE || \trainer_a > TRAINERS_COUNT
+		.error "bringxpicky trainer_a (\trainer_a) must be a valid trainer Id"
 	.endif
-	.if \trainer_a > TRAINERS_COUNT
-		.error "bringxpicky BXPY trainer_a (\trainer_a) must be a valid trainer Id"
+	.if \trainer_b == TRAINER_NONE
+		.error "bringxpicky trainer_b (\trainer_b) must be a valid trainer Id"
 	.endif
+	.if \trainer_b != 0xFFFF && \lose_text_b == NULL
+		.error "bringxpicky trainer_b must have valid lose text"
+	.endif
+	callnative BXPY_TryHealBeforeBattle
 	setvar VAR_BXPY_PICK_SIZE, \pickSize
 	setvar VAR_BXPY_BRING_SIZE, \bringSize
 	setvar VAR_BXPY_PARTNER, \partnerId
-	callnative BXPY_TryHealBeforeBattle
 	call BXPY_Script_CheckErrors
 	callnative ScrCmd_bringxpicky, requests_effects=1
 	.2byte \battleType
@@ -2891,5 +2900,6 @@
 	.2byte \trainer_b
 	.4byte \lose_text_b
 	.2byte \partnerId
+    waitstate
 	.endm
 	@ End bxpy
