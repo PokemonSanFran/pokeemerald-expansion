@@ -2862,7 +2862,7 @@
 	@ This mimics Battle Stadium behavior in official titles (Scarlet/Violet, Sword/Shield, etc.)
 	@ which is also used for tournament settings like VGC.
 	.macro bringxpicky battleType:req, bringSize:req, pickSize:req, trainer_a: req, lose_text_a:req, trainer_b = TRAINER_NONE, lose_text_b=NULL, partnerId=PARTNER_NONE
-	.if B_FLAG_BXPY == 0 && B_FLAG_BXPY > FLAGS_COUNT
+	.if B_FLAG_BXPY == 0 || B_FLAG_BXPY > FLAGS_COUNT
 		.error "bringxpicky B_FLAG_BXPY must be assigned to a flag for the feature to function"
 	.endif
 	.if \battleType > BXPY_BATTLE_DOUBLE
