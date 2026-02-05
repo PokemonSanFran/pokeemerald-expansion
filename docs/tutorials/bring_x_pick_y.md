@@ -1,9 +1,11 @@
 ![Bring X Pick Y Header](https://github.com/PokemonSanFran/pokeemerald/assets/77138753/47e08072-3d73-4efc-9a15-5f401031018f)
-// BXPY TODO add new header
+
+<!-- BXPY TODO add new header -->
 
 # Introduction
 <img alt="Demo of Bring X Pick Y functionality" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/4b718bb8-497c-49e2-a96e-c46fbb10be52" width=480 height=320>
-// BXPY TODO add new gif once all functionality is done
+
+<!-- BXPY TODO add new gif once all functionality is done -->
 
 This branch allows developers to add a new user interface and battle mode to their `pokeemerald-expansion` decompilation projects. 
 
@@ -47,7 +49,8 @@ Dictates if the battle is a Single (`BXPY_BATTLE_SINGLE`) or Double Battle (`BXP
 | `6` | `4` |
 | --- | --- |
 | <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> | <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> | 
-// BXPY TODO show team preview bringing in X mons
+
+<!-- BXPY TODO show team preview bringing in X mons -->
 
 Required argument.
 
@@ -62,7 +65,8 @@ Dictates how many Pokemon each side brings before Team Preview begins.
 | `4` | `3` |
 | --- | --- |
 | <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> | <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> | 
-// BXPY TODO show team preview only asking for X mons
+
+<!-- BXPY TODO show team preview only asking for X mons -->
 
 Required argument.
 
@@ -77,7 +81,8 @@ Dictates how many Pokemon each side pick for battle.
 | `TRAINER_GABRIELLE_1` | `TRAINER_WALLACE` |
 | --- | --- |
 | <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> | <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> | 
-// BXPY TODO show leaving team preview and starting a battle with this trainer
+
+<!-- BXPY TODO show leaving team preview and starting a battle with this trainer -->
 
 Required argument.
 
@@ -88,7 +93,8 @@ Dictates what trainer is battled against.
 
 ## `lose_text_a`
 <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> 
-// BXPY TODO show defeating a trainer and showing lose text
+
+<!-- BXPY TODO show defeating a trainer and showing lose text -->
 
 Required argument.
 
@@ -98,7 +104,8 @@ Dictates what `trainer_a` will say when they are defeated.
 | `TRAINER_COLTON` | `TRAINER_RONALD` |
 | --- | --- |
 | <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> | <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> | 
-// BXPY TODO show leaving team preview and starting a battle with these trainers
+
+<!-- BXPY TODO show leaving team preview and starting a battle with these trainers -->
 
 Optional argument. Defaults to `TRAINER_NONE` when not defined.
 
@@ -110,7 +117,8 @@ Dictates what second trainer is battled against.
 
 ## `lose_text_b`
 <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> 
-// BXPY TODO show defeating a trainer and showing lose text for both trainers
+
+<!-- BXPY TODO show defeating a trainer and showing lose text for both trainers -->
 
 Optional argument. Defaults to `NULL` when not defined.
 
@@ -118,7 +126,8 @@ Dictates what `trainer_b` will say when they are defeated.
 
 ## `partnerId`
 <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> 
-// BXPY TODO show gif of leaving team preview and starting a battle with that partner
+
+<!-- BXPY TODO show gif of leaving team preview and starting a battle with that partner -->
 
 Optional argument. Defaults to `PARTNER_NONE` when not defined.
 
@@ -135,13 +144,15 @@ This can be turned off when `BXPY_HEAL` is not set to `BXPY_HEAL_BEFORE_BATTLE` 
 
 ## `BXPY_ERROR_BRING_SIZE_TOO_LARGE`
 <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> 
-// BXPY TODO show player's party then running the macro and seeing this error message
+
+<!-- BXPY TODO show player's party then running the macro and seeing this error message -->
 
 If the Player's party has more alive Pokemon than `bringSize`, the Player is given a warning via the overworld. The script stops and does not proceed to Team Preview.
 
 ## `BXPY_ERROR_BRING_SIZE_NOT_ENOUGH`
 <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> 
-// BXPY TODO show player's party then running the macro and seeing this error message
+
+<!-- BXPY TODO show player's party then running the macro and seeing this error message -->
 
 If the Player's party has less alive Pokemon than `bringSize`, the Player is given a warning via the overworld. The script stops and does not proceed to Team Preview. 
 
@@ -149,7 +160,8 @@ This can be turned off via `BXPY_FORCE_MINIMUM_MONS`, and this config is `TRUE` 
 
 ## `BXPY_ERROR_CLAUSE_SPECIES`
 <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> 
-// BXPY TODO show player's party then running the macro and seeing this error message
+
+<!-- BXPY TODO show player's party then running the macro and seeing this error message -->
 
 If the Player's party has multiple Pokemon that are the same species, the Player is given a warning via the overworld. The script stops and does not proceed to Team Preview. 
 
@@ -157,7 +169,8 @@ This can be turned off via `BXPY_CLAUSE_SPECIES`, and this config is `TRUE` by d
 
 ## `BXPY_ERROR_CLAUSE_ITEM`
 <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> 
-// BXPY TODO show player's party then running the macro and seeing this error message
+
+<!-- BXPY TODO show player's party then running the macro and seeing this error message -->
 
 If the Player's party has multiple Pokemon that are the holding the same item, the Player is given a warning via the overworld. The script stops and does not proceed to Team Preview. 
 
@@ -165,7 +178,8 @@ This can be turned off via `BXPY_CLAUSE_ITEMS`, and this config is `TRUE` by def
 
 ## `BXPY_ERROR_CLAUSE_SPECIAL_POKEMON`
 <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> 
-// BXPY TODO show player's party then running the macro and seeing this error message
+
+<!-- BXPY TODO show player's party then running the macro and seeing this error message -->
 
 If the Player's party has any Pokemon that are [Restricted](https://bulbapedia.bulbagarden.net/wiki/Special_Pok%C3%A9mon), the Player is given a warning via the overworld. The script stops and does not proceed to Team Preview.
 
@@ -184,11 +198,6 @@ Once the Player chooses Y Pokemon to battle with, Team Preview closes.
 All of the AI battlers (possibily both Trainers and the Player's partner) will then look at the opposing side's Pokemon and choose Y Pokemon to bring to battle.
 
 The following is run for each of the battler's Pokemon against all of the Pokemon on the opposing side. With the maximum number of battlers and party sizes (3, 6), this will take 74 frames, or 1.2333333 seconds. This scales exponentially with the number of battlers and Pokemon.
-
-#define DEFENSIVE_MATCHUP_POINTS    2
-#define OFFENSIVE_MATCHUP_POINTS    2
-#define OUTSPEED_MATCHUP_POINTS     1
-#define CAN_1V1_MATCHUP_POINTS      5
 
 1. If the AI's Pokemon A can defeat the enemy Pokemon Z, Pokemon A receieves `CAN_1V1_MATCHUP_POINTS` (`5`) points. This check does not run if `BXPY_OPEN_TEAM_SHEET_SHOW_PLAYER_STATS` or `BXPY_OPEN_TEAM_SHEET_SHOW_PLAYER_LEVEL` is `FALSE`.
 2. If the AI's Pokemon A has a strong defensive matchup against enemy Pokemon Z, Pokemon A recieves `DEFENSIVE_MATCHUP_POINTS` (`2`) points.
@@ -209,7 +218,8 @@ The following occurs regardless of the result of the battle.
 | `TRUE` | `FALSE` |
 | --- | --- |
 | <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> | <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> | 
-// BXPY TODO show party, score a KO, evolve after battle, then show the restored party with same damage and evolution
+
+<!-- BXPY TODO show party, score a KO, evolve after battle, then show the restored party with same damage and evolution -->
 
 The Player's original party prior to starting bringXpickY is restored.
 
@@ -219,7 +229,8 @@ Any changes that occured to the participating Pokemon is retained. This includes
 | `TRUE` | `FALSE` |
 | --- | --- |
 | <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> | <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> | 
-// BXPY TODO electrode self destructs in battle, show party after battle
+
+<!-- BXPY TODO electrode self destructs in battle, show party after battle -->
 
 The Player's party is healed after battle. This can be turned off when `BXPY_HEAL` is not set to `BXPY_HEAL_AFTER_BATTLE` OR `BXPY_HEAL_ALWAYS`.
 
@@ -241,14 +252,14 @@ git pull linathanzel-expansion bringXpickY # This pulls in the bringXpickY featu
 ## Manual merge
 If your project is:
 * Too far behind `pokeemerald-expansion`
-* Using a different base (pokeemerald or pokefirered)
+* Using a different base (`pokeemerald` or `pokefirered`)
 * Some other reason that I can't think of
 
-You can manually implement the features using [the diff between this branch and vanilla pokeemerald](https://github.com/LinathanZel/pokeemerald-expansion/compare/bringXpickY/) as a guide. You will need to manually edit or create each of these files in your project to properly recreate the feature.
+You can manually implement the features using [the diff between this branch and pokeemerald-expansion](https://github.com/rh-hideout/pokeemerald-expansion/compare/upcoming...LinathanZel:pokeemerald-expansion:bringXpickY) as a guide. You will need to manually edit or create each of these files in your project to properly recreate the feature.
 
 # Warnings
 ## Saveblock space
-The Battle Arcade requires 1 flag, and optionally consumes 1 variable. 
+Bring X Pick Y requires 1 flag, and optionally consumes 1 variable. 
 
 * `B_FLAG_BXPY` is set directly before a battle from this feature starts. When this flag is not set, the game will:
     - not attempt to restore the experience / HP / PP changes that happened to pariticpating Pokemon.
