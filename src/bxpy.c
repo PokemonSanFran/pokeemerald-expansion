@@ -23,7 +23,7 @@ static void BXPY_FormatProblemListList(u32 *ids, u32 count, const u8 *(*getName)
 static u32 BXPY_GetUniqueDuplicates(u32 *inputList, u32 inputCount, u32 *uniqueDuplicates);
 static void BXPY_ErrorCheck_ClauseSpecies(void);
 static void BXPY_ErrorCheck_ClauseItem(void);
-static void BXPY_ErrorCheck_ClauseUbers(void);
+static void BXPY_ErrorCheck_ClauseSpecialPokemon(void);
 static void Debug_BXPY_PrintArguments(enum BXPYBattleTypes battleType, u32 bringSize, u32 pickSize, u32 trainerA, const u8 *loseTextA, u32 trainerB, const u8* loseTextB, u32 partnerId);
 static void BXPY_InitTrainerBattleParams(u32 trainerA, const u8 *loseTextA, u32 trainerB, const u8* loseTextB, u32 partnerId);
 static void BXPY_PrepareEnemyParty(u32 bringSize, u32 battleFlags);
@@ -41,8 +41,10 @@ static void (*const sBXPYErrorCheckFuncs[])(void) =
     [BXPY_ERROR_BRING_SIZE_NOT_ENOUGH] = BXPY_ErrorCheck_BringSizeNotEnough,
     [BXPY_ERROR_CLAUSE_SPECIES] = BXPY_ErrorCheck_ClauseSpecies,
     [BXPY_ERROR_CLAUSE_ITEM] = BXPY_ErrorCheck_ClauseItem,
-    [BXPY_ERROR_CLAUSE_UBERS] = BXPY_ErrorCheck_ClauseUbers,
+    [BXPY_ERROR_CLAUSE_SPECIAL_POKEMON] = BXPY_ErrorCheck_ClauseSpecialPokemon,
 };
+
+STATIC_ASSERT(B_VAR_BXPY != 0 || BXPY_RETAIN_CHANGES == FALSE, BVarSkyBattleMustBeSetForBXPYToRun);
 
 void BXPY_OverworldRun_ErrorCheck_BringSizeTooLarge(void)
 {
@@ -64,9 +66,9 @@ void BXPY_OverworldRun_ErrorCheck_ClauseItem(void)
     sBXPYErrorCheckFuncs[BXPY_ERROR_CLAUSE_ITEM]();
 }
 
-void BXPY_OverworldRun_ErrorCheck_ClauseUbers(void)
+void BXPY_OverworldRun_ErrorCheck_ClauseSpecialPokemon(void)
 {
-    sBXPYErrorCheckFuncs[BXPY_ERROR_CLAUSE_UBERS]();
+    sBXPYErrorCheckFuncs[BXPY_ERROR_CLAUSE_SPECIAL_POKEMON]();
 }
 
 static enum BXPYHealModes BXPY_GetHealMode(void)
@@ -236,10 +238,10 @@ static void BXPY_ErrorCheck_ClauseItem(void)
     BXPY_FormatProblemListList(uniqueDuplicates, duplicateCount, GetItemName);
 }
 
-static void BXPY_ErrorCheck_ClauseUbers(void)
+static void BXPY_ErrorCheck_ClauseSpecialPokemon(void)
 {
     gSpecialVar_Result = FALSE;
-    if (BXPY_CLAUSE_UBERS == FALSE)
+    if (BXPY_CLAUSE_SPECIAL_POKEMON == FALSE)
         return;
 
     u32 bannedMons[PARTY_SIZE];
@@ -273,7 +275,6 @@ static void BXPY_ErrorCheck_ClauseUbers(void)
 
 static void Debug_BXPY_PrintArguments(enum BXPYBattleTypes battleType, u32 bringSize, u32 pickSize, u32 trainerA, const u8 *loseTextA, u32 trainerB, const u8* loseTextB, u32 partnerId)
 {
-    return;
     DebugPrintf("battleType %d",battleType);
     DebugPrintf("bringSize %d",bringSize);
     DebugPrintf("pickSize %d",pickSize);
@@ -316,7 +317,7 @@ static void BXPY_InitTrainerBattleParams(u32 trainerA, const u8 *loseTextA, u32 
     if (partnerId != PARTNER_NONE)
         gPartnerTrainerId = TRAINER_PARTNER(partnerId);
 
-    if (trainerB == 0xFFFF)
+    if (trainerB == TRAINER_NONE)
         return;
 
     TRAINER_BATTLE_PARAM.opponentB = trainerB;
@@ -328,7 +329,7 @@ static void BXPY_PrepareEnemyParty(u32 bringSize, u32 battleFlags)
     ZeroEnemyPartyMons();
     CreateNPCTrainerPartyFromTrainer(&gEnemyParty[0], &gTrainers[GetCurrentDifficultyLevel()][TRAINER_BATTLE_PARAM.opponentA], TRUE, battleFlags);
 
-    if (TRAINER_BATTLE_PARAM.opponentB == 0xFFFF)
+    if (TRAINER_BATTLE_PARAM.opponentB == TRAINER_NONE)
         return;
 
     CreateNPCTrainerPartyFromTrainer(&gEnemyParty[PARTY_SIZE/2], &gTrainers[GetCurrentDifficultyLevel()][TRAINER_BATTLE_PARAM.opponentB], FALSE, battleFlags);
@@ -410,7 +411,7 @@ static void BXPY_SelectPartyMembers(struct Pokemon *party, u32* enteredMons)
 
 static enum BXPYBattleTypes BXPY_UpdateBattleType(enum BXPYBattleTypes battleType)
 {
-    bool32 hasSecondEnemy = (TRAINER_BATTLE_PARAM.opponentB != 0xFFFF);
+    bool32 hasSecondEnemy = (TRAINER_BATTLE_PARAM.opponentB != TRAINER_NONE);
     bool32 hasPartner = (gPartnerTrainerId != PARTNER_NONE);
 
     if (hasSecondEnemy && hasPartner)
