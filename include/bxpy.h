@@ -16,7 +16,7 @@ void BXPY_TryHealBeforeBattle(void);
 bool8 BXPY_ShouldHideEnemyAbility(enum PokemonSummaryScreenMode mode);
 bool8 BXPY_ShouldHideEnemyNature(enum PokemonSummaryScreenMode mode);
 bool8 BXPY_ShouldHideEnemyIndividualValues(enum PokemonSummaryScreenMode mode);
-bool8 BXPY_ShouldHideEnemyEffortValues(enum PokemonSummaryScreenMode mode);
+bool8 BXPY_ShouldHideEnemyEffortValues(enum PokemonSummaryScreenMode mode, enum PokemonSummarySkillsMode stats);
 bool8 BXPY_ShouldHideEnemyTeraType(enum PokemonSummaryScreenMode mode);
 bool8 BXPY_ShouldHideEnemyMoves(enum PokemonSummaryScreenMode mode);
 enum BXPYTeamPreviewItemModes BXPY_GetEnemyItemVisibilityLevel(void);

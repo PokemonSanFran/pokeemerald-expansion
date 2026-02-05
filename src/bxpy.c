@@ -481,9 +481,12 @@ bool8 BXPY_ShouldHideEnemyIndividualValues(enum PokemonSummaryScreenMode mode)
     return TRUE;
 }
 
-bool8 BXPY_ShouldHideEnemyEffortValues(enum PokemonSummaryScreenMode mode)
+bool8 BXPY_ShouldHideEnemyEffortValues(enum PokemonSummaryScreenMode mode, enum PokemonSummarySkillsMode stats)
 {
     if (BXPY_IsSummaryScreenForEnemy(mode) == FALSE)
+        return FALSE;
+
+    if (stats != SUMMARY_SKILLS_MODE_EVS)
         return FALSE;
 
     if (BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_STAT_EV == TRUE)

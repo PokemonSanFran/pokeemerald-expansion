@@ -3974,6 +3974,10 @@ static void BufferStat(u8 *dst, enum Stat statIndex, u32 stat, u32 strId, u32 n)
     if (!P_SUMMARY_SCREEN_IV_EV_VALUES
         && sMonSummaryScreen->skillsPageMode == SUMMARY_SKILLS_MODE_IVS)
         StringAppend(dst, GetLetterGrade(stat));
+    // Start bringXpickY
+    else if (BXPY_ShouldHideEnemyEffortValues(sMonSummaryScreen->mode, sMonSummaryScreen->skillsPageMode))
+        StringAppend(dst, COMPOUND_STRING("?"));
+    // End bringXpickY
     else
         ConvertIntToDecimalStringN(txtPtr, stat, STR_CONV_MODE_RIGHT_ALIGN, n);
 
