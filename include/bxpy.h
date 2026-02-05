@@ -15,8 +15,8 @@ void BXPY_TryHealBeforeBattle(void);
 
 bool8 BXPY_ShouldHideEnemyAbility(enum PokemonSummaryScreenMode mode);
 bool8 BXPY_ShouldHideEnemyNature(enum PokemonSummaryScreenMode mode);
-bool8 BXPY_ShouldHideEnemyIndividualValues(enum PokemonSummaryScreenMode mode);
 bool8 BXPY_ShouldHideEnemyEffortValues(enum PokemonSummaryScreenMode mode, enum PokemonSummarySkillsMode stats);
+bool8 BXPY_ShouldHideEnemyIndividualValues(enum PokemonSummaryScreenMode mode, enum PokemonSummarySkillsMode stats);
 bool8 BXPY_ShouldHideEnemyTeraType(enum PokemonSummaryScreenMode mode);
 bool8 BXPY_ShouldHideEnemyMoves(enum PokemonSummaryScreenMode mode);
 enum BXPYTeamPreviewItemModes BXPY_GetEnemyItemVisibilityLevel(void);
@@ -26,5 +26,6 @@ enum BXPYTeamPreviewSpeciesModes BXPY_GetEnemySpeciesVisibilityLevel(void);
 enum BXPYTeamPreviewSpeciesModes BXPY_SummaryScreen_SpeciesVisibility(enum PokemonSummaryScreenMode mode);
 bool8 BXPY_TeamPreview_ShouldHideEnemyGender(void);
 bool8 BXPY_SummaryScreen_ShouldHideEnemyGender(enum PokemonSummaryScreenMode mode);
+enum Type BXPY_GetNewType(enum PokemonSummaryScreenMode mode, enum Type originalTypeId, u8 spriteArrayId, u32 species, enum PokemonSummaryScreenPage page);
 
 #endif // GUARD_BXPY_H

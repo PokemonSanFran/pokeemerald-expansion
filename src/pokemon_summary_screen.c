@@ -104,6 +104,8 @@
 #define PSS_DATA_WINDOW_MOVE_PP 1
 #define PSS_DATA_WINDOW_MOVE_DESCRIPTION 2
 
+// Start bringXpickY
+/*
 #define MOVE_SELECTOR_SPRITES_COUNT 10
 #define TYPE_ICON_SPRITE_COUNT (MAX_MON_MOVES + 1)
 // for the spriteIds field in PokemonSummaryScreenData
@@ -117,6 +119,8 @@ enum
     SPRITE_ARR_ID_MOVE_SELECTOR2 = SPRITE_ARR_ID_MOVE_SELECTOR1 + MOVE_SELECTOR_SPRITES_COUNT,
     SPRITE_ARR_ID_COUNT = SPRITE_ARR_ID_MOVE_SELECTOR2 + MOVE_SELECTOR_SPRITES_COUNT
 };
+*/
+// End bringXpickY
 
 #define TILE_EMPTY_APPEAL_HEART  0x1039
 #define TILE_FILLED_APPEAL_HEART 0x103A
@@ -1169,6 +1173,11 @@ static const u16 sMarkings_Pal[] = INCBIN_U16("graphics/summary_screen/markings.
 // code
 static u8 ShowCategoryIcon(enum DamageCategory category)
 {
+    // Start bringXpickY
+    if (BXPY_ShouldHideEnemyMoves(sMonSummaryScreen->mode))
+        return SPRITE_NONE;
+    // End bringXpickY
+
     if (sMonSummaryScreen->categoryIconSpriteId == 0xFF)
         sMonSummaryScreen->categoryIconSpriteId = CreateSprite(&gSpriteTemplate_CategoryIcons, 48, 128, 0);
 
@@ -3972,10 +3981,20 @@ static void BufferStat(u8 *dst, enum Stat statIndex, u32 stat, u32 strId, u32 n)
         txtPtr = StringCopy(dst, sTextNatureNeutral);
 
     if (!P_SUMMARY_SCREEN_IV_EV_VALUES
+    // Start bringXpickY
+        && (BXPY_ShouldHideEnemyIndividualValues(sMonSummaryScreen->mode, sMonSummaryScreen->skillsPageMode)))
+        StringAppend(dst, COMPOUND_STRING("?"));
+    else if (!P_SUMMARY_SCREEN_IV_EV_VALUES
+    // End bringXpickY
         && sMonSummaryScreen->skillsPageMode == SUMMARY_SKILLS_MODE_IVS)
         StringAppend(dst, GetLetterGrade(stat));
     // Start bringXpickY
+    else if (!P_SUMMARY_SCREEN_IV_EV_VALUES
+        && sMonSummaryScreen->skillsPageMode == SUMMARY_SKILLS_MODE_IVS)
+        StringAppend(dst, GetLetterGrade(stat));
     else if (BXPY_ShouldHideEnemyEffortValues(sMonSummaryScreen->mode, sMonSummaryScreen->skillsPageMode))
+        StringAppend(dst, COMPOUND_STRING("?"));
+    else if (BXPY_ShouldHideEnemyIndividualValues(sMonSummaryScreen->mode, sMonSummaryScreen->skillsPageMode))
         StringAppend(dst, COMPOUND_STRING("?"));
     // End bringXpickY
     else
@@ -4183,9 +4202,24 @@ static void PrintMoveNameAndPP(u8 moveIndex)
     if (move != 0)
     {
         pp = CalculatePPWithBonus(move, summary->ppBonuses, moveIndex);
-        PrintTextOnWindowToFit(moveNameWindowId, GetMoveName(move), 0, moveIndex * 16 + 1, 0, 1);
-        ConvertIntToDecimalStringN(gStringVar1, summary->pp[moveIndex], STR_CONV_MODE_RIGHT_ALIGN, 2);
-        ConvertIntToDecimalStringN(gStringVar2, pp, STR_CONV_MODE_RIGHT_ALIGN, 2);
+        // Start bringXpickY
+        if (BXPY_ShouldHideEnemyMoves(sMonSummaryScreen->mode))
+            PrintTextOnWindowToFit(moveNameWindowId, COMPOUND_STRING("???"), 0, moveIndex * 16 + 1, 0, 1);
+        else
+        // End bringXpickY
+            PrintTextOnWindowToFit(moveNameWindowId, GetMoveName(move), 0, moveIndex * 16 + 1, 0, 1);
+        // Start bringXpickY
+        if (BXPY_ShouldHideEnemyMoves(sMonSummaryScreen->mode))
+        {
+            StringCopy(gStringVar1,COMPOUND_STRING("?"));
+            StringCopy(gStringVar2,COMPOUND_STRING("?"));
+        }
+        else
+        {
+        // End bringXpickY
+            ConvertIntToDecimalStringN(gStringVar1, summary->pp[moveIndex], STR_CONV_MODE_RIGHT_ALIGN, 2);
+            ConvertIntToDecimalStringN(gStringVar2, pp, STR_CONV_MODE_RIGHT_ALIGN, 2);
+        } // bringXpickY
         DynamicPlaceholderTextUtil_Reset();
         DynamicPlaceholderTextUtil_SetPlaceholderPtr(0, gStringVar1);
         DynamicPlaceholderTextUtil_SetPlaceholderPtr(1, gStringVar2);
@@ -4223,7 +4257,12 @@ static void PrintMovePowerAndAccuracy(enum Move moveIndex)
             text = gStringVar1;
         }
 
-        PrintTextOnWindow(PSS_LABEL_WINDOW_MOVES_POWER_ACC, text, 53, 1, 0, 0);
+        // Start bringXpickY
+        if (BXPY_ShouldHideEnemyMoves(sMonSummaryScreen->mode))
+            PrintTextOnWindow(PSS_LABEL_WINDOW_MOVES_POWER_ACC, COMPOUND_STRING("?"), 53, 1, 0, 0);
+        else
+        // End bringXpickY
+            PrintTextOnWindow(PSS_LABEL_WINDOW_MOVES_POWER_ACC, text, 53, 1, 0, 0);
 
         u32 accuracy = GetMoveAccuracy(moveIndex);
         if (accuracy == 0)
@@ -4236,7 +4275,12 @@ static void PrintMovePowerAndAccuracy(enum Move moveIndex)
             text = gStringVar1;
         }
 
-        PrintTextOnWindow(PSS_LABEL_WINDOW_MOVES_POWER_ACC, text, 53, 17, 0, 0);
+        // Start bringXpickY
+        if (BXPY_ShouldHideEnemyMoves(sMonSummaryScreen->mode))
+            PrintTextOnWindow(PSS_LABEL_WINDOW_MOVES_POWER_ACC, COMPOUND_STRING("?"), 57, 17, 0, 0);
+        else
+        // End bringXpickY
+            PrintTextOnWindow(PSS_LABEL_WINDOW_MOVES_POWER_ACC, text, 53, 17, 0, 0);
     }
 }
 
@@ -4317,10 +4361,20 @@ static void PrintMoveDetails(enum Move move)
             if (B_SHOW_CATEGORY_ICON == TRUE)
                 ShowCategoryIcon(GetBattleMoveCategory(move));
             PrintMovePowerAndAccuracy(move);
+        // Start bringXpickY
+        if (BXPY_ShouldHideEnemyMoves(sMonSummaryScreen->mode))
+            PrintTextOnWindow(windowId, COMPOUND_STRING("???"), 6, 1, 0, 0);
+        else
+        // End bringXpickY
             PrintTextOnWindow(windowId, GetMoveDescription(move), 6, 1, 0, 0);
         }
         else
         {
+        // Start bringXpickY
+        if (BXPY_ShouldHideEnemyMoves(sMonSummaryScreen->mode))
+            PrintTextOnWindow(windowId, COMPOUND_STRING("???"), 6, 1, 0, 0);
+        else
+        // End bringXpickY
             PrintTextOnWindow(windowId, gContestEffects[GetMoveContestEffect(move)].description, 6, 1, 0, 0);
         }
         PutWindowTilemap(windowId);
@@ -4456,6 +4510,7 @@ static void CreateMoveTypeIcons(void)
 
 void SetTypeSpritePosAndPal(enum Type typeId, u8 x, u8 y, u8 spriteArrayId)
 {
+    typeId = BXPY_GetNewType(sMonSummaryScreen->mode,typeId,spriteArrayId,sMonSummaryScreen->summary.species,sMonSummaryScreen->currPageIndex); // bringXpickY
     struct Sprite *sprite = &gSprites[sMonSummaryScreen->spriteIds[spriteArrayId]];
     StartSpriteAnim(sprite, typeId);
     if (typeId < NUMBER_OF_MON_TYPES)

@@ -470,9 +470,12 @@ bool8 BXPY_ShouldHideEnemyNature(enum PokemonSummaryScreenMode mode)
     return TRUE;
 }
 
-bool8 BXPY_ShouldHideEnemyIndividualValues(enum PokemonSummaryScreenMode mode)
+bool8 BXPY_ShouldHideEnemyIndividualValues(enum PokemonSummaryScreenMode mode, enum PokemonSummarySkillsMode stats)
 {
     if (BXPY_IsSummaryScreenForEnemy(mode) == FALSE)
+        return FALSE;
+
+    if (stats != SUMMARY_SKILLS_MODE_IVS)
         return FALSE;
 
     if (BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_STAT_IV == TRUE)
@@ -504,6 +507,51 @@ bool8 BXPY_ShouldHideEnemyTeraType(enum PokemonSummaryScreenMode mode)
         return FALSE;
 
     return TRUE;
+}
+
+enum Type BXPY_GetNewType(enum PokemonSummaryScreenMode mode, enum Type originalTypeId, u8 spriteArrayId, u32 species, enum PokemonSummaryScreenPage page)
+{
+    if (BXPY_IsSummaryScreenForEnemy(mode) == FALSE)
+        return originalTypeId;
+
+    if (spriteArrayId == SUMMARY_SCREEN_SPRITE_ID_TYPE_TERA && page == PSS_PAGE_INFO)
+    {
+        if (!BXPY_ShouldHideEnemyTeraType(mode))
+            return originalTypeId;
+        else
+            return TYPE_MYSTERY;
+    }
+    else if (spriteArrayId == SUMMARY_SCREEN_SPRITE_ID_TYPE_1 && page == PSS_PAGE_INFO)
+    {
+        switch (BXPY_SummaryScreen_SpeciesVisibility(mode))
+        {
+            case BXPY_SHOW_NOTHING:
+                return originalTypeId;
+            case BXPY_SHOW_BASE_SPECIES:
+                return GET_BASE_SPECIES_ID(GetSpeciesType(species,1));
+            case BXPY_SHOW_TRUE_SPECIES:
+                return originalTypeId;
+        }
+    }
+    else if (spriteArrayId == SUMMARY_SCREEN_SPRITE_ID_TYPE_2 && page == PSS_PAGE_INFO)
+    {
+        switch (BXPY_SummaryScreen_SpeciesVisibility(mode))
+        {
+            case BXPY_SHOW_NOTHING:
+                return originalTypeId;
+            case BXPY_SHOW_BASE_SPECIES:
+                return GET_BASE_SPECIES_ID(GetSpeciesType(species,2));
+            case BXPY_SHOW_TRUE_SPECIES:
+                return originalTypeId;
+        }
+    }
+    else if ((spriteArrayId >= SUMMARY_SCREEN_SPRITE_ID_TYPE_MOVE_1 && spriteArrayId<= SUMMARY_SCREEN_SPRITE_ID_TYPE_MOVE_4) && page == PSS_PAGE_BATTLE_MOVES)
+    {
+        if (BXPY_ShouldHideEnemyMoves(mode))
+            return TYPE_MYSTERY;
+    }
+
+    return originalTypeId;
 }
 
 bool8 BXPY_ShouldHideEnemyMoves(enum PokemonSummaryScreenMode mode)

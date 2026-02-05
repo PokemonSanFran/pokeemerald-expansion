@@ -18,9 +18,9 @@
 
 #define BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_STAT_NATURE     FALSE // When FALSE, the enemy Pokemon's Nature appears as ???. Stats are not colored.
 #define BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_STAT_EV         FALSE // When FALSE, the enemy Pokemon's Effort Values appear as ?.
-#define BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_STAT_IV         FALSE // When FALSE, the enemy Pokemon's Individual Values appear as ?.
-#define BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_GIMMICK_TERA    FALSE // When FALSE, the enemy Pokemon's Tera Type appears as TYPE_MYSTERY.
-#define BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_MOVE            FALSE // When FALSE, the enemy Pokemon's Moves appear as `MOVE_NONE`.
+#define BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_STAT_IV         FALSE // When FALSE, the enemy Pokemon's Individual Values appear as ?. Respects P_SUMMARY_SCREEN_IV_EV_INFO and P_SUMMARY_SCREEN_IV_EV_VALUES
+#define BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_GIMMICK_TERA    TRUE  // When FALSE, the enemy Pokemon's Tera Type appears as TYPE_MYSTERY. Respects P_SHOW_TERA_TYPE.
+#define BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_MOVE            TRUE // When FALSE, the enemy Pokemon's Moves appear as `MOVE_NONE`.
 
 // For all BXPY_OPEN_TEAM_PREVIEW_SHOW_ENEMY_* configs, when TRUE, the Player will be able to see this specific piece of information on the Team Preview AND Enemy Summary Screen. FALSE will disable it in both places.
 
