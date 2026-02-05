@@ -3724,7 +3724,12 @@ static void PrintMonTrainerMemo(void)
 static void BufferNatureString(void)
 {
     struct PokemonSummaryScreenData *sumStruct = sMonSummaryScreen;
-    DynamicPlaceholderTextUtil_SetPlaceholderPtr(2, gNaturesInfo[sumStruct->summary.nature].name);
+    // Start bringXpickY
+    if (BXPY_ShouldHideEnemyNature(sMonSummaryScreen->mode))
+        DynamicPlaceholderTextUtil_SetPlaceholderPtr(2, COMPOUND_STRING("???"));
+    else
+    // End bringXpickY
+        DynamicPlaceholderTextUtil_SetPlaceholderPtr(2, gNaturesInfo[sumStruct->summary.nature].name);
     DynamicPlaceholderTextUtil_SetPlaceholderPtr(5, gText_EmptyString5);
 }
 
@@ -3955,6 +3960,10 @@ static void BufferStat(u8 *dst, enum Stat statIndex, u32 stat, u32 strId, u32 n)
 
     if (statIndex == 0 || !P_SUMMARY_SCREEN_NATURE_COLORS || gNaturesInfo[sMonSummaryScreen->summary.mintNature].statUp == gNaturesInfo[sMonSummaryScreen->summary.mintNature].statDown)
         txtPtr = StringCopy(dst, sTextNatureNeutral);
+    // Start bringXpickY
+    else if (BXPY_ShouldHideEnemyNature(sMonSummaryScreen->mode))
+        txtPtr = StringCopy(dst, sTextNatureNeutral);
+    // End bringXpickY
     else if (statIndex == gNaturesInfo[sMonSummaryScreen->summary.mintNature].statUp)
         txtPtr = StringCopy(dst, sTextNatureUp);
     else if (statIndex == gNaturesInfo[sMonSummaryScreen->summary.mintNature].statDown)
