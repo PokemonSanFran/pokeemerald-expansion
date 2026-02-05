@@ -9,17 +9,14 @@
 
 This branch allows developers to add a new user interface and battle mode to their `pokeemerald-expansion` decompilation projects. 
 
-In this mode, the player must have X healthy, legal, Pokemon in the party. Using information about the opponent's team, they must then pick Y Pokemon to battle with. This mimicks the behavior from the following official Pokemon titles:
-- [Pokemon Stadium (JP)](https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_Stadium_(Japanese))
-- [Pokemon Stadium](https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_Stadium)
-- [Pokemon Stadium 2](https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_Stadium_2)
-- [Battle Now (Pokemon Colosseum)](https://bulbapedia.bulbagarden.net/wiki/Battle_Now_(Colosseum))
-- [Quick Battle / Orre Colosseum (Pokemon XD: Gale of Darkness](https://bulbapedia.bulbagarden.net/wiki/Quick_Battle)
-- [Pokemon Battle Revolution](https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_Battle_Revolution)
-- [Battle Spot (X / Y / Sun / Moon / Ultra Sun / Ultra Moon)](https://bulbapedia.bulbagarden.net/wiki/Battle_Spot)
-- [Battle Stadium (Scarlet / Violet / Sword / Shield)](https://bulbapedia.bulbagarden.net/wiki/Battle_Stadium)
+In this mode, the player must have X healthy, legal, Pokemon in the party. Using information about the opponent's team, they must then pick Y Pokemon to battle with. This mimicks the behavior from several official Pokemon titles.
 
-[Battle Arcade Documentation](https://github.com/PokemonSanFran/pokeemerald/wiki/arcade_documentation)
+
+|  |  |  |
+| -------- | -------- | -------- |
+| <img alt="Pokemon Stadium (JP)" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/4b718bb8-497c-49e2-a96e-c46fbb10be52" width=480 height=320> | <img alt="Pokemon Stadium" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/4b718bb8-497c-49e2-a96e-c46fbb10be52" width=480 height=320> | <img alt="Pokemon Stadium 2" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/4b718bb8-497c-49e2-a96e-c46fbb10be52" width=480 height=320> |
+| <img alt="Pokemon Colosseum" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/4b718bb8-497c-49e2-a96e-c46fbb10be52" width=480 height=320> | <img alt="Pokemon XD: Gale of Darkness" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/4b718bb8-497c-49e2-a96e-c46fbb10be52" width=480 height=320> | <img alt="Pokemon Batle Revolution" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/4b718bb8-497c-49e2-a96e-c46fbb10be52" width=480 height=320> |
+| <img alt="X / Y / Sun / Moon / Ultra Sun / Ultra Moon" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/4b718bb8-497c-49e2-a96e-c46fbb10be52" width=480 height=320> | | <img alt="Scarlet / Violet / Sword / Shield" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/4b718bb8-497c-49e2-a96e-c46fbb10be52" width=480 height=320> |
 
 # Usage
 The functionality is run by using the macro `bringxpicky` in an overworld script. `bringxpicky` can be broken down into four seperate sections:
@@ -36,7 +33,7 @@ The overworld macro takes five required arguments and three optional arguments.
 ## `battleType`
 | `BXPY_BATTLE_SINGLE` | `BXPY_BATTLE_DOUBLE` |
 | --- | --- |
-| <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> | <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> | 
+| <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/4b718bb8-497c-49e2-a96e-c46fbb10be52" width=480 height=320> | <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/4b718bb8-497c-49e2-a96e-c46fbb10be52" width=480 height=320>| 
 
 Required argument.
 
@@ -48,7 +45,7 @@ Dictates if the battle is a Single (`BXPY_BATTLE_SINGLE`) or Double Battle (`BXP
 ## `bringSize`
 | `6` | `4` |
 | --- | --- |
-| <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> | <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> | 
+| <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/4b718bb8-497c-49e2-a96e-c46fbb10be52" width=480 height=320>| <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/4b718bb8-497c-49e2-a96e-c46fbb10be52" width=480 height=320>| 
 
 <!-- BXPY TODO show team preview bringing in X mons -->
 
@@ -64,7 +61,7 @@ Dictates how many Pokemon each side brings before Team Preview begins.
 ## `pickSize`
 | `4` | `3` |
 | --- | --- |
-| <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> | <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> | 
+| <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/4b718bb8-497c-49e2-a96e-c46fbb10be52" width=480 height=320>| <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/4b718bb8-497c-49e2-a96e-c46fbb10be52" width=480 height=320>| 
 
 <!-- BXPY TODO show team preview only asking for X mons -->
 
@@ -80,7 +77,7 @@ Dictates how many Pokemon each side pick for battle.
 ## `trainer_a`
 | `TRAINER_GABRIELLE_1` | `TRAINER_WALLACE` |
 | --- | --- |
-| <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> | <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> | 
+| <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/4b718bb8-497c-49e2-a96e-c46fbb10be52" width=480 height=320>| <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/4b718bb8-497c-49e2-a96e-c46fbb10be52" width=480 height=320>| 
 
 <!-- BXPY TODO show leaving team preview and starting a battle with this trainer -->
 
@@ -92,7 +89,7 @@ Dictates what trainer is battled against.
 - Must be a valid trainerId between `TRAINER_NONE` and `TRAINERS_COUNT`.
 
 ## `lose_text_a`
-<img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> 
+<img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/4b718bb8-497c-49e2-a96e-c46fbb10be52" width=480 height=320>
 
 <!-- BXPY TODO show defeating a trainer and showing lose text -->
 
@@ -100,10 +97,13 @@ Required argument.
 
 Dictates what `trainer_a` will say when they are defeated.
 
+### Restrictions
+- Must be a string.
+
 ## `trainer_b`
 | `TRAINER_COLTON` | `TRAINER_RONALD` |
 | --- | --- |
-| <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> | <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> | 
+| <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/4b718bb8-497c-49e2-a96e-c46fbb10be52" width=480 height=320>| <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/4b718bb8-497c-49e2-a96e-c46fbb10be52" width=480 height=320>| 
 
 <!-- BXPY TODO show leaving team preview and starting a battle with these trainers -->
 
@@ -116,16 +116,20 @@ Dictates what second trainer is battled against.
 - Must be defined if `lose_text_b` is defined.
 
 ## `lose_text_b`
-<img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> 
+<img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/4b718bb8-497c-49e2-a96e-c46fbb10be52" width=480 height=320>
 
 <!-- BXPY TODO show defeating a trainer and showing lose text for both trainers -->
 
 Optional argument. Defaults to `NULL` when not defined.
 
+### Restrictions
+- Must be a string.
+- Must be defined if `trainer_b` is defined.
+
 Dictates what `trainer_b` will say when they are defeated.
 
 ## `partnerId`
-<img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> 
+<img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/4b718bb8-497c-49e2-a96e-c46fbb10be52" width=480 height=320>
 
 <!-- BXPY TODO show gif of leaving team preview and starting a battle with that partner -->
 
@@ -143,14 +147,14 @@ The player's team will be healed before their party is checked for legality. All
 This can be turned off when `BXPY_HEAL` is not set to `BXPY_HEAL_BEFORE_BATTLE` OR `BXPY_HEAL_ALWAYS`.
 
 ## `BXPY_ERROR_BRING_SIZE_TOO_LARGE`
-<img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> 
+<img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/4b718bb8-497c-49e2-a96e-c46fbb10be52" width=480 height=320>
 
 <!-- BXPY TODO show player's party then running the macro and seeing this error message -->
 
 If the Player's party has more alive Pokemon than `bringSize`, the Player is given a warning via the overworld. The script stops and does not proceed to Team Preview.
 
 ## `BXPY_ERROR_BRING_SIZE_NOT_ENOUGH`
-<img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> 
+<img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/4b718bb8-497c-49e2-a96e-c46fbb10be52" width=480 height=320>
 
 <!-- BXPY TODO show player's party then running the macro and seeing this error message -->
 
@@ -159,7 +163,7 @@ If the Player's party has less alive Pokemon than `bringSize`, the Player is giv
 This can be turned off via `BXPY_FORCE_MINIMUM_MONS`, and this config is `TRUE` by default.
 
 ## `BXPY_ERROR_CLAUSE_SPECIES`
-<img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> 
+<img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/4b718bb8-497c-49e2-a96e-c46fbb10be52" width=480 height=320>
 
 <!-- BXPY TODO show player's party then running the macro and seeing this error message -->
 
@@ -168,7 +172,7 @@ If the Player's party has multiple Pokemon that are the same species, the Player
 This can be turned off via `BXPY_CLAUSE_SPECIES`, and this config is `TRUE` by default.
 
 ## `BXPY_ERROR_CLAUSE_ITEM`
-<img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> 
+<img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/4b718bb8-497c-49e2-a96e-c46fbb10be52" width=480 height=320>
 
 <!-- BXPY TODO show player's party then running the macro and seeing this error message -->
 
@@ -177,7 +181,7 @@ If the Player's party has multiple Pokemon that are the holding the same item, t
 This can be turned off via `BXPY_CLAUSE_ITEMS`, and this config is `TRUE` by default.
 
 ## `BXPY_ERROR_CLAUSE_SPECIAL_POKEMON`
-<img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> 
+<img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/4b718bb8-497c-49e2-a96e-c46fbb10be52" width=480 height=320>
 
 <!-- BXPY TODO show player's party then running the macro and seeing this error message -->
 
@@ -187,9 +191,13 @@ This can be turned off via `BXPY_CLAUSE_SPECIAL_POKEMON`, and this config is `TR
 
 If all the checks pass, the Player will not see any messages. The Player's party is saved to the saveblock, and any fainted or unhatched Pokemon are removed from the Party. The game then proceeds to Team Preview.
 
-# Team Preview 
+# Team Preview
+
+Lorem
 
 # Open Team Sheet
+
+Lorem
 
 # Battle Prep
 Once the Player chooses Y Pokemon to battle with, Team Preview closes.
@@ -217,7 +225,7 @@ The following occurs regardless of the result of the battle.
 ## Load Party & Retain Changes
 | `TRUE` | `FALSE` |
 | --- | --- |
-| <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> | <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> | 
+| <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/4b718bb8-497c-49e2-a96e-c46fbb10be52" width=480 height=320>| <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/4b718bb8-497c-49e2-a96e-c46fbb10be52" width=480 height=320>| 
 
 <!-- BXPY TODO show party, score a KO, evolve after battle, then show the restored party with same damage and evolution -->
 
@@ -228,7 +236,7 @@ Any changes that occured to the participating Pokemon is retained. This includes
 ## Heal Post Battle
 | `TRUE` | `FALSE` |
 | --- | --- |
-| <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> | <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/d8979990-f376-4134-b5e5-66b4e5560f0d)" width=480 height=320> | 
+| <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/4b718bb8-497c-49e2-a96e-c46fbb10be52" width=480 height=320>| <img alt="" src="https://github.com/PokemonSanFran/pokeemerald/assets/77138753/4b718bb8-497c-49e2-a96e-c46fbb10be52" width=480 height=320>| 
 
 <!-- BXPY TODO electrode self destructs in battle, show party after battle -->
 
@@ -280,7 +288,7 @@ If you have read all of the documentation here and still have questions, please 
 ## [Pawkkie](https://www.twitch.tv/pawkkie)
 * Wrote the implemention that the AI uses to select the Pokemon to bring into battle.
 
-# CHANGELOG 
+# CHANGELOG
 All changes to this project will be documented in this section. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project tries to adhere to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
