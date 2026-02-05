@@ -35,6 +35,13 @@ enum BXPYTeamPreviewItemModes
     BXPY_SHOW_FULL_ITEM,
 };
 
+enum BXPYTeamPreviewSpeciesModes
+{
+    BXPY_HIDE_SPECIES,
+    BXPY_SHOW_BASE_SPECIES,
+    BXPY_SHOW_TRUE_SPECIES,
+};
+
 #define VAR_BXPY_PICK_SIZE VAR_0x8008
 #define VAR_BXPY_BRING_SIZE VAR_0x800B
 #define VAR_BXPY_PARTNER VAR_0x800A

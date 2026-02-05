@@ -7,6 +7,7 @@
 #include "item.h"
 #include "load_save.h"
 #include "pokemon.h"
+#include "pokemon_summary_screen.h"
 #include "random.h"
 #include "script_pokemon_util.h"
 #include "string_util.h"
@@ -34,6 +35,7 @@ static void BXPY_DeleteNonAliveMons(void);
 static void BXPY_SelectPartyMembers(struct Pokemon *party, u32* enteredMons);
 static enum BXPYBattleTypes BXPY_UpdateBattleType(enum BXPYBattleTypes battleType);
 static u32 BXPY_ConvertBattleTypeToFlags(enum BXPYBattleTypes battleType);
+static bool8 BXPY_IsSummaryScreenForEnemy(enum PokemonSummaryScreenMode mode);
 
 static void (*const sBXPYErrorCheckFuncs[])(void) =
 {
@@ -275,6 +277,7 @@ static void BXPY_ErrorCheck_ClauseSpecialPokemon(void)
 
 static void Debug_BXPY_PrintArguments(enum BXPYBattleTypes battleType, u32 bringSize, u32 pickSize, u32 trainerA, const u8 *loseTextA, u32 trainerB, const u8* loseTextB, u32 partnerId)
 {
+    return;
     DebugPrintf("battleType %d",battleType);
     DebugPrintf("bringSize %d",bringSize);
     DebugPrintf("pickSize %d",pickSize);
@@ -440,4 +443,138 @@ static u32 BXPY_ConvertBattleTypeToFlags(enum BXPYBattleTypes battleType)
         case BXPY_BATTLE_MULTI_2v1:
             return (BATTLE_TYPE_MULTI | BATTLE_TYPE_INGAME_PARTNER | BATTLE_TYPE_DOUBLE | BATTLE_TYPE_TRAINER); // from battle_setup.c
     }
+}
+
+static bool8 BXPY_IsSummaryScreenForEnemy(enum PokemonSummaryScreenMode mode)
+{
+    return TRUE; // Debug
+    return (mode == SUMMARY_MODE_BXPY);
+}
+
+bool8 BXPY_ShouldHideEnemyAbility(enum PokemonSummaryScreenMode mode)
+{
+    if (BXPY_IsSummaryScreenForEnemy(mode) == FALSE)
+        return FALSE;
+
+    return (!BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_ABILITY);
+}
+
+bool8 BXPY_ShouldHideEnemyNature(enum PokemonSummaryScreenMode mode)
+{
+    if (BXPY_IsSummaryScreenForEnemy(mode) == FALSE)
+        return FALSE;
+
+    if (BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_STAT_NATURE == TRUE)
+        return FALSE;
+
+    return TRUE;
+}
+
+bool8 BXPY_ShouldHideEnemyIndividualValues(enum PokemonSummaryScreenMode mode)
+{
+    if (BXPY_IsSummaryScreenForEnemy(mode) == FALSE)
+        return FALSE;
+
+    if (BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_STAT_IV == TRUE)
+        return FALSE;
+
+    return TRUE;
+}
+
+bool8 BXPY_ShouldHideEnemyEffortValues(enum PokemonSummaryScreenMode mode)
+{
+    if (BXPY_IsSummaryScreenForEnemy(mode) == FALSE)
+        return FALSE;
+
+    if (BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_STAT_EV == TRUE)
+        return FALSE;
+
+    return TRUE;
+}
+
+bool8 BXPY_ShouldHideEnemyTeraType(enum PokemonSummaryScreenMode mode)
+{
+    if (BXPY_IsSummaryScreenForEnemy(mode) == FALSE)
+        return FALSE;
+
+    if (BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_GIMMICK_TERA == TRUE)
+        return FALSE;
+
+    return TRUE;
+}
+
+bool8 BXPY_ShouldHideEnemyMoves(enum PokemonSummaryScreenMode mode)
+{
+    if (BXPY_IsSummaryScreenForEnemy(mode) == FALSE)
+        return FALSE;
+
+    if (BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_MOVE == TRUE)
+        return FALSE;
+
+    return TRUE;
+}
+
+enum BXPYTeamPreviewItemModes BXPY_GetEnemyItemVisibilityLevel(void)
+{
+    return BXPY_TEAM_PREVIEW_SHOW_ENEMY_ITEM;
+}
+
+bool8 BXPY_SummaryScreen_ItemVisibility(enum PokemonSummaryScreenMode mode)
+{
+    if (BXPY_IsSummaryScreenForEnemy(mode) == FALSE)
+        return BXPY_SHOW_FULL_ITEM;
+
+    return BXPY_GetEnemyItemVisibilityLevel();
+}
+
+const u8 *BXPY_ReturnItemText(enum Item item)
+{
+    static const u8 sText_Unknown[] = COMPOUND_STRING("Unknown");
+    static const u8 sText_Question[] = COMPOUND_STRING("???");
+    static const u8 sText_None[] = COMPOUND_STRING("NONE");
+    bool32 hasItem = (item != ITEM_NONE);
+
+    switch (BXPY_GetEnemyItemVisibilityLevel())
+    {
+        default:
+        case BXPY_SHOW_FULL_ITEM:
+            if (hasItem)
+                return GetItemName(item);
+            else
+                return sText_None;
+        case BXPY_SHOW_NOTHING:
+            return sText_Unknown;
+        case BXPY_SHOW_HIDDEN_ITEM:
+            if (hasItem)
+                return sText_Question;
+            else
+                return sText_None;
+    }
+    return sText_None;
+}
+
+enum BXPYTeamPreviewSpeciesModes BXPY_GetEnemySpeciesVisibilityLevel(void)
+{
+    return BXPY_TEAM_PREVIEW_SHOW_ENEMY_SPECIES;
+}
+
+enum BXPYTeamPreviewSpeciesModes BXPY_SummaryScreen_SpeciesVisibility(enum PokemonSummaryScreenMode mode)
+{
+    if (BXPY_IsSummaryScreenForEnemy(mode) == FALSE)
+        return BXPY_SHOW_TRUE_SPECIES;
+
+    return BXPY_GetEnemySpeciesVisibilityLevel();
+}
+
+bool8 BXPY_TeamPreview_ShouldHideEnemyGender(void)
+{
+    return !(BXPY_TEAM_PREVIEW_SHOW_ENEMY_GENDER);
+}
+
+bool8 BXPY_SummaryScreen_ShouldHideEnemyGender(enum PokemonSummaryScreenMode mode)
+{
+    if (BXPY_IsSummaryScreenForEnemy(mode) == FALSE)
+        return FALSE;
+
+    return BXPY_TeamPreview_ShouldHideEnemyGender();
 }

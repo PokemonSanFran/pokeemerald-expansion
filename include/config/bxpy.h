@@ -12,7 +12,7 @@
 
 // For all BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_* configs, when TRUE, the Player will be able to see this specific piece of information on the enemy's Pokemon Summary Screen.
 
-#define BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_ABILITY         FALSE // When FALSE, the enemy Pokemon's Ability appears as `ABILITY_NONE`.
+#define BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_ABILITY         TRUE  // When FALSE, the enemy Pokemon's Ability appears as `ABILITY_NONE`.
 
 // If all three of BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_STAT_* configs are TRUE, the Pokemon stats will be visible. If any of them are FALSE, the stats will display as ???.
 
