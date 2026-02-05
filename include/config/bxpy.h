@@ -24,8 +24,11 @@
 
 // For all BXPY_OPEN_TEAM_PREVIEW_SHOW_ENEMY_* configs, when TRUE, the Player will be able to see this specific piece of information on the Team Preview AND Enemy Summary Screen. FALSE will disable it in both places.
 
-#define BXPY_TEAM_PREVIEW_SHOW_ENEMY_SPECIES            TRUE // When FALSE, all of the enemy Pokemon species will show as ???.
-#define BXPY_TEAM_PREVIEW_SHOW_ENEMY_FORM               TRUE // When FALSE, all of the enemy Pokemon species will show as their base form. For example, if the opponent has `SPECIES_ORICORIO_POM_POM`, it will always appear as `SPECIES_ORICORIO_BAILE`, the base form.
+#define BXPY_TEAM_PREVIEW_SHOW_ENEMY_SPECIES            BXPY_SHOW_TRUE_SPECIES
+// When set to `BXPY_HIDE_SPECIES`, the enemy Pokemon will appear as ???.
+// When set to `BXPY_SHOW_BASE_SPECIES`, the enemy will show Pokemon as their base form. For example, if the opponent has `SPECIES_ROTOM_HEAT`, it will be shown as `SPECIES_ROTOM`.
+// When set to `BXPY_SHOW_TRUE_SPECIES`, the enemy will show Pokemon as their true species and form.
+
 #define BXPY_TEAM_PREVIEW_SHOW_ENEMY_GENDER             TRUE // When FALSE, all of the enemy Pokemon will show ? for their gender.
 #define BXPY_TEAM_PREVIEW_SHOW_ENEMY_ITEM               BXPY_SHOW_NOTHING
 // When set to `BXPY_SHOW_NOTHING`, the enemy Pokemon will appear with ? icons for Held Items on Team Preview. On the Summary Screen, all will appear as "Unknown". Having no item will appear as "Unknown".
