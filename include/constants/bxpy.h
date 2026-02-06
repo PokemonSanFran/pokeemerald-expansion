@@ -5,9 +5,6 @@ enum BXPYBattleTypes
 {
     BXPY_BATTLE_SINGLE,
     BXPY_BATTLE_DOUBLE,
-    BXPY_BATTLE_MULTI_2v2,
-    BXPY_BATTLE_MULTI_1v2,
-    BXPY_BATTLE_MULTI_2v1,
 };
 
 enum BXPYErrorCodes

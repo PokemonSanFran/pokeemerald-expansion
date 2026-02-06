@@ -33,7 +33,6 @@ static void BXPY_GetEnemyEnterMons(u32* enteredMons, u32 pickSize);
 static void BXPY_PrepareParty(u32 pickSize);
 static void BXPY_DeleteNonAliveMons(void);
 static void BXPY_SelectPartyMembers(struct Pokemon *party, u32* enteredMons);
-static enum BXPYBattleTypes BXPY_UpdateBattleType(enum BXPYBattleTypes battleType);
 static u32 BXPY_ConvertBattleTypeToFlags(enum BXPYBattleTypes battleType);
 static bool8 BXPY_IsSummaryScreenForEnemy(enum PokemonSummaryScreenMode mode);
 
@@ -293,7 +292,6 @@ void BXPY_Init(enum BXPYBattleTypes battleType, u32 bringSize, u32 pickSize, u32
 {
     Debug_BXPY_PrintArguments(battleType,bringSize,pickSize,trainerA,loseTextA,trainerB,loseTextB,partnerId);
     BXPY_InitTrainerBattleParams(trainerA,loseTextA,trainerB,loseTextB,partnerId);
-    battleType = BXPY_UpdateBattleType(battleType);
     u32 battleFlags = BXPY_ConvertBattleTypeToFlags(battleType);
 
     BXPY_PrepareEnemyParty(bringSize,battleFlags);
@@ -412,37 +410,18 @@ static void BXPY_SelectPartyMembers(struct Pokemon *party, u32* enteredMons)
         CopyMon(&party[i],&tempParty[i],sizeof(struct Pokemon));
 }
 
-static enum BXPYBattleTypes BXPY_UpdateBattleType(enum BXPYBattleTypes battleType)
-{
-    bool32 hasSecondEnemy = (TRAINER_BATTLE_PARAM.opponentB != TRAINER_NONE);
-    bool32 hasPartner = (gPartnerTrainerId != PARTNER_NONE);
-
-    if (hasSecondEnemy && hasPartner)
-        return BXPY_BATTLE_MULTI_2v2;
-    else if (hasSecondEnemy && !hasPartner)
-        return BXPY_BATTLE_MULTI_1v2;
-    else if (!hasSecondEnemy && hasPartner)
-        return BXPY_BATTLE_MULTI_2v1;
-    else
-        return battleType;
-}
-
 static u32 BXPY_ConvertBattleTypeToFlags(enum BXPYBattleTypes battleType)
 {
-    switch (battleType)
-    {
-        default:
-        case BXPY_BATTLE_SINGLE:
-            return BATTLE_TYPE_TRAINER;
-        case BXPY_BATTLE_DOUBLE:
-            return (BATTLE_TYPE_DOUBLE | BATTLE_TYPE_TRAINER);
-        case BXPY_BATTLE_MULTI_2v2:
-            return (BATTLE_TYPE_MULTI | BATTLE_TYPE_DOUBLE | BATTLE_TYPE_INGAME_PARTNER | BATTLE_TYPE_TWO_OPPONENTS | BATTLE_TYPE_TRAINER); // from battle_setup.c
-        case BXPY_BATTLE_MULTI_1v2:
-            return (BATTLE_TYPE_DOUBLE | BATTLE_TYPE_TWO_OPPONENTS | BATTLE_TYPE_TRAINER); // from battle_setup.c
-        case BXPY_BATTLE_MULTI_2v1:
-            return (BATTLE_TYPE_MULTI | BATTLE_TYPE_INGAME_PARTNER | BATTLE_TYPE_DOUBLE | BATTLE_TYPE_TRAINER); // from battle_setup.c
-    }
+    if (hasSecondEnemy && hasPartner)
+        return (BATTLE_TYPE_MULTI | BATTLE_TYPE_DOUBLE | BATTLE_TYPE_INGAME_PARTNER | BATTLE_TYPE_TWO_OPPONENTS | BATTLE_TYPE_TRAINER); // from battle_setup.c
+    else if (hasSecondEnemy && !hasPartner)
+        return (BATTLE_TYPE_DOUBLE | BATTLE_TYPE_TWO_OPPONENTS | BATTLE_TYPE_TRAINER); // from battle_setup.c
+    else if (!hasSecondEnemy && hasPartner)
+        return (BATTLE_TYPE_MULTI | BATTLE_TYPE_INGAME_PARTNER | BATTLE_TYPE_DOUBLE | BATTLE_TYPE_TRAINER); // from battle_setup.c
+    else if (battleType == BXPY_BATTLE_SINGLE)
+        return BATTLE_TYPE_TRAINER;
+    else
+        return (BATTLE_TYPE_DOUBLE | BATTLE_TYPE_TRAINER);
 }
 
 static bool8 BXPY_IsSummaryScreenForEnemy(enum PokemonSummaryScreenMode mode)
