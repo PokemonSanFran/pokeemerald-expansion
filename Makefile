@@ -441,7 +441,6 @@ generated: $(AUTO_GEN_TARGETS)
 %.smol:     %      ; $(SMOL) -w $< $@
 %.rl:       %      ; $(GFX) $< $@
 
-
 clean-teachables_intermediates:
 	rm -f $(DATA_SRC_SUBDIR)/tutor_moves.h
 	rm -f $(DATA_SRC_SUBDIR)/pokemon/teachable_learnsets.h
