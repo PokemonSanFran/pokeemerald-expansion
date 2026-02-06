@@ -30,7 +30,9 @@ enum Type BXPY_GetNewType(enum PokemonSummaryScreenMode mode, enum Type original
 bool8 BXPY_SummaryScreen_ShowTrueSpecies(enum PokemonSummaryScreenMode mode);
 bool8 BXPY_SummaryScreen_HideSpecies(enum PokemonSummaryScreenMode mode);
 bool8 BXPY_SummaryScreen_ShowBaseSpecies(enum PokemonSummaryScreenMode mode);
-u32 BXPY_TransformSpeciesId(enum PokemonSummaryScreenMode mode, u32 originalSpeciesId);
+u32 BXPY_SummaryScreen_TransformSpeciesId(enum PokemonSummaryScreenMode mode, u32 originalSpeciesId);
 bool8 BXPY_SummaryScreen_ShouldShowFullItem(enum PokemonSummaryScreenMode mode);
+bool8 BXPY_SummaryScreen_ShouldHideEnemyLevel(enum PokemonSummaryScreenMode mode);
+u32 BXPY_TeamPreview_TransformSpeciesId(u32 originalSpeciesId);
 
 #endif // GUARD_BXPY_H

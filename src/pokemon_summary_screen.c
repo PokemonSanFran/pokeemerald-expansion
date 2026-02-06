@@ -1236,7 +1236,6 @@ void ShowPokemonSummaryScreen(u8 mode, void *mons, u8 monIndex, u8 maxMonIndex, 
         sMonSummaryScreen->maxPageIndex = PSS_PAGE_COUNT - 1;
         break;
     case SUMMARY_MODE_LOCK_MOVES:
-    case SUMMARY_MODE_BXPY:
         sMonSummaryScreen->minPageIndex = 0;
         sMonSummaryScreen->maxPageIndex = PSS_PAGE_COUNT - 1;
         sMonSummaryScreen->lockMovesFlag = TRUE;
@@ -1246,6 +1245,10 @@ void ShowPokemonSummaryScreen(u8 mode, void *mons, u8 monIndex, u8 maxMonIndex, 
         sMonSummaryScreen->maxPageIndex = PSS_PAGE_COUNT - 1;
         sMonSummaryScreen->lockMonFlag = TRUE;
         break;
+    case SUMMARY_MODE_BXPY:
+        sMonSummaryScreen->minPageIndex = 0;
+        sMonSummaryScreen->maxPageIndex = PSS_PAGE_COUNT - 2;
+        sMonSummaryScreen->lockMovesFlag = TRUE;
     }
 
     if (mode == SUMMARY_MODE_RELEARNER_BATTLE)
@@ -3309,7 +3312,7 @@ static void PrintNotEggInfo(void)
     struct PokeSummary *summary = &sMonSummaryScreen->summary;
     // Start bringXpickY
     //u16 dexNum = SpeciesToPokedexNum(summary->species);
-    u16 dexNum = SpeciesToPokedexNum(BXPY_TransformSpeciesId(sMonSummaryScreen->mode,summary->species));
+    u16 dexNum = SpeciesToPokedexNum(BXPY_SummaryScreen_TransformSpeciesId(sMonSummaryScreen->mode,summary->species));
     // End bringXpickY
 
     if (dexNum != 0xFFFF)
@@ -3339,7 +3342,12 @@ static void PrintNotEggInfo(void)
             SetMonPicBackgroundPalette(TRUE);
     }
     StringCopy(gStringVar1, gText_LevelSymbol);
-    ConvertIntToDecimalStringN(gStringVar2, summary->level, STR_CONV_MODE_LEFT_ALIGN, 3);
+    // Start bringXpickY
+    if (BXPY_SummaryScreen_ShouldHideEnemyLevel(sMonSummaryScreen->mode))
+        StringCopy(gStringVar2,COMPOUND_STRING("???"));
+    else
+        ConvertIntToDecimalStringN(gStringVar2, summary->level, STR_CONV_MODE_LEFT_ALIGN, 3);
+    // End bringXpickY
     StringAppend(gStringVar1, gStringVar2);
     PrintTextOnWindow(PSS_LABEL_WINDOW_PORTRAIT_SPECIES, gStringVar1, 24, 17, 0, 1);
     // Start bringXpickY
@@ -4135,7 +4143,13 @@ static void PrintExpPointsNextLevel(void)
     int x;
     u32 expToNextLevel;
 
-    ConvertIntToDecimalStringN(gStringVar1, sum->exp, STR_CONV_MODE_RIGHT_ALIGN, 7);
+    // Start bringXpickY
+    if (BXPY_SummaryScreen_ShouldHideEnemyLevel(sMonSummaryScreen->mode))
+        StringCopy(gStringVar1,COMPOUND_STRING("???"));
+    else
+    // End bringXpickY
+        ConvertIntToDecimalStringN(gStringVar1, sum->exp, STR_CONV_MODE_RIGHT_ALIGN, 7);
+    // End bringXpickY
     x = GetStringRightAlignXOffset(FONT_NORMAL, gStringVar1, 42) + 2;
     PrintTextOnWindow(windowId, gStringVar1, x, 1, 0, 0);
 
@@ -4144,7 +4158,12 @@ static void PrintExpPointsNextLevel(void)
     else
         expToNextLevel = 0;
 
-    ConvertIntToDecimalStringN(gStringVar1, expToNextLevel, STR_CONV_MODE_RIGHT_ALIGN, 6);
+    // Start bringXpickY
+    if (BXPY_SummaryScreen_ShouldHideEnemyLevel(sMonSummaryScreen->mode))
+        StringCopy(gStringVar1,COMPOUND_STRING("???"));
+    else
+        ConvertIntToDecimalStringN(gStringVar1, expToNextLevel, STR_CONV_MODE_RIGHT_ALIGN, 6);
+    // End bringXpickY
     x = GetStringRightAlignXOffset(FONT_NORMAL, gStringVar1, 42) + 2;
     PrintTextOnWindow(windowId, gStringVar1, x, 17, 0, 0);
 }
@@ -4677,7 +4696,7 @@ static u8 LoadMonGfxAndSprite(struct Pokemon *mon, s16 *state)
                                      gMonSpritesGfxPtr->spritesGfx[B_POSITION_OPPONENT_LEFT],
                                      // Start bringXpickY
                                      //summary->species,
-                                     BXPY_TransformSpeciesId(sMonSummaryScreen->mode,summary->species),
+                                     BXPY_SummaryScreen_TransformSpeciesId(sMonSummaryScreen->mode,summary->species),
                                      // End bringXpickY
                                      summary->pid,
                                      summary->isEgg);
@@ -4690,7 +4709,7 @@ static u8 LoadMonGfxAndSprite(struct Pokemon *mon, s16 *state)
                                          gMonSpritesGfxPtr->spritesGfx[B_POSITION_OPPONENT_LEFT],
                                          // Start bringXpickY
                                          //summary->species,
-                                         BXPY_TransformSpeciesId(sMonSummaryScreen->mode,summary->species),
+                                         BXPY_SummaryScreen_TransformSpeciesId(sMonSummaryScreen->mode,summary->species),
                                          // End bringXpickY
                                          summary->pid,
                                          summary->isEgg);
@@ -4701,7 +4720,7 @@ static u8 LoadMonGfxAndSprite(struct Pokemon *mon, s16 *state)
                                          MonSpritesGfxManager_GetSpritePtr(MON_SPR_GFX_MANAGER_A, B_POSITION_OPPONENT_LEFT),
                                          // Start bringXpickY
                                          //summary->species,
-                                         BXPY_TransformSpeciesId(sMonSummaryScreen->mode,summary->species),
+                                         BXPY_SummaryScreen_TransformSpeciesId(sMonSummaryScreen->mode,summary->species),
                                          // End bringXpickY
                                          summary->pid,
                                          summary->isEgg);
@@ -4711,7 +4730,7 @@ static u8 LoadMonGfxAndSprite(struct Pokemon *mon, s16 *state)
         return 0xFF;
     case 1:
         // Start bringXpickY
-        LoadSpritePaletteWithTag(GetMonSpritePalFromSpeciesAndPersonalityIsEgg(BXPY_TransformSpeciesId(sMonSummaryScreen->mode,summary->species), summary->isShiny, summary->pid, summary->isEgg), summary->species2);
+        LoadSpritePaletteWithTag(GetMonSpritePalFromSpeciesAndPersonalityIsEgg(BXPY_SummaryScreen_TransformSpeciesId(sMonSummaryScreen->mode,summary->species), summary->isShiny, summary->pid, summary->isEgg), summary->species2);
         //LoadSpritePaletteWithTag(GetMonSpritePalFromSpeciesAndPersonalityIsEgg(summary->species, summary->isShiny, summary->pid, summary->isEgg), summary->species2);
         // End bringXpickY
         SetMultiuseSpriteTemplateToPokemon(summary->species2, B_POSITION_OPPONENT_LEFT);
@@ -4726,9 +4745,15 @@ static void PlayMonCry(void)
     if (!summary->isEgg)
     {
         if (ShouldPlayNormalMonCry(&sMonSummaryScreen->currentMon) == TRUE)
-            PlayCry_ByMode(summary->species2, 0, CRY_MODE_NORMAL);
+    // Start bringXpickY
+            PlayCry_ByMode(BXPY_SummaryScreen_TransformSpeciesId(sMonSummaryScreen->mode,summary->species2), 0, CRY_MODE_NORMAL);
+            //PlayCry_ByMode(summary->species2, 0, CRY_MODE_NORMAL);
+    // End bringXpickY
         else
-            PlayCry_ByMode(summary->species2, 0, CRY_MODE_WEAK);
+    // Start bringXpickY
+            PlayCry_ByMode(BXPY_SummaryScreen_TransformSpeciesId(sMonSummaryScreen->mode,summary->species2), 0, CRY_MODE_WEAK);
+            //PlayCry_ByMode(summary->species2, 0, CRY_MODE_WEAK);
+    // End bringXpickY
     }
 }
 
@@ -4740,14 +4765,14 @@ static u8 CreateMonSprite(struct Pokemon *unused)
     FreeSpriteOamMatrix(&gSprites[spriteId]);
     // Start bringXpickY
     //gSprites[spriteId].data[0] = summary->species2;
-    gSprites[spriteId].data[0] = BXPY_TransformSpeciesId(sMonSummaryScreen->mode, summary->species2);
+    gSprites[spriteId].data[0] = BXPY_SummaryScreen_TransformSpeciesId(sMonSummaryScreen->mode, summary->species2);
     // End bringXpickY
     gSprites[spriteId].data[2] = 0;
     gSprites[spriteId].callback = SpriteCB_Pokemon;
     gSprites[spriteId].oam.priority = 0;
 
     // Start bringXpickY
-    if(!IsMonSpriteNotFlipped(BXPY_TransformSpeciesId(sMonSummaryScreen->mode,summary->species2)))
+    if(!IsMonSpriteNotFlipped(BXPY_SummaryScreen_TransformSpeciesId(sMonSummaryScreen->mode,summary->species2)))
     //if (!IsMonSpriteNotFlipped(summary->species2))
     // End bringXpickY
         gSprites[spriteId].hFlip = TRUE;
