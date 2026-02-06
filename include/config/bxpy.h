@@ -30,7 +30,7 @@
 // When set to `BXPY_SHOW_TRUE_SPECIES`, the enemy will show Pokemon as their true species and form.
 
 #define BXPY_TEAM_PREVIEW_SHOW_ENEMY_GENDER             TRUE // When FALSE, all of the enemy Pokemon will show ? for their gender.
-#define BXPY_TEAM_PREVIEW_SHOW_ENEMY_ITEM               BXPY_SHOW_NOTHING
+#define BXPY_TEAM_PREVIEW_SHOW_ENEMY_ITEM               BXPY_SHOW_FULL_ITEM
 // When set to `BXPY_SHOW_NOTHING`, the enemy Pokemon will appear with ? icons for Held Items on Team Preview. On the Summary Screen, all will appear as "Unknown". Having no item will appear as "Unknown".
 // When set to `BXPY_SHOW_HIDDEN_ITEM`, the enemy Pokemon will appear on Team Preview with generic item icons if they are holding an item. On the Summary Screen, holding an item will be displayed as "???" and not holding an item will appear as "NONE".
 // When set to `BXPY_SHOW_FULL_ITEM`, the enemy Pokemon will appear with a sprite of their real item if they are holding an item. On the Summary screen, holding an item will be displayed with the true name, and not holding an item will appear as "NONE".

@@ -578,6 +578,21 @@ bool8 BXPY_SummaryScreen_ItemVisibility(enum PokemonSummaryScreenMode mode)
     return BXPY_GetEnemyItemVisibilityLevel();
 }
 
+bool8 BXPY_SummaryScreen_ShouldHideItem(enum PokemonSummaryScreenMode mode)
+{
+    return (BXPY_GetEnemyItemVisibilityLevel() == BXPY_SHOW_NOTHING);
+}
+
+bool8 BXPY_SummaryScreen_ShouldShowHiddenItem(enum PokemonSummaryScreenMode mode)
+{
+    return (BXPY_GetEnemyItemVisibilityLevel() == BXPY_SHOW_HIDDEN_ITEM);
+}
+
+bool8 BXPY_SummaryScreen_ShouldShowFullItem(enum PokemonSummaryScreenMode mode)
+{
+    return (BXPY_GetEnemyItemVisibilityLevel() == BXPY_SHOW_FULL_ITEM);
+}
+
 const u8 *BXPY_ReturnItemText(enum Item item)
 {
     static const u8 sText_Unknown[] = COMPOUND_STRING("Unknown");

@@ -3374,6 +3374,13 @@ static void PrintEggInfo(void)
 
 static void PrintGenderSymbol(struct Pokemon *mon, u16 species)
 {
+    // Start bringXpickY
+    if (BXPY_SummaryScreen_ShouldHideEnemyGender(sMonSummaryScreen->mode))
+    {
+        PrintTextOnWindow(PSS_LABEL_WINDOW_PORTRAIT_SPECIES, COMPOUND_STRING("?"), 57, 17, 0, 1);
+        return;
+    }
+    // End bringXpickY
     if (species != SPECIES_NIDORAN_M && species != SPECIES_NIDORAN_F)
     {
         switch (GetMonGender(mon))
@@ -3947,6 +3954,10 @@ static void PrintHeldItemName(void)
     else
     {
         CopyItemName(sMonSummaryScreen->summary.item, gStringVar1);
+        // Start bringXpickY
+            if (!BXPY_SummaryScreen_ShouldShowFullItem(sMonSummaryScreen->mode)) // bringXpickY
+                StringCopy(gStringVar1,BXPY_ReturnItemText(sMonSummaryScreen->summary.item));
+        // End bringXpickY
         text = gStringVar1;
     }
 

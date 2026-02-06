@@ -31,5 +31,6 @@ bool8 BXPY_SummaryScreen_ShowTrueSpecies(enum PokemonSummaryScreenMode mode);
 bool8 BXPY_SummaryScreen_HideSpecies(enum PokemonSummaryScreenMode mode);
 bool8 BXPY_SummaryScreen_ShowBaseSpecies(enum PokemonSummaryScreenMode mode);
 u32 BXPY_TransformSpeciesId(enum PokemonSummaryScreenMode mode, u32 originalSpeciesId);
+bool8 BXPY_SummaryScreen_ShouldShowFullItem(enum PokemonSummaryScreenMode mode);
 
 #endif // GUARD_BXPY_H
