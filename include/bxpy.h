@@ -27,5 +27,9 @@ enum BXPYTeamPreviewSpeciesModes BXPY_SummaryScreen_SpeciesVisibility(enum Pokem
 bool8 BXPY_TeamPreview_ShouldHideEnemyGender(void);
 bool8 BXPY_SummaryScreen_ShouldHideEnemyGender(enum PokemonSummaryScreenMode mode);
 enum Type BXPY_GetNewType(enum PokemonSummaryScreenMode mode, enum Type originalTypeId, u8 spriteArrayId, u32 species, enum PokemonSummaryScreenPage page);
+bool8 BXPY_SummaryScreen_ShowTrueSpecies(enum PokemonSummaryScreenMode mode);
+bool8 BXPY_SummaryScreen_HideSpecies(enum PokemonSummaryScreenMode mode);
+bool8 BXPY_SummaryScreen_ShowBaseSpecies(enum PokemonSummaryScreenMode mode);
+u32 BXPY_TransformSpeciesId(enum PokemonSummaryScreenMode mode, u32 originalSpeciesId);
 
 #endif // GUARD_BXPY_H

@@ -3307,7 +3307,10 @@ static void PrintNotEggInfo(void)
 {
     struct Pokemon *mon = &sMonSummaryScreen->currentMon;
     struct PokeSummary *summary = &sMonSummaryScreen->summary;
-    u16 dexNum = SpeciesToPokedexNum(summary->species);
+    // Start bringXpickY
+    //u16 dexNum = SpeciesToPokedexNum(summary->species);
+    u16 dexNum = SpeciesToPokedexNum(BXPY_TransformSpeciesId(sMonSummaryScreen->mode,summary->species));
+    // End bringXpickY
 
     if (dexNum != 0xFFFF)
     {
@@ -3339,10 +3342,22 @@ static void PrintNotEggInfo(void)
     ConvertIntToDecimalStringN(gStringVar2, summary->level, STR_CONV_MODE_LEFT_ALIGN, 3);
     StringAppend(gStringVar1, gStringVar2);
     PrintTextOnWindow(PSS_LABEL_WINDOW_PORTRAIT_SPECIES, gStringVar1, 24, 17, 0, 1);
-    GetMonNickname(mon, gStringVar1);
+    // Start bringXpickY
+    if (!BXPY_SummaryScreen_ShowTrueSpecies(sMonSummaryScreen->mode))
+        StringCopy(gStringVar1,COMPOUND_STRING("???"));
+    else
+    // End bringXpickY
+        GetMonNickname(mon, gStringVar1);
     PrintTextOnWindowToFitPx(PSS_LABEL_WINDOW_PORTRAIT_NICKNAME, gStringVar1, 0, 1, 0, 1, WindowWidthPx(PSS_LABEL_WINDOW_PORTRAIT_NICKNAME) - 9);
     PrintTextOnWindow(PSS_LABEL_WINDOW_PORTRAIT_SPECIES, gText_Slash, 0, 1, 0, 1);
-    PrintTextOnWindowToFitPx(PSS_LABEL_WINDOW_PORTRAIT_SPECIES, GetSpeciesName(summary->species2), 6, 1, 0, 1, WindowWidthPx(PSS_LABEL_WINDOW_PORTRAIT_SPECIES) - 9);
+    // Start bringXpickY
+    if (BXPY_SummaryScreen_HideSpecies(sMonSummaryScreen->mode))
+        PrintTextOnWindowToFitPx(PSS_LABEL_WINDOW_PORTRAIT_SPECIES, COMPOUND_STRING("???"), 6, 1, 0, 1, WindowWidthPx(PSS_LABEL_WINDOW_PORTRAIT_SPECIES) - 9);
+    else if (BXPY_SummaryScreen_ShowBaseSpecies(sMonSummaryScreen->mode))
+        PrintTextOnWindowToFitPx(PSS_LABEL_WINDOW_PORTRAIT_SPECIES, GetSpeciesName(GET_BASE_SPECIES_ID(summary->species2)), 6, 1, 0, 1, WindowWidthPx(PSS_LABEL_WINDOW_PORTRAIT_SPECIES) - 9);
+    else
+    // End bringXpickY
+        PrintTextOnWindowToFitPx(PSS_LABEL_WINDOW_PORTRAIT_SPECIES, GetSpeciesName(summary->species2), 6, 1, 0, 1, WindowWidthPx(PSS_LABEL_WINDOW_PORTRAIT_SPECIES) - 9);
     PrintGenderSymbol(mon, summary->species2);
     PutWindowTilemap(PSS_LABEL_WINDOW_PORTRAIT_NICKNAME);
     PutWindowTilemap(PSS_LABEL_WINDOW_PORTRAIT_SPECIES);
@@ -4649,7 +4664,10 @@ static u8 LoadMonGfxAndSprite(struct Pokemon *mon, s16 *state)
         {
             HandleLoadSpecialPokePicIsEgg(TRUE,
                                      gMonSpritesGfxPtr->spritesGfx[B_POSITION_OPPONENT_LEFT],
-                                     summary->species,
+                                     // Start bringXpickY
+                                     //summary->species,
+                                     BXPY_TransformSpeciesId(sMonSummaryScreen->mode,summary->species),
+                                     // End bringXpickY
                                      summary->pid,
                                      summary->isEgg);
         }
@@ -4659,7 +4677,10 @@ static u8 LoadMonGfxAndSprite(struct Pokemon *mon, s16 *state)
             {
                 HandleLoadSpecialPokePicIsEgg(TRUE,
                                          gMonSpritesGfxPtr->spritesGfx[B_POSITION_OPPONENT_LEFT],
-                                         summary->species,
+                                         // Start bringXpickY
+                                         //summary->species,
+                                         BXPY_TransformSpeciesId(sMonSummaryScreen->mode,summary->species),
+                                         // End bringXpickY
                                          summary->pid,
                                          summary->isEgg);
             }
@@ -4667,7 +4688,10 @@ static u8 LoadMonGfxAndSprite(struct Pokemon *mon, s16 *state)
             {
                 HandleLoadSpecialPokePicIsEgg(TRUE,
                                          MonSpritesGfxManager_GetSpritePtr(MON_SPR_GFX_MANAGER_A, B_POSITION_OPPONENT_LEFT),
-                                         summary->species,
+                                         // Start bringXpickY
+                                         //summary->species,
+                                         BXPY_TransformSpeciesId(sMonSummaryScreen->mode,summary->species),
+                                         // End bringXpickY
                                          summary->pid,
                                          summary->isEgg);
             }
@@ -4675,7 +4699,10 @@ static u8 LoadMonGfxAndSprite(struct Pokemon *mon, s16 *state)
         (*state)++;
         return 0xFF;
     case 1:
-        LoadSpritePaletteWithTag(GetMonSpritePalFromSpeciesAndPersonalityIsEgg(summary->species, summary->isShiny, summary->pid, summary->isEgg), summary->species2);
+        // Start bringXpickY
+        LoadSpritePaletteWithTag(GetMonSpritePalFromSpeciesAndPersonalityIsEgg(BXPY_TransformSpeciesId(sMonSummaryScreen->mode,summary->species), summary->isShiny, summary->pid, summary->isEgg), summary->species2);
+        //LoadSpritePaletteWithTag(GetMonSpritePalFromSpeciesAndPersonalityIsEgg(summary->species, summary->isShiny, summary->pid, summary->isEgg), summary->species2);
+        // End bringXpickY
         SetMultiuseSpriteTemplateToPokemon(summary->species2, B_POSITION_OPPONENT_LEFT);
         (*state)++;
         return 0xFF;
@@ -4700,12 +4727,18 @@ static u8 CreateMonSprite(struct Pokemon *unused)
     u8 spriteId = CreateSprite(&gMultiuseSpriteTemplate, 40, 64, 5);
 
     FreeSpriteOamMatrix(&gSprites[spriteId]);
-    gSprites[spriteId].data[0] = summary->species2;
+    // Start bringXpickY
+    //gSprites[spriteId].data[0] = summary->species2;
+    gSprites[spriteId].data[0] = BXPY_TransformSpeciesId(sMonSummaryScreen->mode, summary->species2);
+    // End bringXpickY
     gSprites[spriteId].data[2] = 0;
     gSprites[spriteId].callback = SpriteCB_Pokemon;
     gSprites[spriteId].oam.priority = 0;
 
-    if (!IsMonSpriteNotFlipped(summary->species2))
+    // Start bringXpickY
+    if(!IsMonSpriteNotFlipped(BXPY_TransformSpeciesId(sMonSummaryScreen->mode,summary->species2)))
+    //if (!IsMonSpriteNotFlipped(summary->species2))
+    // End bringXpickY
         gSprites[spriteId].hFlip = TRUE;
     else
         gSprites[spriteId].hFlip = FALSE;
