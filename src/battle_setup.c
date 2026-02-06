@@ -1436,9 +1436,11 @@ static void HandleBattleVariantEndParty(void)
 
     SaveChangesToPlayerParty();
     LoadPlayerParty();
+    // Start bringXpickY
     BXPY_TryHealAfterBattle();
+    FlagClear(B_FLAG_BXPY);
+    // End bringXpickY
     FlagClear(B_FLAG_SKY_BATTLE);
-    FlagClear(B_FLAG_BXPY); // bringXpickY
 }
 
 static void CB2_EndTrainerBattle(void)

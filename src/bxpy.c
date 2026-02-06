@@ -524,11 +524,11 @@ enum Type BXPY_GetNewType(enum PokemonSummaryScreenMode mode, enum Type original
     {
         switch (BXPY_SummaryScreen_SpeciesVisibility(mode))
         {
-            case BXPY_HIDE_SPECIES:
+            case BXPY_SPECIES_HIDE:
                 return TYPE_MYSTERY;
-            case BXPY_SHOW_BASE_SPECIES:
+            case BXPY_SPECIES_SHOW_BASE:
                 return (GetSpeciesType(GET_BASE_SPECIES_ID(species),0));
-            case BXPY_SHOW_TRUE_SPECIES:
+            case BXPY_SPECIES_SHOW_TRUE:
                 return originalTypeId;
         }
     }
@@ -536,11 +536,11 @@ enum Type BXPY_GetNewType(enum PokemonSummaryScreenMode mode, enum Type original
     {
         switch (BXPY_SummaryScreen_SpeciesVisibility(mode))
         {
-            case BXPY_HIDE_SPECIES:
+            case BXPY_SPECIES_HIDE:
                 return TYPE_MYSTERY;
-            case BXPY_SHOW_BASE_SPECIES:
+            case BXPY_SPECIES_SHOW_BASE:
                 return (GetSpeciesType(GET_BASE_SPECIES_ID(species),1));
-            case BXPY_SHOW_TRUE_SPECIES:
+            case BXPY_SPECIES_SHOW_TRUE:
                 return originalTypeId;
         }
     }
@@ -572,24 +572,24 @@ enum BXPYTeamPreviewItemModes BXPY_GetEnemyItemVisibilityLevel(void)
 bool8 BXPY_SummaryScreen_ItemVisibility(enum PokemonSummaryScreenMode mode)
 {
     if (BXPY_IsSummaryScreenForEnemy(mode) == FALSE)
-        return BXPY_SHOW_FULL_ITEM;
+        return BXPY_ITEM_SHOW_ITEM;
 
     return BXPY_GetEnemyItemVisibilityLevel();
 }
 
 bool8 BXPY_SummaryScreen_ShouldHideItem(enum PokemonSummaryScreenMode mode)
 {
-    return (BXPY_GetEnemyItemVisibilityLevel() == BXPY_SHOW_NOTHING);
+    return (BXPY_GetEnemyItemVisibilityLevel() == BXPY_ITEM_NO_VISIBILITY);
 }
 
 bool8 BXPY_SummaryScreen_ShouldShowHiddenItem(enum PokemonSummaryScreenMode mode)
 {
-    return (BXPY_GetEnemyItemVisibilityLevel() == BXPY_SHOW_HIDDEN_ITEM);
+    return (BXPY_GetEnemyItemVisibilityLevel() == BXPY_ITEM_SHOW_POSSESSION);
 }
 
 bool8 BXPY_SummaryScreen_ShouldShowFullItem(enum PokemonSummaryScreenMode mode)
 {
-    return (BXPY_GetEnemyItemVisibilityLevel() == BXPY_SHOW_FULL_ITEM);
+    return (BXPY_GetEnemyItemVisibilityLevel() == BXPY_ITEM_SHOW_ITEM);
 }
 
 const u8 *BXPY_ReturnItemText(enum Item item)
@@ -602,14 +602,14 @@ const u8 *BXPY_ReturnItemText(enum Item item)
     switch (BXPY_GetEnemyItemVisibilityLevel())
     {
         default:
-        case BXPY_SHOW_FULL_ITEM:
+        case BXPY_ITEM_SHOW_ITEM:
             if (hasItem)
                 return GetItemName(item);
             else
                 return sText_None;
-        case BXPY_SHOW_NOTHING:
+        case BXPY_ITEM_NO_VISIBILITY:
             return sText_Unknown;
-        case BXPY_SHOW_HIDDEN_ITEM:
+        case BXPY_ITEM_SHOW_POSSESSION:
             if (hasItem)
                 return sText_Question;
             else
@@ -626,7 +626,7 @@ enum BXPYTeamPreviewSpeciesModes BXPY_GetEnemySpeciesVisibilityLevel(void)
 enum BXPYTeamPreviewSpeciesModes BXPY_SummaryScreen_SpeciesVisibility(enum PokemonSummaryScreenMode mode)
 {
     if (BXPY_IsSummaryScreenForEnemy(mode) == FALSE)
-        return BXPY_SHOW_TRUE_SPECIES;
+        return BXPY_SPECIES_SHOW_TRUE;
 
     return BXPY_GetEnemySpeciesVisibilityLevel();
 }
@@ -636,7 +636,7 @@ bool8 BXPY_SummaryScreen_ShowBaseSpecies(enum PokemonSummaryScreenMode mode)
     if (BXPY_IsSummaryScreenForEnemy(mode) == FALSE)
         return FALSE;
 
-    return (BXPY_GetEnemySpeciesVisibilityLevel() == BXPY_SHOW_BASE_SPECIES);
+    return (BXPY_GetEnemySpeciesVisibilityLevel() == BXPY_SPECIES_SHOW_BASE);
 }
 
 bool8 BXPY_SummaryScreen_HideSpecies(enum PokemonSummaryScreenMode mode)
@@ -644,7 +644,7 @@ bool8 BXPY_SummaryScreen_HideSpecies(enum PokemonSummaryScreenMode mode)
     if (BXPY_IsSummaryScreenForEnemy(mode) == FALSE)
         return FALSE;
 
-    return (BXPY_GetEnemySpeciesVisibilityLevel() == BXPY_HIDE_SPECIES);
+    return (BXPY_GetEnemySpeciesVisibilityLevel() == BXPY_SPECIES_HIDE);
 }
 
 bool8 BXPY_SummaryScreen_ShowTrueSpecies(enum PokemonSummaryScreenMode mode)
@@ -652,7 +652,7 @@ bool8 BXPY_SummaryScreen_ShowTrueSpecies(enum PokemonSummaryScreenMode mode)
     if (BXPY_IsSummaryScreenForEnemy(mode) == FALSE)
         return FALSE;
 
-    return (BXPY_GetEnemySpeciesVisibilityLevel() == BXPY_SHOW_TRUE_SPECIES);
+    return (BXPY_GetEnemySpeciesVisibilityLevel() == BXPY_SPECIES_SHOW_TRUE);
 }
 
 bool8 BXPY_TeamPreview_ShouldHideEnemyGender(void)
@@ -680,12 +680,12 @@ u32 BXPY_TeamPreview_TransformSpeciesId(u32 originalSpeciesId)
 {
     switch (BXPY_GetEnemySpeciesVisibilityLevel())
     {
-        case BXPY_SHOW_TRUE_SPECIES:
+        case BXPY_SPECIES_SHOW_TRUE:
             return originalSpeciesId;
-        case BXPY_SHOW_BASE_SPECIES:
+        case BXPY_SPECIES_SHOW_BASE:
             return GET_BASE_SPECIES_ID(originalSpeciesId);
         default:
-        case BXPY_HIDE_SPECIES:
+        case BXPY_SPECIES_HIDE:
             return SPECIES_NONE;
     }
 }
