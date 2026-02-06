@@ -412,6 +412,9 @@ static void BXPY_SelectPartyMembers(struct Pokemon *party, u32* enteredMons)
 
 static u32 BXPY_ConvertBattleTypeToFlags(enum BXPYBattleTypes battleType)
 {
+    bool32 hasSecondEnemy = (TRAINER_BATTLE_PARAM.opponentB != TRAINER_NONE);
+    bool32 hasPartner = (gPartnerTrainerId != PARTNER_NONE);
+
     if (hasSecondEnemy && hasPartner)
         return (BATTLE_TYPE_MULTI | BATTLE_TYPE_DOUBLE | BATTLE_TYPE_INGAME_PARTNER | BATTLE_TYPE_TWO_OPPONENTS | BATTLE_TYPE_TRAINER); // from battle_setup.c
     else if (hasSecondEnemy && !hasPartner)
@@ -442,10 +445,7 @@ bool8 BXPY_ShouldHideEnemyNature(enum PokemonSummaryScreenMode mode)
     if (BXPY_IsSummaryScreenForEnemy(mode) == FALSE)
         return FALSE;
 
-    if (BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_STAT_NATURE == TRUE)
-        return FALSE;
-
-    return TRUE;
+    return (!BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_STAT_NATURE);
 }
 
 bool8 BXPY_ShouldHideEnemyIndividualValues(enum PokemonSummaryScreenMode mode, enum PokemonSummarySkillsMode stats)
@@ -456,10 +456,7 @@ bool8 BXPY_ShouldHideEnemyIndividualValues(enum PokemonSummaryScreenMode mode, e
     if (stats != SUMMARY_SKILLS_MODE_IVS)
         return FALSE;
 
-    if (BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_STAT_IV == TRUE)
-        return FALSE;
-
-    return TRUE;
+    return (!BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_STAT_IV);
 }
 
 bool8 BXPY_ShouldHideEnemyEffortValues(enum PokemonSummaryScreenMode mode, enum PokemonSummarySkillsMode stats)
@@ -470,10 +467,7 @@ bool8 BXPY_ShouldHideEnemyEffortValues(enum PokemonSummaryScreenMode mode, enum 
     if (stats != SUMMARY_SKILLS_MODE_EVS)
         return FALSE;
 
-    if (BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_STAT_EV == TRUE)
-        return FALSE;
-
-    return TRUE;
+    return (!BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_STAT_EV);
 }
 
 bool8 BXPY_ShouldHideEnemyTeraType(enum PokemonSummaryScreenMode mode)
@@ -481,55 +475,55 @@ bool8 BXPY_ShouldHideEnemyTeraType(enum PokemonSummaryScreenMode mode)
     if (BXPY_IsSummaryScreenForEnemy(mode) == FALSE)
         return FALSE;
 
-    if (BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_GIMMICK_TERA == TRUE)
-        return FALSE;
-
-    return TRUE;
+    return (!BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_GIMMICK_TERA);
 }
 
-enum Type BXPY_GetNewType(enum PokemonSummaryScreenMode mode, enum Type originalTypeId, u8 spriteArrayId, u32 species, enum PokemonSummaryScreenPage page)
+enum Type BXPY_TransformPageInfoType(enum PokemonSummaryScreenMode mode, enum Type originalTypeId, u32 spriteArrayId, u32 species)
 {
-    if (BXPY_IsSummaryScreenForEnemy(mode) == FALSE)
+    if (spriteArrayId == SUMMARY_SCREEN_SPRITE_ID_TYPE_TERA)
+        return (BXPY_ShouldHideEnemyTeraType(mode)) ? TYPE_MYSTERY : originalTypeId;
+
+    if (spriteArrayId != SUMMARY_SCREEN_SPRITE_ID_TYPE_1 && spriteArrayId != SUMMARY_SCREEN_SPRITE_ID_TYPE_2)
         return originalTypeId;
 
-    if (spriteArrayId == SUMMARY_SCREEN_SPRITE_ID_TYPE_TERA && page == PSS_PAGE_INFO)
+    switch (BXPY_SummaryScreen_SpeciesVisibility(mode))
     {
-        if (!BXPY_ShouldHideEnemyTeraType(mode))
+        case BXPY_SPECIES_HIDE:
+            return TYPE_MYSTERY;
+        case BXPY_SPECIES_SHOW_BASE:
+            u32 typeIndex = spriteArrayId - SPRITE_ARR_ID_TYPE;
+            return GetSpeciesType(GET_BASE_SPECIES_ID(species), typeIndex);
+        default:
+        case BXPY_SPECIES_SHOW_TRUE:
             return originalTypeId;
-        else
-            return TYPE_MYSTERY;
     }
-    else if (spriteArrayId == SUMMARY_SCREEN_SPRITE_ID_TYPE_1 && page == PSS_PAGE_INFO)
-    {
-        switch (BXPY_SummaryScreen_SpeciesVisibility(mode))
-        {
-            case BXPY_SPECIES_HIDE:
-                return TYPE_MYSTERY;
-            case BXPY_SPECIES_SHOW_BASE:
-                return (GetSpeciesType(GET_BASE_SPECIES_ID(species),0));
-            case BXPY_SPECIES_SHOW_TRUE:
-                return originalTypeId;
-        }
-    }
-    else if (spriteArrayId == SUMMARY_SCREEN_SPRITE_ID_TYPE_2 && page == PSS_PAGE_INFO)
-    {
-        switch (BXPY_SummaryScreen_SpeciesVisibility(mode))
-        {
-            case BXPY_SPECIES_HIDE:
-                return TYPE_MYSTERY;
-            case BXPY_SPECIES_SHOW_BASE:
-                return (GetSpeciesType(GET_BASE_SPECIES_ID(species),1));
-            case BXPY_SPECIES_SHOW_TRUE:
-                return originalTypeId;
-        }
-    }
-    else if ((spriteArrayId >= SUMMARY_SCREEN_SPRITE_ID_TYPE_MOVE_1 && spriteArrayId<= SUMMARY_SCREEN_SPRITE_ID_TYPE_MOVE_4) && page == PSS_PAGE_BATTLE_MOVES)
-    {
-        if (BXPY_ShouldHideEnemyMoves(mode))
-            return TYPE_MYSTERY;
-    }
+}
+
+enum Type BXPY_TransformPageBattleMoves(enum PokemonSummaryScreenMode mode, enum Type originalTypeId, u32 spriteArrayId)
+{
+    if (spriteArrayId < SUMMARY_SCREEN_SPRITE_ID_TYPE_MOVE_1 || spriteArrayId > SUMMARY_SCREEN_SPRITE_ID_TYPE_MOVE_4)
+        return originalTypeId;
+
+    if (BXPY_ShouldHideEnemyMoves(mode))
+        return TYPE_MYSTERY;
 
     return originalTypeId;
+}
+
+enum Type BXPY_TransformTypeIfHidden(enum PokemonSummaryScreenMode mode, enum Type originalTypeId, u32 spriteArrayId, u32 species, enum PokemonSummaryScreenPage page)
+{
+    if (!BXPY_IsSummaryScreenForEnemy(mode))
+        return originalTypeId;
+
+    switch (page)
+    {
+        case PSS_PAGE_INFO:
+            return BXPY_TransformPageInfoType(mode, originalTypeId, spriteArrayId, species);
+        case PSS_PAGE_BATTLE_MOVES:
+            return BXPY_TransformPageBattleMoves(mode, originalTypeId, spriteArrayId);
+        default:
+            return originalTypeId;
+    }
 }
 
 bool8 BXPY_ShouldHideEnemyMoves(enum PokemonSummaryScreenMode mode)
@@ -537,10 +531,7 @@ bool8 BXPY_ShouldHideEnemyMoves(enum PokemonSummaryScreenMode mode)
     if (BXPY_IsSummaryScreenForEnemy(mode) == FALSE)
         return FALSE;
 
-    if (BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_MOVE == TRUE)
-        return FALSE;
-
-    return TRUE;
+    return (!BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_MOVE);
 }
 
 enum BXPYTeamPreviewItemModes BXPY_GetEnemyItemVisibilityLevel(void)
@@ -594,7 +585,7 @@ const u8 *BXPY_ReturnItemText(enum Item item)
             else
                 return sText_None;
     }
-    return sText_None;
+    return sText_Unknown;
 }
 
 enum BXPYTeamPreviewSpeciesModes BXPY_GetEnemySpeciesVisibilityLevel(void)

@@ -4557,7 +4557,7 @@ static void CreateMoveTypeIcons(void)
 
 void SetTypeSpritePosAndPal(enum Type typeId, u8 x, u8 y, u8 spriteArrayId)
 {
-    typeId = BXPY_GetNewType(sMonSummaryScreen->mode,typeId,spriteArrayId,sMonSummaryScreen->summary.species,sMonSummaryScreen->currPageIndex); // bringXpickY
+    typeId = BXPY_TransformTypeIfHidden(sMonSummaryScreen->mode,typeId,spriteArrayId,sMonSummaryScreen->summary.species,sMonSummaryScreen->currPageIndex); // bringXpickY
     struct Sprite *sprite = &gSprites[sMonSummaryScreen->spriteIds[spriteArrayId]];
     StartSpriteAnim(sprite, typeId);
     if (typeId < NUMBER_OF_MON_TYPES)
