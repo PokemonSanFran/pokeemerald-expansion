@@ -138,7 +138,7 @@ Optional argument. Defaults to `PARTNER_NONE` when not defined.
 Dictates what partner battles alongside the Player.
 
 ### Restrictions
-- Must be a valid partnerId less than `PARTNER_COUNT`.
+- Must be a valid partnerId between `PARTNER_NONE` and `PARTNER_COUNT`.
 
 # Party Legality
 ## Heal

@@ -2895,10 +2895,13 @@
 	.if \trainer_b != TRAINER_NONE && \lose_text_b == NULL
 		.error "bringxpicky trainer_b must have valid lose text"
 	.endif
+	.if \trainer_b != TRAINER_NONE && \trainer_b > TRAINERS_COUNT
+		.error "bringxpicky trainer_b (\trainer_b) must be a valid trainer Id"
+	.endif
 	.if \trainer_b == TRAINER_NONE && \lose_text_b != NULL
 		.error "bringxpicky trainer_b (\trainer_b) must be a valid trainer Id"
 	.endif
-	.if \partnerId == PARTNER_COUNT
+	.if \partnerId >= PARTNER_COUNT
 		.error "bringxpicky partnerId (\partnerId) must be a valid partner Id"
 	.endif
 	callnative BXPY_TryHealBeforeBattle
