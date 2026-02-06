@@ -703,3 +703,20 @@ bool8 BXPY_SummaryScreen_ShouldHideEnemyLevel(enum PokemonSummaryScreenMode mode
     return BXPY_TeamPreview_ShouldHideEnemyLevel();
 }
 
+bool8 BXPY_SummaryScreen_ShouldHideStats(enum PokemonSummaryScreenMode mode, enum PokemonSummarySkillsMode stats)
+{
+    if (stats != SUMMARY_SKILLS_MODE_STATS)
+        return FALSE;
+
+    if (BXPY_SummaryScreen_ShouldHideEnemyLevel(mode))
+        return TRUE;
+
+    if (BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_STAT_IV == TRUE)
+        return FALSE;
+
+    if (BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_STAT_EV == TRUE)
+        return FALSE;
+
+    return (!BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_STAT_NATURE);
+}
+

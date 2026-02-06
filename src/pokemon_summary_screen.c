@@ -1249,6 +1249,7 @@ void ShowPokemonSummaryScreen(u8 mode, void *mons, u8 monIndex, u8 maxMonIndex, 
         sMonSummaryScreen->minPageIndex = 0;
         sMonSummaryScreen->maxPageIndex = PSS_PAGE_COUNT - 2;
         sMonSummaryScreen->lockMovesFlag = TRUE;
+        break;
     }
 
     if (mode == SUMMARY_MODE_RELEARNER_BATTLE)
@@ -4023,13 +4024,12 @@ static void BufferStat(u8 *dst, enum Stat statIndex, u32 stat, u32 strId, u32 n)
         && sMonSummaryScreen->skillsPageMode == SUMMARY_SKILLS_MODE_IVS)
         StringAppend(dst, GetLetterGrade(stat));
     // Start bringXpickY
-    else if (!P_SUMMARY_SCREEN_IV_EV_VALUES
-        && sMonSummaryScreen->skillsPageMode == SUMMARY_SKILLS_MODE_IVS)
-        StringAppend(dst, GetLetterGrade(stat));
     else if (BXPY_ShouldHideEnemyEffortValues(sMonSummaryScreen->mode, sMonSummaryScreen->skillsPageMode))
         StringAppend(dst, COMPOUND_STRING("?"));
     else if (BXPY_ShouldHideEnemyIndividualValues(sMonSummaryScreen->mode, sMonSummaryScreen->skillsPageMode))
         StringAppend(dst, COMPOUND_STRING("?"));
+    else if (BXPY_SummaryScreen_ShouldHideStats(sMonSummaryScreen->mode, sMonSummaryScreen->skillsPageMode))
+        StringAppend(dst, COMPOUND_STRING("???"));
     // End bringXpickY
     else
         ConvertIntToDecimalStringN(txtPtr, stat, STR_CONV_MODE_RIGHT_ALIGN, n);
