@@ -2915,6 +2915,6 @@
 	.2byte \trainer_b
 	.4byte \lose_text_b
 	.2byte \partnerId
-    waitstate
+	waitstate
 	.endm
 	@ End bxpy
