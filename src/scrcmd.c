@@ -3354,4 +3354,5 @@ bool8 ScrCmd_getbraillestringwidth(struct ScriptContext * ctx)
 bool8 ScrCmd_bringxpicky(struct ScriptContext *ctx)
 {
     // TO DO
+    return FALSE;
 }
