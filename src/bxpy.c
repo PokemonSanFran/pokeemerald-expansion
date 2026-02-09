@@ -35,6 +35,7 @@ static void BXPY_DeleteNonAliveMons(void);
 static void BXPY_SelectPartyMembers(struct Pokemon *party, u32* enteredMons);
 static u32 BXPY_ConvertBattleTypeToFlags(enum BXPYBattleTypes battleType);
 static bool8 BXPY_IsSummaryScreenForEnemy(enum PokemonSummaryScreenMode mode);
+static void Task_BXPY_PartySelection(u8 taskId);
 
 static void (*const sBXPYErrorCheckFuncs[])(void) =
 {
@@ -343,12 +344,14 @@ static void BXPY_GetPlayerEnterMons(u32* enteredMons, u32 pickSize)
     for (u32 i = 0; i < PARTY_SIZE; i++)
         enteredMons[i] = PARTY_SIZE;
 
+    u8 taskId = CreateTask(Task_BXPY_PartySelection,0);
     // Start BXPY TODO Replace with Pawkkie's logic and UI output
     Shuffle(mons, ARRAY_COUNT(mons), sizeof(mons[0]));
 
     for (u32 i = 0; i < PARTY_SIZE; i++)
         enteredMons[i] = (i < pickSize) ? mons[i] : PARTY_SIZE;
     // End BXPY TODO Replace with Pawkkie's logic and UI output
+    DestroyTask(taskId);
 }
 
 static void BXPY_GetEnemyEnterMons(u32* enteredMons, u32 pickSize)
@@ -688,5 +691,15 @@ bool8 BXPY_SummaryScreen_ShouldHideStats(enum PokemonSummaryScreenMode mode, enu
         return FALSE;
 
     return (!BXPY_OPEN_TEAM_SHEET_SHOW_ENEMY_STAT_NATURE);
+}
+
+static void Task_BXPY_PartySelection(u8 taskId)
+{
+    return;
+}
+
+u32 IsDoingBringXPickYSelection(void)
+{
+    return (FindTaskIdByFunc(Task_BXPY_PartySelection) != TASK_NONE);
 }
 

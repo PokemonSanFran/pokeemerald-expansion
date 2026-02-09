@@ -35,5 +35,6 @@ bool8 BXPY_SummaryScreen_ShouldShowFullItem(enum PokemonSummaryScreenMode mode);
 bool8 BXPY_SummaryScreen_ShouldHideEnemyLevel(enum PokemonSummaryScreenMode mode);
 u32 BXPY_TeamPreview_TransformSpeciesId(u32 originalSpeciesId);
 bool8 BXPY_SummaryScreen_ShouldHideStats(enum PokemonSummaryScreenMode mode, enum PokemonSummarySkillsMode stats);
+u32 IsDoingBringXPickYSelection(void);
 
 #endif // GUARD_BXPY_H
