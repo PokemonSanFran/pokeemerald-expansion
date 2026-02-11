@@ -205,16 +205,16 @@ Once the Player chooses Y Pokemon to battle with, Team Preview closes.
 ## Bring AI
 All of the AI battlers (possibily both Trainers and the Player's partner) will then look at the opposing side's Pokemon and choose Y Pokemon to bring to battle.
 
-The following is run for each of the battler's Pokemon against all of the Pokemon on the opposing side. With the maximum number of battlers and party sizes (3, 6), this will take 74 frames, or 1.2333333 seconds. This scales exponentially with the number of battlers and Pokemon.
+The following is run for each of the battler's Pokemon against all of the Pokemon on the opposing side. With the maximum number of battlers and party sizes (3, 6), this will add about 74 frames, or 1.2333333 seconds. In singles, it adds closer to 12 frames. This scales with the number of battlers, Pokemon, and moves.
 
-1. If the AI's Pokemon A can defeat the enemy Pokemon Z, Pokemon A receieves `CAN_1V1_MATCHUP_POINTS` (`5`) points. This check does not run if `BXPY_OPEN_TEAM_SHEET_SHOW_PLAYER_STATS` or `BXPY_OPEN_TEAM_SHEET_SHOW_PLAYER_LEVEL` is `FALSE`.
+1. If the AI's Pokemon A can defeat the enemy Pokemon Z, Pokemon A receieves `CAN_1V1_MATCHUP_POINTS` (`5`) points. This check does not run if `BXPY_OPEN_TEAM_SHEET_SHOW_PLAYER_MOVES` or `BXPY_OPEN_TEAM_SHEET_SHOW_PLAYER_STATS` is `FALSE`.
 2. If the AI's Pokemon A has a strong defensive matchup against enemy Pokemon Z, Pokemon A recieves `DEFENSIVE_MATCHUP_POINTS` (`2`) points.
 3. If the AI's Pokemon A's moves have a strong offensive matchup against enemy Pokemon Z's types, Pokemon A recieves `OFFENSIVE_MATCHUP_POINTS` (`2`) points.
 4. If the AI's Pokemon A's speed is higher than enemy Pokemon Z, Pokemon A recieves `OUTSPEED_MATCHUP_POINTS` (`1`) points. This check does not run if `BXPY_OPEN_TEAM_SHEET_SHOW_PLAYER_STATS` is `FALSE`.
 
-Once every Pokemon and battler is evaluated, the AI will bring the top Y scoring Pokemon into battle, with the highest ranking Pokemon being sent out first. If multiple Pokemon are tied, a Pokemon is randomly chosen between the tied Pokemon. Until there are no ties. 
+Once every Pokemon and battler is evaluated, the AI will bring the top Y scoring Pokemon into battle, with the highest ranking Pokemon being sent out first. If multiple Pokemon are tied, a Pokemon is randomly chosen between the tied Pokemon until there are no ties. 
 
-The Pokemon on each side that were not brought the battle are removed from the party. All scoring occurs before the Pokemon are removed.
+The Pokemon on each side that were not brought to the battle are removed from the party. All scoring occurs before the Pokemon are removed.
 
 The game then returns to the overworld and the battle begins.
 
@@ -296,4 +296,3 @@ n/a
 
 ## [1.0.1] - XXXX-XX-XX
 ### Fixed
-
