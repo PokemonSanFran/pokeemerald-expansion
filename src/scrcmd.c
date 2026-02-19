@@ -62,6 +62,7 @@
 #include "list_menu.h"
 #include "malloc.h"
 #include "bxpy.h" // bringXpickY
+#include "ui_bxpy.h" // bringXpickY
 #include "battle.h"
 #include "constants/event_objects.h"
 #include "constants/map_types.h"
@@ -3353,6 +3354,18 @@ bool8 ScrCmd_getbraillestringwidth(struct ScriptContext * ctx)
 }
 
 // Start bringXpickY
+bool8 ScrCmd_loadenemyparty(struct ScriptContext *ctx)
+{
+    u32 trainerA = VarGet(ScriptReadHalfword(ctx));
+    u32 trainerB = VarGet(ScriptReadHalfword(ctx));
+
+    Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE);
+
+    TRAINER_BATTLE_PARAM.opponentA = trainerA;
+    TRAINER_BATTLE_PARAM.opponentB = trainerB;
+    return FALSE;
+}
+
 bool8 ScrCmd_bringxpicky(struct ScriptContext *ctx)
 {
     enum BXPYBattleTypes battleType = ScriptReadHalfword(ctx);
@@ -3367,6 +3380,18 @@ bool8 ScrCmd_bringxpicky(struct ScriptContext *ctx)
     Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE);
 
     BXPY_Init(battleType, bringSize, pickSize, trainerA, loseTextA, trainerB, loseTextB, partner);
+    return FALSE;
+}
+
+bool8 ScrCmd_battlebxpy(struct ScriptContext *ctx)
+{
+    enum BXPYBattleTypes battleType = ScriptReadHalfword(ctx);
+    u32 bringSize = ScriptReadHalfword(ctx);
+    u32 pickSize = ScriptReadHalfword(ctx);
+
+    Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE);
+
+    BXPY_SetupBattle(battleType, bringSize, pickSize);
     return FALSE;
 }
 // End bringXpickY

@@ -10,8 +10,10 @@ void BXPY_OverworldRun_ErrorCheck_ClauseSpecies(void);
 void BXPY_OverworldRun_ErrorCheck_ClauseItem(void);
 void BXPY_OverworldRun_ErrorCheck_ClauseUbers(void);
 void BXPY_Init(enum BXPYBattleTypes battleType, u32 bringSize, u32 pickSize, u32 trainerA, const u8 *loseTextA, u32 trainerB, const u8* loseTextB, u32 partner);
+void BXPY_SetupBattle(enum BXPYBattleTypes battleType, u32 bringSize, u32 pickSize);
 void BXPY_TryHealAfterBattle(void);
 void BXPY_TryHealBeforeBattle(void);
+void CheckBXPYMenu(void);
 
 bool8 BXPY_ShouldHideEnemyAbility(enum PokemonSummaryScreenMode mode);
 bool8 BXPY_ShouldHideEnemyNature(enum PokemonSummaryScreenMode mode);

@@ -2861,6 +2861,10 @@
 	@ to battle against a trainer(s) that will also pick the same number of Pokemon to battle.
 	@ This mimics Battle Stadium behavior in official titles (Scarlet/Violet, Sword/Shield, etc.)
 	@ which is also used for tournament settings like VGC.
+	.macro bxpymenu
+	callnative FadeToBXPYcreen
+	.endm
+
 	.macro bringxpicky battleType:req, bringSize:req, pickSize:req, trainer_a: req, lose_text_a:req, trainer_b = TRAINER_NONE, lose_text_b=NULL, partnerId=PARTNER_NONE
 	.if B_FLAG_BXPY == 0 || B_FLAG_BXPY > FLAGS_COUNT
 		.error "bringxpicky B_FLAG_BXPY must be assigned to a flag for the feature to function"
@@ -2918,6 +2922,11 @@
 	.2byte \trainer_b
 	.4byte \lose_text_b
 	.2byte \partnerId
+	waitstate
+	callnative ScrCmd_battlebxpy, requests_effects=1
+	.2byte \battleType
+	.2byte \bringSize
+	.2byte \pickSize
 	waitstate
 	.endm
 	@ End bxpy

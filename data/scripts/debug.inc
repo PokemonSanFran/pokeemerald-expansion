@@ -204,9 +204,12 @@ Debug_EventScript_Text_DefensiveIVs:
 
 Debug_EventScript_Script_1::
 	lock
-	bxpymenu
+	bringxpicky BXPY_BATTLE_DOUBLE, 6, 4, TRAINER_STEVEN, Debug_EventScript_Script_1_Text
 	release
 	end
+
+Debug_EventScript_Script_1_Text:
+	.string "aww dang it"
 
 Debug_EventScript_Script_2::
 	release
