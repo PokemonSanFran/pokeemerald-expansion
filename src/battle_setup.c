@@ -55,6 +55,7 @@
 #include "constants/trainer_hill.h"
 #include "constants/weather.h"
 #include "fishing.h"
+#include "bxpy.h" // bringXpickY
 
 enum TransitionType
 {
@@ -634,7 +635,7 @@ static void DowngradeBadPoison(void)
     u32 status = STATUS1_POISON;
     if (B_TOXIC_REVERSAL < GEN_5)
         return;
-    for(i = 0; i < PARTY_SIZE; i++)
+    for (i = 0; i < PARTY_SIZE; i++)
     {
         if (GetMonData(&gPlayerParty[i], MON_DATA_SANITY_HAS_SPECIES) && GetMonData(&gPlayerParty[i], MON_DATA_STATUS) == STATUS1_TOXIC_POISON)
             SetMonData(&gPlayerParty[i], MON_DATA_STATUS, &status);
@@ -1024,6 +1025,7 @@ static bool32 IsPlayerDefeated(u32 battleOutcome)
     {
     case B_OUTCOME_LOST:
     case B_OUTCOME_DREW:
+    case B_OUTCOME_FORFEITED:
         return TRUE;
     case B_OUTCOME_WON:
     case B_OUTCOME_RAN:
@@ -1403,6 +1405,13 @@ void BattleSetup_StartTrainerBattle_Debug(void)
 
 static void SaveChangesToPlayerParty(void)
 {
+    // Start bringXpickY
+    bool32 isSkyBattle = (B_FLAG_SKY_BATTLE != 0 && FlagGet(B_FLAG_SKY_BATTLE));
+    bool32 isBXPY = FlagGet(B_FLAG_BXPY) && (BXPY_RETAIN_CHANGES == TRUE);
+
+    if (!isSkyBattle && !isBXPY)
+        return;
+    // End bringXpickY
     u8 i = 0, j = 0;
     u8 participatedPokemon = VarGet(B_VAR_SKY_BATTLE);
     for (i = 0; i < PARTY_SIZE; i++)
@@ -1417,10 +1426,21 @@ static void SaveChangesToPlayerParty(void)
 
 static void HandleBattleVariantEndParty(void)
 {
-    if (B_FLAG_SKY_BATTLE == 0 || !FlagGet(B_FLAG_SKY_BATTLE))
+    // Start bringXpickY
+    // if (B_FLAG_SKY_BATTLE == 0 || !FlagGet(B_FLAG_SKY_BATTLE))
+    bool32 isSkyBattle = (B_FLAG_SKY_BATTLE != 0 && FlagGet(B_FLAG_SKY_BATTLE));
+    bool32 isBXPY = FlagGet(B_FLAG_BXPY);
+
+    if (!isSkyBattle && !isBXPY)
+    // End bringXpickY
         return;
+
     SaveChangesToPlayerParty();
     LoadPlayerParty();
+    // Start bringXpickY
+    BXPY_TryHealAfterBattle();
+    FlagClear(B_FLAG_BXPY);
+    // End bringXpickY
     FlagClear(B_FLAG_SKY_BATTLE);
 }
 
@@ -1466,15 +1486,18 @@ static void CB2_EndTrainerBattle(void)
         DowngradeBadPoison();
         SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);
     }
+    else if (DidPlayerForfeitNormalTrainerBattle())
+    {
+        if (FlagGet(B_FLAG_NO_WHITEOUT) || CurrentBattlePyramidLocation() != PYRAMID_LOCATION_NONE || InTrainerHillChallenge())
+            SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);
+        else
+            SetMainCallback2(CB2_WhiteOut);
+    }
     else if (IsPlayerDefeated(gBattleOutcome) == TRUE)
     {
         if (CurrentBattlePyramidLocation() != PYRAMID_LOCATION_NONE || InTrainerHillChallenge() || (!NoAliveMonsForPlayer()) || FlagGet(B_FLAG_NO_WHITEOUT))
             SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);
         else
-            SetMainCallback2(CB2_WhiteOut);
-    }
-    else if (DidPlayerForfeitNormalTrainerBattle())
-    {
             SetMainCallback2(CB2_WhiteOut);
     }
     else
@@ -2127,3 +2150,13 @@ void SetMultiTrainerBattle(struct ScriptContext *ctx)
     gPartnerTrainerId = TRAINER_PARTNER(ScriptReadHalfword(ctx));
 };
 
+// Start bringXpickY
+void BattleSetup_StartBXPYBattle(u32 battleFlags)
+{
+    FlagSet(B_FLAG_BXPY);
+    gBattleTypeFlags = battleFlags;
+    gMain.savedCallback = CB2_EndTrainerBattle;
+    DoTrainerBattle();
+    ScriptContext_Stop();
+}
+// End bringXpickY

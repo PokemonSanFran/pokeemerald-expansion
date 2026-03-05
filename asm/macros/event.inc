@@ -2649,7 +2649,7 @@
 	callnative DoFacilityTrainerBattle
 	.byte \facility
 	.endm
-	
+
 	.macro ingame_trade tradeId:req wantTradeMsg:req, declineTradeJump:req, wrongMonJump:req, tradeCompleteMsg:req
 	setvar VAR_0x8005, \tradeId
 	specialvar VAR_0x8009, GetInGameTradeSpeciesInfo
@@ -2715,7 +2715,7 @@
 		.2byte \battlePartner
 		.4byte \script
 		updatefollowingmon
-        1:
+		1:
 	.else
 		.error "setfollowernpc unavailable with FNPC_ENABLE_NPC_FOLLOWERS defined as FALSE"
 	.endif
@@ -2854,10 +2854,79 @@
 	getbraillestringwidth \text
 	call EventScript_BrailleCursorWaitButton
 	.endm
-	
-@ Bring X Pick Y
-@ Credits: psf, Pawkkie, Linathan
 
+	@ Start bxpy
+	@ Credits: psf, Pawkkie, Linathan
+	@ Opens a UI that has the player choose a number of Pokemon (bringSize) in their party
+	@ to battle against a trainer(s) that will also pick the same number of Pokemon to battle.
+	@ This mimics Battle Stadium behavior in official titles (Scarlet/Violet, Sword/Shield, etc.)
+	@ which is also used for tournament settings like VGC.
 	.macro bxpymenu
-	callnative Task_OpenBXPYMenu
+	callnative FadeToBXPYcreen
 	.endm
+
+	.macro bringxpicky battleType:req, bringSize:req, pickSize:req, trainer_a: req, lose_text_a:req, trainer_b = TRAINER_NONE, lose_text_b=NULL, partnerId=PARTNER_NONE
+	.if B_FLAG_BXPY == 0 || B_FLAG_BXPY > FLAGS_COUNT
+		.error "bringxpicky B_FLAG_BXPY must be assigned to a flag for the feature to function"
+	.endif
+	.if \battleType > BXPY_BATTLE_DOUBLE
+		.error "bringxpicky battleType (\battleType) must be either BXPY_BATTLE_SINGLE (\BXPY_BATTLE_SINGLE) or BXPY_BATTLE_DOUBLE (\BXPY_BATTLE_DOUBLE)"
+	.endif
+	.if \battleType == BXPY_BATTLE_SINGLE && \trainer_b != TRAINER_NONE
+		.error "bringxpicky battleType (\battleType) must be BXPY_BATTLE_DOUBLE (\BXPY_BATTLE_DOUBLE) when trainer_b (\trainer_b) is defined"
+	.endif
+	.if \battleType == BXPY_BATTLE_SINGLE && \partnerId != PARTNER_NONE
+		.error "bringxpicky battleType (\battleType) must be BXPY_BATTLE_DOUBLE (\BXPY_BATTLE_DOUBLE) when partnerId (\partnerId) is defined"
+	.endif
+	.if \bringSize < 1
+		.error "bringxpicky bringSize (\bringSize) is less than 1"
+	.endif
+	.if \bringSize > PARTY_SIZE
+		.error "bringxpicky bringSize (\bringSize) is greater than \PARTY_SIZE"
+	.endif
+	.if \bringSize < \pickSize
+		.error "bringxpicky bringSize (\bringSize) is less than pickSize (\pickSize)"
+	.endif
+	.if \pickSize < 1
+		.error "bringxpicky pickSize (\pickSize) is less than 1"
+	.endif
+	.if \pickSize > PARTY_SIZE
+		.error "bringxpicky pickSize (\pickSize) is greater than \PARTY_SIZE"
+	.endif
+	.if \trainer_a == TRAINER_NONE || \trainer_a > TRAINERS_COUNT
+		.error "bringxpicky trainer_a (\trainer_a) must be a valid trainer Id"
+	.endif
+	.if \trainer_b != TRAINER_NONE && \lose_text_b == NULL
+		.error "bringxpicky trainer_b must have valid lose text"
+	.endif
+	.if \trainer_b != TRAINER_NONE && \trainer_b > TRAINERS_COUNT
+		.error "bringxpicky trainer_b (\trainer_b) must be a valid trainer Id"
+	.endif
+	.if \trainer_b == TRAINER_NONE && \lose_text_b != NULL
+		.error "bringxpicky trainer_b (\trainer_b) must be a valid trainer Id"
+	.endif
+	.if \partnerId >= PARTNER_COUNT
+		.error "bringxpicky partnerId (\partnerId) must be a valid partner Id"
+	.endif
+	callnative BXPY_TryHealBeforeBattle
+	setvar VAR_BXPY_PICK_SIZE, \pickSize
+	setvar VAR_BXPY_BRING_SIZE, \bringSize
+	setvar VAR_BXPY_PARTNER, \partnerId
+	call BXPY_Script_CheckErrors
+	callnative ScrCmd_bringxpicky, requests_effects=1
+	.2byte \battleType
+	.2byte \bringSize
+	.2byte \pickSize
+	.2byte \trainer_a
+	.4byte \lose_text_a
+	.2byte \trainer_b
+	.4byte \lose_text_b
+	.2byte \partnerId
+	waitstate
+	callnative ScrCmd_battlebxpy, requests_effects=1
+	.2byte \battleType
+	.2byte \bringSize
+	.2byte \pickSize
+	waitstate
+	.endm
+	@ End bxpy

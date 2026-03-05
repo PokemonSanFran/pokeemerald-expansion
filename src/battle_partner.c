@@ -12,7 +12,6 @@
 #include "constants/abilities.h"
 #include "constants/battle_ai.h"
 
-#include "data/partner_parties.h"
 const struct Trainer gBattlePartners[DIFFICULTY_COUNT][PARTNER_COUNT] =
 {
 #include "data/battle_partners.h"
@@ -20,7 +19,10 @@ const struct Trainer gBattlePartners[DIFFICULTY_COUNT][PARTNER_COUNT] =
 
 #define STEVEN_OTID 61226
 
-void FillPartnerParty(u16 trainerId)
+// Start bringXpickY
+//static void FillPartnerParty(u16 trainerId)
+void FillPartnerParty(u16 trainerId, u32 partnerPartyStart)
+// End bringXpickY
 {
     s32 i, j, k;
     u32 firstIdPart = 0, secondIdPart = 0, thirdIdPart = 0;
@@ -28,16 +30,22 @@ void FillPartnerParty(u16 trainerId)
     u16 monId;
     u32 otID;
     u8 trainerName[(PLAYER_NAME_LENGTH * 3) + 1];
-    s32 ball = -1;
     enum DifficultyLevel difficulty = GetBattlePartnerDifficultyLevel(trainerId);
     SetFacilityPtrsGetLevel();
+    u32 numMons = PARTY_SIZE - partnerPartyStart; // bringXpickY
 
     if (trainerId > TRAINER_PARTNER(PARTNER_NONE))
     {
-        for (i = 0; i < 3; i++)
-            ZeroMonData(&gPlayerParty[i + 3]);
+        // Start bringXpickY
+        //for (i = 0; i < 3; i++)
+        for (i = 0; i < numMons; i++)
+        // End bringXpickY
+            ZeroMonData(&gPlayerParty[i + partnerPartyStart]);
 
-        for (i = 0; i < 3 && i < gBattlePartners[difficulty][trainerId - TRAINER_PARTNER(PARTNER_NONE)].partySize; i++)
+        // Start bringXpickY
+        //for (i = 0; i < 3 && i < gBattlePartners[difficulty][trainerId - TRAINER_PARTNER(PARTNER_NONE)].partySize; i++)
+        for (i = 0; i < numMons && i < gBattlePartners[difficulty][trainerId - TRAINER_PARTNER(PARTNER_NONE)].partySize; i++)
+        // End bringXpickY
         {
             const struct TrainerMon *partyData = gBattlePartners[difficulty][trainerId - TRAINER_PARTNER(PARTNER_NONE)].party;
             const u8 *partnerName = gBattlePartners[difficulty][trainerId - TRAINER_PARTNER(PARTNER_NONE)].trainerName;
@@ -71,21 +79,39 @@ void FillPartnerParty(u16 trainerId)
             else if (partyData[i].gender == TRAINER_MON_FEMALE)
                 personality = (personality & 0xFFFFFF00) | GeneratePersonalityForGender(MON_FEMALE, partyData[i].species);
             ModifyPersonalityForNature(&personality, partyData[i].nature);
-            CreateMon(&gPlayerParty[i + 3], partyData[i].species, partyData[i].lvl, personality, OTID_STRUCT_PRESET(otID));
+            // Start bringXpickY
+            //CreateMon(&gPlayerParty[i + 3], partyData[i].species, partyData[i].lvl, personality, OTID_STRUCT_PRESET(otID));
+            CreateMon(&gPlayerParty[i + partnerPartyStart], partyData[i].species, partyData[i].lvl, personality, OTID_STRUCT_PRESET(otID));
+            // End bringXpickY
             j = partyData[i].isShiny;
-            SetMonData(&gPlayerParty[i + 3], MON_DATA_IS_SHINY, &j);
-            SetMonData(&gPlayerParty[i + 3], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
-            CustomTrainerPartyAssignMoves(&gPlayerParty[i + 3], &partyData[i]);
+            // Start bringXpickY
+            //SetMonData(&gPlayerParty[i + 3], MON_DATA_IS_SHINY, &j);
+            //SetMonData(&gPlayerParty[i + 3], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
+            //CustomTrainerPartyAssignMoves(&gPlayerParty[i + 3], &partyData[i]);
 
-            SetMonData(&gPlayerParty[i + 3], MON_DATA_IVS, &(partyData[i].iv));
+            //SetMonData(&gPlayerParty[i + 3], MON_DATA_IVS, &(partyData[i].iv));
+            SetMonData(&gPlayerParty[i + partnerPartyStart], MON_DATA_IS_SHINY, &j);
+            SetMonData(&gPlayerParty[i + partnerPartyStart], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
+            CustomTrainerPartyAssignMoves(&gPlayerParty[i + partnerPartyStart], &partyData[i]);
+
+            SetMonData(&gPlayerParty[i + partnerPartyStart], MON_DATA_IVS, &(partyData[i].iv));
+            // End bringXpickY
             if (partyData[i].ev != NULL)
             {
-                SetMonData(&gPlayerParty[i + 3], MON_DATA_HP_EV, &(partyData[i].ev[0]));
-                SetMonData(&gPlayerParty[i + 3], MON_DATA_ATK_EV, &(partyData[i].ev[1]));
-                SetMonData(&gPlayerParty[i + 3], MON_DATA_DEF_EV, &(partyData[i].ev[2]));
-                SetMonData(&gPlayerParty[i + 3], MON_DATA_SPATK_EV, &(partyData[i].ev[3]));
-                SetMonData(&gPlayerParty[i + 3], MON_DATA_SPDEF_EV, &(partyData[i].ev[4]));
-                SetMonData(&gPlayerParty[i + 3], MON_DATA_SPEED_EV, &(partyData[i].ev[5]));
+                // Start bringXpickY
+                //SetMonData(&gPlayerParty[i + 3], MON_DATA_HP_EV, &(partyData[i].ev[0]));
+                //SetMonData(&gPlayerParty[i + 3], MON_DATA_ATK_EV, &(partyData[i].ev[1]));
+                //SetMonData(&gPlayerParty[i + 3], MON_DATA_DEF_EV, &(partyData[i].ev[2]));
+                //SetMonData(&gPlayerParty[i + 3], MON_DATA_SPATK_EV, &(partyData[i].ev[3]));
+                //SetMonData(&gPlayerParty[i + 3], MON_DATA_SPDEF_EV, &(partyData[i].ev[4]));
+                //SetMonData(&gPlayerParty[i + 3], MON_DATA_SPEED_EV, &(partyData[i].ev[5]));
+                SetMonData(&gPlayerParty[i + partnerPartyStart], MON_DATA_HP_EV, &(partyData[i].ev[0]));
+                SetMonData(&gPlayerParty[i + partnerPartyStart], MON_DATA_ATK_EV, &(partyData[i].ev[1]));
+                SetMonData(&gPlayerParty[i + partnerPartyStart], MON_DATA_DEF_EV, &(partyData[i].ev[2]));
+                SetMonData(&gPlayerParty[i + partnerPartyStart], MON_DATA_SPATK_EV, &(partyData[i].ev[3]));
+                SetMonData(&gPlayerParty[i + partnerPartyStart], MON_DATA_SPDEF_EV, &(partyData[i].ev[4]));
+                SetMonData(&gPlayerParty[i + partnerPartyStart], MON_DATA_SPEED_EV, &(partyData[i].ev[5]));
+                // End bringXpickY
             }
             if (partyData[i].ability != ABILITY_NONE)
             {
@@ -97,24 +123,43 @@ void FillPartnerParty(u16 trainerId)
                         break;
                 }
                 if (j < maxAbilities)
-                    SetMonData(&gPlayerParty[i + 3], MON_DATA_ABILITY_NUM, &j);
+                    // Start bringXpickY
+                    //SetMonData(&gPlayerParty[i + 3], MON_DATA_ABILITY_NUM, &j);
+                    SetMonData(&gPlayerParty[i + partnerPartyStart], MON_DATA_ABILITY_NUM, &j);
+                    // End bringXpickY
             }
+            // Start bringXpickY
+            //SetMonData(&gPlayerParty[i + 3], MON_DATA_FRIENDSHIP, &(partyData[i].friendship));
             SetMonData(&gPlayerParty[i + 3], MON_DATA_FRIENDSHIP, &(partyData[i].friendship));
-            if (partyData[i].ball != ITEM_NONE)
+            // End bringXpickY
+            if (partyData[i].ball < POKEBALL_COUNT)
             {
-                ball = partyData[i].ball;
-                SetMonData(&gPlayerParty[i + 3], MON_DATA_POKEBALL, &ball);
+                // Start bringXpickY
+                SetMonData(&gPlayerParty[i + 3], MON_DATA_POKEBALL, &partyData[i].ball);
+                // End bringXpickY
             }
             if (partyData[i].nickname != NULL)
             {
-                SetMonData(&gPlayerParty[i + 3], MON_DATA_NICKNAME, partyData[i].nickname);
+                // Start bringXpickY
+                //SetMonData(&gPlayerParty[i + 3], MON_DATA_NICKNAME, partyData[i].nickname);
+                SetMonData(&gPlayerParty[i + partnerPartyStart], MON_DATA_NICKNAME, partyData[i].nickname);
+                // End bringXpickY
             }
-            CalculateMonStats(&gPlayerParty[i + 3]);
+            // Start bringXpickY
+            //CalculateMonStats(&gPlayerParty[i + 3]);
+            CalculateMonStats(&gPlayerParty[i + partnerPartyStart]);
+            // End bringXpickY
 
             StringCopy(trainerName, gBattlePartners[difficulty][trainerId - TRAINER_PARTNER(PARTNER_NONE)].trainerName);
-            SetMonData(&gPlayerParty[i + 3], MON_DATA_OT_NAME, trainerName);
+            // Start bringXpickY
+            //SetMonData(&gPlayerParty[i + 3], MON_DATA_OT_NAME, trainerName);
+            SetMonData(&gPlayerParty[i + partnerPartyStart], MON_DATA_OT_NAME, trainerName);
+            // End bringXpickY
             j = gBattlePartners[difficulty][SanitizeTrainerId(trainerId - TRAINER_PARTNER(PARTNER_NONE))].gender;
-            SetMonData(&gPlayerParty[i + 3], MON_DATA_OT_GENDER, &j);
+            // Start bringXpickY
+            //SetMonData(&gPlayerParty[i + 3], MON_DATA_OT_GENDER, &j);
+            SetMonData(&gPlayerParty[i + partnerPartyStart], MON_DATA_OT_GENDER, &j);
+            // End bringXpickY
         }
     }
     else if (trainerId == TRAINER_EREADER)

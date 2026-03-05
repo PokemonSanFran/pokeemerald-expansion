@@ -32,7 +32,7 @@ COMMON_DATA u16 gFrontierTempParty[MAX_FRONTIER_PARTY_SIZE] = {0};
 static void HandleFacilityTrainerBattleEnd(void)
 {
     u8 facility = gBattleScripting.specialTrainerBattleType;
-    switch (facility) 
+    switch (facility)
     {
     case FACILITY_BATTLE_TOWER:
     case FACILITY_BATTLE_DOME:
@@ -74,7 +74,7 @@ static void Task_StartBattleAfterTransition(u8 taskId)
 static void DoFacilityTrainerBattleInternal(u8 facility)
 {
     gBattleScripting.specialTrainerBattleType = facility;
-    
+
     switch (facility)
     {
     case FACILITY_BATTLE_TOWER:
@@ -88,10 +88,13 @@ static void DoFacilityTrainerBattleInternal(u8 facility)
             FillFrontierTrainerParty(FRONTIER_DOUBLES_PARTY_SIZE);
             gBattleTypeFlags |= BATTLE_TYPE_DOUBLE;
             break;
-            case FRONTIER_MODE_MULTIS:
+        case FRONTIER_MODE_MULTIS:
             FillFrontierTrainersParties(FRONTIER_MULTI_PARTY_SIZE);
             gPartnerTrainerId = gSaveBlock2Ptr->frontier.trainerIds[17];
-            FillPartnerParty(gPartnerTrainerId);
+            // Start bringXpickY
+            //FillPartnerParty(gPartnerTrainerId);
+            FillPartnerParty(gPartnerTrainerId, (PARTY_SIZE / 2));
+            // End bringXpickY
             gBattleTypeFlags |= BATTLE_TYPE_DOUBLE | BATTLE_TYPE_INGAME_PARTNER | BATTLE_TYPE_MULTI | BATTLE_TYPE_TWO_OPPONENTS;
             break;
         case FRONTIER_MODE_LINK_MULTIS:

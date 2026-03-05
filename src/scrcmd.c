@@ -61,6 +61,8 @@
 #include "window.h"
 #include "list_menu.h"
 #include "malloc.h"
+#include "bxpy.h" // bringXpickY
+#include "ui_bxpy.h" // bringXpickY
 #include "battle.h"
 #include "constants/event_objects.h"
 #include "constants/map_types.h"
@@ -2524,7 +2526,7 @@ bool8 ScrCmd_setwildbattle(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1);
 
-    if(species2 == SPECIES_NONE)
+    if (species2 == SPECIES_NONE)
     {
         CreateScriptedWildMon(species, level, item);
         sIsScriptedWildDouble = FALSE;
@@ -3257,6 +3259,9 @@ bool8 ScrCmd_fwdtime(struct ScriptContext *ctx)
 
 bool8 ScrCmd_fwdweekday(struct ScriptContext *ctx)
 {
+    if (!OW_USE_FAKE_RTC)
+        return FALSE;
+
     struct SiiRtcInfo *rtc = FakeRtc_GetCurrentTime();
 
     u32 weekdayTarget = ScriptReadWord(ctx);
@@ -3351,8 +3356,45 @@ bool8 ScrCmd_getbraillestringwidth(struct ScriptContext * ctx)
     return FALSE;
 }
 
-bool8 ScrCmd_bringxpicky(struct ScriptContext *ctx)
+// Start bringXpickY
+bool8 ScrCmd_loadenemyparty(struct ScriptContext *ctx)
 {
-    // TO DO
+    u32 trainerA = VarGet(ScriptReadHalfword(ctx));
+    u32 trainerB = VarGet(ScriptReadHalfword(ctx));
+
+    Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE);
+
+    TRAINER_BATTLE_PARAM.opponentA = trainerA;
+    TRAINER_BATTLE_PARAM.opponentB = trainerB;
     return FALSE;
 }
+
+bool8 ScrCmd_bringxpicky(struct ScriptContext *ctx)
+{
+    enum BXPYBattleTypes battleType = ScriptReadHalfword(ctx);
+    u32 bringSize = ScriptReadHalfword(ctx);
+    u32 pickSize = ScriptReadHalfword(ctx);
+    u32 trainerA = VarGet(ScriptReadHalfword(ctx));
+    const u8 *loseTextA = (const u8 *)ScriptReadWord(ctx);
+    u32 trainerB = VarGet(ScriptReadHalfword(ctx));
+    const u8 *loseTextB = (const u8 *)ScriptReadWord(ctx);
+    u32 partner = VarGet(ScriptReadHalfword(ctx));
+
+    Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE);
+
+    BXPY_Init(battleType, bringSize, pickSize, trainerA, loseTextA, trainerB, loseTextB, partner);
+    return FALSE;
+}
+
+bool8 ScrCmd_battlebxpy(struct ScriptContext *ctx)
+{
+    enum BXPYBattleTypes battleType = ScriptReadHalfword(ctx);
+    u32 bringSize = ScriptReadHalfword(ctx);
+    u32 pickSize = ScriptReadHalfword(ctx);
+
+    Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE);
+
+    BXPY_SetupBattle(battleType, bringSize, pickSize);
+    return FALSE;
+}
+// End bringXpickY

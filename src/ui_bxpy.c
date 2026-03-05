@@ -1,5 +1,7 @@
 #include "global.h"
 #include "battle.h"
+#include "battle_main.h"
+#include "battle_setup.h"
 #include "strings.h"
 #include "bg.h"
 #include "data.h"
@@ -58,24 +60,25 @@ struct BXPYResources
 static EWRAM_DATA struct BXPYResources *sBXPYDataPtr = NULL;
 static EWRAM_DATA u8 *sBXPYBgBuffer = NULL;
 
-static bool8 BPXY_InitBgs(void);
-static bool8 BPXY_LoadGraphics(void);
-static void BPXY_Init(MainCallback callback);
-static void FadeToBPXYcreen(u8 taskId);
-static void BPXY_RunSetup(void);
-static bool8 BPXY_DoGfxSetup(void);
-static void BPXY_FadeAndBail(void);
-static void BPXY_InitWindows(void);
-static void Task_BPXYWaitFadeIn(u8 taskId);
-static void Task_BPXYMain(u8 taskId);
+static bool8 BXPY_UI_InitBgs(void);
+static bool8 BXPY_LoadGraphics(void);
+// static void BXPY_UI_Init(MainCallback callback);
+// static void FadeToBXPYcreen(u8 taskId);
+static void BXPY_RunSetup(void);
+static bool8 BXPY_DoGfxSetup(void);
+static void BXPY_FadeAndBail(void);
+static void Task_BXPYWaitFadeAndBail(u8 taskId);
+static void BXPY_UI_InitWindows(void);
+static void Task_BXPYWaitFadeIn(u8 taskId);
+static void Task_BXPYMain(u8 taskId);
 static void SelectorCallback(struct Sprite *sprite);
 static void SampleUi_DrawMonIcon();
 static u8 CreateSelector(void);
 static void DestroySelector(void);
 
-static const u32 sBPXYBgTiles[] = INCBIN_U32("graphics/ui_bxpy/bxpy_bg.4bpp.smol");
-static const u32 sBPXYBgTilemap[] = INCBIN_U32("graphics/ui_bxpy/bxpy_bg.bin.smolTM");
-static const u16 sBPXYBgPalette[] = INCBIN_U16("graphics/ui_bxpy/bxpy_bg.gbapal");
+static const u32 sBXPYBgTiles[] = INCBIN_U32("graphics/ui_bxpy/bxpy_bg.4bpp.smol");
+static const u32 sBXPYBgTilemap[] = INCBIN_U32("graphics/ui_bxpy/bxpy_bg.bin.smolTM");
+static const u16 sBXPYBgPalette[] = INCBIN_U16("graphics/ui_bxpy/bxpy_bg.gbapal");
 
 #define TAG_ARROW_SELECTOR 30005
 #define TAG_HOLD_ITEM 30006
@@ -86,10 +89,10 @@ static const u32 sSelector_Gfx[] = INCBIN_U32("graphics/ui_bxpy/arrow_selector.4
 static const u16 sHoldIcon_Pal[] = INCBIN_U16("graphics/ui_bxpy/hold_icon.gbapal");
 static const u32 sHoldIcon_Gfx[] = INCBIN_U32("graphics/ui_bxpy/hold_icon.4bpp.smol");
 
-#define BPXY_BG_BASE 1
-#define BPXY_MENUS 0
+#define BXPY_BG_BASE 1
+#define BXPY_MENUS 0
 
-static const struct BgTemplate sBPXYBGtemplates[] = {
+static const struct BgTemplate sBXPYBGtemplates[] = {
     {
         .bg = 0,    // windows, etc
         .charBaseIndex = 0,
@@ -283,7 +286,7 @@ static void UpdateTextBox()
 {
 }
 
-static void BPXY_Init(MainCallback callback)
+static void BXPY_UI_Init(MainCallback callback)
 {
     if ((sBXPYDataPtr = AllocZeroed(sizeof(struct BXPYResources))) == NULL)
     {
@@ -297,52 +300,34 @@ static void BPXY_Init(MainCallback callback)
     sBXPYDataPtr->selectorSpriteId = 0xFF;
     sBXPYBgBuffer = AllocZeroed(BG_SCREEN_SIZE);
     
-    SetMainCallback2(BPXY_RunSetup);
+    SetMainCallback2(BXPY_RunSetup);
 }
 
-void Task_OpenBXPYMenu(u8 taskId)
+void Task_OpenBXPYMenuUnused(u8 taskId)
 {
     if (!gPaletteFade.active)
     {
         CleanupOverworldWindowsAndTilemaps();
-        BPXY_Init(CB2_ReturnToFieldContinueScriptPlayMapMusic);
+        BXPY_UI_Init(CB2_ReturnToFieldContinueScriptPlayMapMusic);
         DestroyTask(taskId);
     }
 }
 
-void CheckBPXYMenu(void)
+void CheckBXPYMenuUnused(void)
 {
-    CreateTask(Task_OpenBXPYMenu, 10);
+    CreateTask(Task_OpenBXPYMenuUnused, 10);
 }
 
-static void FadeToBPXYcreen(u8 taskId)
-{
-    switch (gTasks[taskId].data[0])
-    {
-    case 0:
-        BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, RGB_BLACK);
-        gTasks[taskId].data[0]++;
-        break;
-    case 1:
-        if (!gPaletteFade.active)
-        {
-            SetMainCallback2(BPXY_RunSetup);
-            DestroyTask(taskId);
-        }
-        break;
-    }
-}
-
-static void BPXY_RunSetup(void)
+static void BXPY_RunSetup(void)
 {
     while (1)
     {
-        if (BPXY_DoGfxSetup() == TRUE)
+        if (BXPY_DoGfxSetup() == TRUE)
             break;
     }
 }
 
-static void BPXY_MainCB(void)
+static void BXPY_MainCB(void)
 {
     RunTasks();
     AnimateSprites();
@@ -351,14 +336,22 @@ static void BPXY_MainCB(void)
     UpdatePaletteFade();
 }
 
-static void BPXY_VBlankCB(void)
+static void BXPY_VBlankCB(void)
 {
     LoadOam();
     ProcessSpriteCopyRequests();
     TransferPlttBuffer();
 }
 
-static bool8 BPXY_DoGfxSetup(void)
+void FadeToBXPYcreen(u8 taskId)
+{
+    BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, RGB_BLACK);
+    CreateTask(Task_BXPYWaitFadeAndBail, 0);
+    SetVBlankCallback(BXPY_VBlankCB);
+    SetMainCallback2(BXPY_RunSetup);
+}
+
+static bool8 BXPY_DoGfxSetup(void)
 {
     switch (gMain.state)
     {
@@ -378,19 +371,19 @@ static bool8 BPXY_DoGfxSetup(void)
         gMain.state++;
         break;
     case 2:
-        if (BPXY_InitBgs())
+        if (BXPY_UI_InitBgs())
         {
             sBXPYDataPtr->gfxLoadState = 0;
             gMain.state++;
         }
         else
         {
-            BPXY_FadeAndBail();
+            BXPY_FadeAndBail();
             return TRUE;
         }
         break;
     case 3:
-        if (BPXY_LoadGraphics() == TRUE)
+        if (BXPY_LoadGraphics() == TRUE)
             gMain.state++;
         break;
     case 4:
@@ -402,7 +395,7 @@ static bool8 BPXY_DoGfxSetup(void)
         gMain.state++;
         break;
     case 5:
-        BPXY_InitWindows();
+        BXPY_UI_InitWindows();
         // PrintTitleToWindowMainState();
         // sBXPYDataPtr->inputMode = INPUT_SELECT_STAT;
         PrintStaticInfo();
@@ -411,7 +404,7 @@ static bool8 BPXY_DoGfxSetup(void)
         gMain.state++;
         break;
     case 6:
-        CreateTask(Task_BPXYWaitFadeIn, 0);
+        CreateTask(Task_BXPYWaitFadeIn, 0);
         BlendPalettes(0xFFFFFFFF, 16, RGB_BLACK);
         gMain.state++;
         break;
@@ -420,8 +413,8 @@ static bool8 BPXY_DoGfxSetup(void)
         gMain.state++;
         break;
     default:
-        SetVBlankCallback(BPXY_VBlankCB);
-        SetMainCallback2(BPXY_MainCB);
+        SetVBlankCallback(BXPY_VBlankCB);
+        SetMainCallback2(BXPY_MainCB);
         return TRUE;
     }
     return FALSE;
@@ -433,7 +426,7 @@ static bool8 BPXY_DoGfxSetup(void)
         Free(*ptr__);                  \
 })
 
-static void BPXY_FreeResources(void)
+static void BXPY_FreeResources(void)
 {
     DestroySelector();
     for (u32 i = 0; i < (PARTY_SIZE * 2); i++)
@@ -444,25 +437,25 @@ static void BPXY_FreeResources(void)
 }
 
 
-static void Task_BPXYWaitFadeAndBail(u8 taskId)
+static void Task_BXPYWaitFadeAndBail(u8 taskId)
 {
     if (!gPaletteFade.active)
     {
         SetMainCallback2(sBXPYDataPtr->savedCallback);
-        BPXY_FreeResources();
+        BXPY_FreeResources();
         DestroyTask(taskId);
     }
 }
 
-static void BPXY_FadeAndBail(void)
+static void BXPY_FadeAndBail(void)
 {
     BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, RGB_BLACK);
-    CreateTask(Task_BPXYWaitFadeAndBail, 0);
-    SetVBlankCallback(BPXY_VBlankCB);
-    SetMainCallback2(BPXY_MainCB);
+    CreateTask(Task_BXPYWaitFadeAndBail, 0);
+    SetVBlankCallback(BXPY_VBlankCB);
+    SetMainCallback2(BXPY_MainCB);
 }
 
-static bool8 BPXY_InitBgs(void)
+static bool8 BXPY_UI_InitBgs(void)
 {
     ResetAllBgsCoordinates();
     sBXPYBgBuffer = Alloc(0x800);
@@ -471,7 +464,7 @@ static bool8 BPXY_InitBgs(void)
     
     memset(sBXPYBgBuffer, 0, 0x800);
     ResetBgsAndClearDma3BusyFlags(0);
-    InitBgsFromTemplates(0, sBPXYBGtemplates, NELEMS(sBPXYBGtemplates));
+    InitBgsFromTemplates(0, sBXPYBGtemplates, NELEMS(sBXPYBGtemplates));
     SetBgTilemapBuffer(1, sBXPYBgBuffer);
     ScheduleBgCopyTilemapToVram(1);
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP);
@@ -481,24 +474,24 @@ static bool8 BPXY_InitBgs(void)
     return TRUE;
 }
 
-static bool8 BPXY_LoadGraphics(void)
+static bool8 BXPY_LoadGraphics(void)
 {
     switch (sBXPYDataPtr->gfxLoadState)
     {
     case 0:
         ResetTempTileDataBuffers();
-        DecompressAndCopyTileDataToVram(1, sBPXYBgTiles, 0, 0, 0);
+        DecompressAndCopyTileDataToVram(1, sBXPYBgTiles, 0, 0, 0);
         sBXPYDataPtr->gfxLoadState++;
         break;
     case 1:
         if (FreeTempTileDataBuffersIfPossible() != TRUE)
         {
-            DecompressDataWithHeaderWram(sBPXYBgTilemap, sBXPYBgBuffer);
+            DecompressDataWithHeaderWram(sBXPYBgTilemap, sBXPYBgBuffer);
             sBXPYDataPtr->gfxLoadState++;
         }
         break;
     case 2:
-        LoadPalette(sBPXYBgPalette, 0, 32);
+        LoadPalette(sBXPYBgPalette, 0, 32);
         sBXPYDataPtr->gfxLoadState++;
         break;
     default:
@@ -508,7 +501,7 @@ static bool8 BPXY_LoadGraphics(void)
     return FALSE;
 }
 
-static void BPXY_InitWindows(void)
+static void BXPY_UI_InitWindows(void)
 {
     InitWindows(sMenuWindowTemplates);
     DeactivateAllTextPrinters();
@@ -521,23 +514,23 @@ static void BPXY_InitWindows(void)
     ScheduleBgCopyTilemapToVram(2);
 }
 
-static void Task_BPXYWaitFadeIn(u8 taskId)
+static void Task_BXPYWaitFadeIn(u8 taskId)
 {
     if (!gPaletteFade.active)
-        gTasks[taskId].func = Task_BPXYMain;
+        gTasks[taskId].func = Task_BXPYMain;
 }
 
-static void Task_BPXYTurnOff(u8 taskId)
+static void Task_BXPYTurnOff(u8 taskId)
 {
     if (!gPaletteFade.active)
     {
         SetMainCallback2(sBXPYDataPtr->savedCallback);
-        BPXY_FreeResources();
+        BXPY_FreeResources();
         DestroyTask(taskId);
     }
 }
 
-static void Task_BPXYMain(u8 taskId)
+static void Task_BXPYMain(u8 taskId)
 {
     if (JOY_NEW(DPAD_UP))
     {
@@ -564,14 +557,14 @@ static void Task_BPXYMain(u8 taskId)
             case 0:
                 PlaySE(SE_SELECT);
                 BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, RGB_BLACK);
-                gTasks[taskId].func = Task_BPXYTurnOff;
+                gTasks[taskId].func = Task_BXPYTurnOff;
                 break;
             case 1:
                 PlaySE(SE_SELECT);
                 // SetMainCallback2(CB2_InitPartyMenu);
                 BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, RGB_BLACK);
                 // sBXPYDataPtr->savedCallback = Task_CheckParty;
-                gTasks[taskId].func = Task_BPXYTurnOff;
+                gTasks[taskId].func = Task_BXPYTurnOff;
                 break;
             case 2:
                 PlaySE(SE_FAILURE);
@@ -579,7 +572,7 @@ static void Task_BPXYMain(u8 taskId)
             default:
                 PlaySE(SE_SELECT);
                 BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, RGB_BLACK);
-                gTasks[taskId].func = Task_BPXYTurnOff;
+                gTasks[taskId].func = Task_BXPYTurnOff;
                 break;
         }
     }
@@ -587,23 +580,28 @@ static void Task_BPXYMain(u8 taskId)
     {
         PlaySE(SE_SELECT);
         BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, RGB_BLACK);
-        gTasks[taskId].func = Task_BPXYTurnOff;
+        gTasks[taskId].func = Task_BXPYTurnOff;
     }
 }
 
-#define PLAYER_MON_ICON_SLOT_1_X     20
-#define PLAYER_MON_ICON_SLOT_1_Y     12
+#define PLAYER_MON_ICON_SLOT_1_X            20
+#define PLAYER_MON_ICON_SLOT_1_Y            12
 #define PLAYER_MON_ICON_SLOT_1_Y_OFFSET     24
+#define OPPONENT_MON_ICON_SLOT_1_X          176
+#define OPPONENT_MON_ICON_SLOT_1_Y          32
+#define OPPONENT_MON_ICON_SLOT_1_X_OFFSET   32
+#define OPPONENT_MON_ICON_SLOT_1_Y_OFFSET   32
 
 static void SampleUi_DrawMonIcon()
 {
-    for (u32 index = 0; index < (PARTY_SIZE * 2); index++)
+    CreateNPCTrainerPartyFromTrainer(gEnemyParty, &gTrainers[GetCurrentDifficultyLevel()][TRAINER_BATTLE_PARAM.opponentA], FALSE, BATTLE_TYPE_TRAINER);
+    u16 speciesId;
+    for (u8 index = 0; index < PARTY_SIZE; index++)
     {
-        if (index < PARTY_SIZE)
-        {
-            u16 speciesId = GetMonData(&gPlayerParty[index], MON_DATA_SPECIES, NULL);
-            sBXPYDataPtr->monIconSpriteId[index] = CreateMonIcon(speciesId, SpriteCB_MonIcon, PLAYER_MON_ICON_SLOT_1_X, PLAYER_MON_ICON_SLOT_1_Y + (PLAYER_MON_ICON_SLOT_1_Y_OFFSET * index), 0, 0);
-        }
+        speciesId = GetMonData(&gPlayerParty[index], MON_DATA_SPECIES, NULL);
+        sBXPYDataPtr->monIconSpriteId[index] = CreateMonIcon(speciesId, SpriteCB_MonIcon, PLAYER_MON_ICON_SLOT_1_X, PLAYER_MON_ICON_SLOT_1_Y + (PLAYER_MON_ICON_SLOT_1_Y_OFFSET * index), 0, 0);
+        speciesId = GetMonData(&gEnemyParty[index], MON_DATA_SPECIES);
+        sBXPYDataPtr->monIconSpriteId[index] = CreateMonIcon(speciesId, SpriteCB_MonIcon, OPPONENT_MON_ICON_SLOT_1_X + (OPPONENT_MON_ICON_SLOT_1_X_OFFSET * (index % 2)), OPPONENT_MON_ICON_SLOT_1_Y + (OPPONENT_MON_ICON_SLOT_1_Y_OFFSET * (index / 2)), 0, 0);
     }
 
     SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT2_ALL);

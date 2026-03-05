@@ -50,6 +50,7 @@
 #include "constants/moves.h"
 #include "constants/mystery_gift.h"
 #include "constants/party_menu.h"
+#include "constants/pokeball.h"
 #include "constants/pokedex.h"
 #include "constants/pokemon.h"
 #include "constants/rtc.h"
@@ -71,6 +72,7 @@
 #include "constants/vars.h"
 #include "constants/weather.h"
 #include "constants/speaker_names.h"
+#include "constants/bxpy.h" @ bringXpickY
 	.include "asm/macros.inc"
 	.include "asm/macros/event.inc"
 	.include "constants/constants.inc"
@@ -1525,9 +1527,8 @@ gText_WantWhichFloor::
 	.include "data/text/abnormal_weather.inc"
 
 EventScript_GetInGameTradeSpeciesInfo::
-	copyvar VAR_0x8004, VAR_0x8008
-	specialvar VAR_RESULT, GetInGameTradeSpeciesInfo
-	copyvar VAR_0x8009, VAR_RESULT
+	copyvar VAR_0x8005, VAR_0x8008
+	specialvar VAR_0x8009, GetInGameTradeSpeciesInfo
 	return
 
 EventScript_ChooseMonForInGameTrade::
@@ -1535,18 +1536,13 @@ EventScript_ChooseMonForInGameTrade::
 	waitstate
 	lock
 	faceplayer
-	copyvar VAR_0x800A, VAR_0x8004
 	return
 
 EventScript_GetInGameTradeSpecies::
-	copyvar VAR_0x8005, VAR_0x800A
 	specialvar VAR_RESULT, GetTradeSpecies
-	copyvar VAR_0x800B, VAR_RESULT
 	return
 
 EventScript_DoInGameTrade::
-	copyvar VAR_0x8004, VAR_0x8008
-	copyvar VAR_0x8005, VAR_0x800A
 	special CreateInGameTradePokemon
 	special DoInGameTradeScene
 	waitstate
@@ -1741,3 +1737,4 @@ EventScript_PalletTown_PlayersHouse_2F_TurnOnPC::
 	.include "data/scripts/dexnav.inc"
 	.include "data/scripts/battle_frontier.inc"
 	.include "data/scripts/apricorn_tree.inc"
+	.include "data/scripts/bxpy.inc" @ bringXpickY
