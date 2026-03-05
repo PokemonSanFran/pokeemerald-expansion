@@ -12,7 +12,6 @@
 #include "constants/abilities.h"
 #include "constants/battle_ai.h"
 
-#include "data/partner_parties.h"
 const struct Trainer gBattlePartners[DIFFICULTY_COUNT][PARTNER_COUNT] =
 {
 #include "data/battle_partners.h"
@@ -31,7 +30,6 @@ void FillPartnerParty(u16 trainerId, u32 partnerPartyStart)
     u16 monId;
     u32 otID;
     u8 trainerName[(PLAYER_NAME_LENGTH * 3) + 1];
-    s32 ball = -1;
     enum DifficultyLevel difficulty = GetBattlePartnerDifficultyLevel(trainerId);
     SetFacilityPtrsGetLevel();
     u32 numMons = PARTY_SIZE - partnerPartyStart; // bringXpickY
@@ -132,14 +130,12 @@ void FillPartnerParty(u16 trainerId, u32 partnerPartyStart)
             }
             // Start bringXpickY
             //SetMonData(&gPlayerParty[i + 3], MON_DATA_FRIENDSHIP, &(partyData[i].friendship));
-            SetMonData(&gPlayerParty[i + partnerPartyStart], MON_DATA_FRIENDSHIP, &(partyData[i].friendship));
+            SetMonData(&gPlayerParty[i + 3], MON_DATA_FRIENDSHIP, &(partyData[i].friendship));
             // End bringXpickY
-            if (partyData[i].ball != ITEM_NONE)
+            if (partyData[i].ball < POKEBALL_COUNT)
             {
-                ball = partyData[i].ball;
                 // Start bringXpickY
-                //SetMonData(&gPlayerParty[i + 3], MON_DATA_POKEBALL, &ball);
-                SetMonData(&gPlayerParty[i + partnerPartyStart], MON_DATA_POKEBALL, &ball);
+                SetMonData(&gPlayerParty[i + 3], MON_DATA_POKEBALL, &partyData[i].ball);
                 // End bringXpickY
             }
             if (partyData[i].nickname != NULL)
