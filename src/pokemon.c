@@ -3912,7 +3912,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, enum Item item, u8 partyIndex, 
 {
     u32 dataUnsigned;
     s32 dataSigned, evCap;
-    s32 friendship;
+    u8 friendship;
     s32 i;
     bool8 retVal = TRUE;
     const u8 *itemEffect;
