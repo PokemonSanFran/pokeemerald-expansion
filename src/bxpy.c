@@ -343,7 +343,7 @@ void BXPY_SetupBattle(enum BXPYBattleTypes battleType, u32 bringSize, u32 pickSi
 }
 
 /*
-UI Stuff 
+UI Stuff
 */
 
 struct BXPYResources
@@ -411,7 +411,7 @@ static const struct BgTemplate sBXPYBGtemplates[] = {
         .charBaseIndex = 0,
         .mapBaseIndex = 30,
         .priority = 1
-    }, 
+    },
     {
         .bg = 1,    // this bg loads the UI tilemap
         .charBaseIndex = 3,
@@ -434,9 +434,9 @@ enum WindowIds
     WINDOW_4,
 };
 
-static const struct WindowTemplate sMenuWindowTemplates[] = 
+static const struct WindowTemplate sMenuWindowTemplates[] =
 {
-    [PLAYER_PARTY] = 
+    [PLAYER_PARTY] =
     {
         .bg = 0,            // which bg to print text on
         .tilemapLeft = 4,   // position from left (per 8 pixels)
@@ -522,7 +522,7 @@ enum Colors
     FONT_BLUE,
 };
 
-static const u8 sMenuWindowFontColors[][3] = 
+static const u8 sMenuWindowFontColors[][3] =
 {
     [FONT_BLACK]  = {TEXT_COLOR_TRANSPARENT,  TEXT_COLOR_DARK_GRAY,  TEXT_COLOR_LIGHT_GRAY},
     [FONT_WHITE]  = {TEXT_COLOR_TRANSPARENT,  TEXT_COLOR_WHITE,  TEXT_COLOR_DARK_GRAY},
@@ -556,7 +556,7 @@ static void PrintStaticInfo()
 
         gSprites[sBXPYDataPtr->heldItemSpriteId[index]].invisible = FALSE;
         StartSpriteAnim(&gSprites[sBXPYDataPtr->heldItemSpriteId[index]], 0);
-        
+
         // Print Level
         text[0] = CHAR_EXTRA_SYMBOL;
         text[1] = CHAR_LV_2;
@@ -586,13 +586,13 @@ void BXPY_UI_Init(MainCallback callback)
         SetMainCallback2(callback);
         return;
     }
-    
+
     // initialize stuff
     sBXPYDataPtr->gfxLoadState = 0;
     sBXPYDataPtr->savedCallback = callback;
     sBXPYDataPtr->selectorSpriteId = 0xFF;
     sBXPYBgBuffer = AllocZeroed(BG_SCREEN_SIZE);
-    
+
     SetMainCallback2(BXPY_RunSetup);
 }
 
@@ -740,7 +740,7 @@ static bool8 BXPY_UI_InitBgs(void)
     sBXPYBgBuffer = Alloc(0x800);
     if (sBXPYBgBuffer == NULL)
         return FALSE;
-    
+
     memset(sBXPYBgBuffer, 0, 0x800);
     ResetBgsAndClearDma3BusyFlags(0);
     InitBgsFromTemplates(0, sBXPYBGtemplates, NELEMS(sBXPYBGtemplates));
@@ -785,11 +785,11 @@ static void BXPY_UI_InitWindows(void)
     InitWindows(sMenuWindowTemplates);
     DeactivateAllTextPrinters();
     ScheduleBgCopyTilemapToVram(0);
-    
+
     FillWindowPixelBuffer(WINDOW_1, 0);
     PutWindowTilemap(WINDOW_1);
     CopyWindowToVram(WINDOW_1, 3);
-    
+
     ScheduleBgCopyTilemapToVram(2);
 }
 
@@ -1150,9 +1150,9 @@ bool8 BXPY_SummaryScreen_ShouldShowFullItem(enum PokemonSummaryScreenMode mode)
 
 const u8 *BXPY_ReturnItemText(enum Item item)
 {
-    static const u8 sText_Unknown[] = COMPOUND_STRING("Unknown");
-    static const u8 sText_Question[] = COMPOUND_STRING("???");
-    static const u8 sText_None[] = COMPOUND_STRING("NONE");
+    static const u8* sText_Unknown = COMPOUND_STRING("Unknown");
+    static const u8* sText_Question = COMPOUND_STRING("???");
+    static const u8* sText_None = COMPOUND_STRING("NONE");
     bool32 hasItem = (item != ITEM_NONE);
 
     switch (BXPY_GetEnemyItemVisibilityLevel())
