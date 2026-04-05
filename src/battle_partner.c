@@ -12,10 +12,12 @@
 #include "constants/abilities.h"
 #include "constants/battle_ai.h"
 
+#if !TESTING
 const struct Trainer gBattlePartners[DIFFICULTY_COUNT][PARTNER_COUNT] =
 {
 #include "data/battle_partners.h"
 };
+#endif
 
 #define STEVEN_OTID 61226
 
@@ -134,9 +136,8 @@ void FillPartnerParty(u16 trainerId, u32 partnerPartyStart)
             // End bringXpickY
             if (partyData[i].ball < POKEBALL_COUNT)
             {
-                // Start bringXpickY
-                SetMonData(&gPlayerParty[i + 3], MON_DATA_POKEBALL, &partyData[i].ball);
-                // End bringXpickY
+                enum PokeBall ball = partyData[i].ball;
+                SetMonData(&gPlayerParty[i + 3], MON_DATA_POKEBALL, &ball);
             }
             if (partyData[i].nickname != NULL)
             {
@@ -150,12 +151,13 @@ void FillPartnerParty(u16 trainerId, u32 partnerPartyStart)
             CalculateMonStats(&gPlayerParty[i + partnerPartyStart]);
             // End bringXpickY
 
-            StringCopy(trainerName, gBattlePartners[difficulty][trainerId - TRAINER_PARTNER(PARTNER_NONE)].trainerName);
+            u16 partnerId = GetPartnerIdFromTrainerId(trainerId);
+            StringCopy(trainerName, gBattlePartners[difficulty][partnerId].trainerName);
             // Start bringXpickY
             //SetMonData(&gPlayerParty[i + 3], MON_DATA_OT_NAME, trainerName);
             SetMonData(&gPlayerParty[i + partnerPartyStart], MON_DATA_OT_NAME, trainerName);
             // End bringXpickY
-            j = gBattlePartners[difficulty][SanitizeTrainerId(trainerId - TRAINER_PARTNER(PARTNER_NONE))].gender;
+            j = gBattlePartners[difficulty][partnerId].gender;
             // Start bringXpickY
             //SetMonData(&gPlayerParty[i + 3], MON_DATA_OT_GENDER, &j);
             SetMonData(&gPlayerParty[i + partnerPartyStart], MON_DATA_OT_GENDER, &j);
