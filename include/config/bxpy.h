@@ -43,7 +43,7 @@
 #define OUTSPEED_MATCHUP_POINTS                         1 // Score increase for outspeeding against an opposing party member
 #define CAN_1V1_MATCHUP_POINTS                          5 // Score increase for winning a projected 1v1 against an opposing party member
 
-#define BXPY_AI_DEBUG                                   TRUE // Enables AI debug prints, useful for debugging in lieu of tests
+#define BXPY_AI_DEBUG                                   FALSE // Enables AI debug prints, useful for debugging in lieu of tests
 
 #define BXPY_RETAIN_CHANGES                             FALSE            // When TRUE, after battle, any changes that occured to the participating Pokemon is retained. This includes changes in HP, PP, Experience, Level, or even Evolution.
 
