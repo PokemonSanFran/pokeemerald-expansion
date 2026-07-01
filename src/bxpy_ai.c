@@ -103,6 +103,7 @@ void BXPY_ClearAIData(void)
     memset(gBattlerPositions, 0, sizeof(gBattlerPositions));
     FREE_AND_SET_NULL(gAiThinkingStruct);
     FREE_AND_SET_NULL(gAiLogicData);
+    FREE_AND_SET_NULL(gBattleHistory);
 }
 
 void BXPY_ScorePartyMons(enum BattlerId battler, struct BXPYAiPartyData *bxpyAiPartyData)
