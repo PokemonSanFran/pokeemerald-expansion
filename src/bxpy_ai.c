@@ -242,6 +242,13 @@ static void BXPY_CalcAiBattlerDamage(enum BattlerId battlerAtk, enum BattlerId b
         .terrain = BXPY_GetTerrain(),
     };
     
+    struct AiCalcValues aiCalc = {
+        .gimmickAtk = gBattleStruct->gimmick.usableGimmick[battlerAtk],
+        .gimmickDef = GIMMICK_NONE,
+        .weather = BXPY_GetWeather(),
+        .terrain = BXPY_GetTerrain(),
+    };
+
     for (u32 moveIndex = 0; moveIndex < MAX_MON_MOVES; moveIndex++)
     {
         struct SimulatedDamage dmg = {0};
