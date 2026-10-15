@@ -28,6 +28,14 @@ body:
         Here you can also attach logs, screenshots, gifs or a video.
     validations:
       required: false
+  - type: textarea
+    id: llm 
+    attributes:
+      label: Large Language Model (AI) Disclosure
+      description: |
+        Was your contribution assisted or generated in any way by a large language model (AI)? If so, please describe where and how. Be specific. If you are using an LLM in any way, shape or form, you are expected to answer the above question honestly AND understand the project's [LLM policy](https://github.com/rh-hideout/pokeemerald-expansion/blob/master/docs/team_procedures/llm_policy.md).
+    validations:
+      required: true
   - type: input
     id: contact
     attributes:

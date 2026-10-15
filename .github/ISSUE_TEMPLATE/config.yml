@@ -3,3 +3,7 @@ contact_links:
   - name: Rom-Hacking Hideout's Discord server!
     url: https://discord.gg/6CzjAG6GZk
     about: You can follow the development of pokeemerald-expansion and be notified of new releases :)
+llm_policy:
+  - name: Understand our LLM policy
+    url: https://github.com/rh-hideout/pokeemerald-expansion/blob/master/docs/team_procedures/llm_policy.md
+    about: If you are using an LLM in any way, shape or form, you are expected to answer the above question honestly AND understand the project's LLM policy.
